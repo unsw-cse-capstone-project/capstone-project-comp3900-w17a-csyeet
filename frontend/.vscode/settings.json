@@ -1,0 +1,5 @@
+{
+  "eslint.nodePath": "../.eslintrc.json",
+  "eslint.format.enable": true,
+  "editor.formatOnSave": true
+}
