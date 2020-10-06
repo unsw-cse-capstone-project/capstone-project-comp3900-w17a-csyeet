@@ -1,8 +1,5 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
-import { BidderTag } from "../../ui/base/bidder_tag/BidderTag";
-import { BiddingBox, BiddingBoxStore } from "./BiddingBox";
-import { action } from "@storybook/addon-actions";
 import { BidsList, Bid } from "./BidsList";
 
 export default {

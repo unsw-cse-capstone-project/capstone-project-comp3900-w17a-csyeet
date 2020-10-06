@@ -35,7 +35,9 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       flexDirection: "column",
       alignItems: "center",
+      justifyContent: "center",
       padding: theme.spacing(6, 0),
+      minHeight: theme.spacing(20),
     },
     tagContainer: {
       width: "50%",
@@ -64,6 +66,8 @@ export const BiddingBox = observer(
     currentBid,
     bidState,
     BidderTag,
+    isAuctionClosed = false,
+    enableBidding = true,
     onPlaceBid,
     style,
   }: {
@@ -71,6 +75,8 @@ export const BiddingBox = observer(
     currentBid: number;
     bidState: BidPriceState;
     BidderTag: React.ComponentType;
+    isAuctionClosed?: boolean;
+    enableBidding?: boolean;
     onPlaceBid(price: number): void;
     style?: React.CSSProperties;
   }) => {
@@ -107,39 +113,43 @@ export const BiddingBox = observer(
     return (
       <Card variant="outlined" style={style}>
         <div className={classes.bidderBox}>
-          <Typography variant="body1">Current Bid</Typography>
+          <Typography variant="body1">
+            {isAuctionClosed ? "Final Bid" : "Current Bid"}
+          </Typography>
           <div className={classes.tagContainer}>
             <BidPriceWithBidderTag
               BidPrice={BidPriceWrapper}
               BidderTag={BidderTag}
             />
           </div>
-          <div className={classes.inputContainer}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-amount">
-                Amount
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-amount"
-                value={store.biddingPrice}
-                type=""
-                onChange={onChange}
-                startAdornment={
-                  <InputAdornment position="start">$</InputAdornment>
-                }
-                labelWidth={60}
-                inputComponent={InputComponent as any}
-              />
-            </FormControl>
-            <Button
-              size="large"
-              variant="outlined"
-              className={classes.placeBidButton}
-              onClick={onClick}
-            >
-              Place Bid
-            </Button>
-          </div>
+          {enableBidding && !isAuctionClosed && (
+            <div className={classes.inputContainer}>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-amount">
+                  Amount
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  value={store.biddingPrice}
+                  type=""
+                  onChange={onChange}
+                  startAdornment={
+                    <InputAdornment position="start">$</InputAdornment>
+                  }
+                  labelWidth={60}
+                  inputComponent={InputComponent as any}
+                />
+              </FormControl>
+              <Button
+                size="large"
+                variant="outlined"
+                className={classes.placeBidButton}
+                onClick={onClick}
+              >
+                Place Bid
+              </Button>
+            </div>
+          )}
         </div>
       </Card>
     );

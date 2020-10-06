@@ -18,6 +18,12 @@ export default {
       },
       defaultValue: new Date().toString(),
     },
+    enableBidding: {
+      control: {
+        type: "boolean",
+      },
+      defaultValue: true,
+    },
   },
 } as Meta;
 
@@ -44,14 +50,19 @@ const createFakeAddress = (): Address => ({
   postcode: 2067,
 });
 
-const Template: Story<{ auctionDate: string }> = (props: {
+const Template: Story<{
   auctionDate: string;
-}) => {
+  enableBidding: boolean;
+}> = (props: { auctionDate: string; enableBidding: boolean }) => {
   const store = new BiddingBoxStore();
   const BiddingBoxWrapper = () => (
     <BiddingBox
       store={store}
       currentBid={500000}
+      enableBidding={props.enableBidding}
+      isAuctionClosed={
+        new Date(props.auctionDate).getTime() - new Date().getTime() <= 0
+      }
       bidState="reserve_met"
       BidderTag={() => <BidderTag bidderNumber={1234} />}
       onPlaceBid={action("Place bid button clicked")}
@@ -62,8 +73,6 @@ const Template: Story<{ auctionDate: string }> = (props: {
       address={createFakeAddress()}
       auctionDate={new Date(props.auctionDate)}
       mainImage={mainImage}
-      currentBid={{ price: 500000, state: "reserve_met" }}
-      bidderNumber={1234}
       BiddingBox={BiddingBoxWrapper}
       BidsList={() => <BidsList bids={bids} />}
       BiddersList={() => (

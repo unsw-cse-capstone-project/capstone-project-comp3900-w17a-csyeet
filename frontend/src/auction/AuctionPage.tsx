@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import { Countdown } from "../ui/base/countdown/Countdown";
 import { ArrowBackIos } from "@material-ui/icons";
+import classNames from "classnames";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,6 +51,10 @@ const useStyles = makeStyles((theme: Theme) =>
     biddingInfo: {
       marginTop: theme.spacing(3),
     },
+    auctionClosed: {
+      color: theme.palette.error.main,
+      padding: theme.spacing(3, 0, 3, 0),
+    },
   })
 );
 
@@ -76,14 +81,13 @@ export const AuctionPage = ({
   address: Address;
   auctionDate: Date;
   mainImage: string;
-  currentBid: AuctionBid;
-  bidderNumber: number;
   BiddingBox: React.ComponentType;
   BidsList: React.ComponentType;
   BiddersList: React.ComponentType;
 }) => {
   const { streetAddress, suburb, state, postcode } = address;
   const classes = useStyles();
+  const isAuctionClosed = auctionDate.getTime() - new Date().getTime() <= 0;
   return (
     <div className={classes.page}>
       <Button className={classes.backButton}>
@@ -98,12 +102,18 @@ export const AuctionPage = ({
         {", "}
         <span style={{ textTransform: "uppercase" }}>{state}</span> {postcode}
       </Typography>
-      <div className={classes.auctionTime}>
-        <Typography variant="body1" className={classes.auctionText}>
-          Auction ends in
-        </Typography>
-        <Countdown date={auctionDate} />
-      </div>
+      {isAuctionClosed ? (
+        <div className={classNames(classes.auctionTime, classes.auctionClosed)}>
+          <Typography variant="body1">Auction closed</Typography>
+        </div>
+      ) : (
+        <div className={classes.auctionTime}>
+          <Typography variant="body1" className={classes.auctionText}>
+            Auction ends in
+          </Typography>
+          <Countdown date={auctionDate} />
+        </div>
+      )}
       <Hidden lgDown>
         <Grid container spacing={3}>
           <Grid item xs={4}>

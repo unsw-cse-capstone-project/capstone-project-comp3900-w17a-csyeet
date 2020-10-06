@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AuctionBid } from "../AuctionPage";
+import { BidderTag } from "../../ui/base/bidder_tag/BidderTag";
 import {
   createStyles,
   makeStyles,
@@ -7,11 +7,6 @@ import {
   Typography,
   Divider,
 } from "@material-ui/core";
-import {
-  BidPriceWithBidderTag,
-  BidPrice,
-} from "../../ui/base/bid_price/BidPrice";
-import { BidderTag } from "../../ui/base/bidder_tag/BidderTag";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

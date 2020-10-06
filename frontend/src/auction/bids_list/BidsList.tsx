@@ -66,7 +66,7 @@ export const BidsList = ({ bids }: { bids: Bid[] }) => {
             BidPrice={() => (
               <BidPrice
                 price={bid.value.price}
-                state={i == 0 ? "current" : "past"}
+                state={i === 0 ? "current" : "past"}
                 textType="h5"
               />
             )}
