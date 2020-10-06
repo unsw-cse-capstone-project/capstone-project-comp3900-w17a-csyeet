@@ -47,11 +47,13 @@ export const BidPrice = ({
   state,
   className,
   style,
+  textType = "h4",
 }: {
   price: number;
   state: BidPriceState;
   className?: string;
   style?: React.CSSProperties;
+  textType?: string;
 }) => {
   const classes = useStyles();
   const formatter = new Intl.NumberFormat("en-US", {
@@ -66,7 +68,7 @@ export const BidPrice = ({
       className={classNames(classes.bidPrice, classes[state], className)}
       style={style}
     >
-      <Typography variant="h4">{formattedPrice}</Typography>
+      <Typography variant={textType}>{formattedPrice}</Typography>
     </Paper>
   );
 };

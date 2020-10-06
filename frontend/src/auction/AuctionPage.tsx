@@ -6,7 +6,6 @@ import {
   createStyles,
   Button,
   Typography,
-  capitalize,
   Grid,
   Hidden,
 } from "@material-ui/core";
@@ -48,6 +47,9 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundPosition: "center",
       backgroundSize: "cover",
     },
+    biddingInfo: {
+      marginTop: theme.spacing(3),
+    },
   })
 );
 
@@ -68,6 +70,8 @@ export const AuctionPage = ({
   auctionDate,
   mainImage,
   BiddingBox,
+  BidsList,
+  BiddersList,
 }: {
   address: Address;
   auctionDate: Date;
@@ -75,6 +79,8 @@ export const AuctionPage = ({
   currentBid: AuctionBid;
   bidderNumber: number;
   BiddingBox: React.ComponentType;
+  BidsList: React.ComponentType;
+  BiddersList: React.ComponentType;
 }) => {
   const { streetAddress, suburb, state, postcode } = address;
   const classes = useStyles();
@@ -142,6 +148,29 @@ export const AuctionPage = ({
           </Grid>
         </Grid>
       </Hidden>
+      {/* bids list */}
+      <div className={classes.biddingInfo}>
+        <Hidden smDown>
+          <Grid container spacing={3}>
+            <Grid item xs={9}>
+              <BidsList />
+            </Grid>
+            <Grid item xs={3}>
+              <BiddersList />
+            </Grid>
+          </Grid>
+        </Hidden>
+        <Hidden mdUp>
+          <Grid container>
+            <Grid item xs={12}>
+              <BidsList />
+            </Grid>
+            <Grid item xs={12}>
+              <BiddersList />
+            </Grid>
+          </Grid>
+        </Hidden>
+      </div>
     </div>
   );
 };
