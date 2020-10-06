@@ -1,28 +1,29 @@
-import * as React from 'react';
-import './App.css';
-import Button from '@material-ui/core/Button';
-import logo from './logo.svg';
+import * as React from "react";
+import "./App.css";
+import { Header } from "./ui/base/header/Header";
+import { ModalStore } from "./stores/ModalStore";
+import { AuthModal }  from "./ui/base/modal/AuthModal"
 
 function App() {
+  const authModalStore = new ModalStore();
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Button variant="contained" color="primary">Hello</Button>
-        <p>
-          Edit
-          <code>src/App.tsx</code>
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header
+        user={user}
+        onCreateAccount={() => {
+          authModalStore.modalOpen = true; 
+          authModalStore.modalType = "signup";
+          return;
+        }}
+        onLogin={() => {
+          toggleSignInModal(!signInModal);
+          return;
+        }}
+        onLogout={() => {
+          setUser(null);
+        }}
+      />
+      <AuthModal store=authModalStore 
     </div>
   );
 }
