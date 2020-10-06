@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { observer } from "mobx-react";
 import { action } from "mobx";
 
@@ -9,9 +9,9 @@ import SignInForm from "../signInForm/SignInForm";
 import SignUpStore from "../signUpForm/SignUpStore";
 import SignUpForm from "../signUpForm/SignUpForm";
 import { AuthConsumer } from "../../authContext/AuthContext";
-import "./header.css";
+// import "./header.css";
 
-export const Header = observer(() => {
+const Header = observer(() => {
   let signInStore = new SignInStore();
   const openSignInForm = action(() => {
     signInStore.open = true;
