@@ -25,3 +25,7 @@ Run the backend with `flask run`.
    1. Run `flask db migrate`, which outputs something like `Generating <projectDir>\backend\migrations\versions\3549dc4d94e8_.py`
    2. Inspect the contents of the file and confirm the commands make sense based on the changes you made. If not, manually modify them.
    3. Run `flask db upgrade`
+3. To locally smoke test an api endpoint, ideally use the app's frontend. But if it's not yet built/hooked up:
+   1. Use the Swagger UI available at http://localhost:5000
+   2. Use [Postman](https://www.postman.com/downloads/)
+   3. Use `curl`
