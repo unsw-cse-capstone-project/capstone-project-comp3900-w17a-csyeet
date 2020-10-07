@@ -1,62 +1,10 @@
 import * as React from "react";
 import { BidPriceState } from "../ui/base/bid_price/BidPrice";
-import {
-  makeStyles,
-  Theme,
-  createStyles,
-  Button,
-  Typography,
-  Grid,
-  Hidden,
-} from "@material-ui/core";
+import { Button, Typography, Grid, Hidden } from "@material-ui/core";
 import { Countdown } from "../ui/base/countdown/Countdown";
 import { ArrowBackIos } from "@material-ui/icons";
 import classNames from "classnames";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    page: {
-      padding: theme.spacing(2, "15%", 0, "15%"),
-      display: "flex",
-      flexDirection: "column",
-    },
-    backButton: {
-      width: "fit-content",
-    },
-    streetAddress: {
-      textTransform: "capitalize",
-      marginTop: theme.spacing(2),
-    },
-    secondaryAddress: {
-      textTransform: "capitalize",
-      color: theme.palette.grey[500],
-    },
-    auctionTime: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: theme.spacing(3, 0, 5, 0),
-    },
-    auctionText: {
-      marginBottom: theme.spacing(1),
-      color: theme.palette.grey[700],
-    },
-    mainImage: {
-      width: "100%",
-      height: "100%",
-      backgroundPosition: "center",
-      backgroundSize: "cover",
-    },
-    biddingInfo: {
-      marginTop: theme.spacing(3),
-    },
-    auctionClosed: {
-      color: theme.palette.error.main,
-      padding: theme.spacing(3, 0, 3, 0),
-    },
-  })
-);
+import { auctionPageStyle } from "./AuctionPage.css";
 
 export type Address = {
   streetAddress: string;
@@ -86,7 +34,7 @@ export const AuctionPage = ({
   BiddersList: React.ComponentType;
 }) => {
   const { streetAddress, suburb, state, postcode } = address;
-  const classes = useStyles();
+  const classes = auctionPageStyle();
   const isAuctionClosed = auctionDate.getTime() - new Date().getTime() <= 0;
   return (
     <div className={classes.page}>

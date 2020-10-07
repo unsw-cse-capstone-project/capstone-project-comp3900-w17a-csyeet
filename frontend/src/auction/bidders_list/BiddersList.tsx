@@ -1,35 +1,7 @@
 import * as React from "react";
 import { BidderTag } from "../../ui/base/bidder_tag/BidderTag";
-import {
-  createStyles,
-  makeStyles,
-  Theme,
-  Typography,
-  Divider,
-} from "@material-ui/core";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    bidderContainer: {
-      display: "flex",
-      justifyContent: "space-between",
-      margin: theme.spacing(2, 0),
-    },
-    bidTime: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "flex-end",
-    },
-    youLabel: {
-      color: theme.palette.info.main,
-    },
-    divider: {
-      border: theme.palette.grey[700] + " solid 1px ",
-      backgroundColor: theme.palette.grey[700],
-    },
-  })
-);
+import { biddersListStyle } from "./BiddersList.css";
+import { Typography, Divider } from "@material-ui/core";
 
 export const BiddersList = ({
   bidders,
@@ -38,7 +10,7 @@ export const BiddersList = ({
   bidders: number[];
   currentUser?: number;
 }) => {
-  const classes = useStyles();
+  const classes = biddersListStyle();
   return (
     <div>
       <Typography variant="h5">Bidders</Typography>
