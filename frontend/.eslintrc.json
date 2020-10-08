@@ -4,8 +4,7 @@
         "es2020": true
     },
     "extends": [
-        "plugin:react/recommended",
-        "airbnb"
+        "plugin:react/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -20,6 +19,9 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
+        "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+        "import/prefer-default-export": "off",
+        "import/extensions": "off",
+        "react/destructuring-assignment": "off"
     }
 }
