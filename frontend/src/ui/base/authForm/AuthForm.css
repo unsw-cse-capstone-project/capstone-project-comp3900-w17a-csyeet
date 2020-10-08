@@ -1,0 +1,22 @@
+.formContainer {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.submitButton {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  margin-top: 20px;
+  flex: 1;
+}
+
+h1 {
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 1;
+  margin: 6px 0 6px 10px;
+  display: inline-block;
+  vertical-align: top;
+}

@@ -1,0 +1,11 @@
+.logoSmall {
+  height: 55px;
+  width: 120px;
+  vertical-align: top;
+  flex: 1;
+}
+
+.logoLarge {
+  height: 150px;
+  width: 200px;
+}
