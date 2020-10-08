@@ -1,20 +1,13 @@
-import { observable, action } from "mobx";
+import { observable, makeObservable } from "mobx";
 type AuthType = "signup" | "signin" | null;
 
-export class ModalStore {
+class ModalStore {
   @observable
   modalOpen: boolean = false;
 
-  @observable
-  modalType: AuthType = null;
-
-  @action
-  toggleModal = () => {
-    this.modalOpen = !this.modalOpen;
-  };
-
-  @action
-  setType = (type: AuthType) => {
-    this.modalType = type;
-  };
+  constructor() {
+    makeObservable(this);
+  }
 }
+
+export default ModalStore;
