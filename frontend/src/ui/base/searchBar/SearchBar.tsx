@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { IconButton, Paper, TextField, Button } from "@material-ui/core";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+<<<<<<< HEAD
 import SearchStore from "./SearchStore";
+=======
+import SearchStore from "../../../stores/SearchStore";
+>>>>>>> Figuring out mobx wip
 import { observer } from "mobx-react";
 import { action } from "mobx";
 

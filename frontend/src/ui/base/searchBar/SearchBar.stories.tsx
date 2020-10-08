@@ -1,7 +1,11 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import { SearchBar, SearchBarProps } from "./SearchBar";
+<<<<<<< HEAD
 import SearchStore from "./SearchStore";
+=======
+import SearchStore from "../../../stores/SearchStore";
+>>>>>>> Figuring out mobx wip
 
 export default {
   title: "Search Bar",
