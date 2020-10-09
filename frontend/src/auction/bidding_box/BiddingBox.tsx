@@ -8,9 +8,6 @@ import {
   InputLabel,
   OutlinedInput,
   Button,
-  makeStyles,
-  Theme,
-  createStyles,
 } from "@material-ui/core";
 import {
   BidPriceWithBidderTag,
@@ -18,47 +15,18 @@ import {
   BidPriceState,
 } from "../../ui/base/bid_price/BidPrice";
 import { observer } from "mobx-react";
-import NumberFormat from "react-number-format";
+import { createPriceInput } from "../../ui/base/input/PriceFormat";
+import { BiddingBoxStyle } from "./BiddingBox.css";
 
 export class BiddingBoxStore {
   @observable
   biddingPrice: number;
 
-  @observable
-  isError: boolean = false;
+  constructor() {
+    console.log("cosntructing");
+    this.biddingPrice = 0;
+  }
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    bidderBox: {
-      display: "flex",
-      width: "100%",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: theme.spacing(6, 0),
-      minHeight: theme.spacing(20),
-    },
-    tagContainer: {
-      width: "50%",
-    },
-    inputContainer: {
-      display: "flex",
-      width: "70%",
-      marginTop: theme.spacing(2),
-    },
-    placeBidButton: {
-      minWidth: "min-content",
-      whiteSpace: "nowrap",
-      marginLeft: theme.spacing(2),
-    },
-  })
-);
-type NumberFormatCustomProps = {
-  inputRef: (instance: NumberFormat | null) => void;
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-};
 
 export const BiddingBox = observer(
   ({
@@ -80,30 +48,14 @@ export const BiddingBox = observer(
     onPlaceBid(price: number): void;
     style?: React.CSSProperties;
   }) => {
-    const classes = useStyles();
-    const onChange = action((event: React.ChangeEvent<HTMLInputElement>) => {
-      store.biddingPrice = parseInt(event.target.value);
+    const classes = BiddingBoxStyle();
+    const onChange = action((value: string) => {
+      store.biddingPrice = parseInt(value);
     });
-    const InputComponent = (props: NumberFormatCustomProps) => {
-      const { inputRef, onChange, ...other } = props;
-      return (
-        <NumberFormat
-          {...other}
-          getInputRef={inputRef}
-          onValueChange={(values) => {
-            onChange({
-              target: {
-                name: props.name,
-                value: values.value,
-              },
-            });
-          }}
-          thousandSeparator
-          decimalScale={0}
-          isNumericString
-        />
-      );
-    };
+    const InputComponent = createPriceInput({
+      value: store.biddingPrice,
+      onChange,
+    });
     const onClick = () => {
       onPlaceBid(store.biddingPrice);
     };
@@ -130,9 +82,7 @@ export const BiddingBox = observer(
                 </InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-amount"
-                  value={store.biddingPrice}
                   type=""
-                  onChange={onChange}
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }

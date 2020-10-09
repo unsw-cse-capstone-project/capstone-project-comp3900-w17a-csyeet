@@ -1,12 +1,13 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react/types-6-0";
-import { AuctionPage, Address } from "./AuctionPage";
+import { AuctionPage } from "./AuctionPage";
 import mainImage from "../images/propertyMain.jpg";
 import { BiddingBox, BiddingBoxStore } from "./bidding_box/BiddingBox";
 import { action } from "@storybook/addon-actions";
 import { BidderTag } from "../ui/base/bidder_tag/BidderTag";
 import { Bid, BidsList } from "./bids_list/BidsList";
 import { BiddersList } from "./bidders_list/BiddersList";
+import { createFakeAddress } from "../ui/util/helper";
 
 export default {
   title: "auction/auctionPage",
@@ -42,13 +43,6 @@ for (let i = 0; i < 3; i++) {
     time: new Date(),
   });
 }
-
-const createFakeAddress = (): Address => ({
-  streetAddress: "111/544 pacific highway",
-  suburb: "chatswood",
-  state: "nsw",
-  postcode: 2067,
-});
 
 const Template: Story<{
   auctionDate: string;
