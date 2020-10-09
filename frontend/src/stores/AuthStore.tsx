@@ -1,5 +1,7 @@
 import { observable, action, makeObservable } from "mobx";
-type FormErrorCheck = {
+
+export type AuthFormType = "signin" | "signup";
+type FormErrors = {
   usernmEmpty: boolean;
   phoneNoEmpty: boolean;
   passwdEmpty: boolean;
@@ -8,6 +10,12 @@ type FormErrorCheck = {
 };
 
 class AuthStore {
+  @observable
+  formOpen: boolean = false;
+
+  @observable
+  formType: AuthFormType = "signup";
+
   @observable
   usernm: string = "";
 
@@ -23,52 +31,42 @@ class AuthStore {
   @observable
   passwdVerify: string = "";
 
-  @observable
-  formErrors: FormErrorCheck = {
-    usernmEmpty: false,
-    phoneNoEmpty: false,
-    passwdEmpty: false,
-    emailNotValid: false,
-    passwordNotMatch: false,
-  };
-
   constructor() {
     makeObservable(this);
   }
 
-  @action
-  userSignIn = (usernm: string, passwd: string) => {
-    console.log(usernm, " has signed in.");
-  };
+  // (Jenn) TODO: Implement Form Error Checking
+  // @observable
+  // formErrors: FormErrors = {
+  //   usernmEmpty: false,
+  //   phoneNoEmpty: false,
+  //   passwdEmpty: false,
+  //   emailNotValid: false,
+  //   passwordNotMatch: false,
+  // };
 
-  @action
-  userSignUp = (
-    usernm: string,
-    email: string,
-    phoneNo: string,
-    passwd: string,
-    passwdVerify: string
-  ) => {
-    const tmp = this.formErrors;
-    tmp.usernmEmpty = usernm.length == 0;
-    tmp.phoneNoEmpty = phoneNo.length == 0;
-    tmp.emailNotValid = !email.includes("@");
-    tmp.passwdEmpty = passwd.length == 0;
-    tmp.passwordNotMatch = passwd == passwdVerify;
+  // @action
+  // formCheck = () => {
+  //   const tmp = this.formErrors;
+  //   tmp.usernmEmpty = this.usernm.length == 0;
+  //   tmp.phoneNoEmpty = this.phoneNo.length == 0;
+  //   tmp.emailNotValid = !this.email.includes("@");
+  //   tmp.passwdEmpty = this.passwd.length == 0;
+  //   tmp.passwordNotMatch = this.passwd == this.passwdVerify;
 
-    // has to all equal false to pass checks
-    if (
-      tmp.usernmEmpty ||
-      tmp.phoneNoEmpty ||
-      tmp.emailNotValid ||
-      tmp.passwdEmpty ||
-      tmp.passwordNotMatch
-    ) {
-      this.formErrors = tmp;
-    } else {
-      console.log(usernm, " has signed up.");
-    }
-  };
+  //   // has to all equal false to pass checks
+  //   if (
+  //     tmp.usernmEmpty ||
+  //     tmp.phoneNoEmpty ||
+  //     tmp.emailNotValid ||
+  //     tmp.passwdEmpty ||
+  //     tmp.passwordNotMatch
+  //   ) {
+  //     this.formErrors = tmp;
+  //     return false;
+  //   }
+  //   return true;
+  // };
 }
 
 export default AuthStore;
