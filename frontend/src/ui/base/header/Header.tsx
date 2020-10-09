@@ -1,7 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { action } from "mobx";
-
 import Button from "@material-ui/core/Button";
 import Logo from "../logo/Logo";
 import SignInStore from "../signInForm/SignInStore";
@@ -60,5 +59,3 @@ const Header = observer(() => {
     </AuthConsumer>
   );
 });
-
-export default Header;
