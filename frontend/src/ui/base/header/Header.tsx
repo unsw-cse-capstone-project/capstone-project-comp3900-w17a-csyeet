@@ -5,75 +5,62 @@ import { action } from "mobx";
 import Button from "@material-ui/core/Button";
 import Logo from "../logo/Logo";
 import UserStore from "../../../stores/UserStore";
-import { AuthForm, AuthFormType } from "../authForm/AuthForm";
-import { Modal } from "@material-ui/core";
+import AuthForm from "../authForm/AuthForm";
+import AuthStore, { AuthFormType } from "../../../stores/AuthStore";
 import "./header.css";
 
-export interface HeaderProps {
+export const Header: React.FC<{
   userStore: UserStore;
-  search?: boolean;
-}
+  // (Jenn) TODO: add searchStore
+}> = observer(({ userStore }) => {
+  let authStore = new AuthStore();
+  const openForm = action((type: AuthFormType) => {
+    authStore.formType = type;
+    authStore.formOpen = true;
+  });
 
-export const Header: React.FC<HeaderProps> = observer(
-  ({ userStore, search = false }) => {
-    // const [modalState, setModalState] = useState<boolean>(true);
-    const openModal = action((formType: AuthFormType) => {
-      console.log("Opening modal...");
-      return (
-        <div>
-          Hellooooo
-          {/* <Modal
-            open={modalState}
-            onClose={() => setModalState(false)}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-          >
-            <AuthForm type={formType} onSubmit={userStore.submitForm} />
-          </Modal> */}
-        </div>
-      );
-    });
-
-    return (
+  return (
+    <>
       <header>
-        <div className="headerContainer">
-          {search ? <div></div> : <Logo size="small" />}
-          <div>
-            {userStore.usernm == null ? (
-              <Button
-                size="small"
-                variant="outlined"
-                onClick={action(() => {
-                  userStore.userSignOut();
-                })}
-              >
-                Sign Out
-              </Button>
-            ) : (
-              <>
-                {/* <SearchBar size="mini" onSearch={onSearch} */}
-                {/* <Button size="small" variant="contained" color="secondary">
-              Add a listing
-              </Button> */}
-                {/* <SearchBar size="mini" searchStore={searchStore} /> */}
-                <Button size="small" onClick={() => openModal("signin")}>
-                  Log In
-                </Button>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => openModal("signup")}
-                >
-                  Sign Up
-                </Button>
-              </>
-            )}
-          </div>
-        </div>
+        <Logo size="small" />
+        {userStore.usernm == null ? (
+          <>
+            <Button
+              size="small"
+              onClick={() => {
+                openForm("signin");
+              }}
+            >
+              Log In
+            </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              color="primary"
+              onClick={() => {
+                openForm("signup");
+              }}
+            >
+              Sign Up
+            </Button>
+          </>
+        ) : (
+          <Button
+            size="small"
+            variant="outlined"
+            color="primary"
+            onClick={userStore.userSignOut}
+          >
+            Sign out
+          </Button>
+        )}
       </header>
-    );
-  }
-);
+      <AuthForm
+        onSubmit={() => console.log("Submitted form")}
+        store={authStore}
+      />
+    </>
+  );
+});
 
 export default Header;
