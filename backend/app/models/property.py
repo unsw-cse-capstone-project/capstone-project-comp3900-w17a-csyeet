@@ -25,3 +25,7 @@ class Property(db.Model):
     auction_end = db.Column(db.DateTime, nullable=False)
     description = db.Column(db.Text)
     features = db.Column(db.Text)
+
+    def __repr__(self):
+        return f"<Property: {self.title}>"
+        

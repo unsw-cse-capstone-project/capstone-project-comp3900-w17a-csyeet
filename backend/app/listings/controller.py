@@ -30,3 +30,4 @@ class Listings(Resource):
             )
         )
         return f"Saved {request.json['title']}"
+        
