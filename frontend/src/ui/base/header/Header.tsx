@@ -4,62 +4,60 @@ import { action } from "mobx";
 
 import Button from "@material-ui/core/Button";
 import Logo from "../logo/Logo";
-import UserStore from "../../../stores/UserStore";
-import AuthForm from "../authForm/AuthForm";
-import AuthStore, { AuthFormType } from "../../../stores/AuthStore";
+import SignInStore from "../signInForm/SignInStore";
+import SignInForm from "../signInForm/SignInForm";
+import SignUpStore from "../signUpForm/SignUpStore";
+import SignUpForm from "../signUpForm/SignUpForm";
+import { AuthConsumer } from "../../authContext/AuthContext";
 import "./header.css";
 
-export const Header: React.FC<{
-  userStore: UserStore;
-  // (Jenn) TODO: add searchStore
-}> = observer(({ userStore }) => {
-  let authStore = new AuthStore();
-  const openForm = action((type: AuthFormType) => {
-    authStore.formType = type;
-    authStore.formOpen = true;
+export const Header = observer(() => {
+  let signInStore = new SignInStore();
+  const openSignInForm = action(() => {
+    signInStore.open = true;
+  });
+
+  let signUpStore = new SignUpStore();
+  const openSignUpForm = action(() => {
+    signUpStore.open = true;
   });
 
   return (
-    <>
-      <header>
-        <Logo size="small" />
-        {userStore.usernm == null ? (
-          <>
-            <Button
-              size="small"
-              onClick={() => {
-                openForm("signin");
-              }}
-            >
-              Log In
-            </Button>
-            <Button
-              size="small"
-              variant="outlined"
-              color="primary"
-              onClick={() => {
-                openForm("signup");
-              }}
-            >
-              Sign Up
-            </Button>
-          </>
-        ) : (
-          <Button
-            size="small"
-            variant="outlined"
-            color="primary"
-            onClick={userStore.userSignOut}
-          >
-            Sign out
-          </Button>
-        )}
-      </header>
-      <AuthForm
-        onSubmit={() => console.log("Submitted form")}
-        store={authStore}
-      />
-    </>
+    <AuthConsumer>
+      {({ isAuth, userSignIn, userSignOut, userSignUp }) => (
+        <>
+          <header>
+            <Logo size="small" />
+            {isAuth ? (
+              <>
+                <Button size="small" onClick={openSignInForm}>
+                  Log In
+                </Button>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="primary"
+                  onClick={openSignUpForm}
+                >
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <Button
+                size="small"
+                variant="outlined"
+                color="primary"
+                onClick={userSignOut}
+              >
+                Sign out
+              </Button>
+            )}
+          </header>
+          <SignInForm store={signInStore} onSubmit={userSignIn} />
+          <SignUpForm store={signUpStore} onSubmit={userSignUp} />
+        </>
+      )}
+    </AuthConsumer>
   );
 });
 
