@@ -13,7 +13,7 @@ class Listing(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False,)
     type = db.Column(db.Enum(ListingType), nullable=False)
     title = db.Column(db.String(), nullable=False)
-    description = db.Column(db.Text)
+    description = db.Column(db.Text, nullable=False)
     street = db.Column(db.String(), nullable=False)
     suburb = db.Column(db.String(), nullable=False)
     postcode = db.Column(db.String(), nullable=False)
@@ -42,5 +42,5 @@ class Listing(db.Model):
     has_gym = db.Column(db.Boolean, default=False, nullable=False)
 
     def __repr__(self):
-        return f"<Property: {self.title}>"
+        return f"<Listing: {self.title}>"
         
