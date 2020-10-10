@@ -16,5 +16,5 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 # import the sub-modules after setting up, since they need the above setup
-import backend.app.auth  # nopep8
-import backend.app.listings
+import backend.app.auth  
+import backend.app.listings # nopep8
