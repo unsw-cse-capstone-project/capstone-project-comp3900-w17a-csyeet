@@ -5,7 +5,10 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+<<<<<<< HEAD
     "@storybook/addon-knobs": "^6.0.26",
+=======
+>>>>>>> 15de1c2d11788a30846847d6d31937fec875852a
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
