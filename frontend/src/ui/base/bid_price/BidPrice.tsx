@@ -53,7 +53,7 @@ export const BidPrice = ({
   state: BidPriceState;
   className?: string;
   style?: React.CSSProperties;
-  textType?: string;
+  textType?: "h4" | "h1" | "h2" | "h3" | "h5" | "h6";
 }) => {
   const classes = useStyles();
   const formatter = new Intl.NumberFormat("en-US", {

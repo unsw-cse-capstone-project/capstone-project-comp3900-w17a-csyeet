@@ -25,19 +25,19 @@ import { ArrowBackIos } from "@material-ui/icons";
 // (Teresa) Intentionally left uninitialised
 export class BidderRegistrationStore {
   @observable
-  initialBid: number;
+  initialBid: number = 0;
 
   @observable
-  cardNumber: string;
+  cardNumber: string = "";
 
   @observable
-  expiryDate: string;
+  expiryDate: string = "";
 
   @observable
-  ccv: string;
+  ccv: string = "";
 
   @observable
-  agreeToTerms: boolean;
+  agreeToTerms: boolean = false;
 
   constructor() {
     makeObservable(this);
