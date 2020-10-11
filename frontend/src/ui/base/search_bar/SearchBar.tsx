@@ -3,11 +3,11 @@ import { Search } from "@material-ui/icons";
 import { action } from "mobx";
 import * as React from "react";
 import { SearchBarStyles } from "./SearchBar.css";
-import { SearchBarStore, SearchBarPresenter } from "./SearchBarPresenter";
+import { SearchStore } from "../../../search/SearchPresenter";
 import { observer } from "mobx-react";
 
 export const SearchBar = observer(
-  ({ store, onSubmit }: { store: SearchBarStore; onSubmit(): void }) => {
+  ({ store, onSubmit }: { store: SearchStore; onSubmit(): void }) => {
     const classes = SearchBarStyles();
     const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -32,7 +32,7 @@ export const SearchBar = observer(
   }
 );
 
-const SearchInputWrapper = ({ store }: { store: SearchBarStore }) => {
+const SearchInputWrapper = ({ store }: { store: SearchStore }) => {
   const [value, setValue] = React.useState(store.input);
   const classes = SearchBarStyles();
   const onChange = action((event: React.ChangeEvent<HTMLInputElement>) => {

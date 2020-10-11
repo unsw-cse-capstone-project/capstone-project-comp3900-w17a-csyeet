@@ -11,8 +11,16 @@ import "slick-carousel/slick/slick-theme.css";
 import "./test.css";
 import { AuctionTag } from "../auction_tag/AuctionTag";
 import { DriveEta, LocalHotel, Bathtub } from "@material-ui/icons";
+import { RectShape, TextBlock } from "react-placeholder/lib/placeholders";
+import ReactPlaceholder from "react-placeholder/lib/ReactPlaceholder";
+import "react-placeholder/lib/reactPlaceholder.css";
+import classNames from "classnames";
 
-export const ListingResultCard = (props: { listing: Listing }) => {
+export const ListingResultCard = (props: {
+  listing: Listing;
+  style?: React.CSSProperties;
+  className?: string;
+}) => {
   const classes = ListingResultCardStyles();
   const settings = {
     infinite: true,
@@ -34,7 +42,11 @@ export const ListingResultCard = (props: { listing: Listing }) => {
     description,
   } = props.listing;
   return (
-    <Card className={classes.card}>
+    <Card
+      style={props.style}
+      className={classNames(classes.card, props.className)}
+      elevation={4}
+    >
       <div className={classes.sliderContainer}>
         <Slider {...settings}>
           {props.listing.images.map((image, i) => (
@@ -84,6 +96,41 @@ export const ListingResultCard = (props: { listing: Listing }) => {
             View Auction
           </Button>
         )}
+      </CardContent>
+    </Card>
+  );
+};
+
+export const ListingResultCardLoading = (props: {
+  style?: React.CSSProperties;
+  className?: string;
+}) => {
+  const classes = ListingResultCardStyles();
+  return (
+    <Card
+      className={classNames(classes.card, props.className)}
+      style={props.style}
+    >
+      <ReactPlaceholder
+        showLoadingAnimation={true}
+        type="rect"
+        color="#E0E0E0"
+        ready={false}
+        style={{ width: "100%", height: "300px" }}
+        // eslint-disable-next-line react/no-children-prop
+        children={null}
+      />
+      <CardContent style={{ width: "100%", boxSizing: "border-box" }}>
+        <ReactPlaceholder
+          showLoadingAnimation={true}
+          type="text"
+          color="#E0E0E0"
+          ready={false}
+          style={{ width: "100%" }}
+          // eslint-disable-next-line react/no-children-prop
+          children={null}
+          rows={4}
+        />
       </CardContent>
     </Card>
   );
