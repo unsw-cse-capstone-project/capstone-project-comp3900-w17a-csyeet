@@ -25,20 +25,11 @@ const Header = observer(() => {
     <AuthConsumer>
       {({ isAuth, userSignIn, userSignOut, userSignUp }) => (
         <>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
+          <header>
             <Logo size="small" />
-            {!isAuth ? (
+            {isAuth ? (
               <div>
-                <Button
-                  size="small"
-                  style={{ margin: "15px" }}
-                  onClick={openSignInForm}
-                >
+                <Button size="small" onClick={openSignInForm}>
                   Log In
                 </Button>
                 <Button
@@ -62,7 +53,7 @@ const Header = observer(() => {
                 Sign out
               </Button>
             )}
-          </div>
+          </header>
           <SignInForm store={signInStore} onSubmit={userSignIn} />
           <SignUpForm store={signUpStore} onSubmit={userSignUp} />
         </>

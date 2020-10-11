@@ -1,4 +1,4 @@
-import { action, observable } from "mobx";
+import { action } from "mobx";
 import React from "react";
 export type AuthContextType = {
   isAuth: boolean;
@@ -49,5 +49,4 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = (props) => {
     </AuthContext.Provider>
   );
 };
-
 export const AuthConsumer = AuthContext.Consumer;

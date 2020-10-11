@@ -4,7 +4,11 @@ import SignUpForm, { SignUpFormProps } from "./SignUpForm";
 import SignUpStore from "./SignUpStore";
 
 export default {
+<<<<<<< HEAD
   title: "Authentication/Sign Up",
+=======
+  title: "Sign Up Form",
+>>>>>>> 29986f12a4570f6e2909ece56c9e34c3b742b32d
   component: SignUpForm,
 } as Meta;
 

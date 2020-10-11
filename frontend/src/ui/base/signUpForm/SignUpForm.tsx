@@ -90,9 +90,9 @@ const SignUpForm: React.FC<SignUpFormProps> = observer(
     const canProceedStep0 = computed(
       () =>
         store.usernm.length > 0 &&
-        // store.email.includes("@")
-        store.passwd.length > 0
-      // store.passwd == store.passwdVerify
+        store.email.includes("@") &&
+        store.passwd.length > 0 && 
+        store.passwd == store.passwdVerify
     );
 
     // const canProceedStep0 = () => {

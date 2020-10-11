@@ -1,13 +1,13 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { action, computed } from "mobx";
+import { action } from "mobx";
 import { Button, InputAdornment, Typography } from "@material-ui/core";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import VpnKeyOutlinedIcon from "@material-ui/icons/VpnKeyOutlined";
 import SignInStore from "./SignInStore";
 import SuccessView from "./SuccessView";
-import ModalWrapper from "../modalWrapper/ModalWrapper";
 import TextFieldWrapper from "../textFieldWrapper/TextFieldWrapper";
+import ModalWrapper from "../modalWrapper/ModalWrapper";
 // import SignInFormStyles from "./SignInForm.css";
 
 export interface SignInFormProps {
@@ -26,6 +26,7 @@ const SignInForm: React.FC<SignInFormProps> = observer(
       store.success = false;
     });
 
+    // (Jenn) Temporary Function
     const setSuccess = action(() => {
       store.success = true;
     });
