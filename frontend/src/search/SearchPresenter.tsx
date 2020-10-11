@@ -13,8 +13,9 @@ export class SearchStore {
   @observable
   searchState?: "loading" | "loaded" | "error";
 
-  constructor() {
+  constructor(query?: string) {
     makeObservable(this);
+    this.input = query ? query : "";
   }
 }
 
