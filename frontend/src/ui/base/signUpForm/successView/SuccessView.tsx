@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 
-const AuthSuccessView = () => {
+const SuccessView = () => {
   return (
     <>
       <Typography variant="h3" align="center">
@@ -12,4 +12,4 @@ const AuthSuccessView = () => {
   );
 };
 
-export default AuthSuccessView;
+export default SuccessView;

@@ -1,16 +1,20 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { action } from "mobx";
-import { Button, Typography, InputAdornment } from "@material-ui/core";
-import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
-import VpnKeyOutlinedIcon from "@material-ui/icons/VpnKeyOutlined";
-import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
-import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
+import { action, computed } from "mobx";
+import {
+  Button,
+  Typography,
+  StepLabel,
+  Stepper,
+  Step,
+} from "@material-ui/core";
+
 import SignUpStore from "./SignUpStore";
-import AuthSuccessView from "../authSuccessView/AuthSuccessPage";
-import TextFieldWrapper from "../textFieldWrapper/TextFieldWrapper";
+import SuccessView from "./successView/SuccessView";
 import ModalWrapper from "../modalWrapper/ModalWrapper";
-// import SignUpFormStyles from "./SignUpForm.css";
+import UserDetailForm from "./userDetailForm/UserDetailForm";
+import ContactDetailForm from "./contactDetailForm/ContactDetailForm";
+import SignUpStyles from "./SignUpForm.css";
 
 export interface SignUpFormProps {
   onSubmit: (
@@ -25,12 +29,9 @@ export interface SignUpFormProps {
 
 const SignUpForm: React.FC<SignUpFormProps> = observer(
   ({ onSubmit, store }) => {
-    const onChange = action((value: string, name: string) => {
-      (store as any)[name] = value;
-    });
-
     const closeModal = action(() => {
       store.open = false;
+      store.success = false;
     });
 
     // Temporary Function
@@ -38,83 +39,119 @@ const SignUpForm: React.FC<SignUpFormProps> = observer(
       store.success = true;
     });
 
+    const getSteps = () => {
+      return ["User Details", "Contact Details", "All done!"];
+    };
+
+    const getStepContent = (stepIndex: number) => {
+      switch (stepIndex) {
+        case 0:
+          return <UserDetailForm store={store} />;
+        case 1:
+          return <ContactDetailForm store={store} />;
+        case 2:
+          return <SuccessView />;
+        default:
+          return "404 You've fallen into outer space!";
+      }
+    };
+
+    const disableNext = () => {
+      switch (activeStep) {
+        case 0:
+          return !canProceedStep0.get();
+        case 1:
+          return !canProceedStep1.get();
+        default:
+          return false;
+      }
+    };
+
+    const handleNext = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+
+    const handleBack = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+
+    const handleConfirm = () => {
+      setSuccess();
+      onSubmit(
+        store.usernm,
+        store.email,
+        store.phoneNo,
+        store.passwd,
+        store.passwdVerify
+      );
+      closeModal();
+    };
+
+    const canProceedStep0 = computed(
+      () =>
+        store.usernm.length > 0 &&
+        // store.email.includes("@")
+        store.passwd.length > 0
+      // store.passwd == store.passwdVerify
+    );
+
+    // const canProceedStep0 = () => {
+    //   return true;
+    // };
+    const canProceedStep1 = computed(
+      () =>
+        store.phoneNo.length == 10 &&
+        store.addressLine.length > 0 &&
+        store.suburb.length > 0 &&
+        store.postcode.length > 0 &&
+        store.state != "none"
+    );
+
+    const canProceedStep2 = computed(() => store.success == true);
+
+    const steps = getSteps();
+    const classes = SignUpStyles();
+    const [activeStep, setActiveStep] = React.useState(0);
     return (
       <ModalWrapper open={store.open} onClose={closeModal}>
-        <div className="formContainer">
-          {store.success ? (
-            <AuthSuccessView />
-          ) : (
-            <>
-              <Typography
-                variant="h3"
-                align="center"
-                style={{ margin: "15px", marginBottom: "35px" }}
-              >
-                Sign Up
-              </Typography>
-
-              <TextFieldWrapper
-                field="usernm"
-                label="Full Name"
-                onChange={onChange}
-                adornment={
-                  <InputAdornment position="end">
-                    <PersonOutlineOutlinedIcon />
-                  </InputAdornment>
-                }
-              />
-              <TextFieldWrapper
-                field="email"
-                label="Email"
-                onChange={onChange}
-                adornment={
-                  <InputAdornment position="end">
-                    <AlternateEmailIcon />
-                  </InputAdornment>
-                }
-              />
-              <TextFieldWrapper
-                field="phoneNo"
-                label="Phone Number"
-                onChange={onChange}
-                adornment={
-                  <InputAdornment position="end">
-                    <PhoneAndroidOutlinedIcon />
-                  </InputAdornment>
-                }
-              />
-              <TextFieldWrapper
-                field="passwd"
-                label="Password"
-                onChange={onChange}
-                adornment={
-                  <InputAdornment position="end">
-                    <VpnKeyOutlinedIcon />
-                  </InputAdornment>
-                }
-              />
-              <TextFieldWrapper
-                field="passwdVerify"
-                label="Confirm Password"
-                onChange={onChange}
-              />
+        <Typography
+          variant="h3"
+          align="center"
+          style={{ margin: "15px", marginBottom: "35px" }}
+        >
+          Sign Up
+        </Typography>
+        <Stepper activeStep={activeStep} alternativeLabel>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        {activeStep < steps.length && (
+          <div className={classes.body}>
+            {getStepContent(activeStep)}
+            <div>
               <Button
-                variant="outlined"
-                color="primary"
-                fullWidth
-                style={{ marginTop: "10px" }}
-                onClick={() => {
-                  setSuccess(); // (Jenn) Run onSubmit(); instead of setting success to true.
-                  setTimeout(() => {
-                    closeModal();
-                  }, 800);
-                }}
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                className={classes.backButton}
               >
-                Sign Up
+                Back
               </Button>
-            </>
-          )}
-        </div>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={
+                  activeStep === steps.length - 1 ? handleConfirm : handleNext
+                }
+                disabled={disableNext()}
+              >
+                {activeStep === steps.length - 1 ? "Sign Up" : "Next"}
+              </Button>
+            </div>
+          </div>
+        )}
       </ModalWrapper>
     );
   }

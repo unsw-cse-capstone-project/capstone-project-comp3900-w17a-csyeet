@@ -1,10 +1,17 @@
 import React from "react";
-import { Story, Meta } from "@storybook/react/types-6-0";
+import { Meta } from "@storybook/react/types-6-0";
 import Header from "./Header";
+import { AuthProvider } from "../../authContext/AuthContext";
 
 export default {
-  title: "Header",
+  title: "ui/base/Header",
   component: Header,
 } as Meta;
 
-const Template: Story<{}> = () => <Header />;
+export const Overview = () => {
+  return (
+    <AuthProvider>
+      <Header />
+    </AuthProvider>
+  );
+};

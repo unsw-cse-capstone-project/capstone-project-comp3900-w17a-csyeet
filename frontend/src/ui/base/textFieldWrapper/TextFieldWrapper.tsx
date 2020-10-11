@@ -1,6 +1,6 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-interface TextFieldWrapperProps {
+export interface TextFieldWrapperProps {
   field: string;
   label: string;
   onChange: (value: string, field: string) => void;
@@ -14,7 +14,7 @@ const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
   adornment = null,
 }) => {
   const [value, setValue] = React.useState("");
-  const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value, field);
     setValue(e.target.value);
   };
@@ -25,7 +25,7 @@ const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
         variant="outlined"
         value={value}
         label={label}
-        onChange={onValueChange}
+        onChange={handleChange}
         InputProps={{
           endAdornment: adornment,
         }}

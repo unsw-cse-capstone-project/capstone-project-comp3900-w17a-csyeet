@@ -4,7 +4,7 @@ import SignInForm, { SignInFormProps } from "./SignInForm";
 import SignInStore from "./SignInStore";
 
 export default {
-  title: "Sign in Form",
+  title: "Authentication/Sign in",
   component: SignInForm,
 } as Meta;
 
@@ -14,6 +14,6 @@ let store = new SignInStore();
 const tempSubmit = () => console.log("Submitted sign in form.");
 export const Overview = Template.bind({});
 Overview.args = {
-  store: store,
   onSubmit: tempSubmit,
+  store: store,
 };

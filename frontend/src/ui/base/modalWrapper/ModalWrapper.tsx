@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Backdrop, Fade } from "@material-ui/core";
 import ModalStyles from "./ModalWrapper.css";
 
-interface ModalWrapperProps {
+export interface ModalWrapperProps {
   open: boolean;
   onClose: () => void;
 }

@@ -25,33 +25,44 @@ const Header = observer(() => {
     <AuthConsumer>
       {({ isAuth, userSignIn, userSignOut, userSignUp }) => (
         <>
-          <header>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             <Logo size="small" />
-            {isAuth ? (
-              <>
-                <Button size="small" onClick={openSignInForm}>
+            {!isAuth ? (
+              <div>
+                <Button
+                  size="small"
+                  style={{ margin: "15px" }}
+                  onClick={openSignInForm}
+                >
                   Log In
                 </Button>
                 <Button
                   size="small"
                   variant="outlined"
                   color="primary"
+                  style={{ margin: "15px" }}
                   onClick={openSignUpForm}
                 >
                   Sign Up
                 </Button>
-              </>
+              </div>
             ) : (
               <Button
                 size="small"
                 variant="outlined"
                 color="primary"
+                style={{ margin: "15px" }}
                 onClick={userSignOut}
               >
                 Sign out
               </Button>
             )}
-          </header>
+          </div>
           <SignInForm store={signInStore} onSubmit={userSignIn} />
           <SignUpForm store={signUpStore} onSubmit={userSignUp} />
         </>
@@ -59,3 +70,5 @@ const Header = observer(() => {
     </AuthConsumer>
   );
 });
+
+export default Header;

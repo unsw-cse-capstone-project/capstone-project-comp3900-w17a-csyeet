@@ -7,7 +7,7 @@ import {
 } from "./BidderRegistration";
 
 export default {
-  title: "bidder registration/page",
+  title: "Registration/Bidder Registration",
   component: BidderRegistration,
 } as Meta;
 

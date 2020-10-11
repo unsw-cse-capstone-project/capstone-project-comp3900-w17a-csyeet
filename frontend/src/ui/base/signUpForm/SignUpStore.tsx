@@ -8,13 +8,25 @@ class SignUpStore {
   email: string = "";
 
   @observable
-  phoneNo: string = "";
-
-  @observable
   passwd: string = "";
 
   @observable
   passwdVerify: string = "";
+
+  @observable
+  phoneNo: string = "";
+
+  @observable
+  addressLine: string = "";
+
+  @observable
+  suburb: string = "";
+
+  @observable
+  state: string = "";
+
+  @observable
+  postcode: string = "";
 
   @observable
   open: boolean = false;

@@ -1,5 +1,4 @@
 import { action, observable } from "mobx";
-import { observer } from "mobx-react";
 import React from "react";
 export type AuthContextType = {
   isAuth: boolean;
@@ -28,23 +27,27 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = (props) => {
 
   const userSignUp = action(() => {
     // Setting timeout to mimic an async login
-    console.log("login");
+    console.log("sign up");
     setTimeout(() => setIsAuth(true), 1000);
   });
 
-  const userSignOut = () => setIsAuth(false);
+  const userSignOut = () => {
+    console.log("logout");
+    setTimeout(() => setIsAuth(false), 1000);
+  };
 
   return (
     <AuthContext.Provider
       value={{
-        isAuth: isAuth,
-        userSignIn: userSignIn,
-        userSignOut: userSignOut,
-        userSignUp: userSignUp,
+        isAuth,
+        userSignIn,
+        userSignOut,
+        userSignUp,
       }}
     >
       {props.children}
     </AuthContext.Provider>
   );
 };
+
 export const AuthConsumer = AuthContext.Consumer;
