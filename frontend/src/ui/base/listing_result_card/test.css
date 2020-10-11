@@ -1,0 +1,27 @@
+.slick-slider button,
+.slick-slider .slick-prev:before,
+.slick-slider .slick-next:before {
+  color: black !important;
+}
+
+.slick-next {
+  right: 10px;
+}
+
+.slick-next::after,
+.slick-prev::after {
+  content: "";
+  position: absolute;
+  top: 0.9px;
+  left: 1.5px;
+  height: 80%;
+  width: 80%;
+  background-color: white;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.slick-prev {
+  left: 10px;
+  z-index: 28937498327429;
+}
