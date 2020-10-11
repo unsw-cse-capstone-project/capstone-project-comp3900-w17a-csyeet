@@ -4,6 +4,7 @@ import {
   Theme,
   Typography,
   CircularProgress,
+  LinearProgress,
 } from "@material-ui/core";
 import { observer } from "mobx-react";
 import { action } from "mobx";
@@ -53,14 +54,15 @@ export const SearchResultsList = observer(
               action(() =>
                 store.searchResults.push(...store.searchResults.slice(0, 3))
               ),
-              4000
+              1032323233232000
             )
           }
           hasMore={true}
           loader={
-            <div style={{ padding: "30px", textAlign: "center" }}>
-              <CircularProgress />
-            </div>
+            // <div style={{ padding: "20px 0 100px 0", textAlign: "center" }}>
+            //   <LinearProgress />
+            // </div>
+            <ListingResultCardLoading className={classes.cardContainer} />
           }
           endMessage={
             <p style={{ textAlign: "center" }}>

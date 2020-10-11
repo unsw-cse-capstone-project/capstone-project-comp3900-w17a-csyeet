@@ -5,9 +5,13 @@ import { SearchResultsList } from "./search_results_list/SearchResultsList";
 import * as React from "react";
 import { SearchPage } from "./SearchPage";
 
-export const createSearchPage = () => {
-  const store = new SearchStore();
+export const createSearchPage = (query?: string) => {
+  const store = new SearchStore(query);
   const presenter = new SearchPresenter();
+
+  if (query) {
+    presenter.search(store);
+  }
 
   const onSubmit = () => {
     presenter.search(store);
