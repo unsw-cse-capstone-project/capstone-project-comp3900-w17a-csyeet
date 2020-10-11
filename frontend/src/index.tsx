@@ -84,33 +84,38 @@ const Header = observer(() => {
 const ErrorPage = () => <div>404 Page not found</div>;
 
 ReactDOM.render(
-  <div className="page">
-    <BrowserRouter>
-      <AuthProvider>
-        <Header />
-        <div className="content" id="content">
-          <Switch>
-            <Route path="/search" component={SearchPage} />
-            <ProtectedRoute
-              path="/listing/:id/register"
-              component={BidderRegistrationPage}
-            />
-            <Route path="/listing/:id/auction" component={AuctionPage} />
-            <Route path="/listing/:id" component={ViewListingPage} />
-            <ProtectedRoute path="/add" component={AddListingPage} />
-            {/* Profile Pages */}
-            <ProtectedRoute path="/profile/starred" component={StarredPage} />
-            <ProtectedRoute path="/profile/listings" component={ListingsPage} />
-            <ProtectedRoute path="/profile/details" component={DetailsPage} />
-            <ProtectedRoute path="/profile/bids" component={BidsPage} />
-            <ProtectedRoute path="/profile/about" component={AboutPage} />
-            <Route exact path="/" component={HomePage} />
-            <Route component={ErrorPage} />
-          </Switch>
-        </div>
-      </AuthProvider>
-    </BrowserRouter>
-  </div>,
+  <React.StrictMode>
+    <div className="page">
+      <BrowserRouter>
+        <AuthProvider>
+          <Header />
+          <div className="content" id="content">
+            <Switch>
+              <Route path="/search" component={SearchPage} />
+              <ProtectedRoute
+                path="/listing/:id/register"
+                component={BidderRegistrationPage}
+              />
+              <Route path="/listing/:id/auction" component={AuctionPage} />
+              <Route path="/listing/:id" component={ViewListingPage} />
+              <ProtectedRoute path="/add" component={AddListingPage} />
+              {/* Profile Pages */}
+              <ProtectedRoute path="/profile/starred" component={StarredPage} />
+              <ProtectedRoute
+                path="/profile/listings"
+                component={ListingsPage}
+              />
+              <ProtectedRoute path="/profile/details" component={DetailsPage} />
+              <ProtectedRoute path="/profile/bids" component={BidsPage} />
+              <ProtectedRoute path="/profile/about" component={AboutPage} />
+              <Route exact path="/" component={HomePage} />
+              <Route component={ErrorPage} />
+            </Switch>
+          </div>
+        </AuthProvider>
+      </BrowserRouter>
+    </div>
+  </React.StrictMode>,
   document.getElementById("root")
 );
 
