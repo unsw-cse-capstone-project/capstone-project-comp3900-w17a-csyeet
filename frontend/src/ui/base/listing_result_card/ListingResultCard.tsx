@@ -29,7 +29,7 @@ export const ListingResultCard = (props: { listing: Listing }) => {
     auction_end,
     num_bathrooms,
     num_bedrooms,
-    num_car_spaces,
+    num_car_spaces,sdds
     type,
     description,
   } = props.listing;
