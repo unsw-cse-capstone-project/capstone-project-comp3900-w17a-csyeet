@@ -17,3 +17,7 @@ export const createFakeAddress = (): Address => ({
   state: "nsw",
   postcode: 2067,
 });
+
+export function delay(timeout: number): Promise<void> {
+  return new Promise((res) => setTimeout(res, timeout));
+}
