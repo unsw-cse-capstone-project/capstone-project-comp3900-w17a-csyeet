@@ -10,7 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./test.css";
 import { AuctionTag } from "../auction_tag/AuctionTag";
-import { DriveEta, KingBed, Bathtub } from "@material-ui/icons";
+import { DriveEta, LocalHotel, Bathtub } from "@material-ui/icons";
 
 export const ListingResultCard = (props: { listing: Listing }) => {
   const classes = ListingResultCardStyles();
@@ -53,7 +53,7 @@ export const ListingResultCard = (props: { listing: Listing }) => {
         </Typography>
         <div className={classes.detailBar}>
           <AuctionTag start={auction_start} end={auction_end} />
-          <ListingFeatureIcon value={num_bedrooms} Icon={KingBed} />
+          <ListingFeatureIcon value={num_bedrooms} Icon={LocalHotel} />
           <ListingFeatureIcon value={num_bathrooms} Icon={Bathtub} />
           <ListingFeatureIcon value={num_car_spaces} Icon={DriveEta} />
           <Typography
