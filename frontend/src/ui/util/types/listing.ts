@@ -1,6 +1,6 @@
 import { type } from "os";
 
-export type Property = {
+export type Listing = {
   id: number;
   owner_id: number;
   title: string;

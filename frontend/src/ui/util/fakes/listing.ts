@@ -1,5 +1,5 @@
-import { Property } from "../types/property";
-export const createFakeProperty = (opts?: Partial<Property>) => ({
+import { Listing } from "../types/listing";
+export const createFakeProperty = (opts?: Partial<Listing>) => ({
   id: 1,
   owner_id: 1,
   title: "Immaculately presented family home",
