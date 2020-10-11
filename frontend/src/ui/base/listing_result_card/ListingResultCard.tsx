@@ -11,7 +11,6 @@ import "slick-carousel/slick/slick-theme.css";
 import "./test.css";
 import { AuctionTag } from "../auction_tag/AuctionTag";
 import { DriveEta, LocalHotel, Bathtub } from "@material-ui/icons";
-import { RectShape, TextBlock } from "react-placeholder/lib/placeholders";
 import ReactPlaceholder from "react-placeholder/lib/ReactPlaceholder";
 import "react-placeholder/lib/reactPlaceholder.css";
 import classNames from "classnames";
@@ -50,7 +49,12 @@ export const ListingResultCard = (props: {
       <div className={classes.sliderContainer}>
         <Slider {...settings}>
           {props.listing.images.map((image, i) => (
-            <img className={classes.imageContainer} src={image} key={i} />
+            <img
+              className={classes.imageContainer}
+              src={image}
+              key={i}
+              alt={"Property images " + i}
+            />
           ))}
         </Slider>
       </div>

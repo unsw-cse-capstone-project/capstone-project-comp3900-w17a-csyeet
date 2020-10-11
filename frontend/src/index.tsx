@@ -10,16 +10,21 @@ import {
   RouteProps,
   Redirect,
   Link,
-  useLocation,
-  useParams,
-  useHistory,
 } from "react-router-dom";
-import { AuthProvider, useStore, AuthContext } from "./AuthContext";
+import { AuthProvider, AuthContext } from "./AuthContext";
 import { observer } from "mobx-react";
-import { Button, createStyles, makeStyles, Theme } from "@material-ui/core";
-import { createSearchPage } from "./search/create";
-const Dashboard = () => <h2>User Dashboard</h2>;
-const Landing = () => <h2>Landing</h2>;
+import { Button } from "@material-ui/core";
+import { SearchPage } from "./search/main";
+import { StarredPage } from "./profile/starred/main";
+import { ListingsPage } from "./profile/listings/main";
+import { DetailsPage } from "./profile/details/main";
+import { BidsPage } from "./profile/bids/main";
+import { AboutPage } from "./profile/about/main";
+import { AddListingPage } from "./add_listing/main";
+import { BidderRegistrationPage } from "./bidder_registration/main";
+import { AuctionPage } from "./auction/main";
+import { HomePage } from "./home/main";
+import { ViewListingPage } from "./view_listing/main";
 
 const ProtectedRoute = observer(
   ({
@@ -75,42 +80,8 @@ const Header = observer(() => {
     </div>
   );
 });
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
 
-const SearchPage = () => {
-  const query = useQuery().get("query");
-
-  if (query === null || query === "") {
-    return <Redirect to="/" />;
-  }
-
-  const Page = createSearchPage(query);
-  return <Page />;
-};
-
-const BidderRegistrationPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const history = useHistory();
-  return (
-    <div>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => history.push("/listing/" + id)}
-      >
-        Back to Listing
-      </Button>
-      Bidder rego for listing {id}
-    </div>
-  );
-};
-
-const ListingPage = () => {
-  const { id } = useParams<{ id: string }>();
-  return <div>Listing #{id}</div>;
-};
+const ErrorPage = () => <div>404 Page not found</div>;
 
 ReactDOM.render(
   <div className="page">
@@ -119,13 +90,22 @@ ReactDOM.render(
         <Header />
         <div className="content" id="content">
           <Switch>
-            <ProtectedRoute path="/dashboard" component={Dashboard} />
             <Route path="/search" component={SearchPage} />
-            <Route
+            <ProtectedRoute
               path="/listing/:id/register"
               component={BidderRegistrationPage}
             />
-            <Route path="/listing/:id" component={ListingPage} />
+            <Route path="/listing/:id/auction" component={AuctionPage} />
+            <Route path="/listing/:id" component={ViewListingPage} />
+            <ProtectedRoute path="/add" component={AddListingPage} />
+            {/* Profile Pages */}
+            <ProtectedRoute path="/profile/starred" component={StarredPage} />
+            <ProtectedRoute path="/profile/listings" component={ListingsPage} />
+            <ProtectedRoute path="/profile/details" component={DetailsPage} />
+            <ProtectedRoute path="/profile/bids" component={BidsPage} />
+            <ProtectedRoute path="/profile/about" component={AboutPage} />
+            <Route exact path="/" component={HomePage} />
+            <Route component={ErrorPage} />
           </Switch>
         </div>
       </AuthProvider>

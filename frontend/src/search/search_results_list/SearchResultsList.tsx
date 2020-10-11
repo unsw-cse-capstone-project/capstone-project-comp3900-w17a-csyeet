@@ -1,11 +1,4 @@
-import {
-  createStyles,
-  makeStyles,
-  Theme,
-  Typography,
-  CircularProgress,
-  LinearProgress,
-} from "@material-ui/core";
+import { createStyles, makeStyles, Theme, Typography } from "@material-ui/core";
 import { observer } from "mobx-react";
 import { action } from "mobx";
 import * as React from "react";
