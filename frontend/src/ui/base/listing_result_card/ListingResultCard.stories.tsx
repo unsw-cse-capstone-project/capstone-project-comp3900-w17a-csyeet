@@ -4,7 +4,7 @@ import { createFakeListing } from "../../util/fakes/listing";
 import * as React from "react";
 
 export default {
-  title: "listing/listingResult",
+  title: "ui/base/listingResult",
   component: ListingResultCard,
   argTypes: {
     auction_start: {

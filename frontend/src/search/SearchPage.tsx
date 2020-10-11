@@ -11,16 +11,10 @@ export const SearchPage = ({
   const classes = SearchPageStyles();
   return (
     <div className={classes.page}>
-      <div
-        style={{
-          position: "sticky",
-          padding: "20px",
-          background: "white",
-          top: "0",
-          zIndex: 2000,
-        }}
-      >
-        <SearchBar />
+      <div className={classes.searchHeader}>
+        <div className={classes.searchContainer}>
+          <SearchBar />
+        </div>
       </div>
       <div className={classes.resultContainer}>
         <SearchResults />

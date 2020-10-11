@@ -11,5 +11,18 @@ export const SearchPageStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
     },
+    searchContainer: {
+      width: "60%",
+    },
+    searchHeader: {
+      position: "sticky",
+      padding: "20px",
+      background: "white",
+      top: "0",
+      zIndex: 2000,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
   })
 );

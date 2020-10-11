@@ -67,6 +67,7 @@ export const SearchResultsList = observer(
               <b>Yay! You have seen it all</b>
             </p>
           }
+          style={{ overflow: "visible" }}
           scrollableTarget={"content"}
         >
           {store.searchResults.map((result, i) => (
