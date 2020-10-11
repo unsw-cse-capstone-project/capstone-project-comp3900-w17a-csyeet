@@ -1,20 +1,11 @@
 .logoSmall {
-<<<<<<< HEAD
   height: 60px;
-=======
-  height: 55px;
->>>>>>> 29986f12a4570f6e2909ece56c9e34c3b742b32d
   width: 120px;
   vertical-align: top;
   flex: 1;
 }
 
 .logoLarge {
-<<<<<<< HEAD
   height: 250px;
   width: 500px;
-=======
-  height: 150px;
-  width: 200px;
->>>>>>> 29986f12a4570f6e2909ece56c9e34c3b742b32d
 }

@@ -34,7 +34,7 @@ export class BidderRegistrationStore {
   expiryDate: string;
 
   @observable
-  ccv?: string;
+  ccv: string;
 
   @observable
   agreeToTerms: boolean;
