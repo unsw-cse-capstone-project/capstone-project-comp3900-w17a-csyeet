@@ -49,7 +49,7 @@ export const AuctionTag = ({
       <Chip
         size="small"
         label={label}
-        className={classNames(classes.bidderChip, classes[state])}
+        className={classNames(classes.bidderChip, (classes as any)[state])}
       />
     </div>
   );

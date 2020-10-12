@@ -26,9 +26,9 @@ const ProtectedRoute = ({
       component: React.ComponentType<RouteProps>;
     }) => (
   <AuthConsumer>
-    {({ isAuth, ...others }) => (
+    {({ isAuth }) => (
       <Route
-        render={(props: JSX.IntrinsicAttributes) =>
+        render={(props: any) =>
           isAuth ? Component && <Component {...props} /> : <Redirect to="/" />
         }
         {...rest}
