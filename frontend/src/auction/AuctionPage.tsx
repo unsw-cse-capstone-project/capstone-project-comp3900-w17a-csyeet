@@ -7,10 +7,11 @@ import classNames from "classnames";
 import { auctionPageStyle } from "./AuctionPage.css";
 
 export type Address = {
-  streetAddress: string;
+  street: string;
   suburb: string;
   state: string;
-  postcode: number;
+  postcode: string;
+  country: string;
 };
 
 export type AuctionBid = {
@@ -33,7 +34,7 @@ export const AuctionPage = ({
   BidsList: React.ComponentType;
   BiddersList: React.ComponentType;
 }) => {
-  const { streetAddress, suburb, state, postcode } = address;
+  const { street, suburb, state, postcode } = address;
   const classes = auctionPageStyle();
   const isAuctionClosed = auctionDate.getTime() - new Date().getTime() <= 0;
   return (
@@ -43,7 +44,7 @@ export const AuctionPage = ({
         Back to Listing
       </Button>
       <Typography variant="h2" className={classes.streetAddress}>
-        {streetAddress}
+        {street}
       </Typography>
       <Typography variant="h4" className={classes.secondaryAddress}>
         {suburb}

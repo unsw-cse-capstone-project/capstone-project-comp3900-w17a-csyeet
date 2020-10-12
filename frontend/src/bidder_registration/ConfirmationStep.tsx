@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BidderRegistrationStore } from "./BidderRegistration";
+import { BidderRegistrationStore } from "./BidderRegistrationPresenter";
 import { Typography } from "@material-ui/core";
 import { BidPrice } from "../ui/base/bid_price/BidPrice";
 import { confirmationStepStyle } from "./ConfirmationStep.css";

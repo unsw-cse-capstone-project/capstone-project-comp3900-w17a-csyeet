@@ -53,8 +53,8 @@ export const BiddingBox = observer(
       store.biddingPrice = parseInt(value);
     });
     const InputComponent = createPriceInput({
-      value: store.biddingPrice,
-      onChange,
+      store,
+      name: "biddingPrice",
     });
     const onClick = () => {
       onPlaceBid(store.biddingPrice);

@@ -47,7 +47,7 @@ export const SearchResultsList = observer(
               action(() =>
                 store.searchResults.push(...store.searchResults.slice(0, 3))
               ),
-              1032323233232000
+              400
             )
           }
           hasMore={true}

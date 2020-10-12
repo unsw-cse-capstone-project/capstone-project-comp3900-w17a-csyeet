@@ -1,6 +1,6 @@
 import * as React from "react";
-import { BidderRegistrationStore } from "./BidderRegistration";
-import { action, computed } from "mobx";
+import { BidderRegistrationStore } from "./BidderRegistrationPresenter";
+import { computed } from "mobx";
 import { observer } from "mobx-react";
 import {
   FormHelperText,
@@ -10,12 +10,11 @@ import {
   InputLabel,
   OutlinedInput,
   InputAdornment,
-  FormControlLabel,
-  Checkbox,
 } from "@material-ui/core";
 import { BidPrice } from "../ui/base/bid_price/BidPrice";
 import { createPriceInput } from "../ui/base/input/PriceFormat";
 import { initialBidStepStyle } from "./InitialBidStep.css";
+import { Checkbox } from "../ui/base/input/Checkbox";
 
 export const InitialBidStep = ({
   store,
@@ -24,9 +23,6 @@ export const InitialBidStep = ({
   store: BidderRegistrationStore;
   currentBid: number;
 }) => {
-  const onChange = action((value: string) => {
-    store.initialBid = parseInt(value);
-  });
   const errorMessage = computed(() => {
     if (store.initialBid <= currentBid) {
       return "Your bid must be greater than the current bid";
@@ -40,8 +36,8 @@ export const InitialBidStep = ({
   });
 
   const InputComponent = createPriceInput({
-    value: store.initialBid,
-    onChange,
+    store,
+    name: "initialBid",
   });
 
   const Label = (
@@ -71,18 +67,10 @@ export const InitialBidStep = ({
         />
         <ErrorText />
       </FormControl>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={store.agreeToTerms}
-            onChange={action((event: React.ChangeEvent<HTMLInputElement>) => {
-              store.agreeToTerms = event.target.checked;
-            })}
-            name="checkedB"
-            color="primary"
-          />
-        }
-        label={Label}
+      <Checkbox
+        store={store}
+        name="agreeToTerms"
+        Label={Label}
         style={{ marginTop: "40px" }}
       />
     </div>

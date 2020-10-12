@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Typography } from "@material-ui/core";
+import { Button, Card, CardContent, Typography, Link } from "@material-ui/core";
 import * as React from "react";
 import Slider from "react-slick";
 import { Listing } from "../../util/types/listing";
@@ -14,6 +14,7 @@ import { DriveEta, LocalHotel, Bathtub } from "@material-ui/icons";
 import ReactPlaceholder from "react-placeholder/lib/ReactPlaceholder";
 import "react-placeholder/lib/reactPlaceholder.css";
 import classNames from "classnames";
+import { useHistory } from "react-router-dom";
 
 export const ListingResultCard = (props: {
   listing: Listing;
@@ -28,6 +29,7 @@ export const ListingResultCard = (props: {
     slidesToScroll: 1,
   };
   const {
+    id,
     street,
     suburb,
     postcode,
@@ -40,6 +42,7 @@ export const ListingResultCard = (props: {
     type,
     description,
   } = props.listing;
+  const history = useHistory();
   return (
     <Card
       style={props.style}
@@ -59,14 +62,20 @@ export const ListingResultCard = (props: {
         </Slider>
       </div>
       <CardContent style={{ width: "100%", boxSizing: "border-box" }}>
-        <Typography variant="h4" style={{ textTransform: "capitalize" }}>
-          {street}
-        </Typography>
-        <Typography variant="h6" style={{ textTransform: "capitalize" }}>
-          {suburb}
-          {", "}
-          <span style={{ textTransform: "uppercase" }}>{state}</span> {postcode}
-        </Typography>
+        <Link
+          onClick={() => history.push(`/listing/${id}`)}
+          style={{ textDecoration: "none" }}
+        >
+          <Typography variant="h4" style={{ textTransform: "capitalize" }}>
+            {street}
+          </Typography>
+          <Typography variant="h6" style={{ textTransform: "capitalize" }}>
+            {suburb}
+            {", "}
+            <span style={{ textTransform: "uppercase" }}>{state}</span>{" "}
+            {postcode}
+          </Typography>
+        </Link>
         <div className={classes.detailBar}>
           <AuctionTag start={auction_start} end={auction_end} />
           <ListingFeatureIcon value={num_bedrooms} Icon={LocalHotel} />
@@ -88,6 +97,7 @@ export const ListingResultCard = (props: {
             variant="outlined"
             color="primary"
             style={{ marginTop: "15px" }}
+            onClick={() => history.push(`/listing/${id}/register`)}
           >
             Register to Bid
           </Button>
@@ -96,6 +106,7 @@ export const ListingResultCard = (props: {
             variant="outlined"
             color="primary"
             style={{ marginTop: "15px" }}
+            onClick={() => history.push(`/listing/${id}/auction`)}
           >
             View Auction
           </Button>

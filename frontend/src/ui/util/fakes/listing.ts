@@ -24,3 +24,31 @@ export const createFakeListing = (opts?: Partial<Listing>) => ({
   ],
   ...opts,
 });
+
+export const createFakeListingPreAuction = createFakeListing;
+export const createFakeListingDuringAuction = () =>
+  createFakeListing({
+    id: 2,
+    street: "50 Levey St",
+    auction_start: new Date("October 4, 2020 11:00:00"),
+  });
+export const createFakeListingClosedAuction = () =>
+  createFakeListing({
+    id: 3,
+    street: "102/42 Floss St",
+    auction_start: new Date("October 4, 2020 11:00:00"),
+    auction_end: new Date("October 5, 2020 11:00:00"),
+  });
+
+export const fetchListing = (id: number) => {
+  switch (id) {
+    case 1:
+      return createFakeListingPreAuction();
+    case 2:
+      return createFakeListingDuringAuction();
+    case 3:
+      return createFakeListingClosedAuction();
+    default:
+      return createFakeListing();
+  }
+};
