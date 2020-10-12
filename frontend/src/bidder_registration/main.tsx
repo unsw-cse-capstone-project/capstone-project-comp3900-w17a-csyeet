@@ -100,3 +100,4 @@ export const BidderRegistrationWrapper = observer(
     return <Container Content={BidderRego} />;
   }
 );
+
