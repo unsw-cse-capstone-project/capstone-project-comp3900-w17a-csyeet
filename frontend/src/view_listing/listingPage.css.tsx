@@ -34,7 +34,7 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
       padding: theme.spacing(2, 0, 0, 0)
     },
     title: {
-      margin: theme.spacing(1, 0, 1, 0)
+      margin: theme.spacing(4, 0, 1, 0)
     },
     description: {
       margin: theme.spacing(0, 0, 3, 0)

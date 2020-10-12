@@ -1,6 +1,6 @@
 import * as React from "react";
 import { listingPageStyle } from "./listingPage.css";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, Modal } from "@material-ui/core";
 import { Listing } from "../ui/util/types/listing";
 import { ListingFeatureIcon } from "../ui/base/listing_result_card/ListingResultCard";
 import { DriveEta, KingBed, Bathtub } from "@material-ui/icons";
@@ -35,16 +35,63 @@ export const ListingPage = (props: { listing: Listing }) => {
   } = props.listing;
 
   const classes = listingPageStyle();
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div className={classes.page}>
-      {/* image */}
-      <div className={classes.sliderContainer}>
-        <Slider {...settings}>
-          {props.listing.images.map((image, i) => (
-            <img className={classes.imageContainer} src={image} key={i} />
-          ))}
-        </Slider>
-      </div>
+      {/* first three images */}
+      <Grid container spacing={2}>
+        <Grid item xs={7}>
+          <img
+            src={props.listing.images[0]}
+            onClick={handleOpen}
+            style={{ width: "100%", height: "100%" }}
+          ></img>
+        </Grid>
+        <Grid item xs={5}>
+          <img
+            src={props.listing.images[1]}
+            onClick={handleOpen}
+            style={{ width: "100%", height: "50%" }}
+          ></img>
+          <img
+            src={props.listing.images[2]}
+            onClick={handleOpen}
+            style={{ width: "100%", height: "50%" }}
+          ></img>
+        </Grid>
+      </Grid>
+
+      {/* image slideshow */}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div className={classes.sliderContainer}>
+          <Slider {...settings}>
+            {props.listing.images.map((image, i) => (
+              <img className={classes.imageContainer} src={image} key={i} />
+            ))}
+          </Slider>
+        </div>
+      </Modal>
+
+      {/* image slideshow*/}
+
       <Grid container spacing={2}>
         {/* left column */}
         <Grid item xs={8}>
@@ -81,8 +128,8 @@ export const ListingPage = (props: { listing: Listing }) => {
           </div>
 
           <AuctionDetails
-            auction_start={props.listing.auction_start}
-            auction_end={props.listing.auction_end}
+            auction_start={auction_start}
+            auction_end={auction_end}
           ></AuctionDetails>
 
           <Map
