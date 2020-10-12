@@ -9,14 +9,10 @@ export interface LogoProps {
   onClick?: () => {};
 }
 
-const Logo: React.FC<LogoProps> = ({ size = "large" }) => (
+const Logo: React.FC<LogoProps> = ({ size = "large", onClick }) => (
   <div>
     {size == "small" && (
-      <div
-        onClick={() => {
-          console.log("Clicked logo! Need to redirect.");
-        }}
-      >
+      <div onClick={onClick}>
         <img className="logoSmall" src={logo} />
       </div>
     )}

@@ -16,7 +16,7 @@ export const AuthContext: React.Context<AuthContextType> = React.createContext(
   {} as AuthContextType
 );
 
-export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = (props) => {
+export const AuthProvider = (props: React.PropsWithChildren<{}>) => {
   const [isAuth, setIsAuth] = React.useState(false);
 
   const userSignIn = action(() => {

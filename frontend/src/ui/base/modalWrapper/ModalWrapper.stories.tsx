@@ -9,16 +9,13 @@ export default {
 } as Meta;
 
 export const Overview = () => {
-  const onClose = () => {
-    setOpen(false);
-  };
   const [open, setOpen] = React.useState(false);
   return (
     <>
       <Button variant="outlined" onClick={() => setOpen(true)}>
         Open Modal
       </Button>
-      <ModalWrapper open={open} onClose={onClose}>
+      <ModalWrapper open={open} onClose={() => setOpen(false)}>
         <p>Modal Content</p>
       </ModalWrapper>
     </>

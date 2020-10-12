@@ -3,7 +3,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import SelectStyles from "./SelectWrapper.css";
+// import SelectStyles from "./SelectWrapper.css";
 
 export interface SelectWrapperProps {
   label: string;
@@ -17,7 +17,7 @@ const SelectWrapper: React.FC<SelectWrapperProps> = ({
   data,
   onChange,
 }) => {
-  const classes = SelectStyles();
+  // const classes = SelectStyles();
   const [value, setValue] = React.useState("");
   const handleChange = (e: React.ChangeEvent<{ value: unknown }>) => {
     onChange(e.target.value as string, field);
@@ -25,7 +25,7 @@ const SelectWrapper: React.FC<SelectWrapperProps> = ({
   };
   return (
     <div>
-      <FormControl variant="outlined" className={classes.formControl}>
+      <FormControl variant="outlined">
         <InputLabel id="select-outlined-label">{label}</InputLabel>
         <Select
           labelId="select-outlined-label"
@@ -37,8 +37,10 @@ const SelectWrapper: React.FC<SelectWrapperProps> = ({
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          {data.map((v) => (
-            <MenuItem value={v}>{v}</MenuItem>
+          {data.map((v, i) => (
+            <MenuItem value={v} key={i}>
+              {v}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

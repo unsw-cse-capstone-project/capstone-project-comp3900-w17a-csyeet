@@ -62,6 +62,8 @@ const SignUpForm: React.FC<SignUpFormProps> = observer(
           return !canProceedStep0.get();
         case 1:
           return !canProceedStep1.get();
+        case 2:
+          return !canProceedStep2.get();
         default:
           return false;
       }
@@ -91,13 +93,10 @@ const SignUpForm: React.FC<SignUpFormProps> = observer(
       () =>
         store.usernm.length > 0 &&
         store.email.includes("@") &&
-        store.passwd.length > 0 && 
+        store.passwd.length > 0 &&
         store.passwd == store.passwdVerify
     );
 
-    // const canProceedStep0 = () => {
-    //   return true;
-    // };
     const canProceedStep1 = computed(
       () =>
         store.phoneNo.length == 10 &&
@@ -132,23 +131,39 @@ const SignUpForm: React.FC<SignUpFormProps> = observer(
           <div className={classes.body}>
             {getStepContent(activeStep)}
             <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.backButton}
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={
-                  activeStep === steps.length - 1 ? handleConfirm : handleNext
-                }
-                disabled={disableNext()}
-              >
-                {activeStep === steps.length - 1 ? "Sign Up" : "Next"}
-              </Button>
+              {activeStep == 2 ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={closeModal}
+                >
+                  Close
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.backButton}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={
+                      activeStep === steps.length - 1
+                        ? handleConfirm
+                        : handleNext
+                    }
+                    disabled={disableNext()}
+                  >
+                    {activeStep == 0 && "Next"}
+                    {activeStep == 1 && "Sign Up"}
+                  </Button>
+                  )}
+                </>
+              )}
             </div>
           </div>
         )}

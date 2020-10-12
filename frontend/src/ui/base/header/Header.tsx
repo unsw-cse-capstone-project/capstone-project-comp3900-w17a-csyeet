@@ -9,57 +9,61 @@ import SignUpStore from "../signUpForm/SignUpStore";
 import SignUpForm from "../signUpForm/SignUpForm";
 import { AuthConsumer } from "../../authContext/AuthContext";
 // import "./header.css";
+export interface HeaderProps {
+  signInStore: SignInStore;
+  signUpStore: SignUpStore;
+}
 
-const Header = observer(() => {
-  let signInStore = new SignInStore();
-  const openSignInForm = action(() => {
-    signInStore.open = true;
-  });
+const Header: React.FC<HeaderProps> = observer(
+  ({ signInStore, signUpStore }) => {
+    const openSignInForm = action(() => {
+      signInStore.open = true;
+    });
 
-  let signUpStore = new SignUpStore();
-  const openSignUpForm = action(() => {
-    signUpStore.open = true;
-  });
+    const openSignUpForm = action(() => {
+      signUpStore.open = true;
+    });
 
-  return (
-    <AuthConsumer>
-      {({ isAuth, userSignIn, userSignOut, userSignUp }) => (
-        <>
-          <header>
-            <Logo size="small" />
-            {isAuth ? (
-              <div>
-                <Button size="small" onClick={openSignInForm}>
-                  Log In
-                </Button>
+    return (
+      <AuthConsumer>
+        {({ isAuth, userSignIn, userSignOut, userSignUp }) => (
+          <>
+            <header>
+              <Logo size="small" />
+              {!isAuth ? (
+                <div>
+                  <Button size="small" onClick={openSignInForm}>
+                    Log In
+                  </Button>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    color="primary"
+                    style={{ margin: "15px" }}
+                    onClick={openSignUpForm}
+                  >
+                    Sign Up
+                  </Button>
+                </div>
+              ) : (
                 <Button
                   size="small"
                   variant="outlined"
                   color="primary"
                   style={{ margin: "15px" }}
-                  onClick={openSignUpForm}
+                  onClick={userSignOut}
                 >
-                  Sign Up
+                  Sign out
                 </Button>
-              </div>
-            ) : (
-              <Button
-                size="small"
-                variant="outlined"
-                color="primary"
-                style={{ margin: "15px" }}
-                onClick={userSignOut}
-              >
-                Sign out
-              </Button>
-            )}
-          </header>
-          <SignInForm store={signInStore} onSubmit={userSignIn} />
-          <SignUpForm store={signUpStore} onSubmit={userSignUp} />
-        </>
-      )}
-    </AuthConsumer>
-  );
-});
+              )}
+            </header>
+            <SignInForm store={signInStore} onSubmit={userSignIn} />
+            <SignUpForm store={signUpStore} onSubmit={userSignUp} />
+          </>
+        )}
+      </AuthConsumer>
+    );
+  }
+);
 
 export default Header;

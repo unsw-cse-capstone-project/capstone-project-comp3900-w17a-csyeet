@@ -12,11 +12,10 @@ const Template: Story<SelectWrapperProps> = (args) => (
 );
 
 const data = ["hi", "this", "is", "my", "selector", "bye!"];
-const onChange = () => console.log("Input change handled");
 export const Overview = Template.bind({});
 Overview.args = {
   field: "name in store",
   label: "Label",
   data: data,
-  onChange: onChange,
+  onChange: () => {},
 };

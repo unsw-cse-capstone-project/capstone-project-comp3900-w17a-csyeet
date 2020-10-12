@@ -5,15 +5,16 @@ import TextFieldWrapper from "../../textFieldWrapper/TextFieldWrapper";
 import SignInStore from "../SignUpStore";
 import { InputAdornment } from "@material-ui/core";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
-import VpnKeyOutlinedIcon from "@material-ui/icons/VpnKeyOutlined";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
+import PasswordInput from "../../passwordInput/PasswordInput";
 
 const UserDetailForm: React.FC<{ store: SignInStore }> = observer(
   ({ store }) => {
-    const onChange = action((value: string, name: string) => {
-      (store as any)[name] = value;
+    const onChange = action((value: string, field: string) => {
+      (store as any)[field] = value;
       console.log("Update! ..", (store as any)[name]);
     });
+
     return (
       <>
         <TextFieldWrapper
@@ -36,27 +37,11 @@ const UserDetailForm: React.FC<{ store: SignInStore }> = observer(
             </InputAdornment>
           }
         />
-
-        <TextFieldWrapper
-          field="passwd"
-          label="Password"
-          onChange={onChange}
-          adornment={
-            <InputAdornment position="end">
-              <VpnKeyOutlinedIcon />
-            </InputAdornment>
-          }
-        />
-
+        <PasswordInput onChange={onChange} />
         <TextFieldWrapper
           field="passwdVerify"
           label="Confirm Password"
           onChange={onChange}
-          adornment={
-            <InputAdornment position="end">
-              <VpnKeyOutlinedIcon />
-            </InputAdornment>
-          }
         />
       </>
     );
