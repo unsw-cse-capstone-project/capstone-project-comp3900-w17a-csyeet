@@ -19,8 +19,5 @@ class ListingSearchResult(BaseModel):
     auction_start: datetime
     auction_end: datetime
 
-class SearchRequest(BaseModel):
-    location: str
-
 class SearchResponse(BaseModel):
     result: List[ListingSearchResult]

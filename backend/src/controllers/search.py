@@ -1,22 +1,22 @@
 from dataclasses import asdict
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from fastapi_sqlalchemy import db
-from ..schemas.search import ListingSearchResult, SearchRequest, SearchResponse
+from ..schemas import ListingSearchResult, SearchResponse
 from ..models import Listing
 
 router = APIRouter()
 
-@router.post('/', response_model=SearchResponse)
-def post(req: SearchRequest, session: Session = Depends(lambda: db.session)):
+@router.get('/', response_model=SearchResponse)
+def get(q: str = Query('', alias='query'), session: Session = Depends(lambda: db.session)):
     result = session.query(Listing).filter(or_(
-        Listing.suburb.ilike(req.location),
-        Listing.street.ilike(req.location),
-        Listing.postcode.ilike(req.location),
-        Listing.state.ilike(req.location),
-        Listing.country.ilike(req.location)
+        Listing.suburb.ilike(q),
+        Listing.street.ilike(q),
+        Listing.postcode.ilike(q),
+        Listing.state.ilike(q),
+        Listing.country.ilike(q)
         ))
     listings = [l for l in result]
     return map_to_search_response(listings)
