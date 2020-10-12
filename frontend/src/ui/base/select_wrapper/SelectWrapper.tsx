@@ -8,18 +8,20 @@ export interface SelectWrapperProps {
   label: string;
   field: string;
   data: Array<string>;
+  value: string;
   onChange: (value: string, field: string) => void;
 }
 const SelectWrapper: React.FC<SelectWrapperProps> = ({
   label,
   field,
   data,
+  value = "",
   onChange,
 }) => {
-  const [value, setValue] = React.useState("");
+  const [selected, setSelected] = React.useState(value);
   const handleChange = (e: React.ChangeEvent<{ value: unknown }>) => {
     onChange(e.target.value as string, field);
-    setValue(e.target.value as string);
+    setSelected(e.target.value as string);
   };
   return (
     <div>
@@ -27,13 +29,15 @@ const SelectWrapper: React.FC<SelectWrapperProps> = ({
         variant="outlined"
         style={{
           minWidth: "120px",
+          marginTop: "10px",
+          marginBottom: "10px",
         }}
       >
         <InputLabel id="select-outlined-label">{label}</InputLabel>
         <Select
           labelId="select-outlined-label"
           id="select-outlined"
-          value={value}
+          value={selected}
           onChange={handleChange}
           label={label}
         >
