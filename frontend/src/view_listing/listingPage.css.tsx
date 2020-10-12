@@ -20,7 +20,7 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
     },
     imageContainer: {
       width: "100%",
-      height: "300px",
+      height: "500px",
       objectFit: "contain",
       backgroundColor: "rgba(0,0,0, 0.8)"
     },
@@ -28,7 +28,7 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
       [theme.breakpoints.up("md")]: {
         width: "100%"
       },
-      height: "300px"
+      height: "500px"
     },
     street: {
       padding: theme.spacing(2, 0, 0, 0)
