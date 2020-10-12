@@ -1,6 +1,5 @@
 import React from "react";
 import logo from "./logo.png";
-import { LogoStyles } from "./Logo.css"; // (Jenn) TODO: Not sure why css isn't working
 
 type LogoSize = "small" | "large";
 export interface LogoProps {
@@ -9,16 +8,29 @@ export interface LogoProps {
 }
 
 const Logo: React.FC<LogoProps> = ({ size = "large", onClick }) => {
-  const classes = LogoStyles();
   return (
     <div>
       {size == "small" && (
         <div onClick={onClick}>
-          <img className={classes.small} src={logo} />
+          <img
+            style={{
+              height: "60px",
+              width: "120px",
+            }}
+            src={logo}
+          />
         </div>
       )}
 
-      {size == "large" && <img className={classes.large} src={logo} />}
+      {size == "large" && (
+        <img
+          style={{
+            height: "250px",
+            width: "500px",
+          }}
+          src={logo}
+        />
+      )}
     </div>
   );
 };
