@@ -12,21 +12,24 @@ export default class Store {
   @observable openSignUp: boolean = false;
   @observable openSignIn: boolean = false;
 
+  // (Jenn TOOD: Hook API call)
   @action
   async signIn() {
     await delay(300);
     runInAction(() => (this.user = { displayName: "Winston", id: 1 }));
   }
 
-  @action
-  signOut() {
-    this.user = undefined;
-  }
-
+  // (Jenn TOOD: Hook API call)
   @action
   async signUp() {
     await delay(300);
     runInAction(() => (this.user = { displayName: "Winston", id: 1 }));
+  }
+
+  // (Jenn TOOD: Hook API call)
+  @action
+  signOut() {
+    this.user = undefined;
   }
 
   constructor() {

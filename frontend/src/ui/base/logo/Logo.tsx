@@ -14,8 +14,8 @@ const Logo = ({ size = "large", onClick }: LogoProps) => {
         <div onClick={onClick}>
           <img
             style={{
-              height: "100x",
-              width: "220px",
+              height: "100px",
+              width: "210px",
             }}
             src={logo}
             alt="Adobe Logo"
@@ -31,7 +31,7 @@ const Logo = ({ size = "large", onClick }: LogoProps) => {
           }}
           src={logo}
           alt="Adobe Logo"
-          />
+        />
       )}
     </div>
   );

@@ -60,7 +60,6 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
   };
 
   const disableNext = () => {
-    console.log("To disable??");
     console.log(store.usernm !== "");
     console.log(store.email !== "");
     console.log(store.passwd !== "");
@@ -88,6 +87,9 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
   const canProceedStep1 = computed(
     () =>
       store.phoneNo.length === 10 &&
+      store.addressLine !== "" &&
+      store.suburb !== "" &&
+      store.postcode !== "" &&
       store.addressLine.length !== 0 &&
       store.suburb.length > 0 &&
       store.postcode.length > 0 &&

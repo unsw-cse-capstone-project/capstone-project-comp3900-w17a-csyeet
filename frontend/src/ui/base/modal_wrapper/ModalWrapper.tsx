@@ -20,8 +20,8 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({
       className={classes.modal}
       open={open}
       onClose={onClose}
-      closeAfterTransition
       BackdropComponent={Backdrop}
+      closeAfterTransition
       BackdropProps={{
         timeout: 500,
       }}
