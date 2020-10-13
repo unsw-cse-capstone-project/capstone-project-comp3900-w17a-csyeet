@@ -1,9 +1,11 @@
 from dataclasses import asdict
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from fastapi_sqlalchemy import db
-from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map
+from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, ListingSearchResponse
 from ..models import Listing
+from typing import Optional
 
 router = APIRouter()
 
@@ -32,8 +34,7 @@ def get(id: int, session: Session = Depends(lambda: db.session)):
             status_code=404, detail="Requested listing could not be found")
     return map_listing_to_response(listing)
 
-# TODO: maybe move these to helpers.py or common/helpers.py or sth
-
+# TODO: move these to helpers.py or common/helpers.py or sth
 
 def map_listing_to_response(listing: Listing) -> ListingResponse:
     response = asdict(listing)
