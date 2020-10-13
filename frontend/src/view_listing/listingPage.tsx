@@ -17,9 +17,10 @@ export const ListingPage = (props: { listing: Listing }) => {
     infinite: true,
     speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1
+    slidesToScroll: 1,
   };
   const {
+    id,
     street,
     suburb,
     postcode,
@@ -31,7 +32,7 @@ export const ListingPage = (props: { listing: Listing }) => {
     num_car_spaces,
     type,
     title,
-    description
+    description,
   } = props.listing;
 
   const classes = listingPageStyle();
@@ -76,7 +77,7 @@ export const ListingPage = (props: { listing: Listing }) => {
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
         }}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
@@ -130,6 +131,7 @@ export const ListingPage = (props: { listing: Listing }) => {
           <AuctionDetails
             auction_start={auction_start}
             auction_end={auction_end}
+            id={id}
           ></AuctionDetails>
 
           <Map

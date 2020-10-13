@@ -2,15 +2,19 @@ import * as React from "react";
 import { Typography, Button, Divider } from "@material-ui/core";
 import { auctionDetailsStyle } from "./auctionDetails.css";
 import { AuctionTag } from "../../ui/base/auction_tag/AuctionTag";
+import { useHistory } from "react-router-dom";
 
 export const AuctionDetails = ({
   auction_start,
-  auction_end
+  auction_end,
+  id,
 }: {
   auction_start: Date;
   auction_end: Date;
+  id: number;
 }) => {
   const classes = auctionDetailsStyle();
+  const history = useHistory();
   return (
     <div>
       <Typography variant="h5" className={classes.header}>
@@ -30,9 +34,10 @@ export const AuctionDetails = ({
               variant="outlined"
               color="primary"
               style={{ marginTop: "15px" }}
+              onClick={() => history.push(`/listing/${id}/register`)}
             >
               Register to Bid
-            </Button>
+            </Button>,
           ]
         : [
             <Typography variant="body2">
@@ -43,9 +48,10 @@ export const AuctionDetails = ({
               variant="outlined"
               color="primary"
               style={{ marginTop: "15px" }}
+              onClick={() => history.push(`/listing/${id}/auction`)}
             >
               View Auction
-            </Button>
+            </Button>,
           ]}
     </div>
   );
