@@ -29,14 +29,13 @@ export const BidderRegistrationWrapper = observer(
       return <div>Loading</div>;
     }
 
-    if (store.loadingState === "error" || !store.listing || !store.currentBid) {
+    if (store.loadingState === "error" || !store.listing) {
       return <div>Error loading</div>;
     }
 
     const BidderRego = () => (
       <BidderRegistration
         store={store}
-        currentBid={store.currentBid as number}
         listingId={(store.listing as Listing).id}
       />
     );
@@ -100,4 +99,3 @@ export const BidderRegistrationWrapper = observer(
     return <Container Content={BidderRego} />;
   }
 );
-

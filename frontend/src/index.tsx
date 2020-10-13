@@ -1,19 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-// import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import {
   Route,
   Switch,
   BrowserRouter,
-  RouteProps,
-  Redirect,
   Link,
+  useHistory,
 } from "react-router-dom";
-import { AuthProvider, AuthContext } from "./AuthContext";
+import { AuthProvider, AuthContext, useStore } from "./AuthContext";
 import { observer } from "mobx-react";
-import { Button } from "@material-ui/core";
+import { Button, Dialog } from "@material-ui/core";
 import { SearchPage } from "./search/main";
 import { StarredPage } from "./profile/starred/main";
 import { ListingsPage } from "./profile/listings/main";
@@ -25,46 +23,25 @@ import { BidderRegistrationPage } from "./bidder_registration/main";
 import { AuctionPage } from "./auction/main";
 import { HomePage } from "./home/main";
 import { ViewListingPage } from "./view_listing/main";
-
-const ProtectedRoute = observer(
-  ({
-    component: Component,
-    ...rest
-  }:
-    | RouteProps
-    | {
-        component: React.ComponentType<RouteProps>;
-      }) => {
-    const store = React.useContext(AuthContext);
-    if (!store) throw Error("Store shouldn't be null");
-    return (
-      <Route
-        render={(props: any) =>
-          store.isAuth ? (
-            Component && <Component {...props} />
-          ) : (
-            <Redirect to="/" />
-          )
-        }
-        {...rest}
-      />
-    );
-  }
-);
+import { action } from "mobx";
 
 const Header = observer(() => {
   const store = React.useContext(AuthContext);
+  const history = useHistory();
   if (!store) throw Error("Store shouldn't be null");
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       <h3>
         <Link to="/"> HOME </Link>
       </h3>
-      {store.isAuth ? (
+      {store.user ? (
         <Button
           variant="contained"
           color="primary"
-          onClick={() => store.logout()}
+          onClick={() => {
+            store.logout();
+            history.push("/");
+          }}
         >
           logout
         </Button>
@@ -72,14 +49,59 @@ const Header = observer(() => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => store.login()}
+          onClick={() => store.toggleSignInModal()}
         >
           login
         </Button>
       )}
+      <Dialog
+        onClose={() => store.toggleSignInModal()}
+        aria-labelledby="simple-dialog-title"
+        open={store.openSignIn}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={action(() => {
+            store.login();
+            store.toggleSignInModal();
+          })}
+        >
+          Login
+        </Button>
+      </Dialog>
     </div>
   );
 });
+
+const ProtectedComponent = observer(
+  ({ Component }: { Component: React.ComponentType }) => {
+    const store = useStore();
+    if (!store) throw Error("Store shouldn't be null");
+    React.useEffect(() => {
+      if (!store.user) {
+        store.toggleSignInModal();
+      }
+    }, []);
+    if (!store.user) {
+      return (
+        <Dialog aria-labelledby="simple-dialog-title" open={store.openSignIn}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={action(() => {
+              store.login();
+              store.toggleSignInModal();
+            })}
+          >
+            Login
+          </Button>
+        </Dialog>
+      );
+    }
+    return <Component />;
+  }
+);
 
 const ErrorPage = () => <div>404 Page not found</div>;
 
@@ -92,22 +114,54 @@ ReactDOM.render(
           <div className="content" id="content">
             <Switch>
               <Route path="/search" component={SearchPage} />
-              <ProtectedRoute
+              <Route
                 path="/listing/:id/register"
-                component={BidderRegistrationPage}
+                render={(props) => (
+                  <ProtectedComponent
+                    {...props}
+                    Component={BidderRegistrationPage}
+                  />
+                )}
               />
               <Route path="/listing/:id/auction" component={AuctionPage} />
               <Route path="/listing/:id" component={ViewListingPage} />
-              <ProtectedRoute path="/add" component={AddListingPage} />
-              {/* Profile Pages */}
-              <ProtectedRoute path="/profile/starred" component={StarredPage} />
-              <ProtectedRoute
-                path="/profile/listings"
-                component={ListingsPage}
+              <Route
+                path="/add"
+                render={(props) => (
+                  <ProtectedComponent {...props} Component={AddListingPage} />
+                )}
               />
-              <ProtectedRoute path="/profile/details" component={DetailsPage} />
-              <ProtectedRoute path="/profile/bids" component={BidsPage} />
-              <ProtectedRoute path="/profile/about" component={AboutPage} />
+              {/* Profile Pages */}
+              <Route
+                path="/profile/starred"
+                render={(props) => (
+                  <ProtectedComponent {...props} Component={StarredPage} />
+                )}
+              />
+              <Route
+                path="/profile/listings"
+                render={(props) => (
+                  <ProtectedComponent {...props} Component={ListingsPage} />
+                )}
+              />
+              <Route
+                path="/profile/details"
+                render={(props) => (
+                  <ProtectedComponent {...props} Component={DetailsPage} />
+                )}
+              />
+              <Route
+                path="/profile/bids"
+                render={(props) => (
+                  <ProtectedComponent {...props} Component={BidsPage} />
+                )}
+              />
+              <Route
+                path="/profile/about"
+                render={(props) => (
+                  <ProtectedComponent {...props} Component={AboutPage} />
+                )}
+              />
               <Route exact path="/" component={HomePage} />
               <Route component={ErrorPage} />
             </Switch>

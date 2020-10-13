@@ -1,10 +1,10 @@
 import * as React from "react";
 import { BidPriceState } from "../ui/base/bid_price/BidPrice";
-import { Button, Typography, Grid, Hidden } from "@material-ui/core";
+import { Typography, Grid, Hidden } from "@material-ui/core";
 import { Countdown } from "../ui/base/countdown/Countdown";
-import { ArrowBackIos } from "@material-ui/icons";
 import classNames from "classnames";
 import { auctionPageStyle } from "./AuctionPage.css";
+import { dateFormatter } from "../ui/util/helper";
 
 export type Address = {
   street: string;
@@ -21,14 +21,16 @@ export type AuctionBid = {
 
 export const AuctionPage = ({
   address,
-  auctionDate,
+  auction_start,
+  auction_end,
   mainImage,
   BiddingBox,
   BidsList,
   BiddersList,
 }: {
   address: Address;
-  auctionDate: Date;
+  auction_start: Date;
+  auction_end: Date;
   mainImage: string;
   BiddingBox: React.ComponentType;
   BidsList: React.ComponentType;
@@ -36,13 +38,41 @@ export const AuctionPage = ({
 }) => {
   const { street, suburb, state, postcode } = address;
   const classes = auctionPageStyle();
-  const isAuctionClosed = auctionDate.getTime() - new Date().getTime() <= 0;
+
+  let AuctionTime = () => (
+    <div className={classes.auctionTime}>
+      <Typography variant="body1" className={classes.auctionText}>
+        Auction Start: {dateFormatter.format(auction_start)}
+      </Typography>
+      <Typography variant="body1" className={classes.auctionText}>
+        Auction End: {dateFormatter.format(auction_end)}
+      </Typography>
+    </div>
+  );
+
+  if (new Date().getTime() >= auction_start.getTime()) {
+    // eslint-disable-next-line react/display-name
+    AuctionTime = () => (
+      <div className={classes.auctionTime}>
+        <Typography variant="body1" className={classes.auctionText}>
+          Auction ends in
+        </Typography>
+        <Countdown date={auction_end} />
+      </div>
+    );
+  }
+
+  if (auction_end.getTime() <= new Date().getTime()) {
+    // eslint-disable-next-line react/display-name
+    AuctionTime = () => (
+      <div className={classNames(classes.auctionTime, classes.auctionClosed)}>
+        <Typography variant="body1">Auction closed</Typography>
+      </div>
+    );
+  }
+
   return (
-    <div className={classes.page}>
-      <Button className={classes.backButton}>
-        <ArrowBackIos />
-        Back to Listing
-      </Button>
+    <div>
       <Typography variant="h2" className={classes.streetAddress}>
         {street}
       </Typography>
@@ -51,18 +81,7 @@ export const AuctionPage = ({
         {", "}
         <span style={{ textTransform: "uppercase" }}>{state}</span> {postcode}
       </Typography>
-      {isAuctionClosed ? (
-        <div className={classNames(classes.auctionTime, classes.auctionClosed)}>
-          <Typography variant="body1">Auction closed</Typography>
-        </div>
-      ) : (
-        <div className={classes.auctionTime}>
-          <Typography variant="body1" className={classes.auctionText}>
-            Auction ends in
-          </Typography>
-          <Countdown date={auctionDate} />
-        </div>
-      )}
+      <AuctionTime />
       <Hidden lgDown>
         <Grid container spacing={3}>
           <Grid item xs={4}>

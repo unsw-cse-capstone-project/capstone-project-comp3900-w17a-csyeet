@@ -57,7 +57,7 @@ def map_listing_to_response(listing: Listing) -> ListingResponse:
         if response[field]:
             response['features'].append(feature)
         response.pop(field)
-    return response
+    return response  # type: ignore
 
 
 def get_field_for_feature(feature: Feature) -> str:

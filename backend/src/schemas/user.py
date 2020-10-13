@@ -1,17 +1,21 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class UserBase(BaseModel):
-    email: str  # change to EmailStr after installing email-validator
-    name: str
-
-    class Config:
-        orm_mode = True
+    email: EmailStr
 
 
 class SignupRequest(UserBase):
     password: str
+    name: str
+
+
+class LoginRequest(UserBase):
+    password: str
 
 
 class UserResponse(UserBase):
-    pass
+    name: str
+
+    class Config:
+        orm_mode = True
