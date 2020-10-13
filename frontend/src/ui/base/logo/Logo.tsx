@@ -10,19 +10,19 @@ export interface LogoProps {
 const Logo: React.FC<LogoProps> = ({ size = "large", onClick }) => {
   return (
     <div>
-      {size == "small" && (
+      {size === "small" && (
         <div onClick={onClick}>
           <img
             style={{
-              height: "60px",
-              width: "120px",
+              height: "100x",
+              width: "220px",
             }}
             src={logo}
           />
         </div>
       )}
 
-      {size == "large" && (
+      {size === "large" && (
         <img
           style={{
             height: "250px",

@@ -4,10 +4,9 @@ import { action } from "mobx";
 import { Button, Typography, IconButton } from "@material-ui/core";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import SignInStore from "./SignInStore";
-import TextFieldWrapper from "../ui/base/textfield_wrapper/TextFieldWrapper";
-import ModalWrapper from "../ui/base/modal_wrapper/ModalWrapper";
-import PasswordInput from "../ui/base/password_input/PasswordInput";
-// import SignInFormStyles from "./SignInForm.css";
+import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
+import ModalWrapper from "../modal_wrapper/ModalWrapper";
+import PasswordInput from "../password_input/PasswordInput";
 
 const success = (
   <Typography variant="h3" align="center" style={{ margin: "35px" }}>
@@ -16,7 +15,7 @@ const success = (
 );
 
 export interface SignInProps {
-  onSubmit: (email: string, passwd: string) => void; // (Jenn) TODO: Update with API call
+  onSubmit: (email: string, passwd: string) => void;
   store: SignInStore;
 }
 
@@ -27,16 +26,14 @@ const SignIn: React.FC<SignInProps> = observer(({ onSubmit, store }) => {
 
   const closeModal = action(() => {
     store.open = false;
-    store.success = false;
   });
-
-  // (Jenn) Temporary Function
-  const setSuccess = action(() => {
-    store.success = true;
-  });
-
   return (
-    <ModalWrapper open={store.open} onClose={closeModal}>
+    <ModalWrapper
+      open={store.open}
+      onClose={() => {
+        closeModal();
+      }}
+    >
       <div className="formContainer">
         {store.success ? (
           <>{success} </>
@@ -55,14 +52,13 @@ const SignIn: React.FC<SignInProps> = observer(({ onSubmit, store }) => {
               onChange={onChange}
               adornment={<AlternateEmailIcon />}
             />
-            <PasswordInput onChange={onChange} />
+            <PasswordInput value={store.passwd} onChange={onChange} />
             <Button
               variant="outlined"
               color="primary"
               fullWidth
               style={{ marginTop: "10px" }}
               onClick={() => {
-                setSuccess();
                 onSubmit(store.email, store.passwd);
                 closeModal();
               }}

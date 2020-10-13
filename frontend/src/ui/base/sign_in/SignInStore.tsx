@@ -8,11 +8,10 @@ class SignInStore {
   passwd: string = "";
 
   @observable
-  open: boolean = false;
-
-  @observable
   success: boolean = false;
 
+  @observable
+  open: boolean = false;
   constructor() {
     makeObservable(this);
   }

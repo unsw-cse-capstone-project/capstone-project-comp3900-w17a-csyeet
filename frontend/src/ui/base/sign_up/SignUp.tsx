@@ -13,7 +13,7 @@ import SignUpStore from "./SignUpStore";
 import Step0 from "./Step0";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
-import ModalWrapper from "../ui/base/modal_wrapper/ModalWrapper";
+import ModalWrapper from "../modal_wrapper/ModalWrapper";
 import SignUpStyles from "./SignUp.css";
 
 export interface SignUpProps {
@@ -140,7 +140,7 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
         ))}
       </Stepper>
       {activeStep < steps.length && (
-        <div className={classes.body}>
+        <div>
           {getStepContent(activeStep)}
           <div>
             {activeStep == 2 ? (

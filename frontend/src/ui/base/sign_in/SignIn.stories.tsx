@@ -2,6 +2,7 @@ import React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import SignIn, { SignInProps } from "./SignIn";
 import SignInStore from "./SignInStore";
+import { action } from "mobx";
 
 export default {
   title: "Authentication/Sign in",

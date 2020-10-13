@@ -19,13 +19,6 @@ const SignUpStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
-  body: {
-    // flexGrow: 1,
-    // display: "flex",
-    // flexDirection: "column",
-    // alignItems: "center",
-    // justifyContent: "space-between",
-  },
 }));
 
 export default SignUpStyles;

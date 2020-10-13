@@ -13,24 +13,20 @@ export default class Store {
   @observable openSignIn: boolean = false;
 
   @action
-  async login() {
+  async signIn() {
     await delay(300);
     runInAction(() => (this.user = { displayName: "Winston", id: 1 }));
   }
 
   @action
-  logout() {
+  signOut() {
     this.user = undefined;
   }
 
   @action
-  toggleSignUpModal(openSignUp?: boolean) {
-    this.openSignUp = openSignUp ? openSignUp : !this.openSignUp;
-  }
-
-  @action
-  toggleSignInModal(openSignIn?: boolean) {
-    this.openSignIn = openSignIn ? openSignIn : !this.openSignIn;
+  async signUp() {
+    await delay(300);
+    runInAction(() => (this.user = { displayName: "Winston", id: 1 }));
   }
 
   constructor() {
