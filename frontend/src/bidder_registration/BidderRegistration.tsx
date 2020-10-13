@@ -35,19 +35,15 @@ const Transition = React.forwardRef(function Transition(
 export const BidderRegistration = observer(
   ({
     store,
-    currentBid,
     listingId,
   }: {
     store: BidderRegistrationStore;
-    currentBid: number;
     listingId: number;
   }) => {
     const classes = bidderRegistrationStyle();
     const [activeStep, setActiveStep] = React.useState(0);
     const [openModal, setOpenModal] = React.useState(false);
-    const canProceedStep0 = computed(
-      () => store.agreeToTerms && store.initialBid > currentBid
-    );
+    const canProceedStep0 = computed(() => store.agreeToTerms);
     const canProceedStep1 = computed(
       () =>
         store.cardNumber &&
@@ -73,7 +69,7 @@ export const BidderRegistration = observer(
     const getStepContent = (stepIndex: number) => {
       switch (stepIndex) {
         case 0:
-          return <InitialBidStep store={store} currentBid={currentBid} />;
+          return <InitialBidStep store={store} />;
         case 1:
           return <PaymentStep store={store} />;
         case 2:

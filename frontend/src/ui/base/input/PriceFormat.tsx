@@ -21,7 +21,13 @@ const PriceInput = (props: NumberFormatCustomProps & InputProps) => {
       value={value}
       onValueChange={(values) => {
         setValue(values.value);
-        runInAction(() => (store[name] = values.value));
+        runInAction(
+          () =>
+            (store[name] =
+              typeof store[name] === "number"
+                ? parseInt(values.value)
+                : values.value)
+        );
       }}
       thousandSeparator
       decimalScale={0}

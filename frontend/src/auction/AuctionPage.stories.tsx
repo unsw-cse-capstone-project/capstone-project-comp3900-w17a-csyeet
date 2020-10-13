@@ -5,9 +5,10 @@ import mainImage from "../images/propertyMain.jpg";
 import { BiddingBox, BiddingBoxStore } from "./bidding_box/BiddingBox";
 import { action } from "@storybook/addon-actions";
 import { BidderTag } from "../ui/base/bidder_tag/BidderTag";
-import { Bid, BidsList } from "./bids_list/BidsList";
+import { BidsList } from "./bids_list/BidsList";
 import { BiddersList } from "./bidders_list/BiddersList";
 import { createFakeAddress } from "../ui/util/helper";
+import { Bid } from "../ui/util/types/bid";
 
 export default {
   title: "auction/auctionPage",
@@ -30,24 +31,31 @@ export default {
 
 let bids: Bid[] = [
   {
-    value: { price: 500000, state: "reserve_met" },
-    bidder: 1234,
-    time: new Date(),
+    bid: 500000,
+    bidder_id: 1234,
+    listing_id: 1,
+    submitted: new Date(),
   },
 ];
 
 for (let i = 0; i < 3; i++) {
   bids.push({
-    value: { price: 500000 - (i + 1) * 10000, state: "reserve_not_met" },
-    bidder: 1230 + i,
-    time: new Date(),
+    bid: 500000 - (i + 1) * 10000,
+    bidder_id: 1230 + i,
+    listing_id: 1,
+    submitted: new Date(),
   });
 }
 
 const Template: Story<{
-  auctionDate: string;
+  auction_start: string;
+  auction_end: string;
   enableBidding: boolean;
-}> = (props: { auctionDate: string; enableBidding: boolean }) => {
+}> = (props: {
+  auction_start: string;
+  enableBidding: boolean;
+  auction_end: string;
+}) => {
   const store = new BiddingBoxStore();
   const BiddingBoxWrapper = () => (
     <BiddingBox
@@ -55,7 +63,7 @@ const Template: Story<{
       currentBid={500000}
       enableBidding={props.enableBidding}
       isAuctionClosed={
-        new Date(props.auctionDate).getTime() - new Date().getTime() <= 0
+        new Date(props.auction_start).getTime() - new Date().getTime() <= 0
       }
       bidState="reserve_met"
       BidderTag={() => <BidderTag bidderNumber={1234} />}
@@ -65,10 +73,11 @@ const Template: Story<{
   return (
     <AuctionPage
       address={createFakeAddress()}
-      auctionDate={new Date(props.auctionDate)}
+      auction_start={new Date(props.auction_start)}
+      auction_end={new Date(props.auction_end)}
       mainImage={mainImage}
       BiddingBox={BiddingBoxWrapper}
-      BidsList={() => <BidsList bids={bids} />}
+      BidsList={() => <BidsList bids={bids} reserve_price={490000} />}
       BiddersList={() => (
         <BiddersList bidders={[1234, 1233, 1232, 1231]} currentUser={1234} />
       )}

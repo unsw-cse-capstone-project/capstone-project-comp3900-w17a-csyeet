@@ -7,7 +7,8 @@ export const initialBidStepStyle = makeStyles((theme: Theme) =>
       flexDirection: "column",
       alignItems: "center",
       height: "100%",
-      justifyContent: "center",
+      // justifyContent: "center",
+      paddingTop: theme.spacing(3),
       minHeight: theme.spacing(50),
     },
     currentBid: {

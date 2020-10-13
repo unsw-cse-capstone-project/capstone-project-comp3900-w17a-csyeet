@@ -1,5 +1,5 @@
 import * as React from "react";
-import { observable, action } from "mobx";
+import { observable, action, runInAction } from "mobx";
 import {
   Card,
   Typography,
@@ -8,24 +8,20 @@ import {
   InputLabel,
   OutlinedInput,
   Button,
+  FormHelperText,
 } from "@material-ui/core";
 import {
   BidPriceWithBidderTag,
   BidPrice,
   BidPriceState,
 } from "../../ui/base/bid_price/BidPrice";
-import { observer } from "mobx-react";
 import { createPriceInput } from "../../ui/base/input/PriceFormat";
 import { BiddingBoxStyle } from "./BiddingBox.css";
+import { observer } from "mobx-react";
 
 export class BiddingBoxStore {
   @observable
-  biddingPrice: number;
-
-  constructor() {
-    console.log("cosntructing");
-    this.biddingPrice = 0;
-  }
+  biddingPrice: number = 0;
 }
 
 export const BiddingBox = observer(
@@ -40,27 +36,43 @@ export const BiddingBox = observer(
     style,
   }: {
     store: BiddingBoxStore;
-    currentBid: number;
+    currentBid?: number;
     bidState: BidPriceState;
-    BidderTag: React.ComponentType;
+    BidderTag?: React.ComponentType;
     isAuctionClosed?: boolean;
     enableBidding?: boolean;
     onPlaceBid(price: number): void;
     style?: React.CSSProperties;
   }) => {
+    const [cBid, setCBid] = React.useState(currentBid);
+    const [error, setError] = React.useState("");
     const classes = BiddingBoxStyle();
-    const onChange = action((value: string) => {
-      store.biddingPrice = parseInt(value);
-    });
     const InputComponent = createPriceInput({
       store,
       name: "biddingPrice",
     });
-    const onClick = () => {
-      onPlaceBid(store.biddingPrice);
-    };
+    const onClick = action(() => {
+      if (cBid === undefined) {
+        return;
+      }
+      console.log(
+        store.biddingPrice,
+        cBid,
+        store.biddingPrice <= cBid,
+        typeof store.biddingPrice,
+        typeof cBid
+      );
+      if (store.biddingPrice <= cBid) {
+        setError("Bid must be higher than current bid");
+      } else {
+        onPlaceBid(store.biddingPrice);
+        setCBid(store.biddingPrice);
+        runInAction(() => (store.biddingPrice = 0));
+        setError("");
+      }
+    });
     const BidPriceWrapper = () => (
-      <BidPrice price={currentBid} state={bidState} />
+      <BidPrice bid={currentBid} state={bidState} />
     );
     return (
       <Card variant="outlined" style={style}>
@@ -69,12 +81,16 @@ export const BiddingBox = observer(
             {isAuctionClosed ? "Final Bid" : "Current Bid"}
           </Typography>
           <div className={classes.tagContainer}>
-            <BidPriceWithBidderTag
-              BidPrice={BidPriceWrapper}
-              BidderTag={BidderTag}
-            />
+            {!currentBid || !BidderTag ? (
+              <BidPrice state="current" />
+            ) : (
+              <BidPriceWithBidderTag
+                BidPrice={BidPriceWrapper}
+                BidderTag={BidderTag}
+              />
+            )}
           </div>
-          {enableBidding && !isAuctionClosed && (
+          {enableBidding && !isAuctionClosed && currentBid && (
             <div className={classes.inputContainer}>
               <FormControl fullWidth variant="outlined">
                 <InputLabel htmlFor="outlined-adornment-amount">
@@ -100,6 +116,7 @@ export const BiddingBox = observer(
               </Button>
             </div>
           )}
+          {error !== "" && <FormHelperText>{error}</FormHelperText>}
         </div>
       </Card>
     );
