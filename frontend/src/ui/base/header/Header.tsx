@@ -3,11 +3,12 @@ import { observer } from "mobx-react";
 import { action } from "mobx";
 import Button from "@material-ui/core/Button";
 import Logo from "../logo/Logo";
-import SignInStore from "../../../sign_in/SignInStore";
-import SignIn from "../../../sign_in/SignIn";
-import SignUpStore from "../../../sign_up/SignUpStore";
-import SignUp from "../../../sign_up/SignUp";
-import { AuthConsumer } from "./AuthContext";
+import SignInStore from "../sign_in/SignInStore";
+import SignUpStore from "../sign_up/SignUpStore";
+import SignIn from "../sign_in/SignIn";
+import SignUp from "../sign_up/SignUp";
+import { useStore } from "../../../AuthContext";
+import { useHistory } from "react-router-dom";
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -24,48 +25,50 @@ const Header: React.FC<HeaderProps> = observer(
       signUpStore.open = true;
     });
 
+    const store = useStore();
+    if (!store) throw Error("Store should never be null");
+    const history = useHistory();
     return (
-      <AuthConsumer>
-        {({ isAuth, userSignIn, userSignOut, userSignUp }) => (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              verticalAlign: "center",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          verticalAlign: "center",
+        }}
+      >
+        <Logo size="small" />
+        {!store.user ? (
+          <div>
+            <Button size="small" onClick={openSignInForm}>
+              Log In
+            </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              color="primary"
+              style={{ margin: "15px" }}
+              onClick={openSignUpForm}
+            >
+              Sign Up
+            </Button>
+          </div>
+        ) : (
+          <Button
+            size="small"
+            variant="outlined"
+            color="primary"
+            style={{ margin: "15px" }}
+            onClick={() => {
+              store.signOut();
+              history.push("/");
             }}
           >
-            <Logo size="small" />
-            {!isAuth ? (
-              <div>
-                <Button size="small" onClick={openSignInForm}>
-                  Log In
-                </Button>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  color="primary"
-                  style={{ margin: "15px" }}
-                  onClick={openSignUpForm}
-                >
-                  Sign Up
-                </Button>
-              </div>
-            ) : (
-              <Button
-                size="small"
-                variant="outlined"
-                color="primary"
-                style={{ margin: "15px" }}
-                onClick={userSignOut}
-              >
-                Sign out
-              </Button>
-            )}
-            <SignIn store={signInStore} onSubmit={userSignIn} />
-            <SignUp store={signUpStore} onSubmit={userSignUp} />
-          </div>
+            Sign out
+          </Button>
         )}
-      </AuthConsumer>
+        <SignIn store={signInStore} onSubmit={() => store.signIn} />
+        <SignUp store={signUpStore} onSubmit={() => store.signUp} />
+      </div>
     );
   }
 );

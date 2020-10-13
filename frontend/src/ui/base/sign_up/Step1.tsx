@@ -4,8 +4,8 @@ import { action } from "mobx";
 import { Grid } from "@material-ui/core";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
 import SignUpStore from "./SignUpStore";
-import TextFieldWrapper from "../ui/base/textfield_wrapper/TextFieldWrapper";
-import SelectWrapper from "../ui/base/select_wrapper/SelectWrapper";
+import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
+import SelectWrapper from "../select_wrapper/SelectWrapper";
 
 // import ContextDetailStyles from "./contactDetailForm.css";
 const AUSstates = ["NSW", "ACT", "NT", "SA", "QLD", "WA", "TAS"];

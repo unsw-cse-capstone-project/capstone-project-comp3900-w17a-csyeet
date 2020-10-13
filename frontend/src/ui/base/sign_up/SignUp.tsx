@@ -13,7 +13,7 @@ import SignUpStore from "./SignUpStore";
 import Step0 from "./Step0";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
-import ModalWrapper from "../ui/base/modal_wrapper/ModalWrapper";
+import ModalWrapper from "../modal_wrapper/ModalWrapper";
 import SignUpStyles from "./SignUp.css";
 
 export interface SignUpProps {
@@ -60,11 +60,6 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
   };
 
   const disableNext = () => {
-    console.log("To disable??");
-    console.log(store.usernm != "");
-    console.log(store.email != "");
-    console.log(store.passwd != "");
-    console.log(store.passwd == store.passwdVerify);
     switch (activeStep) {
       case 0:
         return !canProceedStep0.get();
@@ -79,22 +74,22 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
 
   const canProceedStep0 = computed(
     () =>
-      store.usernm != "" &&
-      store.email != "" &&
-      store.passwd != "" &&
-      store.passwd == store.passwdVerify
+      store.usernm !== "" &&
+      store.email !== "" &&
+      store.passwd !== "" &&
+      store.passwd === store.passwdVerify
   );
 
   const canProceedStep1 = computed(
     () =>
       store.phoneNo.length === 10 &&
-      store.addressLine.length != 0 &&
-      store.suburb.length > 0 &&
-      store.postcode.length > 0 &&
-      store.state != "none"
+      store.addressLine !== "" &&
+      store.suburb !== "" &&
+      store.postcode !== "" &&
+      store.state !== "none"
   );
 
-  const canProceedStep2 = computed(() => store.success == true);
+  const canProceedStep2 = computed(() => store.success === true);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -140,10 +135,10 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
         ))}
       </Stepper>
       {activeStep < steps.length && (
-        <div className={classes.body}>
+        <div>
           {getStepContent(activeStep)}
           <div>
-            {activeStep == 2 ? (
+            {activeStep === 2 ? (
               <Button variant="contained" color="primary" onClick={closeModal}>
                 Close
               </Button>
@@ -164,8 +159,8 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
                   }
                   disabled={false}
                 >
-                  {activeStep == 0 && "Next"}
-                  {activeStep == 1 && "Sign Up"}
+                  {activeStep === 0 && "Next"}
+                  {activeStep === 1 && "Sign Up"}
                 </Button>
               </>
             )}

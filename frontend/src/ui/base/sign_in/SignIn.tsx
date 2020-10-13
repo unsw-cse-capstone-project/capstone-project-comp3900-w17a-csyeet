@@ -1,12 +1,12 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { action } from "mobx";
-import { Button, Typography, IconButton } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import SignInStore from "./SignInStore";
-import TextFieldWrapper from "../ui/base/textfield_wrapper/TextFieldWrapper";
-import ModalWrapper from "../ui/base/modal_wrapper/ModalWrapper";
-import PasswordInput from "../ui/base/password_input/PasswordInput";
+import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
+import ModalWrapper from "../modal_wrapper/ModalWrapper";
+import PasswordInput from "../password_input/PasswordInput";
 // import SignInFormStyles from "./SignInForm.css";
 
 const success = (

@@ -4,8 +4,8 @@ import { action } from "mobx";
 import SignUpStore from "./SignUpStore";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
-import TextFieldWrapper from "../ui/base/textfield_wrapper/TextFieldWrapper";
-import PasswordInput from "../ui/base/password_input/PasswordInput";
+import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
+import PasswordInput from "../password_input/PasswordInput";
 
 const Step0: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
   const onChange = action((value: string, field: string) => {

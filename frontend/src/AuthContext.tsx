@@ -12,25 +12,24 @@ export default class Store {
   @observable openSignUp: boolean = false;
   @observable openSignIn: boolean = false;
 
+  // (Jenn TOOD: Hook API call)
   @action
-  async login() {
+  async signIn() {
     await delay(300);
     runInAction(() => (this.user = { displayName: "Winston", id: 1 }));
   }
 
+  // (Jenn TOOD: Hook API call)
   @action
-  logout() {
+  async signUp() {
+    await delay(300);
+    runInAction(() => (this.user = { displayName: "Winston", id: 1 }));
+  }
+
+  // (Jenn TOOD: Hook API call)
+  @action
+  signOut() {
     this.user = undefined;
-  }
-
-  @action
-  toggleSignUpModal(openSignUp?: boolean) {
-    this.openSignUp = openSignUp ? openSignUp : !this.openSignUp;
-  }
-
-  @action
-  toggleSignInModal(openSignIn?: boolean) {
-    this.openSignIn = openSignIn ? openSignIn : !this.openSignIn;
   }
 
   constructor() {
