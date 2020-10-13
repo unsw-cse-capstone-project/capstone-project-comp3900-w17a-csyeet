@@ -42,7 +42,7 @@ def get(q: Optional[str] = Query('', alias='location'), session: Session = Depen
         Listing.postcode.ilike(q),
         Listing.state.ilike(q),
         Listing.country.ilike(q)
-        )).all()
+    )).all()
 
     responses = [map_listing_to_response(r) for r in results]
     return { 'results': responses }
