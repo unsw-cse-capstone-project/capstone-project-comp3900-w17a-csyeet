@@ -77,3 +77,9 @@ class CreateListingRequest(ListingBase):
 class ListingResponse(ListingBase):
     id: str
     owner: UserResponse
+
+class ListingSearchResponse(BaseModel):
+    results: List[ListingResponse]
+
+    class Config:
+        orm_mode = True
