@@ -12,6 +12,6 @@ let store = new SignUpStore();
 const Template: Story<SignUpProps> = (args) => <SignUp {...args} />;
 export const Overview = Template.bind({});
 Overview.args = {
-  onSubmit: () => {}, // (Jenn) TODO: action() magic
+  onSubmit: action("onSubmit"),
   store: store,
 };
