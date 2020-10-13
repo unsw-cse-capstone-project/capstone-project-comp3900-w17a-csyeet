@@ -61,10 +61,6 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
 
   const disableNext = () => {
     console.log("To disable??");
-    console.log(store.usernm !== "");
-    console.log(store.email !== "");
-    console.log(store.passwd !== "");
-    console.log(store.passwd === store.passwdVerify);
     switch (activeStep) {
       case 0:
         return !canProceedStep0.get();

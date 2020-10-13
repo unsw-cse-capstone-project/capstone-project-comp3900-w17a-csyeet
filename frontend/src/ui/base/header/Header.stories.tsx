@@ -4,6 +4,7 @@ import Header from "./Header";
 import SignInStore from "../sign_in/SignInStore";
 import SignUpStore from "../sign_up/SignUpStore";
 import { AuthProvider } from "../../../AuthContext";
+
 export default {
   title: "ui/base/Header",
   component: Header,
