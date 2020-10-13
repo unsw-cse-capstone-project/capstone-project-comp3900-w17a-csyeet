@@ -41,7 +41,7 @@ def login(req: LoginRequest, response: Response, session: Session = Depends(lamb
         raise HTTPException(401, detail='Invalid password')
 
     token = jwt.encode({"sub": req.email}, secret_key)
-    response.set_cookie(cookie_name, token.decode())
+    response.set_cookie(cookie_name, token.decode(), httponly=True)
 
 
 def get_current_user(token: str = Depends(cookie_security), session: Session = Depends(lambda: db.session)):
