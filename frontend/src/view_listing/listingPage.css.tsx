@@ -11,7 +11,7 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
       width: "fit-content"
     },
     header: {
-      margin: theme.spacing(4, 0, 0, 0)
+      marginTop: theme.spacing(4)
     },
     divider: {
       border: theme.palette.grey[700] + " solid 1px ",
