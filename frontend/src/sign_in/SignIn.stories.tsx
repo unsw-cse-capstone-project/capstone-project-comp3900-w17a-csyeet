@@ -13,6 +13,6 @@ const Template: Story<SignInProps> = (args) => <SignIn {...args} />;
 let store = new SignInStore();
 export const Overview = Template.bind({});
 Overview.args = {
-  onSubmit: () => {}, // (Jenn) TODO: action() magic
+  onSubmit: action("onSubmit"),
   store: store,
 };
