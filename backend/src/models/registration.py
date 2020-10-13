@@ -16,8 +16,8 @@ class Registration(Base):
     expiry: datetime = Column(DateTime, nullable=False)
     ccv: str = Column(String(), nullable=False)
 
-    user = relationship('User')
-    listing = relationship('Listing')
+    user = relationship('User', back_populates='registrations')
+    listing = relationship('Listing', back_populates='bidders')
 
     def __repr__(self):
-        return f"<User: {bidder.name} registered to bid for Listing: {listing.title}>"
+        return f"<User: {self.user.name} registered to bid for Listing: {self.listing.title}>"
