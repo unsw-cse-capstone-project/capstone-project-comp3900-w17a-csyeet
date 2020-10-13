@@ -8,7 +8,7 @@ import SignUpStore from "../sign_up/SignUpStore";
 import SignIn from "../sign_in/SignIn";
 import SignUp from "../sign_up/SignUp";
 import { useStore } from "../../../AuthContext";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -25,6 +25,7 @@ const Header: React.FC<HeaderProps> = observer(
       signUpStore.open = true;
     });
 
+    const location = useLocation();
     const store = useStore();
     if (!store) throw Error("Store should never be null");
     const history = useHistory();
@@ -36,7 +37,7 @@ const Header: React.FC<HeaderProps> = observer(
           verticalAlign: "center",
         }}
       >
-        <Logo size="small" />
+        {location.pathname === "/" ? <div></div> : <Logo size="small" />}
         {!store.user ? (
           <div>
             <Button size="small" onClick={openSignInForm}>

@@ -15,8 +15,8 @@ const Logo: React.FC<LogoProps> = ({ size = "large", onClick }) => {
           <img
             alt="logo"
             style={{
-              height: "60px",
-              width: "120px",
+              height: "100px",
+              width: "210px",
             }}
             src={logo}
           />
