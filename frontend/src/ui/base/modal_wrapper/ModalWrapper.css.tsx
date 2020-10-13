@@ -6,6 +6,7 @@ const ModalStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      zIndex: 1,
     },
     paper: {
       backgroundColor: theme.palette.background.paper,
