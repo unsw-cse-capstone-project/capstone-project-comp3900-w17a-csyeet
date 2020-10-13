@@ -10,8 +10,13 @@ export default {
 const data = ["1", "2", "3", "4"];
 export const Overview = () => (
   <SelectWrapper
+<<<<<<< HEAD
     label="Label" // (Jenn) TODO: Label overflows
     field="name in store"
+=======
+    field="name in store"
+    label="Label" // (Jenn) TODO: Label overflows
+>>>>>>> 70c2d52c009a38022b19cd0cce5c16e180de6a28
     data={data}
     onChange={() => {}} // (Jenn) TODO: Action() magic
   />

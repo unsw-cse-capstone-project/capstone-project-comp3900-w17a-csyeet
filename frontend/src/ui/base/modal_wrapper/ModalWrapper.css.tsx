@@ -6,7 +6,10 @@ const ModalStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+<<<<<<< HEAD
       zIndex: 1,
+=======
+>>>>>>> 70c2d52c009a38022b19cd0cce5c16e180de6a28
     },
     paper: {
       backgroundColor: theme.palette.background.paper,

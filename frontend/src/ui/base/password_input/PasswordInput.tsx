@@ -1,4 +1,8 @@
 import React from "react";
+<<<<<<< HEAD
+=======
+import { InputAdornment, IconButton } from "@material-ui/core";
+>>>>>>> 70c2d52c009a38022b19cd0cce5c16e180de6a28
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
