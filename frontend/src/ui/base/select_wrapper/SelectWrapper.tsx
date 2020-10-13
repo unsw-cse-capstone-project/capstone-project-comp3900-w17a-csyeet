@@ -8,7 +8,7 @@ export interface SelectWrapperProps {
   label: string;
   field: string;
   data: Array<string>;
-  value: string;
+  value?: string;
   onChange: (value: string, field: string) => void;
 }
 const SelectWrapper: React.FC<SelectWrapperProps> = ({

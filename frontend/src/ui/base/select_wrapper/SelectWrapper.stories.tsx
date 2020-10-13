@@ -1,6 +1,7 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
 import SelectWrapper from "./SelectWrapper";
+import { action } from "mobx";
 
 export default {
   title: "Form Components/Select",
@@ -13,6 +14,6 @@ export const Overview = () => (
     field="name in store"
     label="Label" // (Jenn) TODO: Label overflows
     data={data}
-    onChange={() => {}} // (Jenn) TODO: Action() magic
+    onChange={action("onChange")}
   />
 );
