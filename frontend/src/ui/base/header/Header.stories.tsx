@@ -1,12 +1,11 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
 import Header from "./Header";
+import { AuthProvider } from "../../../AuthContext";
 import SignInStore from "../sign_in/SignInStore";
 import SignUpStore from "../sign_up/SignUpStore";
-import { AuthProvider } from "../../../AuthContext";
-
 export default {
-  title: "ui/base/Header",
+  title: "ui/base/header",
   component: Header,
 } as Meta;
 

@@ -15,26 +15,27 @@ const success = (
 );
 
 export interface SignInProps {
-  onSubmit: (email: string, passwd: string) => void;
+  onSubmit: (email: string, passwd: string) => void; // (Jenn) TODO: Update with API call
   store: SignInStore;
-  isOpen?: boolean
 }
 
-const SignIn: React.FC<SignInProps> = observer(({ onSubmit, store, isOpen }) => {
+const SignIn: React.FC<SignInProps> = observer(({ onSubmit, store }) => {
   const onChange = action((value: string, name: string) => {
     (store as any)[name] = value;
   });
 
   const closeModal = action(() => {
     store.open = false;
+    store.success = false;
   });
+
+  // (Jenn) Temporary Function
+  const setSuccess = action(() => {
+    store.success = true;
+  });
+
   return (
-    <ModalWrapper
-      open={isOpen !== undefined ? isOpen: store.open}
-      onClose={() => {
-        closeModal();
-      }}
-    >
+    <ModalWrapper open={store.open} onClose={closeModal}>
       <div className="formContainer">
         {store.success ? (
           <>{success} </>
