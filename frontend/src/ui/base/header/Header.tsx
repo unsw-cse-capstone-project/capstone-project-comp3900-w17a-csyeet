@@ -1,13 +1,14 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { action } from "mobx";
+import { useHistory, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Logo from "../logo/Logo";
-import SignInStore from "../../../sign_in/SignInStore";
-import SignIn from "../../../sign_in/SignIn";
-import SignUpStore from "../../../sign_up/SignUpStore";
-import SignUp from "../../../sign_up/SignUp";
-import { AuthConsumer } from "./AuthContext";
+import SignInStore from "../sign_in/SignInStore";
+import SignIn from "../sign_in/SignIn";
+import SignUpStore from "../sign_up/SignUpStore";
+import SignUp from "../sign_up/SignUp";
+import { AuthContext } from "../../../AuthContext";
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -16,56 +17,58 @@ export interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = observer(
   ({ signInStore, signUpStore }) => {
-    const openSignInForm = action(() => {
+    const store = React.useContext(AuthContext);
+    const history = useHistory();
+    if (!store) throw Error("Store should never be null");
+    const openSignUpModal = action(() => {
+      signUpStore.open = true;
+    });
+    const openSignInModal = action(() => {
       signInStore.open = true;
     });
 
-    const openSignUpForm = action(() => {
-      signUpStore.open = true;
-    });
-
+    const location = useLocation();
     return (
-      <AuthConsumer>
-        {({ isAuth, userSignIn, userSignOut, userSignUp }) => (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              verticalAlign: "center",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          verticalAlign: "center",
+        }}
+      >
+        {location.pathname === "/" ? <div></div> : <Logo size="small" />}
+        {!store.user ? (
+          <div>
+            <Button size="small" onClick={openSignInModal}>
+              Log In
+            </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              color="primary"
+              style={{ margin: "15px" }}
+              onClick={openSignUpModal}
+            >
+              Sign Up
+            </Button>
+          </div>
+        ) : (
+          <Button
+            size="small"
+            variant="outlined"
+            color="primary"
+            style={{ margin: "15px" }}
+            onClick={() => {
+              store.signOut();
+              history.push("/");
             }}
           >
-            <Logo size="small" />
-            {!isAuth ? (
-              <div>
-                <Button size="small" onClick={openSignInForm}>
-                  Log In
-                </Button>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  color="primary"
-                  style={{ margin: "15px" }}
-                  onClick={openSignUpForm}
-                >
-                  Sign Up
-                </Button>
-              </div>
-            ) : (
-              <Button
-                size="small"
-                variant="outlined"
-                color="primary"
-                style={{ margin: "15px" }}
-                onClick={userSignOut}
-              >
-                Sign out
-              </Button>
-            )}
-            <SignIn store={signInStore} onSubmit={userSignIn} />
-            <SignUp store={signUpStore} onSubmit={userSignUp} />
-          </div>
+            Sign out
+          </Button>
         )}
-      </AuthConsumer>
+        <SignIn store={signInStore} onSubmit={() => store.signIn()} />
+        <SignUp store={signUpStore} onSubmit={() => store.signUp()} />
+      </div>
     );
   }
 );

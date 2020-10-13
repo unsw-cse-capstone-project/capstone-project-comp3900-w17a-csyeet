@@ -6,12 +6,9 @@ import {
   Route,
   Switch,
   BrowserRouter,
-  Link,
-  useHistory,
 } from "react-router-dom";
-import { AuthProvider, AuthContext, useStore } from "./AuthContext";
+import { AuthProvider, useStore } from "./AuthContext";
 import { observer } from "mobx-react";
-import { Button, Dialog } from "@material-ui/core";
 import { SearchPage } from "./search/main";
 import { StarredPage } from "./profile/starred/main";
 import { ListingsPage } from "./profile/listings/main";
@@ -23,94 +20,39 @@ import { BidderRegistrationPage } from "./bidder_registration/main";
 import { AuctionPage } from "./auction/main";
 import { HomePage } from "./home/main";
 import { ViewListingPage } from "./view_listing/main";
+import Header from "./ui/base/header/Header";
+import SignInStore from "./ui/base/sign_in/SignInStore";
+import SignIn from "./ui/base/sign_in/SignIn";
+import SignUpStore from "./ui/base/sign_up/SignUpStore";
 import { action } from "mobx";
 
-const Header = observer(() => {
-  const store = React.useContext(AuthContext);
-  const history = useHistory();
-  if (!store) throw Error("Store shouldn't be null");
-  return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <h3>
-        <Link to="/"> HOME </Link>
-      </h3>
-      {store.user ? (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            store.logout();
-            history.push("/");
-          }}
-        >
-          logout
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => store.toggleSignInModal()}
-        >
-          login
-        </Button>
-      )}
-      <Dialog
-        onClose={() => store.toggleSignInModal()}
-        aria-labelledby="simple-dialog-title"
-        open={store.openSignIn}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={action(() => {
-            store.login();
-            store.toggleSignInModal();
-          })}
-        >
-          Login
-        </Button>
-      </Dialog>
-    </div>
-  );
-});
-
 const ProtectedComponent = observer(
-  ({ Component }: { Component: React.ComponentType }) => {
+  ({
+    Component,
+    signInStore,
+  }: {
+    Component: React.ComponentType;
+    signInStore: SignInStore;
+  }) => {
     const store = useStore();
     if (!store) throw Error("Store shouldn't be null");
-    React.useEffect(() => {
-      if (!store.user) {
-        store.toggleSignInModal();
-      }
-    }, []);
     if (!store.user) {
-      return (
-        <Dialog aria-labelledby="simple-dialog-title" open={store.openSignIn}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={action(() => {
-              store.login();
-              store.toggleSignInModal();
-            })}
-          >
-            Login
-          </Button>
-        </Dialog>
-      );
+      action(() => (signInStore.open = true));
+      return <SignIn isOpen={true} store={signInStore} onSubmit={() => store.signIn()} />;
     }
     return <Component />;
   }
 );
 
 const ErrorPage = () => <div>404 Page not found</div>;
-
+const signInStore = new SignInStore();
+const signUpStore = new SignUpStore();
 ReactDOM.render(
   <React.StrictMode>
     <div className="page">
       <BrowserRouter>
         <AuthProvider>
-          <Header />
+          <Header signInStore={signInStore} signUpStore={signUpStore} />
           <div className="content" id="content">
             <Switch>
               <Route path="/search" component={SearchPage} />
@@ -119,6 +61,7 @@ ReactDOM.render(
                 render={(props) => (
                   <ProtectedComponent
                     {...props}
+                    signInStore={signInStore}
                     Component={BidderRegistrationPage}
                   />
                 )}
@@ -128,38 +71,62 @@ ReactDOM.render(
               <Route
                 path="/add"
                 render={(props) => (
-                  <ProtectedComponent {...props} Component={AddListingPage} />
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={AddListingPage}
+                  />
                 )}
               />
               {/* Profile Pages */}
               <Route
                 path="/profile/starred"
                 render={(props) => (
-                  <ProtectedComponent {...props} Component={StarredPage} />
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={StarredPage}
+                  />
                 )}
               />
               <Route
                 path="/profile/listings"
                 render={(props) => (
-                  <ProtectedComponent {...props} Component={ListingsPage} />
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={ListingsPage}
+                  />
                 )}
               />
               <Route
                 path="/profile/details"
                 render={(props) => (
-                  <ProtectedComponent {...props} Component={DetailsPage} />
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={DetailsPage}
+                  />
                 )}
               />
               <Route
                 path="/profile/bids"
                 render={(props) => (
-                  <ProtectedComponent {...props} Component={BidsPage} />
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={BidsPage}
+                  />
                 )}
               />
               <Route
                 path="/profile/about"
                 render={(props) => (
-                  <ProtectedComponent {...props} Component={AboutPage} />
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={AboutPage}
+                  />
                 )}
               />
               <Route exact path="/" component={HomePage} />
