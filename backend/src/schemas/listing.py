@@ -79,5 +79,8 @@ class ListingResponse(ListingBase):
     id: str
     owner: UserResponse
 
+class ListingSearchResponse(BaseModel):
+    results: List[ListingResponse]
+
 class AuctionResponse(BaseModel):
     bidders: List[RegistrationResponse]

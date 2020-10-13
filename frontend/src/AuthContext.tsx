@@ -1,26 +1,32 @@
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import React from "react";
-export type AuthContextType = {
-  isAuth: boolean;
-  login(): void;
-  logout(): void;
-};
+import { delay } from "./ui/util/helper";
+
 export type User = {
   displayName: string | undefined;
-  isAuth: boolean;
+  id: number;
 };
 
 export default class Store {
-  @observable isAuth: boolean = false;
+  @observable user?: User;
+  @observable openSignUp: boolean = false;
+  @observable openSignIn: boolean = false;
 
   @action
-  login() {
-    this.isAuth = true;
+  async signIn() {
+    await delay(300);
+    runInAction(() => (this.user = { displayName: "Winston", id: 1 }));
   }
 
   @action
-  logout() {
-    this.isAuth = false;
+  signOut() {
+    this.user = undefined;
+  }
+
+  @action
+  async signUp() {
+    await delay(300);
+    runInAction(() => (this.user = { displayName: "Winston", id: 1 }));
   }
 
   constructor() {

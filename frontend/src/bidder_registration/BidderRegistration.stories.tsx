@@ -3,7 +3,6 @@ import { Meta } from "@storybook/react/types-6-0";
 import { BidderRegistrationStore } from "./BidderRegistrationPresenter";
 import { BidderRegistration } from "./BidderRegistration";
 import { createFakeListing } from "../ui/util/fakes/listing";
-import { BidderRegistrationWrapper } from "./main";
 
 export default {
   title: "bidder registration/bidderRego",
@@ -14,11 +13,7 @@ export const RegoOnly = () => {
   const store = new BidderRegistrationStore();
   return (
     <div style={{ height: "800px" }}>
-      <BidderRegistration
-        store={store}
-        currentBid={500000}
-        listingId={createFakeListing().id}
-      />
+      <BidderRegistration store={store} listingId={createFakeListing().id} />
     </div>
   );
 };

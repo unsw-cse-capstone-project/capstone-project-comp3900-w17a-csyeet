@@ -1,9 +1,11 @@
 from dataclasses import asdict
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from fastapi_sqlalchemy import db
-from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, AuctionResponse
+from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, ListingSearchResponse, AuctionResponse
 from ..models import Listing
+from typing import Optional
 
 router = APIRouter()
 
@@ -32,18 +34,7 @@ def get(id: int, session: Session = Depends(lambda: db.session)):
             status_code=404, detail="Requested listing could not be found")
     return map_listing_to_response(listing)
 
-@router.get('/{id}/auction', response_model=AuctionResponse)
-def get_auction_info(id: int, session: Session = Depends(lambda: db.session)):
-    ''' returns auction information for a listing by its id '''
-    listing = session.query(Listing).get(id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
-    bidders = [asdict(bidder) for bidder in listing.bidders]
-    return { 'bidders': bidders }
-
-# TODO: maybe move these to helpers.py or common/helpers.py or sth
-
+# TODO: move these to helpers.py or common/helpers.py or sth
 
 def map_listing_to_response(listing: Listing) -> ListingResponse:
     response = asdict(listing)
@@ -53,7 +44,7 @@ def map_listing_to_response(listing: Listing) -> ListingResponse:
         if response[field]:
             response['features'].append(feature)
         response.pop(field)
-    return response
+    return response  # type: ignore
 
 
 def get_field_for_feature(feature: Feature) -> str:

@@ -1,19 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-// import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import {
   Route,
   Switch,
   BrowserRouter,
-  RouteProps,
-  Redirect,
-  Link,
 } from "react-router-dom";
-import { AuthProvider, AuthContext } from "./AuthContext";
+import { AuthProvider, useStore } from "./AuthContext";
 import { observer } from "mobx-react";
-import { Button } from "@material-ui/core";
 import { SearchPage } from "./search/main";
 import { StarredPage } from "./profile/starred/main";
 import { ListingsPage } from "./profile/listings/main";
@@ -25,89 +20,115 @@ import { BidderRegistrationPage } from "./bidder_registration/main";
 import { AuctionPage } from "./auction/main";
 import { HomePage } from "./home/main";
 import { ViewListingPage } from "./view_listing/main";
+import Header from "./ui/base/header/Header";
+import SignInStore from "./ui/base/sign_in/SignInStore";
+import SignIn from "./ui/base/sign_in/SignIn";
+import SignUpStore from "./ui/base/sign_up/SignUpStore";
+import { action } from "mobx";
 
-const ProtectedRoute = observer(
+const ProtectedComponent = observer(
   ({
-    component: Component,
-    ...rest
-  }:
-    | RouteProps
-    | {
-        component: React.ComponentType<RouteProps>;
-      }) => {
-    const store = React.useContext(AuthContext);
+    Component,
+    signInStore,
+  }: {
+    Component: React.ComponentType;
+    signInStore: SignInStore;
+  }) => {
+    const store = useStore();
     if (!store) throw Error("Store shouldn't be null");
-    return (
-      <Route
-        render={(props: any) =>
-          store.isAuth ? (
-            Component && <Component {...props} />
-          ) : (
-            <Redirect to="/" />
-          )
-        }
-        {...rest}
-      />
-    );
+    if (!store.user) {
+      action(() => (signInStore.open = true));
+      return <SignIn isOpen={true} store={signInStore} onSubmit={() => store.signIn()} />;
+    }
+    return <Component />;
   }
 );
 
-const Header = observer(() => {
-  const store = React.useContext(AuthContext);
-  if (!store) throw Error("Store shouldn't be null");
-  return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <h3>
-        <Link to="/"> HOME </Link>
-      </h3>
-      {store.isAuth ? (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => store.logout()}
-        >
-          logout
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => store.login()}
-        >
-          login
-        </Button>
-      )}
-    </div>
-  );
-});
-
 const ErrorPage = () => <div>404 Page not found</div>;
-
+const signInStore = new SignInStore();
+const signUpStore = new SignUpStore();
 ReactDOM.render(
   <React.StrictMode>
     <div className="page">
       <BrowserRouter>
         <AuthProvider>
-          <Header />
+          <Header signInStore={signInStore} signUpStore={signUpStore} />
           <div className="content" id="content">
             <Switch>
               <Route path="/search" component={SearchPage} />
-              <ProtectedRoute
+              <Route
                 path="/listing/:id/register"
-                component={BidderRegistrationPage}
+                render={(props) => (
+                  <ProtectedComponent
+                    {...props}
+                    signInStore={signInStore}
+                    Component={BidderRegistrationPage}
+                  />
+                )}
               />
               <Route path="/listing/:id/auction" component={AuctionPage} />
               <Route path="/listing/:id" component={ViewListingPage} />
-              <ProtectedRoute path="/add" component={AddListingPage} />
-              {/* Profile Pages */}
-              <ProtectedRoute path="/profile/starred" component={StarredPage} />
-              <ProtectedRoute
-                path="/profile/listings"
-                component={ListingsPage}
+              <Route
+                path="/add"
+                render={(props) => (
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={AddListingPage}
+                  />
+                )}
               />
-              <ProtectedRoute path="/profile/details" component={DetailsPage} />
-              <ProtectedRoute path="/profile/bids" component={BidsPage} />
-              <ProtectedRoute path="/profile/about" component={AboutPage} />
+              {/* Profile Pages */}
+              <Route
+                path="/profile/starred"
+                render={(props) => (
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={StarredPage}
+                  />
+                )}
+              />
+              <Route
+                path="/profile/listings"
+                render={(props) => (
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={ListingsPage}
+                  />
+                )}
+              />
+              <Route
+                path="/profile/details"
+                render={(props) => (
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={DetailsPage}
+                  />
+                )}
+              />
+              <Route
+                path="/profile/bids"
+                render={(props) => (
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={BidsPage}
+                  />
+                )}
+              />
+              <Route
+                path="/profile/about"
+                render={(props) => (
+                  <ProtectedComponent
+                    signInStore={signInStore}
+                    {...props}
+                    Component={AboutPage}
+                  />
+                )}
+              />
               <Route exact path="/" component={HomePage} />
               <Route component={ErrorPage} />
             </Switch>

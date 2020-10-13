@@ -16,7 +16,7 @@ export const ConfirmationStep = ({
         Please confirm you want to register to be a bidder with the following
         initial bid amount
       </Typography>
-      <BidPrice price={store.initialBid} state="current" />
+      <BidPrice bid={store.initialBid} state="current" />
     </div>
   );
 };

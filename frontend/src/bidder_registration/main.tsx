@@ -21,6 +21,7 @@ export const BidderRegistrationPage = () => {
 
 export const BidderRegistrationWrapper = observer(
   ({ store }: { store: BidderRegistrationStore }) => {
+    const theme = useTheme();
     if (!store.loadingState) {
       return null;
     }
@@ -29,20 +30,18 @@ export const BidderRegistrationWrapper = observer(
       return <div>Loading</div>;
     }
 
-    if (store.loadingState === "error" || !store.listing || !store.currentBid) {
+    if (store.loadingState === "error" || !store.listing) {
       return <div>Error loading</div>;
     }
 
     const BidderRego = () => (
       <BidderRegistration
         store={store}
-        currentBid={store.currentBid as number}
         listingId={(store.listing as Listing).id}
       />
     );
 
     const { id, street, suburb, postcode, state } = store.listing;
-
     const Container = ({ Content }: { Content: React.ComponentType }) => {
       const classes = bidderRegistrationStyle();
       const history = useHistory();
@@ -74,7 +73,6 @@ export const BidderRegistrationWrapper = observer(
     };
 
     if (new Date().getTime() >= store.listing.auction_end.getTime()) {
-      const theme = useTheme();
       const Content = () => (
         <Typography
           style={{ textAlign: "center", color: theme.palette.error.main }}
@@ -86,7 +84,6 @@ export const BidderRegistrationWrapper = observer(
     }
 
     if (new Date().getTime() >= store.listing.auction_start.getTime()) {
-      const theme = useTheme();
       const Content = () => (
         <Typography
           style={{ textAlign: "center", color: theme.palette.error.main }}
@@ -100,4 +97,3 @@ export const BidderRegistrationWrapper = observer(
     return <Container Content={BidderRego} />;
   }
 );
-
