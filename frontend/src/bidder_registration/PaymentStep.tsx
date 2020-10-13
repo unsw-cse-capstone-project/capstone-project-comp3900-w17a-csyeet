@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BidderRegistrationStore } from "./BidderRegistration";
+import { BidderRegistrationStore } from "./BidderRegistrationPresenter";
 import { action } from "mobx";
 import NumberFormat from "react-number-format";
 import {

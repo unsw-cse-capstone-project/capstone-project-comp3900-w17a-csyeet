@@ -12,8 +12,13 @@ export const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 });
 
 export const createFakeAddress = (): Address => ({
-  streetAddress: "111/544 pacific highway",
+  street: "111/544 pacific highway",
   suburb: "chatswood",
   state: "nsw",
-  postcode: 2067,
+  postcode: "2067",
+  country: "australia",
 });
+
+export function delay(timeout: number): Promise<void> {
+  return new Promise((res) => setTimeout(res, timeout));
+}

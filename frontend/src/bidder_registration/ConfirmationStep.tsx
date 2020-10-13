@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BidderRegistrationStore } from "./BidderRegistration";
+import { BidderRegistrationStore } from "./BidderRegistrationPresenter";
 import { Typography } from "@material-ui/core";
 import { BidPrice } from "../ui/base/bid_price/BidPrice";
 import { confirmationStepStyle } from "./ConfirmationStep.css";
@@ -16,7 +16,7 @@ export const ConfirmationStep = ({
         Please confirm you want to register to be a bidder with the following
         initial bid amount
       </Typography>
-      <BidPrice price={store.initialBid} state="current" />
+      <BidPrice bid={store.initialBid} state="current" />
     </div>
   );
 };

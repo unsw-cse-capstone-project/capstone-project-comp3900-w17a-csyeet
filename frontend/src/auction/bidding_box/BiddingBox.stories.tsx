@@ -3,6 +3,8 @@ import { Meta, Story } from "@storybook/react/types-6-0";
 import { BidderTag } from "../../ui/base/bidder_tag/BidderTag";
 import { BiddingBox, BiddingBoxStore } from "./BiddingBox";
 import { action } from "@storybook/addon-actions";
+import { Typography } from "@material-ui/core";
+import { createFakeListing } from "../../ui/util/fakes/listing";
 
 export default {
   title: "auction/biddingBox",
@@ -60,46 +62,20 @@ const Template: Story<{
     />
   );
 };
-export const Overview = Template.bind({});
-
-// export const EnableBidding = () => {
+export const Stateful = Template.bind({});
+// export const Overview = () => {
 //   const store = new BiddingBoxStore();
 //   return (
-//     <BiddingBox
-//       store={store}
-//       currentBid={500000}
-//       bidState="reserve_met"
-//       BidderTag={() => <BidderTag bidderNumber={1234} />}
-//       onPlaceBid={action("Place bid button clicked")}
-//     />
-//   );
-// };
-
-// export const DisabledBidding = () => {
-//   const store = new BiddingBoxStore();
-//   return (
-//     <BiddingBox
-//       store={store}
-//       currentBid={500000}
-//       enableBidding={false}
-//       bidState="reserve_met"
-//       BidderTag={() => <BidderTag bidderNumber={1234} />}
-//       onPlaceBid={action("Place bid button clicked")}
-//     />
-//   );
-// };
-
-// export const ClosedAuction = () => {
-//   const store = new BiddingBoxStore();
-//   return (
-//     <BiddingBox
-//       store={store}
-//       currentBid={500000}
-//       enableBidding={false}
-//       isAuctionClosed={true}
-//       bidState="reserve_met"
-//       BidderTag={() => <BidderTag bidderNumber={1234} />}
-//       onPlaceBid={action("Place bid button clicked")}
-//     />
+//     <div>
+//       <Typography variant="h5">Pre Auction (Unknown current bid)</Typography>
+//       <BiddingBox
+//         store={store}
+//         enableBidding={false}
+//         isAuctionClosed={false}
+//         bidState={"current"}
+//         BidderTag={() => <BidderTag bidderNumber={1234} />}
+//         onPlaceBid={action("Place bid button clicked")}
+//       />
+//     </div>
 //   );
 // };

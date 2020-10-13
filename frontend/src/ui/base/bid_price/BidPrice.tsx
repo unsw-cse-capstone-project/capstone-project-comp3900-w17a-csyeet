@@ -43,17 +43,17 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const BidPrice = ({
-  price,
+  bid,
   state,
   className,
   style,
   textType = "h4",
 }: {
-  price: number;
+  bid?: number;
   state: BidPriceState;
   className?: string;
   style?: React.CSSProperties;
-  textType?: string;
+  textType?: "h4" | "h1" | "h2" | "h3" | "h5" | "h6";
 }) => {
   const classes = useStyles();
   const formatter = new Intl.NumberFormat("en-US", {
@@ -62,7 +62,7 @@ export const BidPrice = ({
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
-  const formattedPrice = formatter.format(price);
+  const formattedPrice = bid ? formatter.format(bid) : "Unknown";
   return (
     <Paper
       className={classNames(classes.bidPrice, classes[state], className)}

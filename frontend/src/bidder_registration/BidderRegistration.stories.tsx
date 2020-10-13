@@ -1,25 +1,19 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
-import { createFakeAddress } from "../ui/util/helper";
-import {
-  BidderRegistration,
-  BidderRegistrationStore,
-} from "./BidderRegistration";
+import { BidderRegistrationStore } from "./BidderRegistrationPresenter";
+import { BidderRegistration } from "./BidderRegistration";
+import { createFakeListing } from "../ui/util/fakes/listing";
 
 export default {
-  title: "bidder registration/page",
+  title: "bidder registration/bidderRego",
   component: BidderRegistration,
 } as Meta;
 
-export const Overview = () => {
+export const RegoOnly = () => {
   const store = new BidderRegistrationStore();
   return (
     <div style={{ height: "800px" }}>
-      <BidderRegistration
-        store={store}
-        currentBid={500000}
-        address={createFakeAddress()}
-      />
+      <BidderRegistration store={store} listingId={createFakeListing().id} />
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { AuctionBid } from "../AuctionPage";
 import { Typography, Divider } from "@material-ui/core";
 import {
   BidPriceWithBidderTag,
@@ -8,14 +7,15 @@ import {
 import { BidderTag } from "../../ui/base/bidder_tag/BidderTag";
 import { dateFormatter } from "../../ui/util/helper";
 import { bidsListStyle } from "./BidsList.css";
+import { Bid } from "../../ui/util/types/bid";
 
-export type Bid = {
-  value: AuctionBid;
-  bidder: number;
-  time: Date;
-};
-
-export const BidsList = ({ bids }: { bids: Bid[] }) => {
+export const BidsList = ({
+  bids,
+  reserve_price,
+}: {
+  bids: Bid[];
+  reserve_price: number;
+}) => {
   const classes = bidsListStyle();
   return (
     <div>
@@ -26,18 +26,18 @@ export const BidsList = ({ bids }: { bids: Bid[] }) => {
           <BidPriceWithBidderTag
             BidPrice={() => (
               <BidPrice
-                price={bid.value.price}
+                bid={bid.bid}
                 state={i === 0 ? "current" : "past"}
                 textType="h5"
               />
             )}
-            BidderTag={() => <BidderTag bidderNumber={bid.bidder} />}
+            BidderTag={() => <BidderTag bidderNumber={bid.bidder_id} />}
           />
           <div className={classes.bidTime}>
             <Typography variant="body1">
-              {dateFormatter.format(bid.time)}
+              {dateFormatter.format(bid.submitted)}
             </Typography>
-            {bid.value.state === "reserve_met" && (
+            {bid.bid >= reserve_price && (
               <Typography variant="body1" className={classes.reserveLabel}>
                 Reserve Met
               </Typography>

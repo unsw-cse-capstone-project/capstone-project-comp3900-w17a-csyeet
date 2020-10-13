@@ -26,7 +26,9 @@ export const ListingResultCardStyles = makeStyles((theme: Theme) =>
     description: {
       boxSizing: "border-box",
       display: "-webkit-box",
+      // eslint-disable-next-line
       ["-webkit-line-clamp"]: 3,
+      // eslint-disable-next-line
       ["-webkit-box-orient"]: "vertical",
       overflow: "hidden",
       margin: theme.spacing(2, 0, 0, 0),
