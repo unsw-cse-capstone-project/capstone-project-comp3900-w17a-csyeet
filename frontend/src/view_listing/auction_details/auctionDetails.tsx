@@ -22,14 +22,14 @@ export const AuctionDetails = ({
       </Typography>
       <Divider className={classes.divider} />
       {new Date().getTime() < auction_start.getTime()
-        ? [
+        ? <div>
             <Typography variant="body2">
               Start Time: {auction_start.toLocaleString()}
-            </Typography>,
+            </Typography>
             <Typography variant="body2">
               End Time: {auction_end.toLocaleString()}
-            </Typography>,
-            <AuctionTag start={auction_start} end={auction_end} />,
+            </Typography>
+            <AuctionTag start={auction_start} end={auction_end} />
             <Button
               variant="outlined"
               color="primary"
@@ -37,13 +37,13 @@ export const AuctionDetails = ({
               onClick={() => history.push(`/listing/${id}/register`)}
             >
               Register to Bid
-            </Button>,
-          ]
-        : [
+            </Button>
+          </div>
+        : <div>
             <Typography variant="body2">
               End Time: {auction_end.toLocaleString()}
-            </Typography>,
-            <AuctionTag start={auction_start} end={auction_end} />,
+            </Typography>
+            <AuctionTag start={auction_start} end={auction_end} />
             <Button
               variant="outlined"
               color="primary"
@@ -51,8 +51,8 @@ export const AuctionDetails = ({
               onClick={() => history.push(`/listing/${id}/auction`)}
             >
               View Auction
-            </Button>,
-          ]}
+            </Button>
+          </div>}
     </div>
   );
 };

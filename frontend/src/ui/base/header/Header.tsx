@@ -36,7 +36,11 @@ const Header: React.FC<HeaderProps> = observer(
           verticalAlign: "center",
         }}
       >
-        {location.pathname === "/" ? <div></div> : <Logo size="small" />}
+        {location.pathname === "/" ? (
+          <div></div>
+        ) : (
+          <Logo size="small" onClick={() => history.push("/")} />
+        )}
         {!store.user ? (
           <div>
             <Button size="small" onClick={openSignInModal}>

@@ -1,5 +1,5 @@
 import { observable, makeObservable, action, runInAction } from "mobx";
-import { fetchListing, createFakeListing } from "../ui/util/fakes/listing";
+import { fetchListing } from "../ui/util/fakes/listing";
 import { delay } from "../ui/util/helper";
 import { Listing } from "../ui/util/types/listing";
 
@@ -17,10 +17,10 @@ export class ListingPageStore {
 
 export class ListingPagePresenter {
   @action
-  async loadInformation(store: ListingPageStore) {
+  async loadInformation(store: ListingPageStore, id: number) {
     store.loadingState = "loading";
     try {
-      const listing = await delay(400).then(() => createFakeListing());
+      const listing = await delay(400).then(() => fetchListing(id));
       runInAction(() => {
         store.listing = listing;
         store.loadingState = "loaded";

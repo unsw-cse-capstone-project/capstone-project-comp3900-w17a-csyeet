@@ -29,6 +29,7 @@ const Template: Story<{
     <AuctionDetails
       auction_start={new Date(props.auction_start)}
       auction_end={new Date(props.auction_end)}
+      id={1}
     />
   );
 };

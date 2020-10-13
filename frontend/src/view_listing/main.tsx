@@ -4,38 +4,37 @@ import { ListingPageStore, ListingPagePresenter } from "./listingPagePresenter";
 import { ListingPage as ListingPageBase } from "./listingPage";
 import { observer } from "mobx-react";
 import { listingPageStyle } from "./listingPage.css";
-import { Button, Typography, useTheme } from "@material-ui/core";
-import { ArrowBackIos } from "@material-ui/icons";
+import { Typography, useTheme } from "@material-ui/core";
 import { useStore } from "../AuthContext";
 
 export const ViewListingPage = () => {
-  const { query } = useParams<{ query: string }>();
+  const { id } = useParams<{ id: string }>();
   const store = new ListingPageStore();
   const presenter = new ListingPagePresenter();
-  presenter.loadInformation(store);
+  presenter.loadInformation(store, parseInt(id));
 
-  return <ListingPageWrapper store={store} query={query} />;
+  return <ListingPageWrapper store={store} id={parseInt(id)} />;
 };
 
 export const ListingPageWrapper = observer(
-  ({ store, query }: { store: ListingPageStore; query: string }) => {
+  ({ store, id }: { store: ListingPageStore; id: number }) => {
     if (!store.loadingState) {
       return null;
     }
 
-    const userStore = useStore();
+    // const userStore = useStore();
     const Container = ({ Content }: { Content: React.ComponentType }) => {
       const classes = listingPageStyle();
-      const history = useHistory();
+      // const history = useHistory();
       return (
         <div className={classes.page}>
-          <Button
+          {/* <Button
             className={classes.backButton}
-            onClick={() => history.push(`/search?query=${query}`)}
+            onClick={() => history.push(`/search?query=}`)}
           >
             <ArrowBackIos />
             Back to Search
-          </Button>
+          </Button> */}
           <Content />
         </div>
       );
