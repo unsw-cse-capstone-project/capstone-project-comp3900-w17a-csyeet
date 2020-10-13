@@ -9,7 +9,6 @@ import SignUpStore from "../sign_up/SignUpStore";
 import SignIn from "../sign_in/SignIn";
 import SignUp from "../sign_up/SignUp";
 import { useStore } from "../../../AuthContext";
-import { useHistory, useLocation } from "react-router-dom";
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -53,18 +52,20 @@ const Header: React.FC<HeaderProps> = observer(
             </Button>
           </div>
         ) : (
-          <Button
-            size="small"
-            variant="outlined"
-            color="primary"
-            style={{ margin: "15px" }}
-            onClick={() => {
-              store.signOut();
-              history.push("/");
-            }}
-          >
-            Sign out
-          </Button>
+          <div>
+            <Button
+              size="small"
+              variant="outlined"
+              color="primary"
+              style={{ margin: "15px" }}
+              onClick={() => {
+                store.signOut();
+                history.push("/");
+              }}
+            >
+              Sign out
+            </Button>
+          </div>
         )}
         <SignIn store={signInStore} onSubmit={() => store.signIn()} />
         <SignUp store={signUpStore} onSubmit={() => store.signUp()} />
