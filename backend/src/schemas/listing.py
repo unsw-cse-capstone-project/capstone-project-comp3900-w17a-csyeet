@@ -80,6 +80,3 @@ class ListingResponse(ListingBase):
 
 class ListingSearchResponse(BaseModel):
     results: List[ListingResponse]
-
-    class Config:
-        orm_mode = True
