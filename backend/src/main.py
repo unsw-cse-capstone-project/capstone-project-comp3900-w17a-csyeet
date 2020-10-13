@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi_sqlalchemy import DBSessionMiddleware
-from .controllers import auth, listing
+from .controllers import auth, listing, registration
 
 app = FastAPI(title='Abode API')
 
@@ -9,3 +9,4 @@ app.add_middleware(DBSessionMiddleware,
 
 app.include_router(auth.router, prefix='/auth', tags=['auth'])
 app.include_router(listing.router, prefix='/listing', tags=['listing'])
+app.include_router(registration.router, prefix='/registration', tags=['registration'])

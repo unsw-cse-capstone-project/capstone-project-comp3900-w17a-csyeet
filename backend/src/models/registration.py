@@ -8,6 +8,7 @@ from .base import Base
 class Registration(Base):
     __tablename__= 'registration'
 
+    id: int = Column(Integer, primary_key=True)
     listing_id: int = Column(Integer, ForeignKey('listing.id'), nullable=False)
     user_id: int = Column(Integer, ForeignKey('user.id'), nullable=False)
     bid: int = Column(Integer, nullable=False)
@@ -17,3 +18,6 @@ class Registration(Base):
 
     user = relationship('User')
     listing = relationship('Listing')
+
+    def __repr__(self):
+        return f"<User: {bidder.name} registered to bid for Listing: {listing.title}>"
