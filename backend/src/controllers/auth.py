@@ -8,14 +8,15 @@ from sqlalchemy.orm import Session
 from fastapi_sqlalchemy import db
 from typing import Optional
 from starlette.status import HTTP_403_FORBIDDEN
-from ..schemas import LoginRequest, SignupRequest
+from ..schemas import LoginRequest, SignupRequest, UserResponse
 from ..models import User
 
 router = APIRouter()
 
 
-@router.post('/signup', responses={409: {"description": "Conflict with existing entity"}})
+@router.post('/signup', response_model=UserResponse, responses={409: {"description": "Conflict with existing entity"}})
 def signup(req: SignupRequest, session: Session = Depends(lambda: db.session)):
+    ''' Sign up and create a new account '''
     if load_user(req.email, session) is not None:
         raise HTTPException(409, detail='Email already in use')
 
@@ -32,8 +33,9 @@ cookie_security = APIKeyCookie(name=cookie_name)
 secret_key = '825d86db7d67844c086c01ed8001f8df82dc99c16a8cad4e'  # TODO: extract
 
 
-@router.post("/login", responses={401: {'description': 'Invalid credentials'}})
+@router.post("/login", response_model=UserResponse, responses={401: {'description': 'Invalid credentials'}})
 def login(req: LoginRequest, response: Response, session: Session = Depends(lambda: db.session)):
+    ''' Log in to an existing account '''
     user = load_user(req.email, session)
     if user is None:
         raise HTTPException(401, detail='Invalid email')
@@ -42,6 +44,7 @@ def login(req: LoginRequest, response: Response, session: Session = Depends(lamb
 
     token = jwt.encode({"sub": req.email}, secret_key)
     response.set_cookie(cookie_name, token.decode(), httponly=True)
+    return user
 
 
 def get_current_user(token: str = Depends(cookie_security), session: Session = Depends(lambda: db.session)):
@@ -59,6 +62,7 @@ def get_current_user(token: str = Depends(cookie_security), session: Session = D
 
 @router.post('/logout', dependencies=[Depends(get_current_user)])
 def logout(response: Response):
+    ''' Log out of the current account '''
     # invalidate the cookie by removing the token and expiring it immediately
     # this stops the cookie being sent by the browser and if it is, token validation will fail
     response.set_cookie(cookie_name, expires=0, httponly=True)
