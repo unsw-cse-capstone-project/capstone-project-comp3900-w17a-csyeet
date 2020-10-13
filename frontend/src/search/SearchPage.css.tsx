@@ -19,7 +19,6 @@ export const SearchPageStyles = makeStyles((theme: Theme) =>
       backgroundColor: "white",
       padding: "20px",
       top: "0",
-      zIndex: 2000000,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",

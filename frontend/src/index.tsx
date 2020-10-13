@@ -6,12 +6,9 @@ import {
   Route,
   Switch,
   BrowserRouter,
-  Link,
-  useHistory,
 } from "react-router-dom";
 import { AuthProvider, useStore } from "./AuthContext";
 import { observer } from "mobx-react";
-import { Button, Dialog } from "@material-ui/core";
 import { SearchPage } from "./search/main";
 import { StarredPage } from "./profile/starred/main";
 import { ListingsPage } from "./profile/listings/main";
@@ -41,7 +38,7 @@ const ProtectedComponent = observer(
     if (!store) throw Error("Store shouldn't be null");
     if (!store.user) {
       action(() => (signInStore.open = true));
-      return <SignIn store={signInStore} onSubmit={store.signIn} />;
+      return <SignIn isOpen={true} store={signInStore} onSubmit={() => store.signIn()} />;
     }
     return <Component />;
   }

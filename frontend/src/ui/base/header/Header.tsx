@@ -66,8 +66,8 @@ const Header: React.FC<HeaderProps> = observer(
             Sign out
           </Button>
         )}
-        <SignIn store={signInStore} onSubmit={store.signIn} />
-        <SignUp store={signUpStore} onSubmit={store.signUp} />
+        <SignIn store={signInStore} onSubmit={() => store.signIn()} />
+        <SignUp store={signUpStore} onSubmit={() => store.signUp()} />
       </div>
     );
   }

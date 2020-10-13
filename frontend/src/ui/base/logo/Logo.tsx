@@ -7,7 +7,7 @@ export interface LogoProps {
   onClick?: () => {};
 }
 
-const Logo: React.FC<LogoProps> = ({ size = "large", onClick }) => {
+const Logo = ({ size = "large", onClick }: LogoProps) => {
   return (
     <div>
       {size === "small" && (
@@ -18,6 +18,7 @@ const Logo: React.FC<LogoProps> = ({ size = "large", onClick }) => {
               width: "220px",
             }}
             src={logo}
+            alt="Adobe Logo"
           />
         </div>
       )}
@@ -29,7 +30,8 @@ const Logo: React.FC<LogoProps> = ({ size = "large", onClick }) => {
             width: "500px",
           }}
           src={logo}
-        />
+          alt="Adobe Logo"
+          />
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { action } from "mobx";
-import { Button, Typography, IconButton } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import SignInStore from "./SignInStore";
 import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
@@ -17,9 +17,10 @@ const success = (
 export interface SignInProps {
   onSubmit: (email: string, passwd: string) => void;
   store: SignInStore;
+  isOpen?: boolean
 }
 
-const SignIn: React.FC<SignInProps> = observer(({ onSubmit, store }) => {
+const SignIn: React.FC<SignInProps> = observer(({ onSubmit, store, isOpen }) => {
   const onChange = action((value: string, name: string) => {
     (store as any)[name] = value;
   });
@@ -29,7 +30,7 @@ const SignIn: React.FC<SignInProps> = observer(({ onSubmit, store }) => {
   });
   return (
     <ModalWrapper
-      open={store.open}
+      open={isOpen !== undefined ? isOpen: store.open}
       onClose={() => {
         closeModal();
       }}

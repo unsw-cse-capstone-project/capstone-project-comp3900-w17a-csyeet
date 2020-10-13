@@ -55,7 +55,7 @@ const SignIn: React.FC<SignInProps> = observer(({ onSubmit, store }) => {
               onChange={onChange}
               adornment={<AlternateEmailIcon />}
             />
-            <PasswordInput onChange={onChange} />
+            <PasswordInput value={store.passwd} onChange={onChange} />
             <Button
               variant="outlined"
               color="primary"

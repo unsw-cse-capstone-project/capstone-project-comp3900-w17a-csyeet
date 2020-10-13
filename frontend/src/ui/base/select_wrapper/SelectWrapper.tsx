@@ -8,20 +8,16 @@ export interface SelectWrapperProps {
   label: string;
   field: string;
   data: Array<string>;
-<<<<<<< HEAD
   value?: string;
-=======
-  value: string;
->>>>>>> 70c2d52c009a38022b19cd0cce5c16e180de6a28
   onChange: (value: string, field: string) => void;
 }
-const SelectWrapper: React.FC<SelectWrapperProps> = ({
+const SelectWrapper= ({
   label,
   field,
   data,
   value = "",
   onChange,
-}) => {
+}: SelectWrapperProps) => {
   const [selected, setSelected] = React.useState(value);
   const handleChange = (e: React.ChangeEvent<{ value: unknown }>) => {
     onChange(e.target.value as string, field);
