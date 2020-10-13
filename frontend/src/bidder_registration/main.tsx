@@ -21,6 +21,7 @@ export const BidderRegistrationPage = () => {
 
 export const BidderRegistrationWrapper = observer(
   ({ store }: { store: BidderRegistrationStore }) => {
+    const theme = useTheme();
     if (!store.loadingState) {
       return null;
     }
@@ -41,7 +42,6 @@ export const BidderRegistrationWrapper = observer(
     );
 
     const { id, street, suburb, postcode, state } = store.listing;
-
     const Container = ({ Content }: { Content: React.ComponentType }) => {
       const classes = bidderRegistrationStyle();
       const history = useHistory();
@@ -73,7 +73,6 @@ export const BidderRegistrationWrapper = observer(
     };
 
     if (new Date().getTime() >= store.listing.auction_end.getTime()) {
-      const theme = useTheme();
       const Content = () => (
         <Typography
           style={{ textAlign: "center", color: theme.palette.error.main }}
@@ -85,7 +84,6 @@ export const BidderRegistrationWrapper = observer(
     }
 
     if (new Date().getTime() >= store.listing.auction_start.getTime()) {
-      const theme = useTheme();
       const Content = () => (
         <Typography
           style={{ textAlign: "center", color: theme.palette.error.main }}

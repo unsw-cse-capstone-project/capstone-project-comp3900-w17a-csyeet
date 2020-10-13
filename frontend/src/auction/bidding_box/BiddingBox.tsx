@@ -55,13 +55,6 @@ export const BiddingBox = observer(
       if (cBid === undefined) {
         return;
       }
-      console.log(
-        store.biddingPrice,
-        cBid,
-        store.biddingPrice <= cBid,
-        typeof store.biddingPrice,
-        typeof cBid
-      );
       if (store.biddingPrice <= cBid) {
         setError("Bid must be higher than current bid");
       } else {

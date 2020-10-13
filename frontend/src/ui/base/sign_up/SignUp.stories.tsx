@@ -2,6 +2,7 @@ import React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 import SignUp, { SignUpProps } from "./SignUp";
 import SignUpStore from "./SignUpStore";
+import { action } from "@storybook/addon-actions";
 
 export default {
   title: "Authentication/Sign Up",
@@ -12,6 +13,6 @@ let store = new SignUpStore();
 const Template: Story<SignUpProps> = (args) => <SignUp {...args} />;
 export const Overview = Template.bind({});
 Overview.args = {
-  onSubmit: () => {}, // (Jenn) TODO: action() magic
+  onSubmit: action("onSubmit"),
   store: store,
 };

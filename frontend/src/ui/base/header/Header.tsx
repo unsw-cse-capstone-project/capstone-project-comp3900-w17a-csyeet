@@ -1,6 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { action } from "mobx";
+import { useHistory, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Logo from "../logo/Logo";
 import SignInStore from "../sign_in/SignInStore";
@@ -17,18 +18,16 @@ export interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = observer(
   ({ signInStore, signUpStore }) => {
-    const openSignInForm = action(() => {
-      signInStore.open = true;
-    });
-
-    const openSignUpForm = action(() => {
-      signUpStore.open = true;
-    });
-
+    const history = useHistory();
     const location = useLocation();
     const store = useStore();
     if (!store) throw Error("Store should never be null");
-    const history = useHistory();
+    const openSignUpModal = action(() => {
+      signUpStore.open = true;
+    });
+    const openSignInModal = action(() => {
+      signInStore.open = true;
+    });
     return (
       <div
         style={{
@@ -40,7 +39,7 @@ const Header: React.FC<HeaderProps> = observer(
         {location.pathname === "/" ? <div></div> : <Logo size="small" />}
         {!store.user ? (
           <div>
-            <Button size="small" onClick={openSignInForm}>
+            <Button size="small" onClick={openSignInModal}>
               Log In
             </Button>
             <Button
@@ -48,7 +47,7 @@ const Header: React.FC<HeaderProps> = observer(
               variant="outlined"
               color="primary"
               style={{ margin: "15px" }}
-              onClick={openSignUpForm}
+              onClick={openSignUpModal}
             >
               Sign Up
             </Button>
@@ -67,8 +66,8 @@ const Header: React.FC<HeaderProps> = observer(
             Sign out
           </Button>
         )}
-        <SignIn store={signInStore} onSubmit={() => store.signIn} />
-        <SignUp store={signUpStore} onSubmit={() => store.signUp} />
+        <SignIn store={signInStore} onSubmit={() => store.signIn()} />
+        <SignUp store={signUpStore} onSubmit={() => store.signUp()} />
       </div>
     );
   }

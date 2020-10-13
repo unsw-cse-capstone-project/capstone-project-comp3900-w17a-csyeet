@@ -60,6 +60,10 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
   };
 
   const disableNext = () => {
+    console.log(store.usernm !== "");
+    console.log(store.email !== "");
+    console.log(store.passwd !== "");
+    console.log(store.passwd === store.passwdVerify);
     switch (activeStep) {
       case 0:
         return !canProceedStep0.get();
@@ -86,6 +90,9 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
       store.addressLine !== "" &&
       store.suburb !== "" &&
       store.postcode !== "" &&
+      store.addressLine.length !== 0 &&
+      store.suburb.length > 0 &&
+      store.postcode.length > 0 &&
       store.state !== "none"
   );
 

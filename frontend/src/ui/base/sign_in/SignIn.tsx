@@ -7,7 +7,6 @@ import SignInStore from "./SignInStore";
 import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
 import ModalWrapper from "../modal_wrapper/ModalWrapper";
 import PasswordInput from "../password_input/PasswordInput";
-// import SignInFormStyles from "./SignInForm.css";
 
 const success = (
   <Typography variant="h3" align="center" style={{ margin: "35px" }}>
@@ -55,14 +54,13 @@ const SignIn: React.FC<SignInProps> = observer(({ onSubmit, store }) => {
               onChange={onChange}
               adornment={<AlternateEmailIcon />}
             />
-            <PasswordInput onChange={onChange} />
+            <PasswordInput value={store.passwd} onChange={onChange} />
             <Button
               variant="outlined"
               color="primary"
               fullWidth
               style={{ marginTop: "10px" }}
               onClick={() => {
-                setSuccess();
                 onSubmit(store.email, store.passwd);
                 closeModal();
               }}
