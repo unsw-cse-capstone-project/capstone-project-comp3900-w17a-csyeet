@@ -46,7 +46,7 @@ export const AuctionPageWrapper = observer(
       const classes = auctionPageStyle();
       const history = useHistory();
       return (
-        <div className={classes.page}>
+        <div className={classes.page} style={{ paddingBottom: "200px" }}>
           <Button
             className={classes.backButton}
             onClick={() => history.push(`/listing/${id}`)}
