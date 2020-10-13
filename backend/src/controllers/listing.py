@@ -34,20 +34,7 @@ def get(id: int, session: Session = Depends(lambda: db.session)):
             status_code=404, detail="Requested listing could not be found")
     return map_listing_to_response(listing)
 
-@router.get('s/', response_model=ListingSearchResponse)
-def get(q: Optional[str] = Query('', alias='location'), session: Session = Depends(lambda: db.session)):
-    results = session.query(Listing).filter(or_(
-        Listing.suburb.ilike(q),
-        Listing.street.ilike(q),
-        Listing.postcode.ilike(q),
-        Listing.state.ilike(q),
-        Listing.country.ilike(q)
-        )).all()
-
-    responses = [map_listing_to_response(r) for r in results]
-    return { 'results': responses }
-
-# TODO: maybe move these to helpers.py or common/helpers.py or sth
+# TODO: move these to helpers.py or common/helpers.py or sth
 
 def map_listing_to_response(listing: Listing) -> ListingResponse:
     response = asdict(listing)
