@@ -36,7 +36,7 @@ def get(id: int, session: Session = Depends(lambda: db.session)):
 
 @router.get('/{id}/auction', response_model=AuctionResponse, responses={404: {"description": "Resource not found"}})
 def get_auction_info(id: int, session: Session = Depends(lambda : db.session)):
-    ''' Gets auction info for a listing by its id '''
+    ''' Gets auction info for a listing '''
     listing = session.query(Listing).get(id)
     if listing is None:
         raise HTTPException(
