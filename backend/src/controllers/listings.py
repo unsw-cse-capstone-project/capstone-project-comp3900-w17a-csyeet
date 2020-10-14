@@ -27,7 +27,7 @@ def create(req: CreateListingRequest, session: Session = Depends(lambda: db.sess
 
 @router.get('/', response_model=ListingSearchResponse)
 def search(location: Optional[str] = '', session: Session = Depends(lambda: db.session)):
-    ''' Gets list of results by location '''
+    ''' Gets a list of listings filtered by the given criteria '''
     results = session.query(Listing).filter(or_(
         Listing.suburb.ilike(location),
         Listing.street.ilike(location),
