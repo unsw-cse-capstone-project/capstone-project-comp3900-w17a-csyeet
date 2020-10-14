@@ -19,16 +19,20 @@ export const FeaturesPanel = ({ features }: { features: string }) => {
       square
       expanded={expanded === "panel1"}
       onChange={handleChange("panel1")}
+      elevation={0}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
+        style={{paddingLeft: "0px"}}
       >
         <Typography variant="h5">Features</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography>TODO: Implement API</Typography>
+        <ul>
+          <li><Typography>Ensuite</Typography></li>
+        </ul>
       </AccordionDetails>
     </Accordion>
   );

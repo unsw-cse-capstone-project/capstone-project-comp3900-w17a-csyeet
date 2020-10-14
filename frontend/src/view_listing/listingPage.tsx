@@ -46,7 +46,7 @@ export const ListingPage = (props: { listing: ListingActual }) => {
     setOpen(false);
   };
   return (
-    <div className={classes.page} style={{ paddingBottom: "200px" }}>
+    <div style={{ paddingBottom: "200px" }}>
       {/* first three images */}
       <Grid container spacing={2}>
         <Grid item xs={7}>
