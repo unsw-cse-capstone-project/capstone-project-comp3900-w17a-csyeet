@@ -19,13 +19,13 @@ export type Listing = {
 };
 
 export type Owner = {
-  email: string,
-  name: string,
-}
+  email: string;
+  name: string;
+};
 
 export type ListingActual = {
-  id: string;
-  owner_id: number;
+  id: number;
+  owner: Owner;
   title: string;
   description: string;
   street: string;
@@ -37,8 +37,8 @@ export type ListingActual = {
   num_bedrooms: number;
   num_bathrooms: number;
   num_car_spaces: number;
-  auction_start: string;
-  auction_end: string;
+  auction_start: Date;
+  auction_end: Date;
   // reserve_price: number;
   images: string[];
 };
