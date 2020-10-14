@@ -1,4 +1,4 @@
-import { Address } from "../../auction/AuctionPage";
+import { Address } from "../../teresa/auction/AuctionPage";
 
 export const dateFormatter = new Intl.DateTimeFormat("en-GB", {
   year: "numeric",

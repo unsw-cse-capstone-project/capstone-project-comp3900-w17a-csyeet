@@ -12,7 +12,6 @@ export default class Store {
   @observable openSignUp: boolean = false;
   @observable openSignIn: boolean = false;
 
-  // (Jenn TOOD: Hook API call)
   @action
   async signIn(email: string, password: string) {
     try {
@@ -35,7 +34,6 @@ export default class Store {
     }
   }
 
-  // (Jenn TOOD: Hook API call)
   @action
   async signUp(email: string, password: string, name: string) {
     try {
@@ -57,7 +55,6 @@ export default class Store {
     }
   }
 
-  // (Jenn TOOD: Hook API call)
   @action
   async signOut() {
     try {

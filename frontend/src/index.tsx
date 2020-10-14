@@ -1,26 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { AuthProvider, useStore } from "./AuthContext";
 import { observer } from "mobx-react";
-import { SearchPage } from "./search/main";
+import { runInAction } from "mobx";
+import { SearchPage } from "./teresa/search/main";
 import { StarredPage } from "./profile/starred/main";
 import { ListingsPage } from "./profile/listings/main";
 import { DetailsPage } from "./profile/details/main";
 import { BidsPage } from "./profile/bids/main";
 import { AboutPage } from "./profile/about/main";
-import { AddListingPage } from "./add_listing/main";
-import { BidderRegistrationPage } from "./bidder_registration/main";
-import { AuctionPage } from "./auction/main";
-import { HomePage } from "./home/main";
-import { ViewListingPage } from "./view_listing/main";
-import Header from "./ui/base/header/Header";
-import SignInStore from "./ui/base/sign_in/SignInStore";
-import SignUpStore from "./ui/base/sign_up/SignUpStore";
-import SignIn from "./ui/base/sign_in/SignIn";
-import { runInAction } from "mobx";
+import { AddListingPage } from "./jenn/add_listing/main";
+import { BidderRegistrationPage } from "./teresa/bidder_registration/main";
+import { AuctionPage } from "./teresa/auction/main";
+import { HomePage } from "./teresa/home/main";
+import { ViewListingPage } from "./jeremy/view_listing/main";
+import { Header } from "./ui/base/jenn/header/Header";
+import { SignInStore } from "./ui/base/jenn/header/sign_in/SignInStore";
+import { SignUpStore } from "./ui/base/jenn/header/sign_up/SignUpStore";
+import { SignIn } from "./ui/base/jenn/header/sign_in/SignIn";
+import "./index.css";
 
 const ProtectedComponent = observer(
   ({
