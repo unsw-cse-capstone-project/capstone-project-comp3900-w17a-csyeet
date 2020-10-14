@@ -19,7 +19,7 @@ export interface SignInProps {
   store: SignInStore;
 }
 
-const SignIn: React.FC<SignInProps> = observer(({ onSubmit, store }) => {
+const SignIn = observer(({ onSubmit, store }: SignInProps) => {
   const onChange = action((value: string, name: string) => {
     (store as any)[name] = value;
   });
