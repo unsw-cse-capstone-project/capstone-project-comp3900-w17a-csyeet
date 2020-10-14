@@ -39,10 +39,13 @@ export default class Store {
   @action
   async signUp(email: string, password: string, name: string) {
     try {
-      console.log(email, password, name);
       const response = await fetch("/signup", {
         method: "post",
-        body: JSON.stringify({ email: email, password: password, name: name }),
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          name: name,
+        }),
       });
       const content = await response.json();
       console.log(content);

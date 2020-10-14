@@ -120,8 +120,7 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
     //   store.state,
     //   store.postcode
     // );
-    console.log("hi");
-    onSubmit(store.usernm, store.email, store.passwd);
+    onSubmit(store.email, store.passwd, store.usernm);
     closeModal();
   };
 
