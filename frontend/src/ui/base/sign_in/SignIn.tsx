@@ -30,9 +30,9 @@ const SignIn = observer(({ onSubmit, store }: SignInProps) => {
   });
 
   // (Jenn) Temporary Function
-  const setSuccess = action(() => {
-    store.success = true;
-  });
+  // const setSuccess = action(() => {
+  //   store.success = true;
+  // });
 
   return (
     <ModalWrapper open={store.open} onClose={closeModal}>

@@ -10,7 +10,7 @@ export const Map = ({ image }: { image: string }) => {
         Map:
       </Typography>
       <Divider className={classes.divider} />
-      <img src={image} style={{ width: "100%" }}></img>
+      <img src={image} alt="map" style={{ width: "100%" }}></img>
     </div>
   );
 };

@@ -34,7 +34,6 @@ export class SearchPresenter {
         createFakeListingDuringAuction(),
         createFakeListingClosedAuction(),
       ];
-      console.log(store.searchResults);
       store.searchState = "loaded";
     });
   }
