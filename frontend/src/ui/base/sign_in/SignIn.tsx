@@ -28,12 +28,7 @@ const SignIn = observer(({ onSubmit, store }: SignInProps) => {
     store.open = false;
     store.success = false;
   });
-
-  // (Jenn) Temporary Function
-  // const setSuccess = action(() => {
-  //   store.success = true;
-  // });
-
+  
   return (
     <ModalWrapper open={store.open} onClose={closeModal}>
       <div className="formContainer">
