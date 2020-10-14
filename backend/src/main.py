@@ -9,5 +9,5 @@ app.add_middleware(DBSessionMiddleware,
 
 app.include_router(auth.router, tags=['authentication'])
 app.include_router(listing.router, prefix='/listing', tags=['listing'])
-app.include_router(registration.router, prefix='/registration', tags=['registration'])
+app.include_router(registration.router, prefix='/registrations', tags=['registrations'])
 app.include_router(listings.router, prefix='/listings', tags=['listings'])
