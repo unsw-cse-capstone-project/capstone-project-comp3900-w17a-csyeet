@@ -9,7 +9,7 @@ router = APIRouter()
 
 @router.post('/', response_model=RegistrationResponse)
 def create(req: CreateRegistrationRequest, session: Session = Depends(lambda: db.session)):
-    ''' registers a user as a RAB for a listing '''
+    ''' Registers a user as a RAB for a listing '''
     registration = Registration(**req.dict())
     session.add(registration)
     session.commit()
