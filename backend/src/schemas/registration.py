@@ -1,16 +1,16 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 
-class RegistrationBase(BaseModel):
-    listing_id: int
-    user_id: int
+class CreateRegistrationRequest(BaseModel):
     bid: int
     card_number: str
     expiry: datetime
     ccv: str
 
-class CreateRegistrationRequest(RegistrationBase):
-    pass
+class RegistrationResponse(BaseModel):
+    listing_id: int
+    user_id: int
+    bid: int
 
-class RegistrationResponse(RegistrationBase):
-    id : str
+    class Config:
+        orm_mode = True

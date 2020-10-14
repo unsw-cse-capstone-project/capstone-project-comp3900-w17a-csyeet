@@ -83,4 +83,4 @@ class ListingSearchResponse(BaseModel):
     results: List[ListingResponse]
 
 class AuctionResponse(BaseModel):
-    bidders: List[RegistrationResponse]
+    bidders: List[int]
