@@ -1,27 +1,57 @@
 from dataclasses import asdict
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from fastapi_sqlalchemy import db
-from ..schemas import ListingSearchResponse, ListingResponse, field_to_feature_map
-from ..models import Listing
+from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, ListingSearchResponse
+from ..models import Listing, User
+from ..helpers import get_current_user
 from typing import Optional
 
 router = APIRouter()
 
+
+@router.post('/', response_model=ListingResponse)
+def create(req: CreateListingRequest, current_user: User = Depends(get_current_user), session: Session = Depends(lambda: db.session)):
+    ''' Creates a listing owned by the user making the request '''
+    # TODO: Should we prevent creation for some set of values which we deem to be unique? e.g. address?
+    # TODO: maybe extract this helper code
+    listing_data = req.dict()
+    listing_data.update({get_field_for_feature(feature): True
+                         for feature in req.features})
+    listing_data.pop('features')
+    listing = Listing(owner_id=current_user.id, **listing_data)
+    session.add(listing)
+    session.commit()
+    return map_listing_to_response(listing)
+
+
 @router.get('/', response_model=ListingSearchResponse)
-def get(q: Optional[str] = Query('', alias='location'), session: Session = Depends(lambda: db.session)):
-    ''' Gets list of results by location '''
+def search(location: Optional[str] = '', session: Session = Depends(lambda: db.session)):
+    ''' Gets a list of listings filtered by the given criteria '''
     results = session.query(Listing).filter(or_(
-        Listing.suburb.ilike(q),
-        Listing.street.ilike(q),
-        Listing.postcode.ilike(q),
-        Listing.state.ilike(q),
-        Listing.country.ilike(q)
+        Listing.suburb.ilike(location),
+        Listing.street.ilike(location),
+        Listing.postcode.ilike(location),
+        Listing.state.ilike(location),
+        Listing.country.ilike(location)
     )).all()
 
     responses = [map_listing_to_response(r) for r in results]
-    return { 'results': responses }
+    return {'results': responses}
+
+
+@router.get('/{id}', response_model=ListingResponse, responses={404: {"description": "Resource not found"}})
+def get(id: int, session: Session = Depends(lambda: db.session)):
+    ''' Gets a listing by its id '''
+    listing = session.query(Listing).get(id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+    return map_listing_to_response(listing)
+
+# TODO: move these to helpers.py or common/helpers.py or sth
+
 
 def map_listing_to_response(listing: Listing) -> ListingResponse:
     response = asdict(listing)
@@ -32,3 +62,9 @@ def map_listing_to_response(listing: Listing) -> ListingResponse:
             response['features'].append(feature)
         response.pop(field)
     return response  # type: ignore
+
+
+def get_field_for_feature(feature: Feature) -> str:
+    keys = list(field_to_feature_map.keys())
+    values = list(field_to_feature_map.values())
+    return keys[values.index(feature)]

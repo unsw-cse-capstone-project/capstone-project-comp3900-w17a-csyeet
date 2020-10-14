@@ -2,11 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import {
-  Route,
-  Switch,
-  BrowserRouter,
-} from "react-router-dom";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { AuthProvider, useStore } from "./AuthContext";
 import { observer } from "mobx-react";
 import { SearchPage } from "./search/main";
@@ -22,9 +18,9 @@ import { HomePage } from "./home/main";
 import { ViewListingPage } from "./view_listing/main";
 import Header from "./ui/base/header/Header";
 import SignInStore from "./ui/base/sign_in/SignInStore";
-import SignIn from "./ui/base/sign_in/SignIn";
 import SignUpStore from "./ui/base/sign_up/SignUpStore";
-import { action } from "mobx";
+import SignIn from "./ui/base/sign_in/SignIn";
+import { runInAction } from "mobx";
 
 const ProtectedComponent = observer(
   ({
@@ -37,8 +33,8 @@ const ProtectedComponent = observer(
     const store = useStore();
     if (!store) throw Error("Store shouldn't be null");
     if (!store.user) {
-      action(() => (signInStore.open = true));
-      return <SignIn isOpen={true} store={signInStore} onSubmit={() => store.signIn()} />;
+      runInAction(() => (signInStore.open = true));
+      return <SignIn store={signInStore} onSubmit={() => store.signIn()} />;
     }
     return <Component />;
   }
@@ -72,8 +68,8 @@ ReactDOM.render(
                 path="/add"
                 render={(props) => (
                   <ProtectedComponent
-                    signInStore={signInStore}
                     {...props}
+                    signInStore={signInStore}
                     Component={AddListingPage}
                   />
                 )}
@@ -83,8 +79,8 @@ ReactDOM.render(
                 path="/profile/starred"
                 render={(props) => (
                   <ProtectedComponent
-                    signInStore={signInStore}
                     {...props}
+                    signInStore={signInStore}
                     Component={StarredPage}
                   />
                 )}
@@ -93,8 +89,8 @@ ReactDOM.render(
                 path="/profile/listings"
                 render={(props) => (
                   <ProtectedComponent
-                    signInStore={signInStore}
                     {...props}
+                    signInStore={signInStore}
                     Component={ListingsPage}
                   />
                 )}
@@ -103,8 +99,8 @@ ReactDOM.render(
                 path="/profile/details"
                 render={(props) => (
                   <ProtectedComponent
-                    signInStore={signInStore}
                     {...props}
+                    signInStore={signInStore}
                     Component={DetailsPage}
                   />
                 )}
@@ -113,8 +109,8 @@ ReactDOM.render(
                 path="/profile/bids"
                 render={(props) => (
                   <ProtectedComponent
-                    signInStore={signInStore}
                     {...props}
+                    signInStore={signInStore}
                     Component={BidsPage}
                   />
                 )}
@@ -123,8 +119,8 @@ ReactDOM.render(
                 path="/profile/about"
                 render={(props) => (
                   <ProtectedComponent
-                    signInStore={signInStore}
                     {...props}
+                    signInStore={signInStore}
                     Component={AboutPage}
                   />
                 )}

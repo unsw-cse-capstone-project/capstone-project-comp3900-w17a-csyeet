@@ -5,10 +5,10 @@ import { useHistory, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Logo from "../logo/Logo";
 import SignInStore from "../sign_in/SignInStore";
-import SignIn from "../sign_in/SignIn";
 import SignUpStore from "../sign_up/SignUpStore";
+import SignIn from "../sign_in/SignIn";
 import SignUp from "../sign_up/SignUp";
-import { AuthContext } from "../../../AuthContext";
+import { useStore } from "../../../AuthContext";
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -17,8 +17,9 @@ export interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = observer(
   ({ signInStore, signUpStore }) => {
-    const store = React.useContext(AuthContext);
     const history = useHistory();
+    const location = useLocation();
+    const store = useStore();
     if (!store) throw Error("Store should never be null");
     const openSignUpModal = action(() => {
       signUpStore.open = true;
@@ -26,8 +27,6 @@ const Header: React.FC<HeaderProps> = observer(
     const openSignInModal = action(() => {
       signInStore.open = true;
     });
-
-    const location = useLocation();
     return (
       <div
         style={{
@@ -36,7 +35,11 @@ const Header: React.FC<HeaderProps> = observer(
           verticalAlign: "center",
         }}
       >
-        {location.pathname === "/" ? <div></div> : <Logo size="small" />}
+        {location.pathname === "/" ? (
+          <div></div>
+        ) : (
+          <Logo size="small" onClick={() => history.push("/")} />
+        )}
         {!store.user ? (
           <div>
             <Button size="small" onClick={openSignInModal}>
@@ -53,18 +56,20 @@ const Header: React.FC<HeaderProps> = observer(
             </Button>
           </div>
         ) : (
-          <Button
-            size="small"
-            variant="outlined"
-            color="primary"
-            style={{ margin: "15px" }}
-            onClick={() => {
-              store.signOut();
-              history.push("/");
-            }}
-          >
-            Sign out
-          </Button>
+          <div>
+            <Button
+              size="small"
+              variant="outlined"
+              color="primary"
+              style={{ margin: "15px" }}
+              onClick={() => {
+                store.signOut();
+                history.push("/");
+              }}
+            >
+              Sign out
+            </Button>
+          </div>
         )}
         <SignIn store={signInStore} onSubmit={() => store.signIn()} />
         <SignUp store={signUpStore} onSubmit={() => store.signUp()} />
