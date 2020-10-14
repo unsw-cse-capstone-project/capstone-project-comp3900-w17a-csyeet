@@ -4,22 +4,23 @@ from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from fastapi_sqlalchemy import db
 from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, ListingSearchResponse
-from ..models import Listing
+from ..models import Listing, User
+from ..helpers import get_current_user
 from typing import Optional
 
 router = APIRouter()
 
 
 @router.post('/', response_model=ListingResponse)
-def create(req: CreateListingRequest, session: Session = Depends(lambda: db.session)):
+def create(req: CreateListingRequest, current_user: User = Depends(get_current_user), session: Session = Depends(lambda: db.session)):
     ''' Creates a listing owned by the user making the request '''
     # TODO: Should we prevent creation for some set of values which we deem to be unique? e.g. address?
+    # TODO: maybe extract this helper code
     listing_data = req.dict()
     listing_data.update({get_field_for_feature(feature): True
                          for feature in req.features})
     listing_data.pop('features')
-    # TODO: restrict this endpoint to authenticated users and use the current user
-    listing = Listing(owner_id=1, **listing_data)
+    listing = Listing(owner_id=current_user.id, **listing_data)
     session.add(listing)
     session.commit()
     return map_listing_to_response(listing)

@@ -23,7 +23,7 @@ def create_token(email: EmailStr) -> bytes:
     return jwt.encode({"sub": email}, secret_key)
 
 
-def get_current_user(token: str = Depends(cookie_security), session: Session = Depends(get_session)):
+def get_current_user(token: str = Depends(cookie_security), session: Session = Depends(get_session)) -> User:
     try:
         payload = jwt.decode(token, secret_key)
         email = payload["sub"]
