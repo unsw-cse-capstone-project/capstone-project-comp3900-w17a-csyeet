@@ -59,8 +59,15 @@ export default class Store {
 
   // (Jenn TOOD: Hook API call)
   @action
-  signOut() {
-    this.user = undefined;
+  async signOut() {
+    try {
+      await fetch("/logout", {
+        method: "post",
+      });
+      runInAction(() => (this.user = undefined));
+    } catch {
+      console.log("error T-T");
+    }
   }
 
   constructor() {

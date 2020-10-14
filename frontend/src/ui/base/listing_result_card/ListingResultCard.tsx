@@ -1,7 +1,7 @@
 import { Button, Card, CardContent, Typography, Link } from "@material-ui/core";
 import * as React from "react";
 import Slider from "react-slick";
-import { Listing, ListingActual } from '../../util/types/listing';
+import { ListingActual } from '../../util/types/listing';
 import {
   ListingResultCardStyles,
   ListingFeatureIconStyles,
