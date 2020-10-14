@@ -3,7 +3,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi_sqlalchemy import db
 from ..schemas import CreateRegistrationRequest, RegistrationResponse
-from ..models import Registration, Listing
+from ..helpers import get_current_user
+from ..models import Registration, Listing, User
 
 router = APIRouter()
 
