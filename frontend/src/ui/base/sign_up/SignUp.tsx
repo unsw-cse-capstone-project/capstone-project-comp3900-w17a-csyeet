@@ -60,10 +60,6 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
   };
 
   const disableNext = () => {
-    console.log(store.usernm !== "");
-    console.log(store.email !== "");
-    console.log(store.passwd !== "");
-    console.log(store.passwd === store.passwdVerify);
     switch (activeStep) {
       case 0:
         return !canProceedStep0.get();
@@ -72,7 +68,7 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
       case 2:
         return !canProceedStep2.get();
       default:
-        return false;
+        return undefined;
     }
   };
 
@@ -164,7 +160,7 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
                   onClick={
                     activeStep === steps.length - 1 ? handleConfirm : handleNext
                   }
-                  disabled={false}
+                  disabled={disableNext()}
                 >
                   {activeStep === 0 && "Next"}
                   {activeStep === 1 && "Sign Up"}

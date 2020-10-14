@@ -30,7 +30,7 @@ export const ListingPage = (props: { listing: Listing }) => {
     num_bathrooms,
     num_bedrooms,
     num_car_spaces,
-    type,
+    // type, (Jenn) Commented out to get rid of warning
     title,
     description,
   } = props.listing;
@@ -46,11 +46,12 @@ export const ListingPage = (props: { listing: Listing }) => {
     setOpen(false);
   };
   return (
-    <div className={classes.page} style={{paddingBottom: "200px"}}>
+    <div className={classes.page} style={{ paddingBottom: "200px" }}>
       {/* first three images */}
       <Grid container spacing={2}>
         <Grid item xs={7}>
           <img
+            alt="prop-img-0"
             src={props.listing.images[0]}
             onClick={handleOpen}
             style={{ width: "100%", height: "100%" }}
@@ -58,11 +59,13 @@ export const ListingPage = (props: { listing: Listing }) => {
         </Grid>
         <Grid item xs={5}>
           <img
+            alt="prop-img-1"
             src={props.listing.images[1]}
             onClick={handleOpen}
             style={{ width: "100%", height: "50%" }}
           ></img>
           <img
+            alt="prop-img-2"
             src={props.listing.images[2]}
             onClick={handleOpen}
             style={{ width: "100%", height: "50%" }}
@@ -85,7 +88,12 @@ export const ListingPage = (props: { listing: Listing }) => {
         <div className={classes.sliderContainer}>
           <Slider {...settings}>
             {props.listing.images.map((image, i) => (
-              <img className={classes.imageContainer} src={image} key={i} />
+              <img
+                alt="slider-prop-img"
+                className={classes.imageContainer}
+                src={image}
+                key={i}
+              />
             ))}
           </Slider>
         </div>
