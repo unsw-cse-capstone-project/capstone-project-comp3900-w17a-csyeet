@@ -34,7 +34,14 @@ const ProtectedComponent = observer(
     if (!store) throw Error("Store shouldn't be null");
     if (!store.user) {
       runInAction(() => (signInStore.open = true));
-      return <SignIn store={signInStore} onSubmit={() => store.signIn()} />;
+      return (
+        <SignIn
+          store={signInStore}
+          onSubmit={(email: string, password: string) =>
+            store.signIn(email, password)
+          }
+        />
+      );
     }
     return <Component />;
   }

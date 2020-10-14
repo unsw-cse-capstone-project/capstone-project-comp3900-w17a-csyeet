@@ -40,39 +40,43 @@ export const SearchResultsList = observer(
 
     return (
       <div>
-        <InfiniteScroll
-          dataLength={store.searchResults.length}
-          next={() =>
-            setTimeout(
-              action(() =>
-                store.searchResults.push(...store.searchResults.slice(0, 3))
-              ),
-              600
-            )
-          }
-          hasMore={true}
-          loader={
-            // <div style={{ padding: "20px 0 100px 0", textAlign: "center" }}>
-            //   <LinearProgress />
-            // </div>
-            <ListingResultCardLoading className={classes.cardContainer} />
-          }
-          endMessage={
-            <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
-          style={{ overflow: "visible" }}
-          scrollableTarget={"content"}
-        >
-          {store.searchResults.map((result, i) => (
-            <ListingResultCard
-              key={i}
-              listing={result}
-              className={classes.cardContainer}
-            />
-          ))}
-        </InfiniteScroll>
+        {store.searchResults.length === 0 ? (
+          <div style={{ textAlign: "center" }}>No results found</div>
+        ) : (
+          <InfiniteScroll
+            dataLength={store.searchResults.length}
+            next={() =>
+              setTimeout(
+                action(() =>
+                  store.searchResults.push(...store.searchResults.slice(0, 3))
+                ),
+                600
+              )
+            }
+            hasMore={true}
+            loader={
+              // <div style={{ padding: "20px 0 100px 0", textAlign: "center" }}>
+              //   <LinearProgress />
+              // </div>
+              <ListingResultCardLoading className={classes.cardContainer} />
+            }
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+            style={{ overflow: "visible" }}
+            scrollableTarget={"content"}
+          >
+            {store.searchResults.map((result, i) => (
+              <ListingResultCard
+                key={i}
+                listing={result}
+                className={classes.cardContainer}
+              />
+            ))}
+          </InfiniteScroll>
+        )}
       </div>
     );
   }

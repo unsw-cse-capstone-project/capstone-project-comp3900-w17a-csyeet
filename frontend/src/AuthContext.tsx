@@ -1,9 +1,9 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import React from "react";
-import { delay } from "./ui/util/helper";
 
 export type User = {
-  displayName: string | undefined;
+  name: string;
+  email: string;
   id: number;
 };
 
@@ -14,16 +14,44 @@ export default class Store {
 
   // (Jenn TOOD: Hook API call)
   @action
-  async signIn() {
-    await delay(300);
-    runInAction(() => (this.user = { displayName: "Winston", id: 1 }));
+  async signIn(email: string, password: string) {
+    try {
+      const response = await fetch("/login", {
+        method: "post",
+        body: JSON.stringify({ email: email, password: password }),
+      });
+      const content = await response.json();
+      console.log(content);
+      if ("detail" in content) {
+        console.log("error", content.detail);
+      } else {
+        runInAction(
+          () =>
+            (this.user = { name: content.name, id: 1, email: content.email })
+        );
+      }
+    } catch {
+      console.log("error T-T");
+    }
   }
 
   // (Jenn TOOD: Hook API call)
   @action
-  async signUp() {
-    await delay(300);
-    runInAction(() => (this.user = { displayName: "Winston", id: 1 }));
+  async signUp(email: string, password: string, name: string) {
+    try {
+      console.log(email, password, name);
+      const response = await fetch("/signup", {
+        method: "post",
+        body: JSON.stringify({ email: email, password: password, name: name }),
+      });
+      const content = await response.json();
+      console.log(content);
+      runInAction(
+        () => (this.user = { name: content.name, id: 1, email: content.email })
+      );
+    } catch {
+      console.log("error T-T");
+    }
   }
 
   // (Jenn TOOD: Hook API call)
