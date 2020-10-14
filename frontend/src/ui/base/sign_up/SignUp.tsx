@@ -168,7 +168,7 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
                       ? () => handleConfirm()
                       : () => handleNext()
                   }
-                  disabled={false}
+                  disabled={disableNext()}
                 >
                   {activeStep === 0 && "Next"}
                   {activeStep === 1 && "Sign Up"}

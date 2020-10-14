@@ -30,7 +30,7 @@ export const ListingPage = (props: { listing: ListingActual }) => {
     num_bathrooms,
     num_bedrooms,
     num_car_spaces,
-    // type,
+    // type, (Jenn) Commented out to get rid of warning
     title,
     description,
   } = props.listing;
@@ -51,6 +51,7 @@ export const ListingPage = (props: { listing: ListingActual }) => {
       <Grid container spacing={2}>
         <Grid item xs={7}>
           <img
+            alt="prop-img-0"
             src={props.listing.images[0]}
             onClick={handleOpen}
             style={{ width: "100%", height: "100%" }}
@@ -59,12 +60,14 @@ export const ListingPage = (props: { listing: ListingActual }) => {
         </Grid>
         <Grid item xs={5}>
           <img
+            alt="prop-img-1"
             src={props.listing.images[1]}
             onClick={handleOpen}
             style={{ width: "100%", height: "50%" }}
             alt={`Property view 2`}
           ></img>
           <img
+            alt="prop-img-2"
             src={props.listing.images[2]}
             onClick={handleOpen}
             style={{ width: "100%", height: "50%" }}
