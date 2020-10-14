@@ -19,8 +19,8 @@ import { ViewListingPage } from "./view_listing/main";
 import Header from "./ui/base/header/Header";
 import SignInStore from "./ui/base/sign_in/SignInStore";
 import SignUpStore from "./ui/base/sign_up/SignUpStore";
-import { action } from "mobx";
 import SignIn from "./ui/base/sign_in/SignIn";
+import { runInAction } from "mobx";
 
 const ProtectedComponent = observer(
   ({
@@ -33,7 +33,7 @@ const ProtectedComponent = observer(
     const store = useStore();
     if (!store) throw Error("Store shouldn't be null");
     if (!store.user) {
-      action(() => (signInStore.open = true));
+      runInAction(() => (signInStore.open = true));
       return <SignIn store={signInStore} onSubmit={() => store.signIn()} />;
     }
     return <Component />;
