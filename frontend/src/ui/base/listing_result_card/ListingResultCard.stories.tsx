@@ -1,6 +1,6 @@
 import { Meta } from "@storybook/react/types-6-0";
 import { ListingResultCard } from "./ListingResultCard";
-import { createFakeListing } from "../../util/fakes/listing";
+import { createFakeActualListing } from '../../util/fakes/listing';
 import * as React from "react";
 
 export default {
@@ -11,13 +11,13 @@ export default {
       control: {
         type: "date",
       },
-      defaultValue: createFakeListing().auction_start,
+      defaultValue: createFakeActualListing().auction_start,
     },
     auction_end: {
       control: {
         type: "date",
       },
-      defaultValue: createFakeListing().auction_end,
+      defaultValue: createFakeActualListing().auction_end,
     },
   },
 } as Meta;
@@ -27,7 +27,7 @@ export const Overview = (props: {
   auction_end: string;
 }) => (
   <ListingResultCard
-    listing={createFakeListing({
+    listing={createFakeActualListing({
       auction_start: new Date(props.auction_start),
       auction_end: new Date(props.auction_end),
     })}

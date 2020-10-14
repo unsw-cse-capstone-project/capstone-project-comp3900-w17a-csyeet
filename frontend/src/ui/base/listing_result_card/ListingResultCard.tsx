@@ -1,7 +1,7 @@
 import { Button, Card, CardContent, Typography, Link } from "@material-ui/core";
 import * as React from "react";
 import Slider from "react-slick";
-import { Listing } from "../../util/types/listing";
+import { ListingActual } from '../../util/types/listing';
 import {
   ListingResultCardStyles,
   ListingFeatureIconStyles,
@@ -17,7 +17,7 @@ import classNames from "classnames";
 import { useHistory } from "react-router-dom";
 
 export const ListingResultCard = (props: {
-  listing: Listing;
+  listing: ListingActual;
   style?: React.CSSProperties;
   className?: string;
 }) => {

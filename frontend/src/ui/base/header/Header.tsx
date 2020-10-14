@@ -9,6 +9,7 @@ import SignUpStore from "../sign_up/SignUpStore";
 import SignIn from "../sign_in/SignIn";
 import SignUp from "../sign_up/SignUp";
 import { useStore } from "../../../AuthContext";
+import { Typography } from "@material-ui/core";
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -56,7 +57,14 @@ const Header: React.FC<HeaderProps> = observer(
             </Button>
           </div>
         ) : (
-          <div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="body1">{store.user.name}</Typography>
             <Button
               size="small"
               variant="outlined"
@@ -71,8 +79,18 @@ const Header: React.FC<HeaderProps> = observer(
             </Button>
           </div>
         )}
-        <SignIn store={signInStore} onSubmit={() => store.signIn()} />
-        <SignUp store={signUpStore} onSubmit={() => store.signUp()} />
+        <SignIn
+          store={signInStore}
+          onSubmit={(email: string, password: string) =>
+            store.signIn(email, password)
+          }
+        />
+        <SignUp
+          store={signUpStore}
+          onSubmit={(email: string, password: string, name: string) =>
+            store.signUp(email, password, name)
+          }
+        />
       </div>
     );
   }

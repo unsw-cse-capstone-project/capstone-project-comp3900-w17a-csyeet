@@ -30,7 +30,7 @@ export const ListingPage = (props: { listing: Listing }) => {
     num_bathrooms,
     num_bedrooms,
     num_car_spaces,
-    type,
+    // type,
     title,
     description,
   } = props.listing;
@@ -46,7 +46,7 @@ export const ListingPage = (props: { listing: Listing }) => {
     setOpen(false);
   };
   return (
-    <div className={classes.page} style={{paddingBottom: "200px"}}>
+    <div className={classes.page} style={{ paddingBottom: "200px" }}>
       {/* first three images */}
       <Grid container spacing={2}>
         <Grid item xs={7}>
@@ -54,6 +54,7 @@ export const ListingPage = (props: { listing: Listing }) => {
             src={props.listing.images[0]}
             onClick={handleOpen}
             style={{ width: "100%", height: "100%" }}
+            alt={`Property view 1`}
           ></img>
         </Grid>
         <Grid item xs={5}>
@@ -61,11 +62,13 @@ export const ListingPage = (props: { listing: Listing }) => {
             src={props.listing.images[1]}
             onClick={handleOpen}
             style={{ width: "100%", height: "50%" }}
+            alt={`Property view 2`}
           ></img>
           <img
             src={props.listing.images[2]}
             onClick={handleOpen}
             style={{ width: "100%", height: "50%" }}
+            alt={`Property view 3`}
           ></img>
         </Grid>
       </Grid>
@@ -85,7 +88,12 @@ export const ListingPage = (props: { listing: Listing }) => {
         <div className={classes.sliderContainer}>
           <Slider {...settings}>
             {props.listing.images.map((image, i) => (
-              <img className={classes.imageContainer} src={image} key={i} />
+              <img
+                className={classes.imageContainer}
+                src={image}
+                key={i}
+                alt={`Property view ${i}`}
+              />
             ))}
           </Slider>
         </div>
