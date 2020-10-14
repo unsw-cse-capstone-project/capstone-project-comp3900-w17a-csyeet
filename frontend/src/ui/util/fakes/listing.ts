@@ -1,4 +1,4 @@
-import { Listing, ListingActual } from '../types/listing';
+import { Listing, ListingActual } from "../types/listing";
 export const createFakeListing = (opts?: Partial<Listing>) => ({
   id: 1,
   owner_id: 1,
@@ -75,6 +75,37 @@ export const fetchListing = (id: number) => {
       return createFakeListingDuringAuction();
     case 3:
       return createFakeListingClosedAuction();
+    case 6:
+      return createFakeListing({
+        id: 6,
+        street: "47 Little Riley Street",
+        suburb: "Zetland",
+        postcode: "2017",
+        state: "NSW",
+        country: "Australia",
+      });
+    case 7:
+      return createFakeListing({
+        id: 7,
+        street: "38/679 Bourke Street",
+        suburb: "Zetland",
+        postcode: "2017",
+        state: "NSW",
+        country: "Australia",
+        auction_start: new Date("2020-10-09T14:50:14.672000"),
+        auction_end: new Date("2020-10-25T14:50:14.672000"),
+      });
+    case 8:
+      return createFakeListing({
+        id: 8,
+        street: "12 Mary Street",
+        suburb: "Zetland",
+        postcode: "2017",
+        state: "NSW",
+        country: "Australia",
+        auction_start: new Date("2020-10-09T14:50:14.672000"),
+        auction_end: new Date("2020-10-12T14:50:14.672000"),
+      });
     default:
       return createFakeListing();
   }

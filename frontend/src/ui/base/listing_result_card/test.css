@@ -2,6 +2,7 @@
 .slick-slider .slick-prev:before,
 .slick-slider .slick-next:before {
   color: black !important;
+  z-index: 1;
 }
 
 .slick-next {
