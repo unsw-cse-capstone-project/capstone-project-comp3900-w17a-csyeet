@@ -25,7 +25,7 @@ export const FeaturesPanel = ({ features }: { features: string }) => {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography variant="h5">Nearby Features</Typography>
+        <Typography variant="h5">Features</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Typography>TODO: Implement API</Typography>
