@@ -55,6 +55,7 @@ export const ListingPage = (props: { listing: Listing }) => {
             src={props.listing.images[0]}
             onClick={handleOpen}
             style={{ width: "100%", height: "100%" }}
+            alt={`Property view 1`}
           ></img>
         </Grid>
         <Grid item xs={5}>
@@ -63,12 +64,14 @@ export const ListingPage = (props: { listing: Listing }) => {
             src={props.listing.images[1]}
             onClick={handleOpen}
             style={{ width: "100%", height: "50%" }}
+            alt={`Property view 2`}
           ></img>
           <img
             alt="prop-img-2"
             src={props.listing.images[2]}
             onClick={handleOpen}
             style={{ width: "100%", height: "50%" }}
+            alt={`Property view 3`}
           ></img>
         </Grid>
       </Grid>

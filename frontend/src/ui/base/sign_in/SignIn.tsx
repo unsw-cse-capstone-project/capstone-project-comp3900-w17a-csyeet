@@ -28,7 +28,7 @@ const SignIn = observer(({ onSubmit, store }: SignInProps) => {
     store.open = false;
     store.success = false;
   });
-
+  
   return (
     <ModalWrapper open={store.open} onClose={closeModal}>
       <div className="formContainer">

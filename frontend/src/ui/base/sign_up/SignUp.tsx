@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { action, computed } from "mobx";
+import { action } from "mobx";
 import {
   Button,
   Typography,
@@ -18,15 +18,16 @@ import SignUpStyles from "./SignUp.css";
 
 export interface SignUpProps {
   onSubmit: (
-    usernm: string,
+    name: string,
     email: string,
-    passwd: string,
-    passwdVerify: string,
-    phoneNo: string,
-    addressLine: string,
-    suburb: string,
-    state: string,
-    postcode: string
+    password: string
+    // passwd: string,
+    // passwdVerify: string,
+    // phoneNo: string,
+    // addressLine: string,
+    // suburb: string,
+    // state: string,
+    // postcode: string
   ) => void; // (Jenn) TODO: Update with API call
   store: SignUpStore;
 }
@@ -104,17 +105,18 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
 
   const handleConfirm = () => {
     setSuccess();
-    onSubmit(
-      store.usernm,
-      store.email,
-      store.passwd,
-      store.passwdVerify,
-      store.phoneNo,
-      store.addressLine,
-      store.suburb,
-      store.state,
-      store.postcode
-    );
+    // onSubmit(
+    //   store.usernm,
+    //   store.email,
+    //   store.passwd,
+    //   store.passwdVerify,
+    //   store.phoneNo,
+    //   store.addressLine,
+    //   store.suburb,
+    //   store.state,
+    //   store.postcode
+    // );
+    onSubmit(store.email, store.passwd, store.usernm);
     closeModal();
   };
 
@@ -158,7 +160,9 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
                   variant="contained"
                   color="primary"
                   onClick={
-                    activeStep === steps.length - 1 ? handleConfirm : handleNext
+                    activeStep === 1
+                      ? () => handleConfirm()
+                      : () => handleNext()
                   }
                   disabled={disableNext()}
                 >

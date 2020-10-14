@@ -1,11 +1,10 @@
 import * as React from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ListingPageStore, ListingPagePresenter } from "./listingPagePresenter";
 import { ListingPage as ListingPageBase } from "./listingPage";
 import { observer } from "mobx-react";
 import { listingPageStyle } from "./listingPage.css";
 import { Typography, useTheme } from "@material-ui/core";
-import { useStore } from "../AuthContext";
 
 export const ViewListingPage = () => {
   const { id } = useParams<{ id: string }>();
