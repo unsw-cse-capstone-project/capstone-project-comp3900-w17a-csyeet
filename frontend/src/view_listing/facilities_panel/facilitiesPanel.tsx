@@ -29,7 +29,6 @@ export const FacilitiesPanel = ({ facilities }: { facilities: string }) => {
       </AccordionSummary>
       <AccordionDetails>
         <Typography>TODO: Implement API</Typography>
-        <Typography>{facilities}</Typography>
       </AccordionDetails>
     </Accordion>
   );

@@ -10,11 +10,7 @@ export const SellerProfile = ({ seller }: { seller: string }) => {
         Seller
       </Typography>
       <Divider className={classes.divider} />
-      <Typography variant="body2">
-        Include seller profile picture, name: {seller} and button to message.
-        Clicking the name should display a pop-up window of the seller's
-        profile.
-      </Typography>
+      <Typography variant="body2">TOOD: Implement Seller API</Typography>
     </div>
   );
 };

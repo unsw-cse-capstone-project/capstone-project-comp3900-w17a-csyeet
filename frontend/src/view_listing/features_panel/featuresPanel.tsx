@@ -29,7 +29,6 @@ export const FeaturesPanel = ({ features }: { features: string }) => {
       </AccordionSummary>
       <AccordionDetails>
         <Typography>TODO: Implement API</Typography>
-        <Typography>{features}</Typography>
       </AccordionDetails>
     </Accordion>
   );

@@ -7,7 +7,7 @@ export const Map = ({ image }: { image: string }) => {
   return (
     <div>
       <Typography variant="h5" className={classes.header}>
-        Map: Placeholder
+        Map:
       </Typography>
       <Divider className={classes.divider} />
       <img src={image} style={{ width: "100%" }}></img>
