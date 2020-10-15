@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 
 class CreateRegistrationRequest(BaseModel):
-    bid: int
+    bid: int = Field(..., ge=1)
     card_number: str
     expiry: datetime
     ccv: str
