@@ -15,6 +15,7 @@ export const Map = ({ listing }: { listing: ListingActual }) => {
       <Divider className={classes.divider} />
       <div className={classes.mapContainer}>
         <iframe
+          title="map"
           frameBorder="0"
           className={classes.map}
           src={`https://www.google.com/maps/embed/v1/place?key=${googleAPIKey}&q=${listing.street.replace(/[ ]/g,"+")},+${listing.suburb}+${listing.state}`}

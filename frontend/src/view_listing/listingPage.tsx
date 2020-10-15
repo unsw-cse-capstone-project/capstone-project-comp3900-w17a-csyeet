@@ -4,11 +4,10 @@ import {
   Grid,
   Typography,
   Modal,
-  Divider,
   Paper,
   Badge,
 } from "@material-ui/core";
-import { Listing, ListingActual } from "../ui/util/types/listing";
+import { ListingActual } from "../ui/util/types/listing";
 import { ListingFeatureIcon } from "../ui/base/listing_result_card/ListingResultCard";
 import { DriveEta, KingBed, Bathtub } from "@material-ui/icons";
 import Slider from "react-slick";
@@ -41,7 +40,7 @@ export const ListingPage = (props: {
     num_bathrooms,
     num_bedrooms,
     num_car_spaces,
-    // type, (Jenn) Commented out to get rid of warning
+    type,
     title,
     description,
   } = props.listing;
@@ -177,3 +176,5 @@ export const ListingPage = (props: {
     </div>
   );
 };
+
+
