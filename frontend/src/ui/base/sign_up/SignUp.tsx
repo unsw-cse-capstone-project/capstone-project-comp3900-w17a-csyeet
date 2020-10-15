@@ -60,40 +60,44 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
     }
   };
 
-  const disableNext = () => {
-    switch (activeStep) {
-      case 0:
-        return !canProceedStep0.get();
-      case 1:
-        return !canProceedStep1.get();
-      case 2:
-        return !canProceedStep2.get();
-      default:
-        return undefined;
-    }
-  };
+  // const disableNext = () => {
+  //   console.log(store.usernm !== "");
+  //   console.log(store.email !== "");
+  //   console.log(store.passwd !== "");
+  //   console.log(store.passwd === store.passwdVerify);
+  //   switch (activeStep) {
+  //     case 0:
+  //       return !canProceedStep0.get();
+  //     case 1:
+  //       return !canProceedStep1.get();
+  //     case 2:
+  //       return !canProceedStep2.get();
+  //     default:
+  //       return false;
+  //   }
+  // };
 
-  const canProceedStep0 = computed(
-    () =>
-      store.usernm !== "" &&
-      store.email !== "" &&
-      store.passwd !== "" &&
-      store.passwd === store.passwdVerify
-  );
+  // const canProceedStep0 = computed(
+  //   () =>
+  //     store.usernm !== "" &&
+  //     store.email !== "" &&
+  //     store.passwd !== "" &&
+  //     store.passwd === store.passwdVerify
+  // );
 
-  const canProceedStep1 = computed(
-    () =>
-      store.phoneNo.length === 10 &&
-      store.addressLine !== "" &&
-      store.suburb !== "" &&
-      store.postcode !== "" &&
-      store.addressLine.length !== 0 &&
-      store.suburb.length > 0 &&
-      store.postcode.length > 0 &&
-      store.state !== "none"
-  );
+  // const canProceedStep1 = computed(
+  //   () =>
+  //     store.phoneNo.length === 10 &&
+  //     store.addressLine !== "" &&
+  //     store.suburb !== "" &&
+  //     store.postcode !== "" &&
+  //     store.addressLine.length !== 0 &&
+  //     store.suburb.length > 0 &&
+  //     store.postcode.length > 0 &&
+  //     store.state !== "none"
+  // );
 
-  const canProceedStep2 = computed(() => store.success === true);
+  // const canProceedStep2 = computed(() => store.success === true);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);

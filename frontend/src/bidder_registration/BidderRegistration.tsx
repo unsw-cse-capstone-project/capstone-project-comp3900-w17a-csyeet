@@ -135,7 +135,7 @@ export const BidderRegistration = observer(
           <DialogTitle id="alert-dialog-slide-title">Registration</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              You have successfully registered as a bidder Return to Listing
+              You have successfully registered as a bidder
             </DialogContentText>
           </DialogContent>
           <DialogActions>

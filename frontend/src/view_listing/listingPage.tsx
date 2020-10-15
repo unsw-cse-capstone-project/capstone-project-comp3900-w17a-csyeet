@@ -1,7 +1,7 @@
 import * as React from "react";
 import { listingPageStyle } from "./listingPage.css";
 import { Grid, Typography, Modal } from "@material-ui/core";
-import { Listing } from "../ui/util/types/listing";
+import { Listing, ListingActual } from "../ui/util/types/listing";
 import { ListingFeatureIcon } from "../ui/base/listing_result_card/ListingResultCard";
 import { DriveEta, KingBed, Bathtub } from "@material-ui/icons";
 import Slider from "react-slick";
@@ -12,7 +12,7 @@ import { SellerProfile } from "./seller_profile/sellerProfile";
 import { Map } from "./map/map";
 import { AuctionDetails } from "./auction_details/auctionDetails";
 
-export const ListingPage = (props: { listing: Listing }) => {
+export const ListingPage = (props: { listing: ListingActual }) => {
   const settings = {
     infinite: true,
     speed: 500,
@@ -46,7 +46,7 @@ export const ListingPage = (props: { listing: Listing }) => {
     setOpen(false);
   };
   return (
-    <div className={classes.page} style={{ paddingBottom: "200px" }}>
+    <div style={{ paddingBottom: "200px" }}>
       {/* first three images */}
       <Grid container spacing={2}>
         <Grid item xs={7}>
@@ -92,10 +92,10 @@ export const ListingPage = (props: { listing: Listing }) => {
           <Slider {...settings}>
             {props.listing.images.map((image, i) => (
               <img
-                alt="slider-prop-img"
                 className={classes.imageContainer}
                 src={image}
                 key={i}
+                alt={`Property view ${i}`}
               />
             ))}
           </Slider>

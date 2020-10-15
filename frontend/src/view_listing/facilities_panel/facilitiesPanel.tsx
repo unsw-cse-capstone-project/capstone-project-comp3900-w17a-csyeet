@@ -19,16 +19,18 @@ export const FacilitiesPanel = ({ facilities }: { facilities: string }) => {
       square
       expanded={expanded === "panel1"}
       onChange={handleChange("panel1")}
+      elevation={0}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel2a-content"
         id="panel2a-header"
+        style={{paddingLeft: "0px"}}
       >
         <Typography variant="h5">Nearby Facilities</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography>TODO: Implement API</Typography>
+        <Typography></Typography>
       </AccordionDetails>
     </Accordion>
   );

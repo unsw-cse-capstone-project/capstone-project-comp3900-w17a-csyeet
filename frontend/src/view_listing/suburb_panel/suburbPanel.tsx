@@ -19,16 +19,19 @@ export const SuburbPanel = ({ suburb }: { suburb: string }) => {
       square
       expanded={expanded === "panel1"}
       onChange={handleChange("panel1")}
+      elevation={0}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel3a-content"
         id="panel3a-header"
+        style={{paddingLeft: "0px"}}
+        
       >
         <Typography variant="h5">{suburb} Suburb Profile</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography>TODO: Implement API</Typography>
+        <Typography></Typography>
       </AccordionDetails>
     </Accordion>
   );

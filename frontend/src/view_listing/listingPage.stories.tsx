@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react/types-6-0";
 import { ListingPage } from "./listingPage";
-import { createFakeListing } from "../ui/util/fakes/listing";
+import { createFakeActualListing } from "../ui/util/fakes/listing";
 
 export default {
   title: "view_listing/listingPage",
@@ -9,17 +9,17 @@ export default {
   argTypes: {
     auction_start: {
       control: {
-        type: "date"
+        type: "date",
       },
-      defaultValue: createFakeListing().auction_start
+      defaultValue: createFakeActualListing().auction_start,
     },
     auction_end: {
       control: {
-        type: "date"
+        type: "date",
       },
-      defaultValue: createFakeListing().auction_end
-    }
-  }
+      defaultValue: createFakeActualListing().auction_end,
+    },
+  },
 } as Meta;
 
 export const Overview = (props: {
@@ -27,9 +27,9 @@ export const Overview = (props: {
   auction_end: string;
 }) => (
   <ListingPage
-    listing={createFakeListing({
+    listing={createFakeActualListing({
       auction_start: new Date(props.auction_start),
-      auction_end: new Date(props.auction_end)
+      auction_end: new Date(props.auction_end),
     })}
   />
 );
