@@ -3,6 +3,7 @@ import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import classNames from "classnames";
 import { Typography } from "@material-ui/core";
+import { priceFormatter } from '../../util/helper';
 
 export type BidPriceState =
   | "reserve_met"
@@ -56,13 +57,7 @@ export const BidPrice = ({
   textType?: "h4" | "h1" | "h2" | "h3" | "h5" | "h6";
 }) => {
   const classes = useStyles();
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
-  const formattedPrice = bid ? formatter.format(bid) : "Unknown";
+  const formattedPrice = bid ? priceFormatter.format(bid) : "Unknown";
   return (
     <Paper
       className={classNames(classes.bidPrice, classes[state], className)}

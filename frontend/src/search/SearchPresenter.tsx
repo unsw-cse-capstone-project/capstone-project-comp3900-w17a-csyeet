@@ -61,15 +61,5 @@ export class SearchPresenter {
     } catch {
       console.log("aww error");
     }
-
-    // await delay(400);
-    // runInAction(() => {
-    //   store.searchResults = [
-    //     createFakeListingPreAuction(),
-    //     createFakeListingDuringAuction(),
-    //     createFakeListingClosedAuction(),
-    //   ];
-    //   store.searchState = "loaded";
-    // });
   }
 }

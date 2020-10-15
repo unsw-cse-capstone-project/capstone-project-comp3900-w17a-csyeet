@@ -1,6 +1,6 @@
 import * as React from "react";
 import { BidPriceState } from "../ui/base/bid_price/BidPrice";
-import { Typography, Grid, Hidden } from "@material-ui/core";
+import { Typography, Grid, Hidden, Paper } from "@material-ui/core";
 import { Countdown } from "../ui/base/countdown/Countdown";
 import classNames from "classnames";
 import { auctionPageStyle } from "./AuctionPage.css";
@@ -81,6 +81,7 @@ export const AuctionPage = ({
         {", "}
         <span style={{ textTransform: "uppercase" }}>{state}</span> {postcode}
       </Typography>
+      <Paper elevation={0} style={{margin: "20px -15vw", padding: "20px 15vw", backgroundColor: "#f3f4f5"}}>
       <AuctionTime />
       <Hidden lgDown>
         <Grid container spacing={3}>
@@ -126,6 +127,8 @@ export const AuctionPage = ({
           </Grid>
         </Grid>
       </Hidden>
+      </Paper>
+      
       {/* bids list */}
       <div className={classes.biddingInfo}>
         <Hidden smDown>

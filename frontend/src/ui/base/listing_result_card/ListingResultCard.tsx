@@ -155,18 +155,20 @@ export const ListingFeatureIcon = ({
   value,
   Icon,
   style,
+  size = "small",
 }: {
   value: number;
-  Icon: React.ComponentType;
+  Icon: React.ComponentType<{fontSize?: 'small' | 'large', className?: string}>;
   style?: React.CSSProperties;
+  size?: "small" | "large";
 }) => {
   const classes = ListingFeatureIconStyles();
   return (
     <div className={classes.container} style={style}>
-      <Typography variant="body1" className={classes.text}>
+      <Typography variant={size === "large"? "h6" :"body1"} className={classes.text}>
         {value}
       </Typography>
-      <Icon />
+      <Icon fontSize={size} className={classes.icon}/>
     </div>
   );
 };

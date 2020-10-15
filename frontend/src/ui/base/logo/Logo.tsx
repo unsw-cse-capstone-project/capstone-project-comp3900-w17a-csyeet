@@ -14,8 +14,8 @@ const Logo = ({ size = "large", onClick }: LogoProps) => {
         <div onClick={onClick} style={{ cursor: "pointer" }}>
           <img
             style={{
-              height: "100px",
-              width: "210px",
+              height: "70px",
+              // width: "210px",
             }}
             src={logo}
             alt="Adobe Logo"

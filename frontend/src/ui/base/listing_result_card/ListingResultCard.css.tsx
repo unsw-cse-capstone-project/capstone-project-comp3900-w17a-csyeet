@@ -44,5 +44,8 @@ export const ListingFeatureIconStyles = makeStyles((theme: Theme) =>
     text: {
       padding: theme.spacing(0, 1, 0, 1.5),
     },
+    icon: {
+      color: "black",
+    }
   })
 );

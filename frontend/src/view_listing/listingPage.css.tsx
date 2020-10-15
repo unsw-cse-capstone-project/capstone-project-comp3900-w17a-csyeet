@@ -30,20 +30,47 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
       },
       height: "500px",
     },
-    street: {
-      padding: theme.spacing(2, 0, 0, 0),
-    },
     title: {
-      margin: theme.spacing(4, 0, 1, 0),
+      margin: theme.spacing(2, 0, 1, 0),
     },
     description: {
       margin: theme.spacing(0, 0, 3, 0),
     },
     detailBar: {
       display: "flex",
-      margin: theme.spacing(1, 0, 0, 0),
+      margin: theme.spacing(2, 0),
       justifyContent: "flex-end",
-      padding: theme.spacing(2, 0, "15%", 0),
+      alignItems: "center",
+    },
+    badge: {
+      "& span": {
+        padding: theme.spacing(2),
+        borderRadius: "10000px",
+        // transform: "translate(50%, -20%)"
+        transform: "translate(10%, 40%)",
+        boxShadow: theme.shadows[1],
+      },
+    },
+    photoGrid: {
+      [theme.breakpoints.up("md")]: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      },
+      [theme.breakpoints.down("md")]: {
+        display: "flex",
+        justifyContent: "space-between",
+      },
+      "& img": {
+        objectFit: "cover",
+        [theme.breakpoints.up("md")]: {
+          width: "100%",
+          height: "49%",
+        },
+        [theme.breakpoints.down("md")]: {
+          width: "49%",
+        },
+      },
     },
   })
 );
