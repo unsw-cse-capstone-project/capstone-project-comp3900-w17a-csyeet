@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi_sqlalchemy import db
