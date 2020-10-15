@@ -1,4 +1,4 @@
-import { Listing, ListingActual } from "../types/listing";
+import { Listing, ListingActual } from '../types/listing';
 export const createFakeListing = (opts?: Partial<Listing>) => ({
   id: 1,
   owner_id: 1,

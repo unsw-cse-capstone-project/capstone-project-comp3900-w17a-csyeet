@@ -1,11 +1,5 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
-import { delay } from "../ui/util/helper";
-import {
-  createFakeListingPreAuction,
-  createFakeListingDuringAuction,
-  createFakeListingClosedAuction,
-} from "../ui/util/fakes/listing";
-import { Listing, ListingActual } from "../ui/util/types/listing";
+import { ListingActual } from "../ui/util/types/listing";
 import { createFakeListing } from "../ui/util/fakes/listing";
 
 export class SearchStore {
@@ -67,15 +61,5 @@ export class SearchPresenter {
     } catch {
       console.log("aww error");
     }
-
-    // await delay(400);
-    // runInAction(() => {
-    //   store.searchResults = [
-    //     createFakeListingPreAuction(),
-    //     createFakeListingDuringAuction(),
-    //     createFakeListingClosedAuction(),
-    //   ];
-    //   store.searchState = "loaded";
-    // });
   }
 }

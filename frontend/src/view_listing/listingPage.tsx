@@ -41,7 +41,7 @@ export const ListingPage = (props: {
     num_bathrooms,
     num_bedrooms,
     num_car_spaces,
-    type,
+    // type, (Jenn) Commented out to get rid of warning
     title,
     description,
   } = props.listing;

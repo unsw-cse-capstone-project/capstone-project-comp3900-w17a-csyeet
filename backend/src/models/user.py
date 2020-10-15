@@ -12,6 +12,7 @@ class User(Base):
     name = Column(String(), nullable=False)
 
     listings = relationship('Listing', back_populates='owner')
+    registrations = relationship('Registration', back_populates='user')
 
     def __repr__(self):
         return f"<User: {self.name}>"

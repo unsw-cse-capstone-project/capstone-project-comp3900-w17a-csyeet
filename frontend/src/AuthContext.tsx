@@ -39,10 +39,13 @@ export default class Store {
   @action
   async signUp(email: string, password: string, name: string) {
     try {
-      console.log(email, password, name);
       const response = await fetch("/signup", {
         method: "post",
-        body: JSON.stringify({ email: email, password: password, name: name }),
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          name: name,
+        }),
       });
       const content = await response.json();
       console.log(content);
@@ -56,8 +59,15 @@ export default class Store {
 
   // (Jenn TOOD: Hook API call)
   @action
-  signOut() {
-    this.user = undefined;
+  async signOut() {
+    try {
+      await fetch("/logout", {
+        method: "post",
+      });
+      runInAction(() => (this.user = undefined));
+    } catch {
+      console.log("error T-T");
+    }
   }
 
   constructor() {
