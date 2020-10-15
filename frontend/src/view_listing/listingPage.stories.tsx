@@ -31,5 +31,6 @@ export const Overview = (props: {
       auction_start: new Date(props.auction_start),
       auction_end: new Date(props.auction_end),
     })}
+    SuburbPanelContent={() => <div>hello</div>}
   />
 );

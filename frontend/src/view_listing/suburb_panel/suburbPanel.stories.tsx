@@ -1,17 +1,12 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
 import { SuburbPanel } from "./suburbPanel";
+import { createFakeActualListing } from '../../ui/util/fakes/listing';
 
 export default {
   title: "view_listing/suburbPanel",
   component: SuburbPanel,
-  argTypes: {
-    suburb: {
-      control: {
-        type: "text"
-      }
-    }
-  }
+
 } as Meta;
 
-export const Overview = () => <SuburbPanel suburb={"Chatswood"} />;
+export const Overview = () => <SuburbPanel listing={createFakeActualListing()} Content={() => <div>test</div>}/>;

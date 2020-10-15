@@ -22,3 +22,10 @@ export const createFakeAddress = (): Address => ({
 export function delay(timeout: number): Promise<void> {
   return new Promise((res) => setTimeout(res, timeout));
 }
+
+export const priceFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});

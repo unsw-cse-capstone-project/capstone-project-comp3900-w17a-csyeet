@@ -5,6 +5,8 @@ import { ListingPage as ListingPageBase } from "./listingPage";
 import { observer } from "mobx-react";
 import { listingPageStyle } from "./listingPage.css";
 import { Typography, useTheme } from "@material-ui/core";
+import { SuburbPanelPresenter, SuburbPanelStore } from './suburb_panel/suburbPanelPresenter';
+import { SuburbPanelContent } from './suburb_panel/suburbPanelContent';
 
 export const ViewListingPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -58,8 +60,13 @@ export const ListingPageWrapper = observer(
 
     const listing = store.listing;
 
+    const suburbPanelStore = new SuburbPanelStore();
+    const suburbPanelPresenter = new SuburbPanelPresenter();
+    suburbPanelPresenter.loadSuburbInformation(suburbPanelStore, listing.suburb, listing.state, listing.postcode, listing.num_bedrooms);
+
+    const SuburbPanelContentWrapper = observer(() => <SuburbPanelContent store={suburbPanelStore}/>);
     const Content = () => {
-      return <ListingPageBase listing={listing} />;
+      return <ListingPageBase listing={listing} SuburbPanelContent={SuburbPanelContentWrapper}/>;
     };
 
     return <Container Content={Content} />;

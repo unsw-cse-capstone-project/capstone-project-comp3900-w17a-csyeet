@@ -2,18 +2,27 @@ import * as React from "react";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import { Typography } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { ListingActual } from "../../ui/util/types/listing";
+import { SuburbPanelStyle } from "./suburbPanel.css";
 
-export const SuburbPanel = ({ suburb }: { suburb: string }) => {
+export const SuburbPanel = ({
+  listing,
+  Content,
+}: {
+  listing: ListingActual;
+  Content: React.ComponentType;
+}) => {
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
 
   const handleChange = (panel: string) => (
-    event: React.ChangeEvent<{}>,
+    _event: React.ChangeEvent<{}>,
     newExpanded: boolean
   ) => {
     setExpanded(newExpanded ? panel : false);
   };
+  const classes = SuburbPanelStyle();
   return (
     <Accordion
       square
@@ -25,13 +34,18 @@ export const SuburbPanel = ({ suburb }: { suburb: string }) => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel3a-content"
         id="panel3a-header"
-        style={{paddingLeft: "0px"}}
-        
+        className={classes.accordianSummary}
       >
-        <Typography variant="h5">{suburb} Suburb Profile</Typography>
+        <Typography variant="h5">{listing.suburb} Suburb Profile</Typography>
       </AccordionSummary>
-      <AccordionDetails>
-        <Typography></Typography>
+      <AccordionDetails className={classes.accordianDetails}>
+        <Paper className={classes.textContainer}>
+          <Typography variant="body1">
+            For a {listing.num_bedrooms} bedroom {listing.type} in{" "}
+            {listing.suburb}
+          </Typography>
+        </Paper>
+        <Content />
       </AccordionDetails>
     </Accordion>
   );

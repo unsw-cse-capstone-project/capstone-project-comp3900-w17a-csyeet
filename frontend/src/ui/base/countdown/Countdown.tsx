@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     separatorBox: {
       padding: theme.spacing(1) + "px 0",
+      background: "none",
     },
   })
 );

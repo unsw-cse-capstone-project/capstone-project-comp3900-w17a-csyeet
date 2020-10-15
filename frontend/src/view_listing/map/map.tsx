@@ -1,16 +1,25 @@
 import * as React from "react";
 import { Typography, Divider } from "@material-ui/core";
 import { mapStyle } from "./map.css";
+import { ListingActual } from "../../ui/util/types/listing";
 
-export const Map = ({ image }: { image: string }) => {
+const googleAPIKey = "AIzaSyDS3k251uCtXDMWqcyD2wA9vkIg40sd9Lg";
+
+export const Map = ({ listing }: { listing: ListingActual }) => {
   const classes = mapStyle();
   return (
     <div>
       <Typography variant="h5" className={classes.header}>
-        Map:
+        Map
       </Typography>
       <Divider className={classes.divider} />
-      <img src={image} alt="map" style={{ width: "100%" }}></img>
+      <div className={classes.mapContainer}>
+        <iframe
+          frameBorder="0"
+          className={classes.map}
+          src={`https://www.google.com/maps/embed/v1/place?key=${googleAPIKey}&q=${listing.street.replace(/[ ]/g,"+")},+${listing.suburb}+${listing.state}`}
+        />
+      </div>
     </div>
   );
 };

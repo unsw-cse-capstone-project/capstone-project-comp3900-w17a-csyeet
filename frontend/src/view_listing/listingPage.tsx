@@ -1,6 +1,13 @@
 import * as React from "react";
 import { listingPageStyle } from "./listingPage.css";
-import { Grid, Typography, Modal } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Modal,
+  Divider,
+  Paper,
+  Badge,
+} from "@material-ui/core";
 import { Listing, ListingActual } from "../ui/util/types/listing";
 import { ListingFeatureIcon } from "../ui/base/listing_result_card/ListingResultCard";
 import { DriveEta, KingBed, Bathtub } from "@material-ui/icons";
@@ -11,8 +18,12 @@ import { SuburbPanel } from "./suburb_panel/suburbPanel";
 import { SellerProfile } from "./seller_profile/sellerProfile";
 import { Map } from "./map/map";
 import { AuctionDetails } from "./auction_details/auctionDetails";
+import { AddressHeading } from "../ui/base/address_heading/AddressHeading";
 
-export const ListingPage = (props: { listing: ListingActual }) => {
+export const ListingPage = (props: {
+  listing: ListingActual;
+  SuburbPanelContent: React.ComponentType;
+}) => {
   const settings = {
     infinite: true,
     speed: 500,
@@ -30,7 +41,7 @@ export const ListingPage = (props: { listing: ListingActual }) => {
     num_bathrooms,
     num_bedrooms,
     num_car_spaces,
-    // type,
+    type,
     title,
     description,
   } = props.listing;
@@ -47,32 +58,58 @@ export const ListingPage = (props: { listing: ListingActual }) => {
   };
   return (
     <div style={{ paddingBottom: "200px" }}>
+      <AddressHeading
+        street={street}
+        suburb={suburb}
+        state={state}
+        postcode={postcode}
+      />
       {/* first three images */}
-      <Grid container spacing={2}>
-        <Grid item xs={7}>
-          <img
-            src={props.listing.images[0]}
-            onClick={handleOpen}
-            style={{ width: "100%", height: "100%" }}
-            alt={`Property view 1`}
-          ></img>
+      <Paper
+        elevation={0}
+        style={{
+          margin: "20px -15vw",
+          padding: "30px 15vw",
+          backgroundColor: "#f3f4f5",
+        }}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={8}>
+            <Badge
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              className={classes.badge}
+              badgeContent={
+                <Typography variant="body1">
+                  {type[0].toUpperCase() + type.slice(1)}
+                </Typography>
+              }
+              color="secondary"
+            >
+              <img
+                src={props.listing.images[0]}
+                onClick={handleOpen}
+                style={{ width: "100%", height: "100%" }}
+                alt={`Property view 1`}
+              />
+            </Badge>
+          </Grid>
+          <Grid item xs={12} md={4} className={classes.photoGrid}>
+            <img
+              src={props.listing.images[1]}
+              onClick={handleOpen}
+              alt={`Property view 2`}
+            ></img>
+            <img
+              src={props.listing.images[2]}
+              onClick={handleOpen}
+              alt={`Property view 3`}
+            ></img>
+          </Grid>
         </Grid>
-        <Grid item xs={5}>
-          <img
-            src={props.listing.images[1]}
-            onClick={handleOpen}
-            style={{ width: "100%", height: "50%" }}
-            alt={`Property view 2`}
-          ></img>
-          <img
-            src={props.listing.images[2]}
-            onClick={handleOpen}
-            style={{ width: "100%", height: "50%" }}
-            alt={`Property view 3`}
-          ></img>
-        </Grid>
-      </Grid>
-
+      </Paper>
       {/* image slideshow */}
       <Modal
         open={open}
@@ -100,24 +137,19 @@ export const ListingPage = (props: { listing: ListingActual }) => {
       </Modal>
 
       {/* image slideshow*/}
-
+      <div className={classes.detailBar}>
+        <ListingFeatureIcon size="large" value={num_bedrooms} Icon={KingBed} />
+        <ListingFeatureIcon size="large" value={num_bathrooms} Icon={Bathtub} />
+        <ListingFeatureIcon
+          size="large"
+          value={num_car_spaces}
+          Icon={DriveEta}
+        />
+      </div>
       <Grid container spacing={2}>
         {/* left column */}
-        <Grid item xs={8}>
-          <Typography
-            variant="h4"
-            className={classes.street}
-            style={{ textTransform: "capitalize" }}
-          >
-            {street}
-          </Typography>
-          <Typography variant="h5" style={{ textTransform: "capitalize" }}>
-            {suburb}
-            {", "}
-            <span style={{ textTransform: "uppercase" }}>{state}</span>{" "}
-            {postcode}
-          </Typography>
-          <Typography variant="h6" className={classes.title}>
+        <Grid item xs={12} md={8}>
+          <Typography variant="h5" className={classes.title}>
             {title}
           </Typography>
           <Typography variant="body2" className={classes.description}>
@@ -126,27 +158,19 @@ export const ListingPage = (props: { listing: ListingActual }) => {
 
           <FeaturesPanel features={"test features"}></FeaturesPanel>
           <FacilitiesPanel facilities={"test facilities"}></FacilitiesPanel>
-          <SuburbPanel suburb={props.listing.suburb}></SuburbPanel>
+          <SuburbPanel
+            listing={props.listing}
+            Content={props.SuburbPanelContent}
+          ></SuburbPanel>
         </Grid>
         {/* right column */}
-        <Grid item xs={4}>
-          <div className={classes.detailBar}>
-            <ListingFeatureIcon value={num_bedrooms} Icon={KingBed} />
-            <ListingFeatureIcon value={num_bathrooms} Icon={Bathtub} />
-            <ListingFeatureIcon value={num_car_spaces} Icon={DriveEta} />
-          </div>
-
+        <Grid item xs={12} md={4} >
           <AuctionDetails
             auction_start={auction_start}
             auction_end={auction_end}
             id={id}
-          ></AuctionDetails>
-
-          <Map
-            image={
-              "https://i0.wp.com/www.cssscript.com/wp-content/uploads/2018/03/Simple-Location-Picker.png?fit=561%2C421&ssl=1"
-            }
-          ></Map>
+          />
+          <Map listing={props.listing}></Map>
           <SellerProfile seller={"Jen Xu"}></SellerProfile>
         </Grid>
       </Grid>

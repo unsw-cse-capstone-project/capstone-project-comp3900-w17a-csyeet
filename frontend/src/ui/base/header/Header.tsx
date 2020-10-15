@@ -9,7 +9,7 @@ import SignUpStore from "../sign_up/SignUpStore";
 import SignIn from "../sign_in/SignIn";
 import SignUp from "../sign_up/SignUp";
 import { useStore } from "../../../AuthContext";
-import { Typography } from "@material-ui/core";
+import { Typography, useTheme } from '@material-ui/core';
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -21,6 +21,7 @@ const Header: React.FC<HeaderProps> = observer(
     const history = useHistory();
     const location = useLocation();
     const store = useStore();
+    const theme = useTheme();
     if (!store) throw Error("Store should never be null");
     const openSignUpModal = action(() => {
       signUpStore.open = true;
@@ -34,6 +35,8 @@ const Header: React.FC<HeaderProps> = observer(
           display: "flex",
           justifyContent: "space-between",
           verticalAlign: "center",
+          alignItems: "center",
+          paddingBottom: theme.spacing(0.5),
         }}
       >
         {location.pathname === "/" ? (
