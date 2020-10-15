@@ -6,12 +6,12 @@ from .base import Base
 class Registration(Base):
     __tablename__= 'registration'
 
-    listing_id: int = Column(Integer, ForeignKey('listing.id'), primary_key=True, nullable=False)
-    user_id: int = Column(Integer, ForeignKey('user.id'), primary_key=True, nullable=False)
-    bid: int = Column(Integer, nullable=False)
-    card_number: str = Column(String(), nullable=False)
-    expiry: datetime = Column(DateTime, nullable=False)
-    ccv: str = Column(String(), nullable=False)
+    listing_id = Column(Integer, ForeignKey('listing.id'), primary_key=True, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True, nullable=False)
+    bid = Column(Integer, nullable=False)
+    card_number = Column(String(), nullable=False)
+    expiry = Column(DateTime, nullable=False)
+    ccv = Column(String(), nullable=False)
 
     user = relationship('User', back_populates='registrations')
     listing = relationship('Listing', back_populates='bidders')
