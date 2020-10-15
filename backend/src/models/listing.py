@@ -44,6 +44,7 @@ class Listing(Base):
     has_gym: bool = Column(Boolean, default=False, nullable=False)
 
     owner = relationship('User', back_populates='listings')
+    bidders = relationship('Registration', back_populates='listing')
 
     def __repr__(self):
         return f"<Listing: {self.title}>"

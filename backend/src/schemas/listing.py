@@ -4,6 +4,7 @@ from fastapi_utils.enums import CamelStrEnum
 from enum import auto
 from typing import List
 from .user import UserResponse
+from .registration import RegistrationResponse
 
 
 class ListingType(CamelStrEnum):
@@ -80,3 +81,6 @@ class ListingResponse(ListingBase):
 
 class ListingSearchResponse(BaseModel):
     results: List[ListingResponse]
+
+class AuctionResponse(BaseModel):
+    bidders: List[int]

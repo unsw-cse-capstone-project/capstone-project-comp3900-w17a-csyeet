@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from fastapi_sqlalchemy import db
-from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, ListingSearchResponse
+from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, ListingSearchResponse, AuctionResponse
 from ..models import Listing, User
 from ..helpers import get_current_user
 from typing import Optional
@@ -49,6 +49,16 @@ def get(id: int, session: Session = Depends(lambda: db.session)):
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
     return map_listing_to_response(listing)
+
+@router.get('/{id}/auction', response_model=AuctionResponse, responses={404: {"description": "Resource not found"}})
+def get_auction_info(id: int, session: Session = Depends(lambda : db.session)):
+    ''' Gets auction info for a listing '''
+    listing = session.query(Listing).get(id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+    bidders = [bidder.user_id for bidder in listing.bidders]
+    return { 'bidders': bidders }
 
 # TODO: move these to helpers.py or common/helpers.py or sth
 
