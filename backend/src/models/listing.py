@@ -11,7 +11,8 @@ class Listing(Base):
     __tablename__ = 'listing'
 
     id: int = Column(Integer, primary_key=True)
-    owner_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    owner_id = Column(Integer, ForeignKey('user.id', ondelete='CASCADE'),
+                      nullable=False)
     type: ListingType = Column(Enum(ListingType), nullable=False)
     title: str = Column(String(), nullable=False)
     description: str = Column(Text, nullable=False)
@@ -26,8 +27,8 @@ class Listing(Base):
     auction_start: datetime = Column(DateTime, nullable=False)
     auction_end: datetime = Column(DateTime, nullable=False)
     has_ensuite: bool = Column(Boolean, default=False, nullable=False)
-    has_built_in_wardrobe: bool = Column(
-        Boolean, default=False, nullable=False)
+    has_built_in_wardrobe: bool = Column(Boolean, default=False,
+                                         nullable=False)
     has_bathtub: bool = Column(Boolean, default=False, nullable=False)
     is_furnished: bool = Column(Boolean, default=False, nullable=False)
     has_open_kitchen: bool = Column(Boolean, default=False, nullable=False)
