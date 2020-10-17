@@ -2,9 +2,9 @@ from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import or_, and_
 from sqlalchemy.orm import Session, Query
-from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, ListingSearchResponse, AuctionResponse, StarredResponse
+from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse, StarredResponse
 from ..models import Listing, User, Starred
-from ..helpers import get session, get_current_user
+from ..helpers import get_session, get_current_user
 
 router = APIRouter()
 
