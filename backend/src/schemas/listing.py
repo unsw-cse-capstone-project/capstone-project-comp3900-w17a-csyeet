@@ -1,10 +1,11 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
+from pydantic.dataclasses import dataclass
+from fastapi import Query
 from fastapi_utils.enums import CamelStrEnum
 from enum import auto
-from typing import List
+from typing import List, Optional
 from .user import UserResponse
-from .registration import RegistrationResponse
 
 
 class ListingType(CamelStrEnum):
@@ -79,8 +80,23 @@ class ListingResponse(ListingBase):
     id: str
     owner: UserResponse
 
-class ListingSearchResponse(BaseModel):
+
+@dataclass
+class SearchListingsRequest:
+    location: Optional[str] = Query(None,
+                                    description="Matches (case-insensitive) on either suburb, postcode, street, state, or country")
+    type: Optional[ListingType] = Query(None)
+    num_bedrooms: Optional[int] = Query(None, ge=1)
+    num_bathrooms: Optional[int] = Query(None, ge=1)
+    num_car_spaces: Optional[int] = Query(None, ge=1)
+    auction_start: Optional[datetime] = Query(None)
+    auction_end: Optional[datetime] = Query(None)
+    features: Optional[List[Feature]] = Query(None)
+
+
+class SearchListingsResponse(BaseModel):
     results: List[ListingResponse]
+
 
 class AuctionResponse(BaseModel):
     bidders: List[int]

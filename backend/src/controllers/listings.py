@@ -1,18 +1,16 @@
 from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import or_, and_
-from sqlalchemy.orm import Session
-from fastapi_sqlalchemy import db
+from sqlalchemy.orm import Session, Query
 from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, ListingSearchResponse, AuctionResponse, StarredResponse
 from ..models import Listing, User, Starred
-from ..helpers import get_current_user
-from typing import Optional
+from ..helpers import get session, get_current_user
 
 router = APIRouter()
 
 
 @router.post('/', response_model=ListingResponse)
-def create(req: CreateListingRequest, current_user: User = Depends(get_current_user), session: Session = Depends(lambda: db.session)):
+def create(req: CreateListingRequest, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Creates a listing owned by the user making the request '''
     # TODO: Should we prevent creation for some set of values which we deem to be unique? e.g. address?
     # TODO: maybe extract this helper code
@@ -26,23 +24,46 @@ def create(req: CreateListingRequest, current_user: User = Depends(get_current_u
     return map_listing_to_response(listing)
 
 
-@router.get('/', response_model=ListingSearchResponse)
-def search(location: Optional[str] = '', session: Session = Depends(lambda: db.session)):
-    ''' Gets a list of listings filtered by the given criteria '''
-    results = session.query(Listing).filter(or_(
-        Listing.suburb.ilike(location),
-        Listing.street.ilike(location),
-        Listing.postcode.ilike(location),
-        Listing.state.ilike(location),
-        Listing.country.ilike(location)
-    )).all()
+@router.get('/', response_model=SearchListingsResponse)
+# using a class dependency instead of method params because there's too many query params
+def search(req: SearchListingsRequest = Depends(), session: Session = Depends(get_session)):
+    ''' Finds listings which match all of the specified criteria '''
+    query: Query = session.query(Listing)
+    # TODO: maybe extract this helper code
+    conditions = []
+    if req.location:
+        conditions.append(or_(
+            Listing.suburb.ilike(req.location),
+            Listing.street.ilike(req.location),
+            Listing.postcode.ilike(req.location),
+            Listing.state.ilike(req.location),
+            Listing.country.ilike(req.location)
+        ))
+    if req.type:
+        conditions.append(Listing.type == req.type)
+    if req.num_bedrooms:
+        conditions.append(Listing.num_bedrooms == req.num_bedrooms)
+    if req.num_bathrooms:
+        conditions.append(Listing.num_bathrooms == req.num_bathrooms)
+    if req.num_car_spaces:
+        conditions.append(Listing.num_car_spaces == req.num_car_spaces)
+    if req.auction_start:
+        conditions.append(Listing.auction_start >= req.auction_start)
+    if req.auction_end:
+        conditions.append(Listing.auction_end <= req.auction_end)
+    if req.features:
+        conditions.extend(
+            getattr(Listing, get_field_for_feature(feature)) == True for feature in req.features)
+
+    # TODO: consider default sort field
+    results = query.filter(*conditions).all()
 
     responses = [map_listing_to_response(r) for r in results]
     return {'results': responses}
 
 
 @router.get('/{id}', response_model=ListingResponse, responses={404: {"description": "Resource not found"}})
-def get(id: int, session: Session = Depends(lambda: db.session)):
+def get(id: int, session: Session = Depends(get_session)):
     ''' Gets a listing by its id '''
     listing = session.query(Listing).get(id)
     if listing is None:
@@ -52,7 +73,7 @@ def get(id: int, session: Session = Depends(lambda: db.session)):
 
 
 @router.get('/{id}/auction', response_model=AuctionResponse, responses={404: {"description": "Resource not found"}})
-def get_auction_info(id: int, session: Session = Depends(lambda: db.session)):
+def get_auction_info(id: int, session: Session = Depends(get_session)):
     ''' Gets auction info for a listing '''
     listing = session.query(Listing).get(id)
     if listing is None:
