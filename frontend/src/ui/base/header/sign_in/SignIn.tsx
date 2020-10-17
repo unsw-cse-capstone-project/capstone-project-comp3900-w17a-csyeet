@@ -3,10 +3,10 @@ import { observer } from "mobx-react";
 import { action } from "mobx";
 import { Button, Typography } from "@material-ui/core";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
-import SignInStore from "./SignInStore";
-import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
-import ModalWrapper from "../modal_wrapper/ModalWrapper";
-import PasswordInput from "../password_input/PasswordInput";
+import { SignInStore } from "./SignInStore";
+import { TextFieldWrapper } from "../../textfield_wrapper/TextFieldWrapper";
+import { ModalWrapper } from "../../modal_wrapper/ModalWrapper";
+import { PasswordInput } from "../../password_input/PasswordInput";
 
 const success = (
   <Typography variant="h3" align="center" style={{ margin: "35px" }}>
@@ -19,7 +19,7 @@ export interface SignInProps {
   store: SignInStore;
 }
 
-const SignIn = observer(({ onSubmit, store }: SignInProps) => {
+export const SignIn = observer(({ onSubmit, store }: SignInProps) => {
   const onChange = action((value: string, name: string) => {
     (store as any)[name] = value;
   });
@@ -68,5 +68,3 @@ const SignIn = observer(({ onSubmit, store }: SignInProps) => {
     </ModalWrapper>
   );
 });
-
-export default SignIn;

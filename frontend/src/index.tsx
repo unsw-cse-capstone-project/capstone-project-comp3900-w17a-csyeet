@@ -16,10 +16,10 @@ import { BidderRegistrationPage } from "./bidder_registration/main";
 import { AuctionPage } from "./auction/main";
 import { HomePage } from "./home/main";
 import { ViewListingPage } from "./view_listing/main";
-import Header from "./ui/base/header/Header";
-import SignInStore from "./ui/base/sign_in/SignInStore";
-import SignUpStore from "./ui/base/sign_up/SignUpStore";
-import SignIn from "./ui/base/sign_in/SignIn";
+import { Header } from "./ui/base/header/Header";
+import { SignInStore } from "./ui/base/header/sign_in/SignInStore";
+import { SignUpStore } from "./ui/base/header/sign_up/SignUpStore";
+import { SignIn } from "./ui/base/header/sign_in/SignIn";
 import { runInAction } from "mobx";
 
 const ProtectedComponent = observer(

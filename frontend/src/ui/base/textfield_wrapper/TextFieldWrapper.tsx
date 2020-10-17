@@ -9,8 +9,7 @@ export interface TextFieldWrapperProps {
   adornment?: React.ReactNode;
   value?: string;
 }
-
-const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
+export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
   field,
   label,
   onChange,
@@ -41,5 +40,3 @@ const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
     </div>
   );
 };
-
-export default TextFieldWrapper;

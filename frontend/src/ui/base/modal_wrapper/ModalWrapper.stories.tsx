@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
-import ModalWrapper from "./ModalWrapper";
-import Button from "@material-ui/core/Button";
+import { ModalWrapper } from "./ModalWrapper";
+import { Button } from "@material-ui/core";
 
 export default {
   title: "ui/base/Modal",

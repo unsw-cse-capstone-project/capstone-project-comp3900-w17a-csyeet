@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { action } from "mobx";
+import { action, computed } from "mobx";
 import {
   Button,
   Typography,
@@ -9,30 +9,19 @@ import {
   Step,
 } from "@material-ui/core";
 
-import SignUpStore from "./SignUpStore";
-import Step0 from "./Step0";
-import Step1 from "./Step1";
-import Step2 from "./Step2";
-import ModalWrapper from "../modal_wrapper/ModalWrapper";
-import SignUpStyles from "./SignUp.css";
+import { ModalWrapper } from "../../modal_wrapper/ModalWrapper";
+import { SignUpStore } from "./SignUpStore";
+import Step0 from "./steps/Step0";
+import Step1 from "./steps/Step1";
+import Step2 from "./steps/Step2";
+import { SignUpStyles } from "./SignUp.css";
 
 export interface SignUpProps {
-  onSubmit: (
-    name: string,
-    email: string,
-    password: string
-    // passwd: string,
-    // passwdVerify: string,
-    // phoneNo: string,
-    // addressLine: string,
-    // suburb: string,
-    // state: string,
-    // postcode: string
-  ) => void; // (Jenn) TODO: Update with API call
+  onSubmit: (name: string, email: string, password: string) => void;
   store: SignUpStore;
 }
 
-const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
+export const SignUp: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
   const closeModal = action(() => {
     store.open = false;
     store.success = false;
@@ -60,44 +49,40 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
     }
   };
 
-  // const disableNext = () => {
-  //   console.log(store.usernm !== "");
-  //   console.log(store.email !== "");
-  //   console.log(store.passwd !== "");
-  //   console.log(store.passwd === store.passwdVerify);
-  //   switch (activeStep) {
-  //     case 0:
-  //       return !canProceedStep0.get();
-  //     case 1:
-  //       return !canProceedStep1.get();
-  //     case 2:
-  //       return !canProceedStep2.get();
-  //     default:
-  //       return false;
-  //   }
-  // };
+  const disableNext = () => {
+    switch (activeStep) {
+      case 0:
+        return !canProceedStep0.get();
+      case 1:
+        return !canProceedStep1.get();
+      case 2:
+        return !canProceedStep2.get();
+      default:
+        return false;
+    }
+  };
 
-  // const canProceedStep0 = computed(
-  //   () =>
-  //     store.usernm !== "" &&
-  //     store.email !== "" &&
-  //     store.passwd !== "" &&
-  //     store.passwd === store.passwdVerify
-  // );
+  const canProceedStep0 = computed(
+    () =>
+      store.usernm !== "" &&
+      store.email !== "" &&
+      store.passwd !== "" &&
+      store.passwd === store.passwdVerify
+  );
 
-  // const canProceedStep1 = computed(
-  //   () =>
-  //     store.phoneNo.length === 10 &&
-  //     store.addressLine !== "" &&
-  //     store.suburb !== "" &&
-  //     store.postcode !== "" &&
-  //     store.addressLine.length !== 0 &&
-  //     store.suburb.length > 0 &&
-  //     store.postcode.length > 0 &&
-  //     store.state !== "none"
-  // );
+  const canProceedStep1 = computed(
+    () =>
+      store.phoneNo.length === 10 &&
+      store.addressLine !== "" &&
+      store.suburb !== "" &&
+      store.postcode !== "" &&
+      store.addressLine.length !== 0 &&
+      store.suburb.length > 0 &&
+      store.postcode.length > 0 &&
+      store.state !== "none"
+  );
 
-  // const canProceedStep2 = computed(() => store.success === true);
+  const canProceedStep2 = computed(() => store.success === true);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -168,7 +153,7 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
                       ? () => handleConfirm()
                       : () => handleNext()
                   }
-                  // disabled={disableNext()}
+                  disabled={disableNext()}
                 >
                   {activeStep === 0 && "Next"}
                   {activeStep === 1 && "Sign Up"}
@@ -181,5 +166,3 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
     </ModalWrapper>
   );
 });
-
-export default SignUpForm;

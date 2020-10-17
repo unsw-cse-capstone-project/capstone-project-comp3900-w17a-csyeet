@@ -8,11 +8,11 @@ import {
   OutlinedInput,
   InputAdornment,
 } from "@material-ui/core";
-import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
-import SignUpStore from "./SignUpStore";
-import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
-import SelectWrapper from "../select_wrapper/SelectWrapper";
 import NumberFormat from "react-number-format";
+import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
+import { SignUpStore } from "../SignUpStore";
+import { TextFieldWrapper } from "../../../textfield_wrapper/TextFieldWrapper";
+import { SelectWrapper } from "../../../select_wrapper/SelectWrapper";
 
 type NumberFormatCustomProps = {
   inputRef: (instance: NumberFormat | null) => void;
