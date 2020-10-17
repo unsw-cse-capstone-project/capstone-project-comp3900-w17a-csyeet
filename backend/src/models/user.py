@@ -13,6 +13,7 @@ class User(Base):
 
     listings = relationship('Listing', back_populates='owner')
     registrations = relationship('Registration', back_populates='user')
+    starred_listings = relationship('Starred', back_populates='user')
 
     def __repr__(self):
         return f"<User: {self.name}>"

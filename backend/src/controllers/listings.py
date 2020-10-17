@@ -1,10 +1,10 @@
 from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from sqlalchemy.orm import Session
 from fastapi_sqlalchemy import db
-from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, ListingSearchResponse, AuctionResponse
-from ..models import Listing, User
+from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, ListingSearchResponse, AuctionResponse, StarredResponse
+from ..models import Listing, User, Starred
 from ..helpers import get_current_user
 from typing import Optional
 
@@ -60,6 +60,39 @@ def get_auction_info(id: int, session: Session = Depends(lambda: db.session)):
             status_code=404, detail="Requested listing could not be found")
     bidders = [bidder.user_id for bidder in listing.bidders]
     return {'bidders': bidders}
+
+
+@router.post('/{id}/star', response_model=StarredResponse, responses={404: {"description": "Resource not found"}})
+def star(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(lambda: db.session)):
+    ''' Star a listing '''
+    listing = session.query(Listing).get(id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+    starred = Starred(listing_id=id, user_id=current_user.id)
+    session.add(starred)
+    session.commit()
+    return starred
+
+
+@router.post('/{id}/unstar', response_model=StarredResponse, responses={404: {"description": "Resource not found"}})
+def unstar(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(lambda: db.session)):
+    ''' Unstar a listing '''
+    listing = session.query(Listing).get(id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+
+    starred = session.query(Starred).filter(
+        and_(Starred.listing_id == id, Starred.user_id == current_user.id)).first()
+    if starred is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+
+    session.delete(starred)
+    session.commit()
+    return starred
+
 
 # TODO: move these to helpers.py or common/helpers.py or sth
 
