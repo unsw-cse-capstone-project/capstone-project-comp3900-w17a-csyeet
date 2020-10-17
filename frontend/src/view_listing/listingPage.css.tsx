@@ -57,7 +57,7 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
         flexDirection: "column",
         justifyContent: "space-between",
       },
-      [theme.breakpoints.down("md")]: {
+      [theme.breakpoints.down("sm")]: {
         display: "flex",
         justifyContent: "space-between",
       },
@@ -67,7 +67,7 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
           width: "100%",
           height: "49%",
         },
-        [theme.breakpoints.down("md")]: {
+        [theme.breakpoints.down("sm")]: {
           width: "49%",
         },
       },

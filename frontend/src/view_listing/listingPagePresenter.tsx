@@ -1,6 +1,7 @@
 import { observable, makeObservable, action, runInAction } from "mobx";
 import { createFakeListing } from "../ui/util/fakes/listing";
 import { ListingActual } from "../ui/util/types/listing";
+import { delay } from '../ui/util/helper';
 
 export class ListingPageStore {
   @observable
@@ -57,5 +58,11 @@ export class ListingPagePresenter {
     } catch {
       runInAction(() => (store.loadingState = "error"));
     }
+  }
+
+  async deleteListing() {
+    console.log('Deleting...');
+    await delay(300);
+    console.log('Deleting complete');
   }
 }
