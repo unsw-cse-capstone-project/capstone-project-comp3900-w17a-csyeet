@@ -45,4 +45,6 @@ export class ListingStore {
     has_pool: false,
     has_gym: false,
   };
+  @observable descTitle: string = "";
+  @observable desc: string = "";
 }
