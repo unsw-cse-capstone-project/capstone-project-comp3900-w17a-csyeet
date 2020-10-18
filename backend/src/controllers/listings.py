@@ -1,9 +1,9 @@
 from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from sqlalchemy.orm import Session, Query
 from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse
-from ..models import Listing, User
+from ..models import Listing, User, Starred
 from ..helpers import get_session, get_current_user
 
 router = APIRouter()
@@ -81,6 +81,42 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
             status_code=404, detail="Requested listing could not be found")
     bidders = [bidder.user_id for bidder in listing.bidders]
     return {'bidders': bidders}
+
+
+@router.post('/{id}/star', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
+def star(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    ''' Star a listing '''
+    listing = session.query(Listing).get(id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+
+    starred = session.query(Starred).get((id, current_user.id))
+    if starred is not None:
+        raise HTTPException(
+            status_code=403, detail="User has already starred this listing")
+
+    starred = Starred(listing_id=id, user_id=current_user.id)
+    session.add(starred)
+    session.commit()
+
+
+@router.post('/{id}/unstar', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
+def unstar(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    ''' Unstar a listing '''
+    listing = session.query(Listing).get(id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+
+    starred = session.query(Starred).get((id, current_user.id))
+    if starred is None:
+        raise HTTPException(
+            status_code=403, detail="User has not starred this listing")
+
+    session.delete(starred)
+    session.commit()
+
 
 # TODO: move these to helpers.py or common/helpers.py or sth
 
