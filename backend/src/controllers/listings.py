@@ -84,7 +84,7 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
 
 
 @router.post('/{id}/star', response_model=StarredResponse, responses={404: {"description": "Resource not found"}})
-def star(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(lambda: db.session)):
+def star(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Star a listing '''
     listing = session.query(Listing).get(id)
     if listing is None:
