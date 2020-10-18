@@ -108,7 +108,7 @@ def unstar(id: int, current_user: User = Depends(get_current_user), session: Ses
         and_(Starred.listing_id == id, Starred.user_id == current_user.id)).first()
     if starred is None:
         raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+            status_code=403, detail="User has not starred this listing")
 
     session.delete(starred)
     session.commit()
