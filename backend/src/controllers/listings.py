@@ -97,7 +97,7 @@ def star(id: int, current_user: User = Depends(get_current_user), session: Sessi
 
 
 @router.post('/{id}/unstar', response_model=StarredResponse, responses={404: {"description": "Resource not found"}})
-def unstar(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(lambda: db.session)):
+def unstar(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Unstar a listing '''
     listing = session.query(Listing).get(id)
     if listing is None:
