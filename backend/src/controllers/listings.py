@@ -83,7 +83,7 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
     return {'bidders': bidders}
 
 
-@router.post('/{id}/star', responses={404: {"description": "Resource not found"}})
+@router.post('/{id}/star', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def star(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Star a listing '''
     listing = session.query(Listing).get(id)
@@ -101,7 +101,7 @@ def star(id: int, current_user: User = Depends(get_current_user), session: Sessi
     session.commit()
 
 
-@router.post('/{id}/unstar', responses={404: {"description": "Resource not found"}})
+@router.post('/{id}/unstar', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def unstar(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Unstar a listing '''
     listing = session.query(Listing).get(id)
