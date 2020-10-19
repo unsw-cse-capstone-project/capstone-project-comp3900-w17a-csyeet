@@ -6,6 +6,7 @@ from fastapi_utils.enums import CamelStrEnum
 from enum import auto
 from typing import List, Optional
 from .user import UserResponse
+from .bid import BidResponse
 
 
 class ListingType(CamelStrEnum):
@@ -100,3 +101,5 @@ class SearchListingsResponse(BaseModel):
 
 class AuctionResponse(BaseModel):
     bidders: List[int]
+    bids: List[BidResponse]
+    current_highest_bid: Optional[BidResponse]

@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from fastapi_sqlalchemy import db
 from ..schemas import CreateRegistrationRequest, RegistrationResponse
 from ..helpers import get_current_user
-from ..models import Registration, Listing, User
+from ..models import Registration, Listing, User, Bid
+from datetime import datetime
 
 router = APIRouter()
 
@@ -23,5 +24,10 @@ def register(listing_id: int, req: CreateRegistrationRequest, current_user: User
     registration = Registration(
         listing_id=listing_id, user_id=current_user.id, **req.dict())
     session.add(registration)
+
+    bid = Bid(listing_id=listing_id, user_id=current_user.id,
+              bid=req.bid, placed_at=datetime.now())
+    session.add(bid)
+
     session.commit()
     return registration
