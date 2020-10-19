@@ -7,11 +7,12 @@ import {
   FormControl,
   OutlinedInput,
   InputAdornment,
+  FormHelperText,
 } from "@material-ui/core";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
 import SignUpStore from "./SignUpStore";
 import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
-import SelectWrapper from "../select_wrapper/SelectWrapper";
+import { SelectWrapper } from "../select_wrapper/SelectWrapper";
 import NumberFormat from "react-number-format";
 
 type NumberFormatCustomProps = {
@@ -25,6 +26,12 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
     (store as any)[name] = value;
   });
 
+  const [phoneError, setPhoneError] = React.useState<boolean>(false);
+  const phoneErrorMsg = (
+    <FormHelperText style={{ color: "red" }}>
+      Phone format must be 04.. ... ...
+    </FormHelperText>
+  );
   const PhoneInput = observer((props: NumberFormatCustomProps) => {
     const { inputRef, ...other } = props;
     return (
@@ -37,21 +44,26 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
         onValueChange={(values) => {
           onChange(values.value, "phoneNo");
         }}
+        onBlur={() => {
+          store.phoneNo.length != 10
+            ? setPhoneError(true)
+            : setPhoneError(false);
+        }}
       />
     );
   });
 
   return (
-    <>
+    <div style={{ marginBottom: "10px" }}>
       <FormControl
         fullWidth
         variant="outlined"
+        error={phoneError}
         // style={{ marginBottom: "20px" }}
       >
         <InputLabel
           htmlFor="outlined-adornment-card"
           style={{ background: "white" }}
-          shrink
         >
           Phone Number
         </InputLabel>
@@ -59,12 +71,13 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
           id="outlined-adornment-card"
           endAdornment={
             <InputAdornment position="end">
-              <PhoneAndroidOutlinedIcon />
+              <PhoneAndroidOutlinedIcon style={{ color: "#7b7b7b" }} />
             </InputAdornment>
           }
           labelWidth={110}
           inputComponent={PhoneInput as any}
         />
+        {phoneError ? <>{phoneErrorMsg}</> : <></>}
       </FormControl>
       <TextFieldWrapper
         field="addressLine"
@@ -74,7 +87,6 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
       />
       <TextFieldWrapper field="suburb" label="Suburb" onChange={onChange} />
 
-      {/* (Jenn) TODO: Need to fix up wierd css here.. extra margin exists for Grid  */}
       <Grid container spacing={1}>
         <Grid item xs={6}>
           <TextFieldWrapper
@@ -85,16 +97,18 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
           />
         </Grid>
         <Grid item xs>
-          <SelectWrapper
-            data={AUSstates}
-            field="state"
-            label="State"
-            value={store.state}
-            onChange={onChange}
-          />
+          <div style={{ marginTop: "10px" }}>
+            <SelectWrapper
+              data={AUSstates}
+              field="state"
+              label="State"
+              value={store.state}
+              onChange={onChange}
+            />
+          </div>
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 });
 

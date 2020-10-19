@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { action } from "mobx";
+import { action, computed } from "mobx";
 import {
   Button,
   Typography,
@@ -12,7 +12,6 @@ import {
 import SignUpStore from "./SignUpStore";
 import Step0 from "./Step0";
 import Step1 from "./Step1";
-import Step2 from "./Step2";
 import ModalWrapper from "../modal_wrapper/ModalWrapper";
 import SignUpStyles from "./SignUp.css";
 
@@ -54,50 +53,49 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
       case 1:
         return <Step1 store={store} />;
       case 2:
-        return <Step2 />;
+        return (
+          <Typography>Redirecting you back to our search page...</Typography>
+        );
       default:
         return "404 You've fallen into outer space!";
     }
   };
 
-  // const disableNext = () => {
-  //   console.log(store.usernm !== "");
-  //   console.log(store.email !== "");
-  //   console.log(store.passwd !== "");
-  //   console.log(store.passwd === store.passwdVerify);
-  //   switch (activeStep) {
-  //     case 0:
-  //       return !canProceedStep0.get();
-  //     case 1:
-  //       return !canProceedStep1.get();
-  //     case 2:
-  //       return !canProceedStep2.get();
-  //     default:
-  //       return false;
-  //   }
-  // };
+  const disableNext = () => {
+    console.log(store.usernm !== "");
+    switch (activeStep) {
+      case 0:
+        return !canProceedStep0.get();
+      case 1:
+        return !canProceedStep1.get();
+      case 2:
+        return !canProceedStep2.get();
+      default:
+        return false;
+    }
+  };
 
-  // const canProceedStep0 = computed(
-  //   () =>
-  //     store.usernm !== "" &&
-  //     store.email !== "" &&
-  //     store.passwd !== "" &&
-  //     store.passwd === store.passwdVerify
-  // );
+  const canProceedStep0 = computed(
+    () =>
+      store.usernm !== "" &&
+      store.email !== "" &&
+      store.passwd !== "" &&
+      store.passwd === store.passwdVerify
+  );
 
-  // const canProceedStep1 = computed(
-  //   () =>
-  //     store.phoneNo.length === 10 &&
-  //     store.addressLine !== "" &&
-  //     store.suburb !== "" &&
-  //     store.postcode !== "" &&
-  //     store.addressLine.length !== 0 &&
-  //     store.suburb.length > 0 &&
-  //     store.postcode.length > 0 &&
-  //     store.state !== "none"
-  // );
+  const canProceedStep1 = computed(
+    () =>
+      store.phoneNo.length === 10 &&
+      store.addressLine !== "" &&
+      store.suburb !== "" &&
+      store.postcode !== "" &&
+      store.addressLine.length !== 0 &&
+      store.suburb.length > 0 &&
+      store.postcode.length > 0 &&
+      store.state !== "none"
+  );
 
-  // const canProceedStep2 = computed(() => store.success === true);
+  const canProceedStep2 = computed(() => store.success === true);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -168,7 +166,7 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
                       ? () => handleConfirm()
                       : () => handleNext()
                   }
-                  // disabled={disableNext()}
+                  disabled={disableNext()}
                 >
                   {activeStep === 0 && "Next"}
                   {activeStep === 1 && "Sign Up"}
