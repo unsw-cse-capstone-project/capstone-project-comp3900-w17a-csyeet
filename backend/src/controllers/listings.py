@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import or_, and_
 from sqlalchemy.orm import Session, Query
 from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse
-from ..models import Listing, User, Starred
+from ..models import Listing, User, Starred, Registration
 from ..helpers import get_session, get_current_user
 
 router = APIRouter()
@@ -69,7 +69,16 @@ def get(id: int, session: Session = Depends(get_session)):
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
-    return map_listing_to_response(listing)
+    response = map_listing_to_response(listing)
+    try:
+        current_user = get_current_user()
+        response['starred'] = session.query(Starred).get(
+            (id, current_user.id)) is not None
+        response['registered'] = session.query(
+            Registration).get((id, current_user.id)) is not None
+        return response
+    except Exception:
+        return response
 
 
 @router.get('/{id}/auction', response_model=AuctionResponse, responses={404: {"description": "Resource not found"}})

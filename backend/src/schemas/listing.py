@@ -79,6 +79,8 @@ class CreateListingRequest(ListingBase):
 class ListingResponse(ListingBase):
     id: str
     owner: UserResponse
+    starred: Optional[bool]
+    registered_bidder: Optional[bool]
 
 
 @dataclass

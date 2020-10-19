@@ -31,7 +31,8 @@ def get_current_user(token: str = Depends(cookie_security), session: Session = D
         if user is None:
             raise Exception
         return user
-    except Exception:
+    except Exception as e:
+        print(str(e))
         raise HTTPException(status_code=HTTP_403_FORBIDDEN,
                             detail="Invalid authentication")
 
