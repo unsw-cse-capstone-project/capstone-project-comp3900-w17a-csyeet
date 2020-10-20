@@ -87,7 +87,7 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
     return {'bidders': bidders, 'bids': bids, 'current_highest_bid': highest_bid}
 
 
-@router.post('/{id}/auction/bid', response_model=BidResponse)
+@router.post('/{id}/auction/bid', response_model=BidResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}, 401: {'description': "User unauthorized"}})
 def bid(id: int, req: BidRequest, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Places a bid '''
     listing = session.query(Listing).get(id)
@@ -172,7 +172,7 @@ def get_field_for_feature(feature: Feature) -> str:
 def map_bid_to_response(bid: Bid) -> BidResponse:
     response = asdict(bid)
     response.pop('listing_id')
-    response['time_remaining'] = bid.listing.auction_end
+    response['auction_end'] = bid.listing.auction_end
     return response
 
 
