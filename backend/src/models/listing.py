@@ -47,6 +47,7 @@ class Listing(Base):
 
     owner = relationship('User', back_populates='listings')
     bidders = relationship('Registration', back_populates='listing')
+    landmarks = relationship('Landmark')
 
     def __repr__(self):
         return f"<Listing: {self.title}>"
