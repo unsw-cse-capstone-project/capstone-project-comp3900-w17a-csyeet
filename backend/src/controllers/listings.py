@@ -108,7 +108,7 @@ def bid(id: int, req: BidRequest, current_user: User = Depends(get_current_user)
     bid = Bid(listing_id=id, user_id=current_user.id,
               bid=req.bid, placed_at=datetime.now())
     session.add(bid)
-    if get_auction_time_remaining(listing) < timedelta(minutes=5):
+    if get_auction_time_remaining(listing) <= timedelta(minutes=5):
         listing.auction_end += timedelta(minutes=2)
     session.commit()
     return map_bid_to_response(bid)
