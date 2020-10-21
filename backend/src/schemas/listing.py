@@ -1,12 +1,13 @@
 from datetime import datetime
+from enum import auto
+from typing import List, Optional
 from pydantic import BaseModel, Field
 from pydantic.dataclasses import dataclass
 from fastapi import Query
 from fastapi_utils.enums import CamelStrEnum
-from enum import auto
-from typing import List, Optional
 from .user import UserResponse
 from .bid import BidResponse
+from .landmark import LandmarkReponse
 
 
 class ListingType(CamelStrEnum):
@@ -80,6 +81,7 @@ class CreateListingRequest(ListingBase):
 class ListingResponse(ListingBase):
     id: str
     owner: UserResponse
+    landmarks: List[LandmarkReponse]
 
 
 @dataclass
