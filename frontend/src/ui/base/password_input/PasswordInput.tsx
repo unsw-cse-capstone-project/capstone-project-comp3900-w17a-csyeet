@@ -26,7 +26,11 @@ export const PasswordInput = ({
       type={visible ? "text" : "password"}
       adornment={
         <div onClick={handleClick}>
-          {visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+          {visible ? (
+            <VisibilityIcon style={{ color: "#7b7b7b" }} />
+          ) : (
+            <VisibilityOffIcon style={{ color: "#7b7b7b" }} />
+          )}
         </div>
       }
     />

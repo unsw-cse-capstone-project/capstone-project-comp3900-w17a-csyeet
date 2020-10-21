@@ -7,6 +7,8 @@ import { SignInStore } from "./SignInStore";
 import { TextFieldWrapper } from "../../textfield_wrapper/TextFieldWrapper";
 import { ModalWrapper } from "../../modal_wrapper/ModalWrapper";
 import { PasswordInput } from "../../password_input/PasswordInput";
+import logo from "../../../../images/logo.png";
+import { SignInStyles } from "./SignIn.css";
 
 const success = (
   <Typography variant="h3" align="center" style={{ margin: "35px" }}>
@@ -15,7 +17,7 @@ const success = (
 );
 
 export interface SignInProps {
-  onSubmit: (email: string, passwd: string) => void; // (Jenn) TODO: Update with API call
+  onSubmit: (email: string, passwd: string) => void;
   store: SignInStore;
 }
 
@@ -29,41 +31,37 @@ export const SignIn = observer(({ onSubmit, store }: SignInProps) => {
     store.success = false;
   });
 
+  const classes = SignInStyles();
   return (
     <ModalWrapper open={store.open} onClose={closeModal}>
-      <div className="formContainer">
-        {store.success ? (
-          <>{success} </>
-        ) : (
-          <>
-            <Typography
-              variant="h3"
-              align="center"
-              style={{ margin: "15px", marginBottom: "35px" }}
-            >
-              Sign In
-            </Typography>
-            <TextFieldWrapper
-              field="email"
-              label="Email"
-              onChange={onChange}
-              adornment={<AlternateEmailIcon />}
-            />
-            <PasswordInput value={store.passwd} onChange={onChange} />
-            <Button
-              variant="outlined"
-              color="primary"
-              fullWidth
-              style={{ marginTop: "10px" }}
-              onClick={() => {
-                onSubmit(store.email, store.passwd);
-                closeModal();
-              }}
-            >
-              Sign In
-            </Button>
-          </>
-        )}
+      <div className={classes.root}>
+        <img
+          width="200px"
+          src={logo}
+          alt="Adobe logo"
+          style={{ marginBottom: "15px" }}
+        />
+        <Typography>Welcome back</Typography>
+
+        <TextFieldWrapper
+          field="email"
+          label="Email"
+          onChange={onChange}
+          adornment={<AlternateEmailIcon style={{ color: "#7b7b7b" }} />}
+        />
+        <PasswordInput value={store.passwd} onChange={onChange} />
+        <Button
+          style={{ marginTop: "30px" }}
+          variant="outlined"
+          color="primary"
+          fullWidth
+          onClick={() => {
+            onSubmit(store.email, store.passwd);
+            closeModal();
+          }}
+        >
+          Sign In
+        </Button>
       </div>
     </ModalWrapper>
   );

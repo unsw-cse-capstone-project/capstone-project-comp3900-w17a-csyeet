@@ -14,7 +14,9 @@ export const Description: React.FC<{ store: ListingStore }> = observer(
     return (
       <div>
         <div>
-          <Typography>An eye-catching title for your property</Typography>
+          <Typography variant="h5">
+            An eye-catching title for your property
+          </Typography>
           <TextFieldWrapper
             label={"Property Listing Title"}
             field={"descTitle"}
@@ -22,7 +24,10 @@ export const Description: React.FC<{ store: ListingStore }> = observer(
           />
         </div>
         <div>
-          <Typography style={{ marginBottom: "5px" }}>
+          <Typography
+            variant="h5"
+            style={{ marginBottom: "5px", marginTop: "35px" }}
+          >
             A short description
           </Typography>
           <TextField

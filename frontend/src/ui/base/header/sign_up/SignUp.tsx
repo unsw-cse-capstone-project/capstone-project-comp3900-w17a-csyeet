@@ -8,12 +8,11 @@ import {
   Stepper,
   Step,
 } from "@material-ui/core";
-
+import logo from "../../../../images/logo.png";
 import { ModalWrapper } from "../../modal_wrapper/ModalWrapper";
 import { SignUpStore } from "./SignUpStore";
 import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
-import Step2 from "./steps/Step2";
 import { SignUpStyles } from "./SignUp.css";
 
 export interface SignUpProps {
@@ -43,7 +42,10 @@ export const SignUp: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
       case 1:
         return <Step1 store={store} />;
       case 2:
-        return <Step2 />;
+        return (
+          <Typography>Redirecting you back to our search page...</Typography>
+        );
+
       default:
         return "404 You've fallen into outer space!";
     }
@@ -114,55 +116,63 @@ export const SignUp: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
   const [activeStep, setActiveStep] = React.useState(0);
   return (
     <ModalWrapper open={store.open} onClose={closeModal}>
-      <Typography
-        variant="h3"
-        align="center"
-        style={{ margin: "15px", marginBottom: "35px" }}
-      >
-        Sign Up
-      </Typography>
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      {activeStep < steps.length && (
-        <div>
-          {getStepContent(activeStep)}
-          <div>
-            {activeStep === 2 ? (
-              <Button variant="contained" color="primary" onClick={closeModal}>
-                Close
-              </Button>
-            ) : (
-              <>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  className={classes.backButton}
-                >
-                  Back
-                </Button>
+      <div className={classes.root}>
+        <img
+          width="200px"
+          src={logo}
+          alt="Adobe logo"
+          style={{ marginBottom: "10px" }}
+        />
+        <Typography>Join our family today</Typography>
+        <Stepper activeStep={activeStep} alternativeLabel>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        {activeStep < steps.length && (
+          <div className={classes.content}>
+            <div className={classes.formContainer}>
+              {getStepContent(activeStep)}
+            </div>
+            <div style={{ marginTop: "30px" }}>
+              {activeStep === 2 ? (
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={
-                    activeStep === 1
-                      ? () => handleConfirm()
-                      : () => handleNext()
-                  }
-                  disabled={disableNext()}
+                  onClick={closeModal}
                 >
-                  {activeStep === 0 && "Next"}
-                  {activeStep === 1 && "Sign Up"}
+                  Close
                 </Button>
-              </>
-            )}
+              ) : (
+                <>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.backButton}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={
+                      activeStep === 1
+                        ? () => handleConfirm()
+                        : () => handleNext()
+                    }
+                    disabled={disableNext()}
+                  >
+                    {activeStep === 0 && "Next"}
+                    {activeStep === 1 && "Sign Up"}
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </ModalWrapper>
   );
 });

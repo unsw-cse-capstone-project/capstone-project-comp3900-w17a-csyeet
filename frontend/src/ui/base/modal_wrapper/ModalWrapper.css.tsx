@@ -7,6 +7,7 @@ const ModalStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       justifyContent: "center",
       zIndex: 1,
+      padding: "15px",
     },
     paper: {
       backgroundColor: theme.palette.background.paper,

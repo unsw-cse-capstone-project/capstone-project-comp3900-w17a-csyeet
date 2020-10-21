@@ -7,6 +7,7 @@ import {
   FormControl,
   OutlinedInput,
   InputAdornment,
+  FormHelperText,
 } from "@material-ui/core";
 import NumberFormat from "react-number-format";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
@@ -37,17 +38,25 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
         onValueChange={(values) => {
           onChange(values.value, "phoneNo");
         }}
+        onBlur={() => {
+          store.phoneNo.length != 10
+            ? setPhoneError(true)
+            : setPhoneError(false);
+        }}
       />
     );
   });
 
+  const [phoneError, setPhoneError] = React.useState<boolean>(false);
+  const phoneErrorMsg = (
+    <FormHelperText style={{ color: "red" }}>
+      Phone format must be 04.. ... ...
+    </FormHelperText>
+  );
+
   return (
-    <>
-      <FormControl
-        fullWidth
-        variant="outlined"
-        // style={{ marginBottom: "20px" }}
-      >
+    <div style={{ marginBottom: "10px" }}>
+      <FormControl fullWidth variant="outlined" error={phoneError}>
         <InputLabel
           htmlFor="outlined-adornment-card"
           style={{ background: "white" }}
@@ -59,7 +68,7 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
           id="outlined-adornment-card"
           endAdornment={
             <InputAdornment position="end">
-              <PhoneAndroidOutlinedIcon />
+              <PhoneAndroidOutlinedIcon style={{ color: "#7b7b7b" }} />
             </InputAdornment>
           }
           labelWidth={110}
@@ -74,7 +83,6 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
       />
       <TextFieldWrapper field="suburb" label="Suburb" onChange={onChange} />
 
-      {/* (Jenn) TODO: Need to fix up wierd css here.. extra margin exists for Grid  */}
       <Grid container spacing={1}>
         <Grid item xs={6}>
           <TextFieldWrapper
@@ -83,6 +91,7 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
             value={store.postcode}
             onChange={onChange}
           />
+          {phoneError ? <>{phoneErrorMsg}</> : <></>}
         </Grid>
         <Grid item xs>
           <SelectWrapper
@@ -94,7 +103,7 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
           />
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 });
 

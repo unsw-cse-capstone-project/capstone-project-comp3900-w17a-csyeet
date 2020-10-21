@@ -30,7 +30,6 @@ export const SelectWrapper = ({
         style={{
           minWidth: "120px",
           marginTop: "10px",
-          marginBottom: "10px",
         }}
         fullWidth
       >
