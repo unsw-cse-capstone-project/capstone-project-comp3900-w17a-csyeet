@@ -90,8 +90,7 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
     bidders = [bidder.user_id for bidder in listing.bidders]
     bids = [map_bid_to_response(bid, listing.auction_end)
             for bid in listing.bids]
-    highest_bid = bids[0] if bids else None
-    return {'bidders': bidders, 'bids': bids, 'current_highest_bid': highest_bid}
+    return {'bidders': bidders, 'bids': bids}
 
 
 @router.post('/{id}/auction/bid', response_model=BidResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})

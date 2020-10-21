@@ -104,4 +104,3 @@ class SearchListingsResponse(BaseModel):
 class AuctionResponse(BaseModel):
     bidders: List[int]
     bids: List[BidResponse]
-    current_highest_bid: Optional[BidResponse]
