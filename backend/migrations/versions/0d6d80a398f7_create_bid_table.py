@@ -25,9 +25,9 @@ def upgrade():
                     sa.Column('placed_at', sa.DateTime(), nullable=False),
                     sa.ForeignKeyConstraint(['listing_id'], ['listing.id'], name=op.f(
                         'fk_bid_listing_id_listing'), ondelete='CASCADE'),
-                    sa.ForeignKeyConstraint(['user_id'], ['user.id'], name=op.f(
-                        'fk_bid_user_id_user'), ondelete='CASCADE'),
-                    sa.PrimaryKeyConstraint('listing_id', 'user_id',
+                    sa.ForeignKeyConstraint(['bidder_id'], ['user.id'], name=op.f(
+                        'fk_bid_bidder_id_user'), ondelete='CASCADE'),
+                    sa.PrimaryKeyConstraint('listing_id', 'bidder_id',
                                             'bid', name=op.f('pk_bid'))
                     )
     # ### end Alembic commands ###
