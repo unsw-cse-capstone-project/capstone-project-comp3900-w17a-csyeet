@@ -4,13 +4,13 @@ from sqlalchemy import or_, and_
 from sqlalchemy.orm import Session, Query
 from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse
 from ..models import Listing, User, Starred, Registration
-from ..helpers import get_session, get_current_user
+from ..helpers import get_session, get_current_user, get_signed_in_user
 
 router = APIRouter()
 
 
 @router.post('/', response_model=ListingResponse)
-def create(req: CreateListingRequest, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+def create(req: CreateListingRequest, current_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Creates a listing owned by the user making the request '''
     # TODO: Should we prevent creation for some set of values which we deem to be unique? e.g. address?
     # TODO: maybe extract this helper code
@@ -63,22 +63,19 @@ def search(req: SearchListingsRequest = Depends(), session: Session = Depends(ge
 
 
 @router.get('/{id}', response_model=ListingResponse, responses={404: {"description": "Resource not found"}})
-def get(id: int, session: Session = Depends(get_session)):
+def get(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Gets a listing by its id '''
     listing = session.query(Listing).get(id)
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
     response = map_listing_to_response(listing)
-    try:
-        current_user = get_current_user()
+    if current_user is not None:
         response['starred'] = session.query(Starred).get(
             (id, current_user.id)) is not None
-        response['registered'] = session.query(
+        response['registered_bidder'] = session.query(
             Registration).get((id, current_user.id)) is not None
-        return response
-    except Exception:
-        return response
+    return response
 
 
 @router.get('/{id}/auction', response_model=AuctionResponse, responses={404: {"description": "Resource not found"}})
@@ -93,7 +90,7 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
 
 
 @router.post('/{id}/star', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
-def star(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+def star(id: int, current_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Star a listing '''
     listing = session.query(Listing).get(id)
     if listing is None:
@@ -111,7 +108,7 @@ def star(id: int, current_user: User = Depends(get_current_user), session: Sessi
 
 
 @router.post('/{id}/unstar', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
-def unstar(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+def unstar(id: int, current_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Unstar a listing '''
     listing = session.query(Listing).get(id)
     if listing is None:

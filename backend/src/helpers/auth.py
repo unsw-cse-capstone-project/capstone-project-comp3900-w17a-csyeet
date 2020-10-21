@@ -24,15 +24,20 @@ def create_token(email: EmailStr) -> bytes:
 
 
 def get_current_user(token: str = Depends(cookie_security), session: Session = Depends(get_session)) -> User:
+    payload = jwt.decode(token, secret_key)
+    email = payload["sub"]
+    user = load_user(email, session)
+    if user is None:
+        return None
+    return user
+
+
+def get_signed_in_user(current_user: User = Depends(get_current_user)) -> User:
     try:
-        payload = jwt.decode(token, secret_key)
-        email = payload["sub"]
-        user = load_user(email, session)
-        if user is None:
+        if current_user is None:
             raise Exception
-        return user
-    except Exception as e:
-        print(str(e))
+        return current_user
+    except Exception:
         raise HTTPException(status_code=HTTP_403_FORBIDDEN,
                             detail="Invalid authentication")
 
