@@ -176,5 +176,5 @@ def map_bid_to_response(bid: Bid) -> BidResponse:
     return response
 
 
-def get_auction_time_remaining(listing: Listing):
+def get_auction_time_remaining(listing: Listing) -> timedelta:
     return listing.auction_end - datetime.now()
