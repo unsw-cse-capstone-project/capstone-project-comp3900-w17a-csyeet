@@ -22,7 +22,14 @@ type Features = {
   has_gym: boolean;
 };
 export class ListingStore {
-  @observable address: string = "";
+  @observable streetNo: string = "";
+  @observable streetName: string = "";
+  @observable streetType: string = "";
+  @observable suburb: string = "";
+  @observable postcode: string = "";
+  @observable state: string = "NSW";
+  @observable country: string = "Australia";
+
   @observable type: string = "";
   @observable nBedrooms: string = "";
   @observable nBathrooms: string = "";

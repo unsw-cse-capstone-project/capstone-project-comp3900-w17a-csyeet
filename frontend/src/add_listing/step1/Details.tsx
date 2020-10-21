@@ -7,10 +7,9 @@ import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
 
 import { ListingStore } from "../ListingStore";
 import { Features } from "./Features";
-import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
 import { SelectWrapper } from "../../ui/base/select_wrapper/SelectWrapper";
+import { AddressInputs } from "./Address"
 import { DetailStyles } from "./Details.css";
-// import { AutofillAddressInput } from "./AutofillAddressInput";
 
 export const Details: React.FC<{
   store: ListingStore;
@@ -23,14 +22,14 @@ export const Details: React.FC<{
   };
   return (
     <div className={classes.container}>
-      {/* <AutoAddressInput onChange={onChange} /> */}
       <Typography variant="h3">Details</Typography>
-      <TextFieldWrapper
+      {/* <TextFieldWrapper
         field="address"
         label="Address"
         onChange={onChange}
         value={store.address}
-      />
+      /> */}
+      <AddressInputs store={store} />
       <SelectWrapper
         data={propertyTypes}
         label="Property Type"
