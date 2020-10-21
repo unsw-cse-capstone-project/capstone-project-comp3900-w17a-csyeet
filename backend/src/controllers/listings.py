@@ -1,9 +1,10 @@
+from datetime import datetime, timedelta
 from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import or_
 from sqlalchemy.orm import Session, Query
-from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse
-from ..models import Listing, User, Starred
+from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidResponse, BidRequest
+from ..models import Listing, User, Starred, Bid, Registration
 from ..helpers import get_session, get_current_user, find_nearby_landmarks
 
 router = APIRouter()
@@ -85,8 +86,38 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
+
     bidders = [bidder.user_id for bidder in listing.bidders]
-    return {'bidders': bidders}
+    bids = [map_bid_to_response(bid, listing.auction_end)
+            for bid in listing.bids]
+    return {'bidders': bidders, 'bids': bids}
+
+
+@router.post('/{id}/auction/bid', response_model=BidResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
+def place_bid(id: int, req: BidRequest, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    ''' Places a bid '''
+    listing = session.query(Listing).get(id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+
+    registration = session.query(Registration).get((id, current_user.id))
+    if registration is None:
+        raise HTTPException(
+            status_code=401, detail="User is not registered to bid on this property")
+
+    highest_bid = listing.bids[0].bid # the user is registered so a bid must have been placed
+    if req.bid <= highest_bid:
+        raise HTTPException(
+            status_code=403, detail=f"Bid must be higher than the current highest bid of {highest_bid}")
+
+    bid = Bid(listing_id=id, bidder_id=current_user.id,
+              bid=req.bid, placed_at=datetime.now())
+    session.add(bid)
+    if get_auction_time_remaining(listing) <= timedelta(minutes=5):
+        listing.auction_end += timedelta(minutes=2)
+    session.commit()
+    return map_bid_to_response(bid, listing.auction_end)
 
 
 @router.post('/{id}/star', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
@@ -143,3 +174,13 @@ def get_field_for_feature(feature: Feature) -> str:
     keys = list(field_to_feature_map.keys())
     values = list(field_to_feature_map.values())
     return keys[values.index(feature)]
+
+
+def map_bid_to_response(bid: Bid, auction_end: datetime) -> BidResponse:
+    response = asdict(bid)
+    response['auction_end'] = auction_end
+    return response  # type: ignore
+
+
+def get_auction_time_remaining(listing: Listing) -> timedelta:
+    return listing.auction_end - datetime.now()

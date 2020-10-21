@@ -6,6 +6,7 @@ from pydantic.dataclasses import dataclass
 from fastapi import Query
 from fastapi_utils.enums import CamelStrEnum
 from .user import UserResponse
+from .bid import BidResponse
 from .landmark import LandmarkReponse
 
 
@@ -102,3 +103,4 @@ class SearchListingsResponse(BaseModel):
 
 class AuctionResponse(BaseModel):
     bidders: List[int]
+    bids: List[BidResponse]
