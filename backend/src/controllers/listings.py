@@ -106,9 +106,10 @@ def place_bid(id: int, req: BidRequest, current_user: User = Depends(get_current
         raise HTTPException(
             status_code=401, detail="User is not registered to bid on this property")
 
-    if listing.bids[0].bid >= req.bid:
+    highest_bid = listing.bids[0].bid # the user is registered so a bid must have been placed
+    if req.bid <= highest_bid:
         raise HTTPException(
-            status_code=403, detail="Bid cannot be less than or equal to current highest bid")
+            status_code=403, detail=f"Bid must be higher than the current highest bid of {highest_bid}")
 
     bid = Bid(listing_id=id, bidder_id=current_user.id,
               bid=req.bid, placed_at=datetime.now())
