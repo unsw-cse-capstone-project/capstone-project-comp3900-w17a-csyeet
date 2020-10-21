@@ -106,11 +106,6 @@ def place_bid(id: int, req: BidRequest, current_user: User = Depends(get_current
         raise HTTPException(
             status_code=401, detail="User is not registered to bid on this property")
 
-    bid = session.query(Bid).get((id, current_user.id, req.bid))
-    if bid is not None:
-        raise HTTPException(
-            status_code=403, detail="User has already bid this amount on this property")
-
     if listing.bids[0].bid >= req.bid:
         raise HTTPException(
             status_code=403, detail="Bid cannot be less than or equal to current highest bid")
