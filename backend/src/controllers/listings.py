@@ -88,7 +88,7 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
 
 
 @router.post('/{id}/auction/bid', response_model=BidResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}, 401: {'description': "User unauthorized"}})
-def bid(id: int, req: BidRequest, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+def place_bid(id: int, req: BidRequest, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Places a bid '''
     listing = session.query(Listing).get(id)
     if listing is None:
