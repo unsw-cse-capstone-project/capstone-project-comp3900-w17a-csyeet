@@ -1,8 +1,8 @@
 """create bid table
 
 Revision ID: 0d6d80a398f7
-Revises: 2a308486176d
-Create Date: 2020-10-19 17:28:03.055764
+Revises: 09711a3b92f0
+Create Date: 2020-10-21 17:28:03.055764
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '0d6d80a398f7'
-down_revision = '2a308486176d'
+down_revision = '09711a3b92f0'
 branch_labels = None
 depends_on = None
 
