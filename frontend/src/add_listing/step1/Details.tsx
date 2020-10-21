@@ -8,7 +8,7 @@ import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
 import { ListingStore } from "../ListingStore";
 import { Features } from "./Features";
 import { SelectWrapper } from "../../ui/base/select_wrapper/SelectWrapper";
-import { AddressInputs } from "./Address"
+import { AddressInputs } from "./Address";
 import { DetailStyles } from "./Details.css";
 
 export const Details: React.FC<{
@@ -22,46 +22,49 @@ export const Details: React.FC<{
   };
   return (
     <div className={classes.container}>
-      <Typography variant="h3">Details</Typography>
-      {/* <TextFieldWrapper
-        field="address"
-        label="Address"
-        onChange={onChange}
-        value={store.address}
-      /> */}
       <AddressInputs store={store} />
       <SelectWrapper
         data={propertyTypes}
         label="Property Type"
         field="type"
+        value={store.type}
         onChange={onChange}
       />
       <Paper className={classes.cardContainer}>
         <div className={classes.cardLabel}>
-          <HotelOutlinedIcon
-            style={{ marginRight: "10px" }}
-          />
+          <HotelOutlinedIcon style={{ marginRight: "10px" }} />
           <Typography>Bedroom(s)</Typography>
         </div>
-        <SelectWrapper data={numbers} field="nBedrooms" onChange={onChange} />
+        <SelectWrapper
+          data={numbers}
+          field="nBedrooms"
+          value={store.nBedrooms}
+          onChange={onChange}
+        />
       </Paper>
       <Paper className={classes.cardContainer}>
         <div className={classes.cardLabel}>
-          <BathtubOutlinedIcon
-            style={{ marginRight: "10px" }}
-          />
+          <BathtubOutlinedIcon style={{ marginRight: "10px" }} />
           <Typography>Bathrooms(s)</Typography>
         </div>
-        <SelectWrapper data={numbers} field="nBedrooms" onChange={onChange} />
+        <SelectWrapper
+          data={numbers}
+          field="nBedrooms"
+          value={store.nBedrooms}
+          onChange={onChange}
+        />
       </Paper>
       <Paper className={classes.cardContainer}>
         <div className={classes.cardLabel}>
-          <DriveEtaOutlinedIcon
-            style={{ marginRight: "10px" }}
-          />
+          <DriveEtaOutlinedIcon style={{ marginRight: "10px" }} />
           <Typography>Garages(s)</Typography>
         </div>
-        <SelectWrapper data={numbers} field="nBedrooms" onChange={onChange} />
+        <SelectWrapper
+          data={numbers}
+          value={store.nGarages}
+          field="nGarages"
+          onChange={onChange}
+        />
       </Paper>
       <Features store={store} />
     </div>

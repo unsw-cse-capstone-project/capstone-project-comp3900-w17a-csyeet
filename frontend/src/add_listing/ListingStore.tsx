@@ -57,4 +57,9 @@ export class ListingStore {
 
   @observable auctionStart: Date | null = null;
   @observable auctionEnd: Date | null = null;
+  @observable reservePrice: string = "";
+
+  @observable accName: string = "";
+  @observable bsb: string = "";
+  @observable accNumber: string = "";
 }

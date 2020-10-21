@@ -13,9 +13,6 @@ export const Description: React.FC<{ store: ListingStore }> = observer(
     const [desc, setDesc] = React.useState(store.desc);
     return (
       <div>
-        <Typography variant="h3" style={{ marginBottom: "10px" }}>
-          Property Description
-        </Typography>
         <div>
           <Typography>An eye-catching title for your property</Typography>
           <TextFieldWrapper
@@ -31,16 +28,14 @@ export const Description: React.FC<{ store: ListingStore }> = observer(
           <TextField
             fullWidth
             label="Short Description"
+            variant="outlined"
             multiline
             rows="10"
-            rowsMax="15"
             value={desc}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
               setDesc(e.target.value);
               onChange(e.target.value, "desc");
             }}
-            variant="outlined"
-            style={{ height: "60px" }}
           />
         </div>
       </div>

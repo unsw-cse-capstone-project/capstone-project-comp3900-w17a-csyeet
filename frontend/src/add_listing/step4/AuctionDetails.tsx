@@ -1,5 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
+import { action } from "mobx";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -22,14 +23,17 @@ export const AuctionDetails: React.FC<{ store: ListingStore }> = observer(({ sto
 		new Date("2020-09-18T21:11:55")
 	);
 
-	const handleStartDateChange = (date: Date | null) => {
+	const handleStartDateChange = action((date: Date | null) => {
 		setStartDate(date);
 		(store as any)["auctionStart"] = date;
-	};
-	const handleEndDateChange = (date: Date | null) => {
+	});
+	const handleEndDateChange = action((date: Date | null) => {
 		setEndDate(date);
 		(store as any)["auctionEnd"] = date;
-	}
+	});
+	const handlePriceChange = action((e: React.ChangeEvent<HTMLInputElement>) => {
+		(store as any)["reservePrice"] = e.target.value;
+	})
 
 	const [info, setInfo] = React.useState<boolean>(false);
 	const InputComponent = createPriceInput({
@@ -39,10 +43,6 @@ export const AuctionDetails: React.FC<{ store: ListingStore }> = observer(({ sto
 	const classes = AuctionStyles();
 	return (
 		<div className={classes.container}>
-			<Typography variant="h3" style={{ marginBottom: "10px" }}>
-				Auction Details
-        </Typography>
-
 			<MuiPickersUtilsProvider utils={DateFnsUtils}>
 				<Paper className={classes.cardContainer}>
 					<div className={classes.cardLabel}>
@@ -125,6 +125,7 @@ export const AuctionDetails: React.FC<{ store: ListingStore }> = observer(({ sto
 					labelWidth={60}
 					inputComponent={InputComponent as any}
 					aria-describedby="helper-text"
+					onChange={handlePriceChange}
 				/>
 			</FormControl>
 			<Dialog onClose={() => setInfo(false)} aria-labelledby="dialog-title" open={info}>
