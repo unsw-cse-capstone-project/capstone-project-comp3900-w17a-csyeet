@@ -8,6 +8,7 @@ export const DetailStyles = makeStyles((theme: Theme) =>
     },
     cardContainer: {
       display: "flex",
+      justifyContent: "space-between",
       flexDirection: "column",
       padding: "10px",
       marginTop: "10px",
@@ -18,5 +19,6 @@ export const DetailStyles = makeStyles((theme: Theme) =>
       verticalAlign: "center",
       marginTop: "10px",
     },
+
   })
 );

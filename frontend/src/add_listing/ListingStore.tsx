@@ -54,4 +54,7 @@ export class ListingStore {
   };
   @observable descTitle: string = "";
   @observable desc: string = "";
+
+  @observable auctionStart: Date | null = null;
+  @observable auctionEnd: Date | null = null;
 }

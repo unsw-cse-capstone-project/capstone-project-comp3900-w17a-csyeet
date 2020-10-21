@@ -39,7 +39,6 @@ export const Details: React.FC<{
       <Paper className={classes.cardContainer}>
         <div className={classes.cardLabel}>
           <HotelOutlinedIcon
-            fontSize="default"
             style={{ marginRight: "10px" }}
           />
           <Typography>Bedroom(s)</Typography>
@@ -49,7 +48,6 @@ export const Details: React.FC<{
       <Paper className={classes.cardContainer}>
         <div className={classes.cardLabel}>
           <BathtubOutlinedIcon
-            fontSize="default"
             style={{ marginRight: "10px" }}
           />
           <Typography>Bathrooms(s)</Typography>
@@ -59,7 +57,6 @@ export const Details: React.FC<{
       <Paper className={classes.cardContainer}>
         <div className={classes.cardLabel}>
           <DriveEtaOutlinedIcon
-            fontSize="default"
             style={{ marginRight: "10px" }}
           />
           <Typography>Garages(s)</Typography>

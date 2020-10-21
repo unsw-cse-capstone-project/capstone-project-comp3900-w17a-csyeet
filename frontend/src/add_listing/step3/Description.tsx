@@ -11,7 +11,6 @@ export const Description: React.FC<{ store: ListingStore }> = observer(
     };
 
     const [desc, setDesc] = React.useState(store.desc);
-    const [focused, setFocus] = React.useState(false);
     return (
       <div>
         <Typography variant="h3" style={{ marginBottom: "10px" }}>
