@@ -21,12 +21,12 @@ def create(req: CreateListingRequest, current_user: User = Depends(get_signed_in
     listing = Listing(owner_id=current_user.id, **listing_data)
     session.add(listing)
     session.commit()
-    return map_listing_to_response(listing)
+    return map_listing_to_response(listing, False, False)
 
 
 @router.get('/', response_model=SearchListingsResponse)
 # using a class dependency instead of method params because there's too many query params
-def search(req: SearchListingsRequest = Depends(), session: Session = Depends(get_session)):
+def search(req: SearchListingsRequest = Depends(), current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Finds listings which match all of the specified criteria '''
     query: Query = session.query(Listing)
     # TODO: maybe extract this helper code
@@ -58,7 +58,14 @@ def search(req: SearchListingsRequest = Depends(), session: Session = Depends(ge
     # TODO: consider default sort field
     results = query.filter(*conditions).all()
 
-    responses = [map_listing_to_response(r) for r in results]
+    responses = []
+    for r in results:
+        starred = session.query(Starred).get(
+            (r.id, current_user.id)) is not None
+        registered_bidder = session.query(Registration).get(
+            (r.id, current_user.id)) is not None
+        responses.append(map_listing_to_response(
+            r, starred, registered_bidder))
     return {'results': responses}
 
 
@@ -69,13 +76,11 @@ def get(id: int, current_user: User = Depends(get_current_user), session: Sessio
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
-    response = map_listing_to_response(listing)
-    if current_user is not None:
-        response['starred'] = session.query(Starred).get(
-            (id, current_user.id)) is not None
-        response['registered_bidder'] = session.query(
-            Registration).get((id, current_user.id)) is not None
-    return response
+    starred = session.query(Starred).get(
+        (listing.id, current_user.id)) is not None
+    registered_bidder = session.query(Registration).get(
+        (listing.id, current_user.id)) is not None
+    return map_listing_to_response(listing, starred, registered_bidder)
 
 
 @router.get('/{id}/auction', response_model=AuctionResponse, responses={404: {"description": "Resource not found"}})
@@ -127,7 +132,7 @@ def unstar(id: int, current_user: User = Depends(get_signed_in_user), session: S
 # TODO: move these to helpers.py or common/helpers.py or sth
 
 
-def map_listing_to_response(listing: Listing) -> ListingResponse:
+def map_listing_to_response(listing: Listing, starred: bool, registered_bidder: bool) -> ListingResponse:
     response = asdict(listing)
     response['owner'] = listing.owner
     response['features'] = []
@@ -135,6 +140,8 @@ def map_listing_to_response(listing: Listing) -> ListingResponse:
         if response[field]:
             response['features'].append(feature)
         response.pop(field)
+    response['starred'] = starred
+    response['registered_bidder'] = registered_bidder
     return response  # type: ignore
 
 

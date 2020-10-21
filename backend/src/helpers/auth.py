@@ -11,7 +11,7 @@ from ..models import User
 from .common import get_session
 
 cookie_name = "session"
-cookie_security = APIKeyCookie(name=cookie_name)
+cookie_security = APIKeyCookie(name=cookie_name, auto_error=False)
 secret_key = '825d86db7d67844c086c01ed8001f8df82dc99c16a8cad4e'  # TODO: extract
 
 
@@ -23,12 +23,12 @@ def create_token(email: EmailStr) -> bytes:
     return jwt.encode({"sub": email}, secret_key)
 
 
-def get_current_user(token: str = Depends(cookie_security), session: Session = Depends(get_session)) -> User:
+def get_current_user(token: str = Depends(cookie_security), session: Session = Depends(get_session)) -> Optional[User]:
+    if token is None:
+        return None
     payload = jwt.decode(token, secret_key)
     email = payload["sub"]
     user = load_user(email, session)
-    if user is None:
-        return None
     return user
 
 
