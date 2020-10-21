@@ -11,6 +11,6 @@ class BidRequest(BidBase):
 
 
 class BidResponse(BidBase):
-    user_id: int
+    bidder_id: int
     placed_at: datetime
     auction_end: datetime

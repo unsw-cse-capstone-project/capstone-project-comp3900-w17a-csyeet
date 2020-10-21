@@ -47,7 +47,8 @@ class Listing(Base):
 
     owner = relationship('User', back_populates='listings')
     bidders = relationship('Registration', back_populates='listing')
-    bids = relationship('Bid', back_populates='listing')
+    bids = relationship('Bid', back_populates='listing',
+                        order_by="desc(Bid.bid)")
 
     def __repr__(self):
         return f"<Listing: {self.title}>"

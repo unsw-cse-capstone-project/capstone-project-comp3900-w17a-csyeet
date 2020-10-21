@@ -1,17 +1,17 @@
+from dataclasses import dataclass
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from .base import Base
-from dataclasses import dataclass
 
 
 @dataclass
 class Bid(Base):
     __tablename__ = 'bid'
 
-    listing_id: Column = Column(Integer, ForeignKey(
-        'listing.id', ondelete='CASCADE'), primary_key=True)
-    user_id: Column = Column(Integer, ForeignKey(
-        'user.id', ondelete='CASCADE'), primary_key=True)
+    listing_id: Column = Column(Integer, ForeignKey('listing.id', ondelete='CASCADE'),
+                                primary_key=True)
+    bidder_id: Column = Column(Integer, ForeignKey('user.id', ondelete='CASCADE'),
+                               primary_key=True)
     bid: Column = Column(Integer, primary_key=True)
     placed_at: Column = Column(DateTime, nullable=False)
 
