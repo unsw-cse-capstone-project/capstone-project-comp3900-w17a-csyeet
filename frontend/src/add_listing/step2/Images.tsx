@@ -1,48 +1,84 @@
-import Dropzone, {
-  IDropzoneProps,
-  ILayoutProps,
-} from "react-dropzone-uploader";
 import React from "react";
+import { action } from "mobx";
+import { observer } from "mobx-react";
+import ImageUploading, { ImageListType } from "react-images-uploading";
+import AddAPhotoOutlinedIcon from "@material-ui/icons/AddAPhotoOutlined";
+import EditIcon from "@material-ui/icons/Edit";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { Button, IconButton } from "@material-ui/core";
+import { ListingStore } from "../ListingStore";
+import { ImagesStyles } from "./Images.css";
 
-// add type defs to custom LayoutComponent prop to easily inspect props passed to injected components
-const Layout = ({
-  input,
-  previews,
-  submitButton,
-  dropzoneProps,
-  files,
-  extra: { maxFiles },
-}: ILayoutProps) => {
-  return (
-    <div>
-      {previews}
+export const Images: React.FC<{ store: ListingStore }> = observer(
+  ({ store }) => {
+    const [images, setImages] = React.useState<ImageListType>([]);
+    const maxNumber = 20;
+    const onChange = action(
+      (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
+        console.log(imageList, addUpdateIndex);
+        setImages(imageList);
+        store.images = imageList;
+      }
+    );
 
-      <div {...dropzoneProps}>{files.length < maxFiles && input}</div>
-
-      {files.length > 0 && submitButton}
-    </div>
-  );
-};
-
-const CustomLayout = () => {
-  // add type defs to function props to get TS support inside function bodies,
-  // and not just where functions are passed as props into Dropzone
-  const getUploadParams: IDropzoneProps["getUploadParams"] = () => ({
-    url: "https://httpbin.org/post",
-  });
-
-  const handleSubmit: IDropzoneProps["onSubmit"] = (files, allFiles) => {
-    console.log(files.map((f) => f.meta));
-    allFiles.forEach((f) => f.remove());
-  };
-
-  return (
-    <Dropzone
-      getUploadParams={getUploadParams}
-      LayoutComponent={Layout}
-      onSubmit={handleSubmit}
-      classNames={{ inputLabelWithFiles: defaultClassNames.inputLabel }}
-      inputContent="Drop Files (Custom Layout)"
-    />
-  );
-};
+    const [hover, setHover] = React.useState<boolean>(false);
+    const classes = ImagesStyles();
+    return (
+      <ImageUploading
+        multiple
+        value={images}
+        onChange={onChange}
+        maxNumber={maxNumber}
+        dataURLKey="data_url"
+      >
+        {({
+          imageList,
+          onImageUpload,
+          onImageRemoveAll,
+          onImageUpdate,
+          onImageRemove,
+          isDragging,
+          dragProps,
+        }) => (
+          <div>
+            <div className={classes.previewContainer}>
+              {imageList.map((image, index) => (
+                <div key={index} className={classes.imgContainer}>
+                  <IconButton
+                    className={classes.imgEdit}
+                    onClick={() => onImageUpdate(index)}
+                  >
+                    <EditIcon style={{ color: "#FFF" }} />
+                  </IconButton>
+                  <IconButton
+                    className={classes.imgDelete}
+                    onClick={() => onImageRemove(index)}
+                  >
+                    <HighlightOffIcon style={{ color: "#FFF" }} />
+                  </IconButton>
+                  <img
+                    src={image.data_url}
+                    alt="images"
+                    height="300px"
+                    width="auto"
+                  />
+                </div>
+              ))}
+              <Button
+                variant="outlined"
+                className={classes.dropzone}
+                color={isDragging ? "secondary" : "default"}
+                startIcon={<AddAPhotoOutlinedIcon />}
+                onClick={onImageUpload}
+                {...dragProps}
+              >
+                Upload Images
+              </Button>
+            </div>
+            <Button onClick={onImageRemoveAll}>Remove all images</Button>
+          </div>
+        )}
+      </ImageUploading>
+    );
+  }
+);

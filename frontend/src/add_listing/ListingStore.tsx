@@ -1,5 +1,6 @@
 import React from "react";
 import { observable } from "mobx";
+import { ImageListType } from "react-images-uploading";
 
 type Features = {
   has_ensuite: boolean;
@@ -62,4 +63,6 @@ export class ListingStore {
   @observable accName: string = "";
   @observable bsb: string = "";
   @observable accNumber: string = "";
+
+  @observable images: ImageListType = [];
 }

@@ -25,7 +25,7 @@ export const Description: React.FC<{ store: ListingStore }> = observer(
         </div>
         <div>
           <Typography
-            variant="h5"
+            variant="subtitle1"
             style={{ marginBottom: "5px", marginTop: "35px" }}
           >
             A short description
