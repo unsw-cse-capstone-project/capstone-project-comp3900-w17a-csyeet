@@ -25,6 +25,10 @@ class Listing(Base):
     num_car_spaces: Column = Column(Integer, nullable=False)
     auction_start: Column = Column(DateTime, nullable=False)
     auction_end: Column = Column(DateTime, nullable=False)
+    reserve_price: Column = Column(Integer, nullable=False)
+    account_name: Column = Column(String(), nullable=False)
+    bsb: Column = Column(String(), nullable=False)
+    account_number: Column = Column(String(), nullable=False)
     has_ensuite: Column = Column(Boolean, default=False, nullable=False)
     has_built_in_wardrobe: Column = Column(Boolean, default=False,
                                            nullable=False)
@@ -47,6 +51,9 @@ class Listing(Base):
 
     owner = relationship('User', back_populates='listings')
     bidders = relationship('Registration', back_populates='listing')
+    bids = relationship('Bid', back_populates='listing',
+                        order_by="desc(Bid.bid)")
+    landmarks = relationship('Landmark')
 
     def __repr__(self):
         return f"<Listing: {self.title}>"
