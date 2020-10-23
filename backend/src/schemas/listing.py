@@ -66,8 +66,8 @@ class ListingBase(BaseModel):
     postcode: str
     state: str
     country: str
-    num_bedrooms: int = Field(..., ge=0)
-    num_bathrooms: int = Field(..., ge=0)
+    num_bedrooms: int = Field(..., ge=1)
+    num_bathrooms: int = Field(..., ge=1)
     num_car_spaces: int = Field(..., ge=0)
     auction_start: datetime
     auction_end: datetime
@@ -75,7 +75,10 @@ class ListingBase(BaseModel):
 
 
 class CreateListingRequest(ListingBase):
-    pass
+    reserve_price: int = Field(..., ge=1)
+    account_name: str
+    bsb: str
+    account_number: str
 
 
 class ListingResponse(ListingBase):
