@@ -175,11 +175,10 @@ def map_listing_to_response(listing: Listing, highest_bid: Optional[int], starre
     return response  # type: ignore
 
 
-def map_listing_response(listing, user: Optional[User], session: Session) -> ListingResponse:
+def map_listing_response(listing, current_user: Optional[User], session: Session) -> ListingResponse:
     highest_bid = get_highest_bid(listing.id, session)
-    starred = is_listing_starred(listing, user, session)
-    registered_bidder = is_user_registered_bidder(listing, user, session)
-
+    starred = is_listing_starred(listing, current_user, session)
+    registered_bidder = is_user_registered_bidder(listing, current_user, session)
     return map_listing_to_response(listing, highest_bid, starred, registered_bidder)
 
 
