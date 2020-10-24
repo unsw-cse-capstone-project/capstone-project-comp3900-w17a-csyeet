@@ -1,5 +1,5 @@
 import * as React from "react";
-import { observable, action, runInAction } from "mobx";
+import { observable, action, runInAction, IComputedValue } from "mobx";
 import {
   Card,
   Typography,
@@ -28,6 +28,7 @@ export const BiddingBox = observer(
   ({
     store,
     currentBid,
+    shouldDisableBiddingButton,
     bidState,
     BidderTag,
     isAuctionClosed = false,
@@ -38,10 +39,11 @@ export const BiddingBox = observer(
     store: BiddingBoxStore;
     currentBid?: number;
     bidState: BidPriceState;
+    shouldDisableBiddingButton: IComputedValue<boolean>;
     BidderTag?: React.ComponentType;
     isAuctionClosed?: boolean;
     enableBidding?: boolean;
-    onPlaceBid(price: number): void;
+    onPlaceBid(price: number, onSuccess: () => void): void;
     style?: React.CSSProperties;
   }) => {
     const [cBid, setCBid] = React.useState(currentBid);
@@ -58,10 +60,11 @@ export const BiddingBox = observer(
       if (store.biddingPrice <= cBid) {
         setError("Bid must be higher than current bid");
       } else {
-        onPlaceBid(store.biddingPrice);
-        setCBid(store.biddingPrice);
-        runInAction(() => (store.biddingPrice = 0));
-        setError("");
+        onPlaceBid(store.biddingPrice, () => {
+          setCBid(store.biddingPrice);
+          runInAction(() => (store.biddingPrice = 0));
+          setError("");
+        });
       }
     });
     const BidPriceWrapper = () => (
@@ -104,6 +107,7 @@ export const BiddingBox = observer(
                 variant="outlined"
                 className={classes.placeBidButton}
                 onClick={onClick}
+                disabled={shouldDisableBiddingButton.get()}
               >
                 Place Bid
               </Button>

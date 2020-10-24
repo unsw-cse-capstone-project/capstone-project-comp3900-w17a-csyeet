@@ -12,6 +12,7 @@ import { useStore } from "../AuthContext";
 import { Bid } from "../ui/util/types/bid";
 import { BiddersList } from "./bidders_list/BiddersList";
 import { BidsList } from "./bids_list/BidsList";
+import { computed } from "mobx";
 
 export const AuctionPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,7 +23,7 @@ export const AuctionPage = () => {
     <AuctionPageWrapper
       store={store}
       id={parseInt(id)}
-      onPlaceBid={(bid: number) => presenter.placeBid(store, bid)}
+      onPlaceBid={(bid: number, onSuccess: () => void) => presenter.placeBid(store, bid, onSuccess)}
     />
   );
 };
@@ -35,7 +36,7 @@ export const AuctionPageWrapper = observer(
   }: {
     store: AuctionPageStore;
     id: number;
-    onPlaceBid(bid: number): void;
+    onPlaceBid(bid: number, onSuccess: () => void): void;
   }) => {
     if (!store.loadingState) {
       return null;
@@ -86,6 +87,7 @@ export const AuctionPageWrapper = observer(
         <BiddingBox
           store={biddingBoxStore}
           currentBid={bids.length !== 0 ? bids[0].bid : undefined}
+          shouldDisableBiddingButton={computed(() => store.bidMakingStatus === 'submitting')}
           enableBidding={
             new Date().getTime() >= listing.auction_start.getTime() &&
             userStore?.user !== undefined
@@ -95,7 +97,7 @@ export const AuctionPageWrapper = observer(
           }
           bidState={
             bids.length !== 0
-              ? bids[0].bid >= 5000000
+              ? bids[0].reserve_met
                 ? "reserve_met"
                 : "reserve_not_met"
               : "current"

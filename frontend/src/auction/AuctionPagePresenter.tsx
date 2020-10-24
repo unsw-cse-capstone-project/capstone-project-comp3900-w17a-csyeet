@@ -15,6 +15,9 @@ export class AuctionPageStore {
   @observable
   bids: Bid[] = [];
 
+  @observable
+  bidMakingStatus?: 'submitting' | 'error' | 'success';
+
   constructor() {
     makeObservable(this);
   }
@@ -95,7 +98,35 @@ export class AuctionPagePresenter {
   }
 
   @action
-  placeBid(store: AuctionPageStore, bid: number) {
-    // store.bids = [bid, ...store.bids];
+  async placeBid(store: AuctionPageStore, bid: number, onSuccess: () => void) {
+    store.bidMakingStatus = 'submitting';
+    try {
+      const response = await fetch(`/listings/${store.listing?.id}/auction/bid`, {
+        method: "post",
+        body: JSON.stringify({ bid: bid }),
+      });
+      const result = await response.json();
+      if ("detail" in result) {
+        runInAction(() => store.bidMakingStatus = 'error');
+        return;
+      }
+      if (!store.listing || store.listing === undefined) {
+        return;
+      }
+      const newBid: Bid = {
+        bid: bid,
+        bidder_id: result.bidder_id,
+        placed_at: new Date(result.placed_at),
+        reserve_met: result.reserve_met,
+      }
+      runInAction(() => {
+        store.bidMakingStatus = 'success';
+        store.bids = [newBid, ...store.bids];
+        (store.listing as ListingActual).auction_end = new Date(result.auction_end);
+        onSuccess();
+      });
+    } catch {
+      runInAction(() => store.bidMakingStatus = 'error');
+    }
   }
 }

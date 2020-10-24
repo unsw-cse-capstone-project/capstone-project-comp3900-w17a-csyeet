@@ -9,6 +9,7 @@ import { BidsList } from "./bids_list/BidsList";
 import { BiddersList } from "./bidders_list/BiddersList";
 import { createFakeAddress } from "../ui/util/helper";
 import { Bid } from "../ui/util/types/bid";
+import { computed } from 'mobx';
 
 export default {
   title: "auction/auctionPage",
@@ -65,6 +66,7 @@ const Template: Story<{
       isAuctionClosed={
         new Date(props.auction_start).getTime() - new Date().getTime() <= 0
       }
+      shouldDisableBiddingButton={computed(() => false)}
       bidState="reserve_met"
       BidderTag={() => <BidderTag bidderNumber={1234} />}
       onPlaceBid={action("Place bid button clicked")}
