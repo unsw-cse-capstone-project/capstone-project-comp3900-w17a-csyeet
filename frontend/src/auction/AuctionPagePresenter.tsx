@@ -29,13 +29,18 @@ export class AuctionPagePresenter {
         this.fetchListing(listing_id),
         this.fetchBids(listing_id),
       ]);
-      if (listing === undefined || bids === undefined)
+      if (listing === undefined || bids === undefined) {
+        console.log('here')
+        runInAction(() => (store.loadingState = "error"));
+        return;
+      }
       runInAction(() => {
         store.listing = listing;
         store.bids = bids;
         store.loadingState = "loaded";
       });
-    } catch {
+    } catch (e){
+      console.log(e)
       runInAction(() => (store.loadingState = "error"));
     }
   }
@@ -74,21 +79,23 @@ export class AuctionPagePresenter {
     return listing;
   }
 
-  private fetchBids(listingId: number): Promise<Bid[]> {
-    return delay(300).then(() =>
-      [0, 1, 2].map((i) =>
-        createFakeBid({
-          listing_id: listingId,
-          bidder_id: 100 + i,
-          bid: 1000000 - 50000 * i,
-          submitted: new Date("October 9, 2020 " + (11 - i) + ":00:00"),
-        })
-      )
-    );
+  private async fetchBids(listingId: number): Promise<Bid[] | undefined> {
+    const response = await fetch(`/listings/${listingId}/auction`);
+    const result = await response.json();
+    if ("detail" in result) {
+      return undefined;
+    }
+    const bids: Bid[] = result.bids.map((b: any) => ({
+      bid: b.bid,
+      bidder_id: b.bidder_id,
+      placed_at: new Date(b.placed_at),
+      reserve_met: b.reserve_met,
+    }))
+    return bids;
   }
 
   @action
-  placeBid(store: AuctionPageStore, bid: Bid) {
-    store.bids = [bid, ...store.bids];
+  placeBid(store: AuctionPageStore, bid: number) {
+    // store.bids = [bid, ...store.bids];
   }
 }

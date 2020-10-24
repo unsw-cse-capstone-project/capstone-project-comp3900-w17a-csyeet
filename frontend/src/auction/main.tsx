@@ -22,7 +22,7 @@ export const AuctionPage = () => {
     <AuctionPageWrapper
       store={store}
       id={parseInt(id)}
-      onPlaceBid={(bid: Bid) => presenter.placeBid(store, bid)}
+      onPlaceBid={(bid: number) => presenter.placeBid(store, bid)}
     />
   );
 };
@@ -35,11 +35,12 @@ export const AuctionPageWrapper = observer(
   }: {
     store: AuctionPageStore;
     id: number;
-    onPlaceBid(bid: Bid): void;
+    onPlaceBid(bid: number): void;
   }) => {
     if (!store.loadingState) {
       return null;
     }
+    const theme = useTheme();
 
     const userStore = useStore();
     const Container = ({ Content }: { Content: React.ComponentType }) => {
@@ -65,7 +66,6 @@ export const AuctionPageWrapper = observer(
     }
 
     if (store.loadingState === "error" || !store.listing) {
-      const theme = useTheme();
       const Content = () => (
         <Typography
           style={{ textAlign: "center", color: theme.palette.error.main }}
@@ -101,14 +101,7 @@ export const AuctionPageWrapper = observer(
               : "current"
           }
           BidderTag={() => <BidderTag bidderNumber={1234} />}
-          onPlaceBid={(price: number) =>
-            onPlaceBid({
-              bid: price,
-              bidder_id: userStore?.user?.id as number,
-              listing_id: id,
-              submitted: new Date(),
-            })
-          }
+          onPlaceBid={onPlaceBid}
         />
       );
     });

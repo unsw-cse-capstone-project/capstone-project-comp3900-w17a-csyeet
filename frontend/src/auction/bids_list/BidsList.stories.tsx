@@ -12,18 +12,18 @@ export const Overview = () => {
   let bids: Bid[] = [
     {
       bid: 500000,
-      bidder_id: 1234,
-      listing_id: 1,
-      submitted: new Date(),
+      bidder_id: 5,
+      reserve_met: true,
+      placed_at: new Date(),
     },
   ];
-
+  
   for (let i = 0; i < 3; i++) {
     bids.push({
       bid: 500000 - (i + 1) * 10000,
       bidder_id: 1230 + i,
-      listing_id: 1,
-      submitted: new Date(),
+      reserve_met: false,
+      placed_at: new Date(),
     });
   }
 

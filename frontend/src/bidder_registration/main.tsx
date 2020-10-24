@@ -9,19 +9,33 @@ import {
 import { BidderRegistration } from "./BidderRegistration";
 import { bidderRegistrationStyle } from "./BidderRegistration.css";
 import { ArrowBackIos } from "@material-ui/icons";
-import { Listing, ListingActual } from '../ui/util/types/listing';
+import { Listing, ListingActual } from "../ui/util/types/listing";
 
 export const BidderRegistrationPage = () => {
   const { id } = useParams<{ id: string }>();
   const store = new BidderRegistrationStore();
   const presenter = new BidderRegistrationPresenter();
   presenter.loadInformation(store, parseInt(id));
-  return <BidderRegistrationWrapper store={store} onSubmit={(afterSubmit: () => void) => presenter.submit(store, afterSubmit)}/>;
+  return (
+    <BidderRegistrationWrapper
+      store={store}
+      onSubmit={(afterSubmit: () => void) =>
+        presenter.submit(store, afterSubmit)
+      }
+    />
+  );
 };
 
 export const BidderRegistrationWrapper = observer(
-  ({ store, onSubmit }: { store: BidderRegistrationStore, onSubmit: (afterSubmit: () => void) => void }) => {
+  ({
+    store,
+    onSubmit,
+  }: {
+    store: BidderRegistrationStore;
+    onSubmit: (afterSubmit: () => void) => void;
+  }) => {
     const theme = useTheme();
+    const history = useHistory();
     if (!store.loadingState) {
       return null;
     }
@@ -45,7 +59,6 @@ export const BidderRegistrationWrapper = observer(
     const { id, street, suburb, postcode, state } = store.listing;
     const Container = ({ Content }: { Content: React.ComponentType }) => {
       const classes = bidderRegistrationStyle();
-      const history = useHistory();
       return (
         <div className={classes.root}>
           <div className={classes.main}>
