@@ -86,6 +86,8 @@ class ListingResponse(ListingBase):
     owner: UserResponse
     starred: bool
     registered_bidder: bool
+    highest_bid: Optional[int]
+    reserve_met: bool
     landmarks: List[LandmarkReponse]
 
 
