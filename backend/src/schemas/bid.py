@@ -13,4 +13,7 @@ class BidRequest(BidBase):
 class BidResponse(BidBase):
     bidder_id: int
     placed_at: datetime
+    reserve_met: bool
+
+class PlaceBidResponse(BidResponse):
     auction_end: datetime

@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta
 from dataclasses import asdict
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import or_
 from sqlalchemy.orm import Session, Query
-from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidResponse, BidRequest
+from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse
 from ..models import Listing, User, Starred, Bid, Registration
-from ..helpers import get_session, get_current_user, find_nearby_landmarks
+from ..helpers import get_session, get_current_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response
 
 router = APIRouter()
 
@@ -28,7 +29,7 @@ def create(req: CreateListingRequest, current_user: User = Depends(get_current_u
     session.add_all(landmarks)
 
     session.commit()
-    return map_listing_to_response(listing)
+    return map_listing_to_response(listing, None)
 
 
 @router.get('/', response_model=SearchListingsResponse)
@@ -65,7 +66,7 @@ def search(req: SearchListingsRequest = Depends(), session: Session = Depends(ge
     # TODO: consider default sort field
     results = query.filter(*conditions).all()
 
-    responses = [map_listing_to_response(r) for r in results]
+    responses = [map_listing_to_response(r, get_highest_bid(r.id, session)) for r in results]
     return {'results': responses}
 
 
@@ -76,7 +77,7 @@ def get(id: int, session: Session = Depends(get_session)):
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
-    return map_listing_to_response(listing)
+    return map_listing_to_response(listing, get_highest_bid(id, session))
 
 
 @router.get('/{id}/auction', response_model=AuctionResponse, responses={404: {"description": "Resource not found"}})
@@ -88,12 +89,12 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
             status_code=404, detail="Requested listing could not be found")
 
     bidders = [bidder.user_id for bidder in listing.bidders]
-    bids = [map_bid_to_response(bid, listing.auction_end)
+    bids = [map_bid_to_response(bid, listing)
             for bid in listing.bids]
     return {'bidders': bidders, 'bids': bids}
 
 
-@router.post('/{id}/auction/bid', response_model=BidResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
+@router.post('/{id}/auction/bid', response_model=PlaceBidResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def place_bid(id: int, req: BidRequest, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Places a bid '''
     listing = session.query(Listing).get(id)
@@ -106,7 +107,7 @@ def place_bid(id: int, req: BidRequest, current_user: User = Depends(get_current
         raise HTTPException(
             status_code=401, detail="User is not registered to bid on this property")
 
-    highest_bid = listing.bids[0].bid  # user is registered so there's >= 1 bid
+    highest_bid = get_highest_bid(listing.id, session) # user is registered so there's >= 1 bid
     if req.bid <= highest_bid:
         raise HTTPException(
             status_code=403, detail=f"Bid must be higher than the current highest bid of {highest_bid}")
@@ -117,7 +118,7 @@ def place_bid(id: int, req: BidRequest, current_user: User = Depends(get_current
     if get_auction_time_remaining(listing) <= timedelta(minutes=5):
         listing.auction_end += timedelta(minutes=2)
     session.commit()
-    return map_bid_to_response(bid, listing.auction_end)
+    return map_bid_to_response(bid, listing)
 
 
 @router.post('/{id}/star', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
@@ -158,9 +159,11 @@ def unstar(id: int, current_user: User = Depends(get_current_user), session: Ses
 # TODO: move these to helpers.py or common/helpers.py or sth
 
 
-def map_listing_to_response(listing: Listing) -> ListingResponse:
+def map_listing_to_response(listing: Listing, highest_bid: Optional[int]) -> ListingResponse:
     response = asdict(listing)
     response['owner'] = listing.owner
+    response['highest_bid'] = highest_bid
+    response['reserve_met'] = highest_bid is not None and highest_bid >= listing.reserve_price
     response['landmarks'] = listing.landmarks
     response['features'] = []
     for field, feature in field_to_feature_map.items():
@@ -174,12 +177,6 @@ def get_field_for_feature(feature: Feature) -> str:
     keys = list(field_to_feature_map.keys())
     values = list(field_to_feature_map.values())
     return keys[values.index(feature)]
-
-
-def map_bid_to_response(bid: Bid, auction_end: datetime) -> BidResponse:
-    response = asdict(bid)
-    response['auction_end'] = auction_end
-    return response  # type: ignore
 
 
 def get_auction_time_remaining(listing: Listing) -> timedelta:
