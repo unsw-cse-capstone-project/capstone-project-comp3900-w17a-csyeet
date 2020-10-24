@@ -9,18 +9,18 @@ import {
 import { BidderRegistration } from "./BidderRegistration";
 import { bidderRegistrationStyle } from "./BidderRegistration.css";
 import { ArrowBackIos } from "@material-ui/icons";
-import { Listing } from "../ui/util/types/listing";
+import { Listing, ListingActual } from '../ui/util/types/listing';
 
 export const BidderRegistrationPage = () => {
   const { id } = useParams<{ id: string }>();
   const store = new BidderRegistrationStore();
   const presenter = new BidderRegistrationPresenter();
   presenter.loadInformation(store, parseInt(id));
-  return <BidderRegistrationWrapper store={store} />;
+  return <BidderRegistrationWrapper store={store} onSubmit={(afterSubmit: () => void) => presenter.submit(store, afterSubmit)}/>;
 };
 
 export const BidderRegistrationWrapper = observer(
-  ({ store }: { store: BidderRegistrationStore }) => {
+  ({ store, onSubmit }: { store: BidderRegistrationStore, onSubmit: (afterSubmit: () => void) => void }) => {
     const theme = useTheme();
     if (!store.loadingState) {
       return null;
@@ -37,7 +37,8 @@ export const BidderRegistrationWrapper = observer(
     const BidderRego = () => (
       <BidderRegistration
         store={store}
-        listingId={(store.listing as Listing).id}
+        listingId={(store.listing as ListingActual).id}
+        onSubmit={onSubmit}
       />
     );
 

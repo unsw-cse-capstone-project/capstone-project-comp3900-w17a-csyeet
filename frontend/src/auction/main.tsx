@@ -95,7 +95,7 @@ export const AuctionPageWrapper = observer(
           }
           bidState={
             bids.length !== 0
-              ? bids[0].bid >= listing.reserve_price
+              ? bids[0].bid >= 5000000
                 ? "reserve_met"
                 : "reserve_not_met"
               : "current"
@@ -121,7 +121,6 @@ export const AuctionPageWrapper = observer(
       auction_start,
       auction_end,
       images,
-      reserve_price,
     } = store.listing;
     const Content = () => {
       return (
@@ -132,7 +131,7 @@ export const AuctionPageWrapper = observer(
           mainImage={images[0]}
           BiddingBox={BiddingBoxWrapper}
           BidsList={() => (
-            <BidsList bids={bids} reserve_price={reserve_price} />
+            <BidsList bids={bids} reserve_price={5000000} />
           )}
           BiddersList={() => (
             <BiddersList
