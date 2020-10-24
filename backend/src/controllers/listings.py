@@ -33,7 +33,7 @@ def create(req: CreateListingRequest, current_user: User = Depends(get_signed_in
 
 @router.get('/', response_model=SearchListingsResponse)
 # using a class dependency instead of method params because there's too many query params
-def search(req: SearchListingsRequest = Depends(), current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Finds listings which match all of the specified criteria '''
     query: Query = session.query(Listing)
     # TODO: maybe extract this helper code
