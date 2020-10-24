@@ -13,6 +13,11 @@ export const ListingResultCardStyles = makeStyles((theme: Theme) =>
         display: "flex",
       },
     },
+    cardContent: { 
+      width: "100%", 
+      position: "relative",
+      boxSizing: "border-box",
+    },
     sliderContainer: {
       [theme.breakpoints.up("md")]: {
         width: "50%",
@@ -33,6 +38,11 @@ export const ListingResultCardStyles = makeStyles((theme: Theme) =>
       overflow: "hidden",
       margin: theme.spacing(2, 0, 0, 0),
     },
+    starContainer: {
+      position: "absolute",
+      top: theme.spacing(1.5),
+      right: theme.spacing(1.5),
+    },
   })
 );
 
@@ -46,6 +56,6 @@ export const ListingFeatureIconStyles = makeStyles((theme: Theme) =>
     },
     icon: {
       color: "black",
-    }
+    },
   })
 );

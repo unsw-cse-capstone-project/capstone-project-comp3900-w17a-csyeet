@@ -27,6 +27,7 @@ export class ListingPagePresenter {
         // handle error
         console.log("error " + result.detail);
       } else {
+        console.log(result)
         const results: ListingActual = {
           type: result.type,
           id: parseInt(result.id),
@@ -47,6 +48,10 @@ export class ListingPagePresenter {
           auction_start: new Date(result.auction_start),
           auction_end: new Date(result.auction_end),
           images: createFakeListing().images,
+          landmarks: result.landmarks,
+          features: result.features,
+          starred: false,
+          registered_bidder: false,
         };
 
         console.log(results);
