@@ -6,7 +6,7 @@ from sqlalchemy import or_
 from sqlalchemy.orm import Session, Query
 from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse
 from ..models import Listing, User, Starred, Bid, Registration
-from ..helpers import get_session, get_current_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response
+from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response
 
 router = APIRouter()
 
@@ -71,7 +71,7 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
         starred = is_listing_starred(listing, current_user, session)
         registered_bidder = is_user_registered_bidder(listing, current_user, session)
         responses.append(map_listing_to_response(
-            get_highest_bid(listing.id, session), listing, starred, registered_bidder))
+                        listing, get_highest_bid(listing.id, session), starred, registered_bidder))
         
     return {'results': responses}
 
@@ -102,7 +102,7 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
     return {'bidders': bidders, 'bids': bids}
 
 
-@router.post('/{id}/auction/bid', response_model=BidResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
+@router.post('/{id}/auction/bid', response_model=PlaceBidResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def place_bid(id: int, req: BidRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Places a bid '''
     listing = session.query(Listing).get(id)
