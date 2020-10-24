@@ -15,6 +15,7 @@ import ReactPlaceholder from "react-placeholder/lib/ReactPlaceholder";
 import "react-placeholder/lib/reactPlaceholder.css";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
+import { Star } from '../star/Star';
 
 export const ListingResultCard = (props: {
   listing: ListingActual;
@@ -41,6 +42,7 @@ export const ListingResultCard = (props: {
     num_car_spaces,
     type,
     description,
+    starred,
   } = props.listing;
   const history = useHistory();
   return (
@@ -61,7 +63,8 @@ export const ListingResultCard = (props: {
           ))}
         </Slider>
       </div>
-      <CardContent style={{ width: "100%", boxSizing: "border-box" }}>
+      <CardContent className={classes.cardContent}>
+        <div className={classes.starContainer}><Star id={id} starred={starred}/></div>
         <Link
           onClick={() => history.push(`/listing/${id}`)}
           style={{ textDecoration: "none" }}

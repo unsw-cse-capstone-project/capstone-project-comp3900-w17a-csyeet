@@ -7,7 +7,7 @@ export const SuburbPanelContentStyle = makeStyles((theme: Theme) => ({
       backgroundColor: theme.palette.background.paper,
       display: "flex",
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       display: "flex",
       flexDirection: "column",
     },
@@ -15,11 +15,12 @@ export const SuburbPanelContentStyle = makeStyles((theme: Theme) => ({
   tabs: {
     [theme.breakpoints.up("md")]: {
       borderRight: `1px solid ${theme.palette.divider}`,
+      width: "fit-content",
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       borderBottom: `1px solid ${theme.palette.divider}`,
+      width: "100%",
     },
-    width: "fit-content",
   },
   lastRow: {
     borderBottom: "none",
@@ -37,7 +38,7 @@ export const TabPanelStyle = makeStyles((theme: Theme) => ({
       width: "100%",
       boxSizing: "border-box",
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       padding: "0",
     },
   },

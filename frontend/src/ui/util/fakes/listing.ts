@@ -22,6 +22,9 @@ export const createFakeListing = (opts?: Partial<Listing>) => ({
     "https://i2.au.reastatic.net/1340x824-resize,extend,r=33,g=40,b=46/10784f34dc9c093688c1c137dff1aad545ad5000ebf653ca90e0793569231fe9/image.jpg",
     "https://i2.au.reastatic.net/1340x824-resize,extend,r=33,g=40,b=46/45efa7d514e314b49996d38460b3f1f7dc3160958a43b84211346b1a9b854032/image.jpg",
   ],
+  features: ['ensuite', 'bathtub'],
+  starred: false,
+  registered_bidder: false,
   ...opts,
 });
 export const createFakeActualListing = (opts?: Partial<ListingActual>) => ({
@@ -49,6 +52,66 @@ export const createFakeActualListing = (opts?: Partial<ListingActual>) => ({
     "https://i2.au.reastatic.net/1340x824-resize,extend,r=33,g=40,b=46/10784f34dc9c093688c1c137dff1aad545ad5000ebf653ca90e0793569231fe9/image.jpg",
     "https://i2.au.reastatic.net/1340x824-resize,extend,r=33,g=40,b=46/45efa7d514e314b49996d38460b3f1f7dc3160958a43b84211346b1a9b854032/image.jpg",
   ],
+  landmarks: [
+    {
+      name: "Primary School 1",
+      type: "primarySchool",
+      distance: 0.5,
+    },
+    {
+      name: "Primary School 2",
+      type: "primarySchool",
+      distance: 0.9,
+    },
+    {
+      name: "Primary School 3",
+      type: "primarySchool",
+      distance: 1.2,
+    },
+    {
+      name: "Secondary School 1",
+      type: "secondarySchool",
+      distance: 0.5,
+    },
+    {
+      name: "Secondary School 2",
+      type: "secondarySchool",
+      distance: 0.9,
+    },
+    {
+      name: "Secondary School 3",
+      type: "secondarySchool",
+      distance: 1.2,
+    },
+    {
+      name: "Park 1",
+      type: "park",
+      distance: 0.2,
+    },
+    {
+      name: "Park 2",
+      type: "park",
+      distance: 0.7,
+    },
+    {
+      name: "Park 3",
+      type: "park",
+      distance: 1.2,
+    },
+    {
+      name: "Park 4",
+      type: "park",
+      distance: 2.6,
+    },
+    {
+      name: "Train Station 1",
+      type: "trainStation",
+      distance: 0.2,
+    },
+  ],
+  features: ['ensuite', 'bathtub'],
+  starred: false,
+  registered_bidder: false,
   ...opts,
 });
 

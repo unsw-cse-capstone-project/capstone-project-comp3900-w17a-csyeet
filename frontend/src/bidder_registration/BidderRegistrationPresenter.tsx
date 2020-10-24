@@ -1,6 +1,4 @@
-import { action, makeObservable, observable, runInAction } from "mobx";
-import { delay } from "../ui/util/helper";
-import { fetchListing } from "../ui/util/fakes/listing";
+import { action, makeObservable, observable } from "mobx";
 import { Listing } from "../ui/util/types/listing";
 export class BidderRegistrationStore {
   @observable
@@ -32,19 +30,18 @@ export class BidderRegistrationStore {
 export class BidderRegistrationPresenter {
   @action
   async loadInformation(store: BidderRegistrationStore, listing_id: number) {
-    store.loadingState = "loading";
-    try {
-      const listing = await this.fetchListing(listing_id);
-      runInAction(() => {
-        store.listing = listing;
-        store.loadingState = "loaded";
-      });
-    } catch {
-      runInAction(() => (store.loadingState = "error"));
-    }
-  }
-
-  private fetchListing(listingId: number): Promise<Listing> {
-    return delay(400).then(() => fetchListing(listingId));
+    // store.loadingState = "loading";
+    // try {
+    //   const listing = await fetch(`/registrations/${listing_id}`, {method: "post",
+    //   body: JSON.stringify({ bid: store.initialBid, card_number: store.cardNumber}),
+    // });
+    //   const data = await listing.json
+    //   runInAction(() => {
+    //     store.listing = JSON.parse(listing.);
+    //     store.loadingState = "loaded";
+    //   });
+    // } catch {
+    //   runInAction(() => (store.loadingState = "error"));
+    // }
   }
 }
