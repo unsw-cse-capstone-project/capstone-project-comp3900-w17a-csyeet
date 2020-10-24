@@ -80,7 +80,7 @@ def search(req: SearchListingsRequest = Depends(), current_user: User = Depends(
 
 
 @router.get('/{id}', response_model=ListingResponse, responses={404: {"description": "Resource not found"}})
-def get(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+def get(id: int, current_user: Optional[User] = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Gets a listing by its id '''
     listing = session.query(Listing).get(id)
     if listing is None:
