@@ -1,12 +1,29 @@
 import * as React from "react";
-import { Button, Dialog, DialogTitle, Typography, Theme, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  Theme,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useHistory } from "react-router-dom";
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import { createStyles } from '@material-ui/core/styles';
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import { createStyles } from "@material-ui/core/styles";
 
-const OwnerStyle = makeStyles((theme: Theme) => createStyles({
-})); 
+const OwnerStyle = makeStyles((theme: Theme) =>
+  createStyles({
+    title: {
+      textAlign: "center",
+    },
+    listingHeader: {
+      display: "flex",
+      justifyContent: "flex-end",
+    },
+  })
+);
 
 export const OwnerHeader = ({ onDelete }: { onDelete(): void }) => {
   const history = useHistory();
@@ -20,7 +37,7 @@ export const OwnerHeader = ({ onDelete }: { onDelete(): void }) => {
     history.push("/");
   };
   return (
-    <div style={{ display: "flex", justifyContent: "flex-end" }}>
+    <div className={classes.listingHeader}>
       <Button
         onClick={onDeleteClick}
         variant="contained"
@@ -30,17 +47,22 @@ export const OwnerHeader = ({ onDelete }: { onDelete(): void }) => {
         Delete
       </Button>
       <Dialog open={confirmDelete} onClick={() => setConfirmDelete(false)}>
-        <DialogTitle style={{textAlign: "center"}}>Confirmation</DialogTitle>
+        <DialogTitle className={classes.title}>Confirmation</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-          Are you sure you want to delete this listing?
+            Are you sure you want to delete this listing?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setConfirmDelete(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={onDeleteConfirmed} color="secondary" variant="contained" autoFocus>
+          <Button
+            onClick={onDeleteConfirmed}
+            color="secondary"
+            variant="contained"
+            autoFocus
+          >
             Delete
           </Button>
         </DialogActions>

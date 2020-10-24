@@ -23,6 +23,12 @@ export type Owner = {
   name: string;
 };
 
+export type Landmark = {
+  name: string;
+  type: string;
+  distance: number;
+}
+
 export type ListingActual = {
   id: number;
   owner: Owner;
@@ -41,4 +47,8 @@ export type ListingActual = {
   auction_end: Date;
   // reserve_price: number;
   images: string[];
+  features: string[],
+  starred: boolean,
+  registered_bidder: boolean,
+  landmarks: Landmark[],
 };

@@ -47,9 +47,12 @@ export class ListingPagePresenter {
           auction_start: new Date(result.auction_start),
           auction_end: new Date(result.auction_end),
           images: createFakeListing().images,
+          landmarks: result.landmarks,
+          features: result.features,
+          starred: false,
+          registered_bidder: false,
         };
 
-        console.log(results);
         runInAction(() => {
           store.listing = results;
           store.loadingState = "loaded";

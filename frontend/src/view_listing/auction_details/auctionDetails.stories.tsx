@@ -17,6 +17,12 @@ export default {
         type: "date"
       },
       defaultValue: new Date().toString()
+    },
+    registered_bidder: {
+      control: {
+        type: "boolean"
+      },
+      defaultValue: false,
     }
   }
 } as Meta;
@@ -24,11 +30,13 @@ export default {
 const Template: Story<{
   auction_start: string;
   auction_end: string;
-}> = (props: { auction_start: string; auction_end: string }) => {
+  registered_bidder: boolean;
+}> = (props: { auction_start: string; auction_end: string, registered_bidder: boolean; }) => {
   return (
     <AuctionDetails
       auction_start={new Date(props.auction_start)}
       auction_end={new Date(props.auction_end)}
+      registered_bidder={props.registered_bidder}
       id={1}
     />
   );
