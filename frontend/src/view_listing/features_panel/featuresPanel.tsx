@@ -25,13 +25,15 @@ export const FeaturesPanel = ({ features }: { features: string }) => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        style={{paddingLeft: "0px"}}
+        style={{ paddingLeft: "0px" }}
       >
         <Typography variant="h5">Features</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <ul>
-          <li><Typography>Ensuite</Typography></li>
+          <li>
+            <Typography>Ensuite</Typography>
+          </li>
         </ul>
       </AccordionDetails>
     </Accordion>

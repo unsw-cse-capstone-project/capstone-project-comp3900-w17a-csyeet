@@ -1,10 +1,23 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
+import { Filters } from "../ui/util/types/filters";
 import { createFakeListing } from "../ui/util/fakes/listing";
 
 export class SearchStore {
   @observable
   input: string = "";
+
+  @observable
+  filters: Filters = {
+    type: "",
+    beds: 1,
+    baths: 1,
+    cars: 1,
+    features: [],
+    start_date: new Date(),
+    end_date: new Date(),
+    landmarks: [],
+  };
 
   @observable
   searchResults: ListingActual[] = [];
@@ -22,7 +35,9 @@ export class SearchPresenter {
   @action
   async search(store: SearchStore) {
     store.searchState = "loading";
+    // Parse through filters and format into a query string?
     try {
+      // Change this to add the filters
       const response = await fetch(`/listings/?location=${store.input}`);
       const content = await response.json();
       if ("detail" in content) {

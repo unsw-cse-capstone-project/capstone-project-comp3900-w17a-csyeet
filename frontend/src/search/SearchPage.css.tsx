@@ -24,5 +24,8 @@ export const SearchPageStyles = makeStyles((theme: Theme) =>
       justifyContent: "center",
       alignItems: "center",
     },
+    searchFilters: {
+      backgroundColor: "white",
+    },
   })
 );

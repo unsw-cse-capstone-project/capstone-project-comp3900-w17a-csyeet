@@ -17,5 +17,13 @@ export const SearchBarStyles = makeStyles((theme: Theme) =>
       marginLeft: theme.spacing(1),
       textTransform: "capitalize",
     },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
+    filters: {
+      display: "flex",
+      flexDirection: "column",
+    },
   })
 );
