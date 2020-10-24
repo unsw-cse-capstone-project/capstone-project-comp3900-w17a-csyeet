@@ -157,14 +157,14 @@ def unstar(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 
 
 @router.post('/{id}/delete', responses={404: {"description": "Resource not found"}})
-def delete(id: int, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Delete a listing '''
     listing = session.query(Listing).get(id)
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
 
-    if listing.owner_id != current_user.id:
+    if listing.owner_id != signed_in_user.id:
         raise HTTPException(
             status_code=401, detail="User cannot delete this listing")
 
