@@ -2,10 +2,11 @@ import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
 import { BidderRegistrationStore } from "./BidderRegistrationPresenter";
 import { BidderRegistrationWrapper } from "./main";
-import { createFakeListing } from "../ui/util/fakes/listing";
+import { createFakeListing, createFakeActualListing } from '../ui/util/fakes/listing';
+import { action } from '@storybook/addon-actions';
 
 const store = new BidderRegistrationStore();
-store.listing = createFakeListing();
+store.listing = createFakeActualListing();
 
 export default {
   title: "bidder registration/page",
@@ -44,11 +45,11 @@ export const Overview = ({
   current_bid: number;
 }) => {
   if (!store || !store.listing) {
-    store.listing = createFakeListing();
+    store.listing = createFakeActualListing();
   }
   store.listing.auction_start = new Date(auction_start);
   store.listing.auction_end = new Date(auction_end);
   store.loadingState = loadingState;
 
-  return <BidderRegistrationWrapper store={store} />;
+  return <BidderRegistrationWrapper store={store} onSubmit={action("onSubmit")} />;
 };

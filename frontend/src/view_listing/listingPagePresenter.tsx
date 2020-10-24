@@ -27,7 +27,6 @@ export class ListingPagePresenter {
         // handle error
         console.log("error " + result.detail);
       } else {
-        console.log(result)
         const results: ListingActual = {
           type: result.type,
           id: parseInt(result.id),
@@ -54,7 +53,6 @@ export class ListingPagePresenter {
           registered_bidder: false,
         };
 
-        console.log(results);
         runInAction(() => {
           store.listing = results;
           store.loadingState = "loaded";

@@ -1,16 +1,16 @@
 import { observable, makeObservable, action, runInAction } from "mobx";
 import { createFakeBid } from "../ui/util/fakes/bid";
-import { fetchListing } from "../ui/util/fakes/listing";
+import { fetchListing, createFakeActualListing, createFakeListing } from '../ui/util/fakes/listing';
 import { delay } from "../ui/util/helper";
 import { Bid } from "../ui/util/types/bid";
-import { Listing } from "../ui/util/types/listing";
+import { ListingActual } from '../ui/util/types/listing';
 
 export class AuctionPageStore {
   @observable
   loadingState?: "loading" | "loaded" | "error";
 
   @observable
-  listing?: Listing;
+  listing?: ListingActual;
 
   @observable
   bids: Bid[] = [];
@@ -29,6 +29,7 @@ export class AuctionPagePresenter {
         this.fetchListing(listing_id),
         this.fetchBids(listing_id),
       ]);
+      if (listing === undefined || bids === undefined)
       runInAction(() => {
         store.listing = listing;
         store.bids = bids;
@@ -39,8 +40,38 @@ export class AuctionPagePresenter {
     }
   }
 
-  private fetchListing(listingId: number): Promise<Listing> {
-    return delay(400).then(() => fetchListing(listingId));
+  private async fetchListing(listingId: number): Promise<ListingActual | undefined> {
+    const response = await fetch(`/listings/${listingId}`);
+    const result = await response.json();
+    if ("detail" in result) {
+      return undefined;
+    }
+    const listing: ListingActual = {
+      type: result.type,
+      id: parseInt(result.id),
+      owner: {
+        email: result.owner.email,
+        name: result.owner.name,
+      },
+      title: result.title,
+      description: result.description,
+      street: result.street,
+      suburb: result.suburb,
+      postcode: result.postcode,
+      state: result.state,
+      country: result.country,
+      num_bedrooms: parseInt(result.num_bedrooms),
+      num_bathrooms: parseInt(result.num_bathrooms),
+      num_car_spaces: parseInt(result.num_car_spaces),
+      auction_start: new Date(result.auction_start),
+      auction_end: new Date(result.auction_end),
+      images: createFakeListing().images,
+      landmarks: result.landmarks,
+      features: result.features,
+      starred: false,
+      registered_bidder: false,
+    };
+    return listing;
   }
 
   private fetchBids(listingId: number): Promise<Bid[]> {
