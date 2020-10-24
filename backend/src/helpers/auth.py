@@ -28,11 +28,12 @@ def get_current_user(token: str = Depends(cookie_security), session: Session = D
         return None
     try:
         payload = jwt.decode(token, secret_key)
+    except Exception:
+        return None
+    else:
         email = payload["sub"]
         return load_user(email, session)
-    except:
-        raise HTTPException(status_code=HTTP_403_FORBIDDEN,
-                            detail="Invalid authentication")
+
 
 
 def get_signed_in_user(current_user: Optional[User] = Depends(get_current_user)) -> User:

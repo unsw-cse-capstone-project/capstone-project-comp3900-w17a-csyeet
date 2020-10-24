@@ -66,13 +66,7 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
     # TODO: consider default sort field
     results = query.filter(*conditions).all()
 
-    responses = []
-    for listing in results:
-        starred = is_listing_starred(listing, current_user, session)
-        registered_bidder = is_user_registered_bidder(listing, current_user, session)
-        responses.append(map_listing_to_response(
-                        listing, get_highest_bid(listing.id, session), starred, registered_bidder))
-        
+    responses = [map_listing_response(listing, current_user, session) for listing in results]       
     return {'results': responses}
 
 
@@ -83,9 +77,7 @@ def get(id: int, current_user: Optional[User] = Depends(get_current_user), sessi
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
-    starred = is_listing_starred(listing, current_user, session)
-    registered_bidder = is_user_registered_bidder(listing, current_user, session)
-    return map_listing_to_response(listing, get_highest_bid(id, session), starred, registered_bidder)
+    return map_listing_response(listing, current_user, session)
 
 
 @router.get('/{id}/auction', response_model=AuctionResponse, responses={404: {"description": "Resource not found"}})
@@ -181,6 +173,14 @@ def map_listing_to_response(listing: Listing, highest_bid: Optional[int], starre
     response['starred'] = starred
     response['registered_bidder'] = registered_bidder
     return response  # type: ignore
+
+
+def map_listing_response(listing, user: Optional[User], session: Session) -> ListingResponse:
+    highest_bid = get_highest_bid(listing.id, session)
+    starred = is_listing_starred(listing, user, session)
+    registered_bidder = is_user_registered_bidder(listing, user, session)
+
+    return map_listing_to_response(listing, highest_bid, starred, registered_bidder)
 
 
 def get_field_for_feature(feature: Feature) -> str:
