@@ -9,9 +9,7 @@ def get_highest_bid(listing_id: int, session: Session) -> Optional[int]:
         .filter_by(listing_id=listing_id) \
         .order_by(Bid.bid.desc()) \
         .first()
-    if bid is None:
-        return None
-    return bid.bid
+    return bid.bid if bid is not None else None
 
 def map_bid_to_response(bid: Bid, listing: Listing) -> BidResponse:
     response = asdict(bid)
