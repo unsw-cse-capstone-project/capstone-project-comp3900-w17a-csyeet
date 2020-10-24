@@ -14,8 +14,8 @@ export const createFakeListing = (opts?: Partial<Listing>) => ({
   num_bedrooms: 5,
   num_bathrooms: 3,
   num_car_spaces: 2,
-  auction_start: new Date("October 17, 2020 11:00:00"),
-  auction_end: new Date("October 27, 2020 11:00:00"),
+  auction_start: new Date("October 30, 2020 11:00:00"),
+  auction_end: new Date("October 31, 2020 11:00:00"),
   reserve_price: 2000000,
   images: [
     "https://i2.au.reastatic.net/1000x750-format=webp/8779b210bb43515a6968f04d7c86cbddaffd81d4dd96b2640ca68379fdff8636/image.jpg",
@@ -45,8 +45,8 @@ export const createFakeActualListing = (opts?: Partial<ListingActual>) => ({
   num_bedrooms: 5,
   num_bathrooms: 3,
   num_car_spaces: 2,
-  auction_start: new Date("October 17, 2020 11:00:00"),
-  auction_end: new Date("October 27, 2020 11:00:00"),
+  auction_start: new Date("October 30, 2020 11:00:00"),
+  auction_end: new Date("October 31, 2020 11:00:00"),
   images: [
     "https://i2.au.reastatic.net/1000x750-format=webp/8779b210bb43515a6968f04d7c86cbddaffd81d4dd96b2640ca68379fdff8636/image.jpg",
     "https://i2.au.reastatic.net/1340x824-resize,extend,r=33,g=40,b=46/10784f34dc9c093688c1c137dff1aad545ad5000ebf653ca90e0793569231fe9/image.jpg",

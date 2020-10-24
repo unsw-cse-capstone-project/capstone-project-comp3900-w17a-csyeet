@@ -3,12 +3,13 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
-import { computed } from "mobx";
+import { action, computed } from "mobx";
 import { observer } from "mobx-react";
 import { InitialBidStep } from "./InitialBidStep";
 import { PaymentStep } from "./PaymentStep";
 import { bidderRegistrationStyle } from "./BidderRegistration.css";
 import { ConfirmationStep } from "./ConfirmationStep";
+import MuiAlert from '@material-ui/lab/Alert';
 import {
   Dialog,
   DialogTitle,
@@ -16,6 +17,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Snackbar,
 } from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions/transition";
 import { useHistory } from "react-router-dom";
@@ -36,9 +38,11 @@ export const BidderRegistration = observer(
   ({
     store,
     listingId,
+    onSubmit,
   }: {
     store: BidderRegistrationStore;
     listingId: number;
+    onSubmit: (afterSubmit: () => void) => void;
   }) => {
     const classes = bidderRegistrationStyle();
     const [activeStep, setActiveStep] = React.useState(0);
@@ -53,7 +57,9 @@ export const BidderRegistration = observer(
         store.ccv.length === 3 &&
         store.expiryDate.length === 4
     );
+    const canSubmit = computed(() => store.submitState !== 'submitting');
     const steps = getSteps();
+    const isError = computed(() => store.submitState === 'error');
 
     const handleNext = () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -63,7 +69,7 @@ export const BidderRegistration = observer(
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
     const handleConfirm = () => {
-      setOpenModal(true);
+      onSubmit(() => setOpenModal(true));
     };
 
     const getStepContent = (stepIndex: number) => {
@@ -84,6 +90,8 @@ export const BidderRegistration = observer(
           return !canProceedStep0.get();
         case 1:
           return !canProceedStep1.get();
+        case 2:
+          return !canSubmit.get();
         default:
           return false;
       }
@@ -150,6 +158,11 @@ export const BidderRegistration = observer(
             </Button>
           </DialogActions>
         </Dialog>
+        <Snackbar open={isError.get()} autoHideDuration={2000} onClose={action(() => store.submitState = undefined)}>
+          <MuiAlert elevation={6} severity="error">
+            Error occurred while trying to submit, please try again
+          </MuiAlert>
+        </Snackbar>
       </div>
     );
   }
