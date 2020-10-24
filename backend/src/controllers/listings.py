@@ -67,10 +67,13 @@ def search(req: SearchListingsRequest = Depends(), current_user: User = Depends(
 
     responses = []
     for r in results:
-        starred = session.query(Starred).get(
-            (r.id, current_user.id)) is not None
-        registered_bidder = session.query(Registration).get(
-            (r.id, current_user.id)) is not None
+        starred = False
+        registered_bidder = False
+        if current_user is not None:
+            starred = session.query(Starred).get(
+                (r.id, current_user.id)) is not None
+            registered_bidder = session.query(Registration).get(
+                (r.id, current_user.id)) is not None
         responses.append(map_listing_to_response(
             r, starred, registered_bidder))
     return {'results': responses}
@@ -83,10 +86,13 @@ def get(id: int, current_user: User = Depends(get_current_user), session: Sessio
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
-    starred = session.query(Starred).get(
-        (listing.id, current_user.id)) is not None
-    registered_bidder = session.query(Registration).get(
-        (listing.id, current_user.id)) is not None
+    starred = False
+    registered_bidder = False
+    if current_user is not None:
+        starred = session.query(Starred).get(
+            (listing.id, current_user.id)) is not None
+        registered_bidder = session.query(Registration).get(
+            (listing.id, current_user.id)) is not None
     return map_listing_to_response(listing, starred, registered_bidder)
 
 
@@ -105,7 +111,7 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
 
 
 @router.post('/{id}/auction/bid', response_model=BidResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
-def place_bid(id: int, req: BidRequest, current_user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+def place_bid(id: int, req: BidRequest, current_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Places a bid '''
     listing = session.query(Listing).get(id)
     if listing is None:
