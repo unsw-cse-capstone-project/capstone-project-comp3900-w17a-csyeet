@@ -32,7 +32,7 @@ def get_current_user(token: str = Depends(cookie_security), session: Session = D
     return user
 
 
-def get_signed_in_user(current_user: User = Depends(get_current_user)) -> User:
+def get_signed_in_user(current_user: Optional[User] = Depends(get_current_user)) -> User:
     try:
         if current_user is None:
             raise Exception
