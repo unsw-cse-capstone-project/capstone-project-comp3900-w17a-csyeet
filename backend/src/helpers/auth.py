@@ -28,8 +28,7 @@ def get_current_user(token: str = Depends(cookie_security), session: Session = D
         return None
     payload = jwt.decode(token, secret_key)
     email = payload["sub"]
-    user = load_user(email, session)
-    return user
+    return load_user(email, session)
 
 
 def get_signed_in_user(current_user: Optional[User] = Depends(get_current_user)) -> User:
