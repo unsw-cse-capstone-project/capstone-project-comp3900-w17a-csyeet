@@ -54,7 +54,7 @@ export const ListingPageWrapper = observer(
     }
 
     const listing = store.listing;
-
+    
     const SuburbPanelContentWrapper = createSuburbPanelContent(listing);
     const Content = () => {
       return <ListingPageBase listing={listing} SuburbPanelContent={SuburbPanelContentWrapper}/>;
@@ -64,7 +64,6 @@ export const ListingPageWrapper = observer(
       // eslint-disable-next-line react/display-name
       Header = () => <OwnerHeader onDelete={presenter.deleteListing}/>;
     }
-
     return <Container Content={Content} Header={Header}/>;
   }
 );

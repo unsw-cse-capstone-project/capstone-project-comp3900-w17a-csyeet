@@ -2,8 +2,9 @@ import * as React from "react";
 import { BidderTag } from "../../ui/base/bidder_tag/BidderTag";
 import { biddersListStyle } from "./BiddersList.css";
 import { Typography, Divider } from "@material-ui/core";
+import { observer } from 'mobx-react';
 
-export const BiddersList = ({
+export const BiddersList = observer(({
   bidders,
   currentUser,
 }: {
@@ -11,6 +12,7 @@ export const BiddersList = ({
   currentUser?: number;
 }) => {
   const classes = biddersListStyle();
+  console.log(currentUser)
   return (
     <div>
       <Typography variant="h5">Bidders</Typography>
@@ -29,4 +31,4 @@ export const BiddersList = ({
       ))}
     </div>
   );
-};
+});

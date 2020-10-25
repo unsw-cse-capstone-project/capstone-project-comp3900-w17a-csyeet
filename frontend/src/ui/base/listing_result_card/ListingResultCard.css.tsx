@@ -43,6 +43,12 @@ export const ListingResultCardStyles = makeStyles((theme: Theme) =>
       top: theme.spacing(1.5),
       right: theme.spacing(1.5),
     },
+    reserve_met: {
+      color: theme.palette.success.main,
+    },
+    reserve_not_met: {
+      color: theme.palette.success.main,
+    }
   })
 );
 

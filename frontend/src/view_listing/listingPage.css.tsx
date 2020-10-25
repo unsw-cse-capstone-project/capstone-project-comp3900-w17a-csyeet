@@ -76,7 +76,8 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
       position: "absolute",
       top: "40px",
       right: "calc(15vw + 10px)",
-      cursor: "pointer"
+      cursor: "pointer",
+      zIndex: 100000,
     },
     greyBackground: {
       margin: "20px -15vw",

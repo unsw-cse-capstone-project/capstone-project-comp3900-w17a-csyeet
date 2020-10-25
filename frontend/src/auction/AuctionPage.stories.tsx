@@ -9,6 +9,7 @@ import { BidsList } from "./bids_list/BidsList";
 import { BiddersList } from "./bidders_list/BiddersList";
 import { createFakeAddress } from "../ui/util/helper";
 import { Bid } from "../ui/util/types/bid";
+import { computed } from 'mobx';
 
 export default {
   title: "auction/auctionPage",
@@ -32,9 +33,9 @@ export default {
 let bids: Bid[] = [
   {
     bid: 500000,
-    bidder_id: 1234,
-    listing_id: 1,
-    submitted: new Date(),
+    bidder_id: 5,
+    reserve_met: true,
+    placed_at: new Date(),
   },
 ];
 
@@ -42,8 +43,8 @@ for (let i = 0; i < 3; i++) {
   bids.push({
     bid: 500000 - (i + 1) * 10000,
     bidder_id: 1230 + i,
-    listing_id: 1,
-    submitted: new Date(),
+    reserve_met: false,
+    placed_at: new Date(),
   });
 }
 
@@ -65,6 +66,7 @@ const Template: Story<{
       isAuctionClosed={
         new Date(props.auction_start).getTime() - new Date().getTime() <= 0
       }
+      shouldDisableBiddingButton={computed(() => false)}
       bidState="reserve_met"
       BidderTag={() => <BidderTag bidderNumber={1234} />}
       onPlaceBid={action("Place bid button clicked")}
