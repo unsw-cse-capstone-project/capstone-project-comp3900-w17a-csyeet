@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import or_
 from sqlalchemy.orm import Session, Query
 from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse
-from ..models import Listing, User, Starred, Bid, Registration
+from ..models import Listing, User, Starred, Bid, Registration, Landmark
 from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response
 
 router = APIRouter()
@@ -40,6 +40,7 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
     # TODO: maybe extract this helper code
     conditions = []
     if req.location:
+        # listing has an address component matching the `location` (case-insensitive)
         conditions.append(or_(
             Listing.suburb.ilike(req.location),
             Listing.street.ilike(req.location),
@@ -59,14 +60,20 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
         conditions.append(Listing.auction_start >= req.auction_start)
     if req.auction_end:
         conditions.append(Listing.auction_end <= req.auction_end)
+    if req.landmarks:
+        # listing has at least one nearby landmark for each of the specified types
+        conditions.extend(Listing.landmarks.any(Landmark.type == landmark)
+                          for landmark in req.landmarks)
     if req.features:
-        conditions.extend(
-            getattr(Listing, get_field_for_feature(feature)) == True for feature in req.features)
+        # listing has all of the specified features
+        conditions.extend(getattr(Listing, get_field_for_feature(feature)) == True
+                          for feature in req.features)
 
     # TODO: consider default sort field
     results = query.filter(*conditions).all()
 
-    responses = [map_listing_response(listing, current_user, session) for listing in results]       
+    responses = [map_listing_response(listing, current_user, session)
+                 for listing in results]
     return {'results': responses}
 
 
@@ -107,7 +114,8 @@ def place_bid(id: int, req: BidRequest, signed_in_user: User = Depends(get_signe
         raise HTTPException(
             status_code=401, detail="User is not registered to bid on this property")
 
-    highest_bid = get_highest_bid(listing.id, session) # user is registered so there's >= 1 bid
+    highest_bid = get_highest_bid(listing.id, session)
+    assert highest_bid is not None  # user is registered so there must be >= 1 bid
     if req.bid <= highest_bid:
         raise HTTPException(
             status_code=403, detail=f"Bid must be higher than the current highest bid of {highest_bid}")
@@ -193,7 +201,8 @@ def map_listing_to_response(listing: Listing, highest_bid: Optional[int], starre
 def map_listing_response(listing, current_user: Optional[User], session: Session) -> ListingResponse:
     highest_bid = get_highest_bid(listing.id, session)
     starred = is_listing_starred(listing, current_user, session)
-    registered_bidder = is_user_registered_bidder(listing, current_user, session)
+    registered_bidder = is_user_registered_bidder(
+        listing, current_user, session)
     return map_listing_to_response(listing, highest_bid, starred, registered_bidder)
 
 
