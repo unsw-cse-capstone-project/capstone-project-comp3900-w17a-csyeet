@@ -197,6 +197,7 @@ def map_listing_to_response(listing: Listing, highest_bid: Optional[int], starre
     response['highest_bid'] = highest_bid
     response['reserve_met'] = highest_bid is not None and highest_bid >= listing.reserve_price
     response['landmarks'] = listing.landmarks
+    response['image_ids'] = [image.id for image in listing.images]
     response['features'] = []
     for field, feature in field_to_feature_map.items():
         if response[field]:
