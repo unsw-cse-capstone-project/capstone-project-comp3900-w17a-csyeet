@@ -156,7 +156,7 @@ def unstar(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
     session.commit()
 
 
-@router.post('/{id}/delete', responses={404: {"description": "Resource not found"}})
+@router.delete('/{id}', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Delete a listing '''
     listing = session.query(Listing).get(id)
@@ -166,7 +166,7 @@ def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 
     if listing.owner_id != signed_in_user.id:
         raise HTTPException(
-            status_code=401, detail="User cannot delete this listing")
+            status_code=403, detail="User cannot delete this listing")
 
     session.delete(listing)
     session.commit()
