@@ -112,6 +112,8 @@ export const createFakeActualListing = (opts?: Partial<ListingActual>) => ({
   features: ['ensuite', 'bathtub'],
   starred: false,
   registered_bidder: false,
+  highest_bid: 0,
+  reserve_met: false,
   ...opts,
 });
 

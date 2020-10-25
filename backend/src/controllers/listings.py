@@ -158,8 +158,9 @@ def unstar(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
     session.commit()
 
 
-@router.post('/{id}/images', responses={404: {"description": "Resource not found"}})
+@router.post('/{id}/images', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def upload_images(id: int, files: List[UploadFile] = File(...), signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Upload images '''
     listing = session.query(Listing).get(id)
     if listing is None:
         raise HTTPException(
@@ -167,14 +168,16 @@ def upload_images(id: int, files: List[UploadFile] = File(...), signed_in_user: 
     
     if listing.owner_id != signed_in_user.id:
         raise HTTPException(
-            status_code=401, detail="User cannot upload image for this listing")
+            status_code=403, detail="User cannot upload image for this listing")
         
     images = [Image(listing_id=id, data=image.file.read(), image_type=image.content_type) for image in files]
     session.add_all(images)
     session.commit()
+    
 
 @router.get('/{listing_id}/images/{image_id}', responses={404: {"description": "Resource not found"}})
 def get_image(listing_id: int, image_id: int, session: Session = Depends(get_session)):
+    ''' Get an image '''
     listing = session.query(Listing).get(listing_id)
     if listing is None:
         raise HTTPException(
@@ -187,6 +190,21 @@ def get_image(listing_id: int, image_id: int, session: Session = Depends(get_ses
 
     return StreamingResponse(io.BytesIO(image.data), media_type=image.image_type)
 
+
+@router.delete('/{id}', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
+def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Delete a listing '''
+    listing = session.query(Listing).get(id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+
+    if listing.owner_id != signed_in_user.id:
+        raise HTTPException(
+            status_code=403, detail="User cannot delete this listing")
+
+    session.delete(listing)
+    session.commit()
 
 # TODO: move these to helpers.py or common/helpers.py or sth
 
