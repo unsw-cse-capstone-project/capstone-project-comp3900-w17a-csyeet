@@ -160,7 +160,7 @@ def unstar(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 
 @router.post('/{id}/images', responses={404: {"description": "Resource not found"}})
 def upload_images(id: int, files: List[bytes] = File(...), signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
-    listing = session.query(Image).get(listing_id)
+    listing = session.query(Image).get(id)
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
