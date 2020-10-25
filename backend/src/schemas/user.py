@@ -15,6 +15,7 @@ class LoginRequest(UserBase):
 
 
 class UserResponse(UserBase):
+    id: int
     name: str
 
     class Config:

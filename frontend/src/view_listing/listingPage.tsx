@@ -1,15 +1,13 @@
 import * as React from "react";
 import { listingPageStyle } from "./listingPage.css";
-import {
-  Grid,
-  Typography,
-  Modal,
-  Paper,
-  Badge,
-} from "@material-ui/core";
+import { Grid, Typography, Modal, Paper, Badge } from "@material-ui/core";
 import { ListingActual } from "../ui/util/types/listing";
 import { ListingFeatureIcon } from "../ui/base/listing_result_card/ListingResultCard";
-import { DriveEta, KingBed, Bathtub } from "@material-ui/icons";
+import {
+  DriveEta,
+  KingBed,
+  Bathtub,
+} from "@material-ui/icons";
 import Slider from "react-slick";
 import { FacilitiesPanel } from "./facilities_panel/facilitiesPanel";
 import { FeaturesPanel } from "./features_panel/featuresPanel";
@@ -18,8 +16,11 @@ import { SellerProfile } from "./seller_profile/sellerProfile";
 import { Map } from "./map/map";
 import { AuctionDetails } from "./auction_details/auctionDetails";
 import { AddressHeading } from "../ui/base/address_heading/AddressHeading";
+import { Star } from "../ui/base/star/Star";
+import { useStore } from '../AuthContext';
+import { observer } from 'mobx-react';
 
-export const ListingPage = (props: {
+export const ListingPage = observer((props: {
   listing: ListingActual;
   SuburbPanelContent: React.ComponentType;
 }) => {
@@ -43,10 +44,15 @@ export const ListingPage = (props: {
     type,
     title,
     description,
+    features,
+    starred,
+    registered_bidder,
+    landmarks,
   } = props.listing;
 
   const classes = listingPageStyle();
   const [open, setOpen] = React.useState(false);
+  const userStore = useStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -64,14 +70,12 @@ export const ListingPage = (props: {
         postcode={postcode}
       />
       {/* first three images */}
-      <Paper
-        elevation={0}
-        style={{
-          margin: "20px -15vw",
-          padding: "30px 15vw",
-          backgroundColor: "#f3f4f5",
-        }}
-      >
+      <Paper elevation={0} className={classes.greyBackground}>
+        {userStore?.user && 
+          <div className={classes.starContainer}>
+            <Star id={id} starred={starred} />
+          </div>
+        }
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
             <Badge
@@ -155,19 +159,21 @@ export const ListingPage = (props: {
             {description}
           </Typography>
 
-          <FeaturesPanel features={"test features"}></FeaturesPanel>
-          <FacilitiesPanel facilities={"test facilities"}></FacilitiesPanel>
+          <FeaturesPanel features={features}></FeaturesPanel>
+          <FacilitiesPanel facilities={landmarks}></FacilitiesPanel>
           <SuburbPanel
             listing={props.listing}
             Content={props.SuburbPanelContent}
           ></SuburbPanel>
         </Grid>
         {/* right column */}
-        <Grid item xs={12} md={4} >
+        <Grid item xs={12} md={4}>
           <AuctionDetails
             auction_start={auction_start}
             auction_end={auction_end}
             id={id}
+            registered_bidder={registered_bidder}
+            isUser={userStore?.user !== undefined}
           />
           <Map listing={props.listing}></Map>
           <SellerProfile seller={"Jen Xu"}></SellerProfile>
@@ -175,6 +181,4 @@ export const ListingPage = (props: {
       </Grid>
     </div>
   );
-};
-
-
+});

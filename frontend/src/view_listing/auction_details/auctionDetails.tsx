@@ -4,15 +4,20 @@ import { auctionDetailsStyle } from "./auctionDetails.css";
 import { AuctionTag } from "../../ui/base/auction_tag/AuctionTag";
 import { useHistory } from "react-router-dom";
 import { dateFormatter } from "../../ui/util/helper";
+import { AuctionActionButton } from "../../ui/base/auction_action_button/AuctionActionButton";
 
 export const AuctionDetails = ({
   auction_start,
   auction_end,
   id,
+  isUser,
+  registered_bidder,
 }: {
   auction_start: Date;
   auction_end: Date;
   id: number;
+  registered_bidder: boolean;
+  isUser: boolean;
 }) => {
   const classes = auctionDetailsStyle();
   const history = useHistory();
@@ -31,14 +36,6 @@ export const AuctionDetails = ({
             End Time: {dateFormatter.format(auction_end)}
           </Typography>
           <AuctionTag start={auction_start} end={auction_end} />
-          <Button
-            variant="outlined"
-            color="primary"
-            style={{ marginTop: "15px" }}
-            onClick={() => history.push(`/listing/${id}/register`)}
-          >
-            Register to Bid
-          </Button>
         </div>
       ) : (
         <div>
@@ -46,16 +43,9 @@ export const AuctionDetails = ({
             End Time: {dateFormatter.format(auction_end)}
           </Typography>
           <AuctionTag start={auction_start} end={auction_end} />
-          <Button
-            variant="outlined"
-            color="primary"
-            style={{ marginTop: "15px" }}
-            onClick={() => history.push(`/listing/${id}/auction`)}
-          >
-            View Auction
-          </Button>
         </div>
       )}
+      <AuctionActionButton id={id} auction_start={auction_start} registered_bidder={registered_bidder} isUser={isUser} />
     </div>
   );
 };

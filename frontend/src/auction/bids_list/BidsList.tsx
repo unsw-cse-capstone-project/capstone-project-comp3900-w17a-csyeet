@@ -35,9 +35,9 @@ export const BidsList = ({
           />
           <div className={classes.bidTime}>
             <Typography variant="body1">
-              {dateFormatter.format(bid.submitted)}
+              {dateFormatter.format(bid.placed_at)}
             </Typography>
-            {bid.bid >= reserve_price && (
+            {bid.reserve_met && (
               <Typography variant="body1" className={classes.reserveLabel}>
                 Reserve Met
               </Typography>

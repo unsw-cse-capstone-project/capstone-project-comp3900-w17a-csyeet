@@ -7,4 +7,4 @@ export default {
   component: FeaturesPanel
 } as Meta;
 
-export const Overview = () => <FeaturesPanel features={"test"} />;
+export const Overview = () => <FeaturesPanel features={['ensuite', 'bathtub']} />;

@@ -1,11 +1,13 @@
 from datetime import datetime
+from enum import auto
+from typing import List, Optional
 from pydantic import BaseModel, Field
 from pydantic.dataclasses import dataclass
 from fastapi import Query
 from fastapi_utils.enums import CamelStrEnum
-from enum import auto
-from typing import List, Optional
 from .user import UserResponse
+from .bid import BidResponse
+from .landmark import LandmarkReponse, LandmarkType
 
 
 class ListingType(CamelStrEnum):
@@ -64,8 +66,8 @@ class ListingBase(BaseModel):
     postcode: str
     state: str
     country: str
-    num_bedrooms: int = Field(..., ge=0)
-    num_bathrooms: int = Field(..., ge=0)
+    num_bedrooms: int = Field(..., ge=1)
+    num_bathrooms: int = Field(..., ge=1)
     num_car_spaces: int = Field(..., ge=0)
     auction_start: datetime
     auction_end: datetime
@@ -73,12 +75,20 @@ class ListingBase(BaseModel):
 
 
 class CreateListingRequest(ListingBase):
-    pass
+    reserve_price: int = Field(..., ge=1)
+    account_name: str
+    bsb: str
+    account_number: str
 
 
 class ListingResponse(ListingBase):
     id: str
     owner: UserResponse
+    starred: bool
+    registered_bidder: bool
+    highest_bid: Optional[int]
+    reserve_met: bool
+    landmarks: List[LandmarkReponse]
 
 
 @dataclass
@@ -92,6 +102,7 @@ class SearchListingsRequest:
     auction_start: Optional[datetime] = Query(None)
     auction_end: Optional[datetime] = Query(None)
     features: Optional[List[Feature]] = Query(None)
+    landmarks: Optional[List[LandmarkType]] = Query(None)
 
 
 class SearchListingsResponse(BaseModel):
@@ -100,3 +111,4 @@ class SearchListingsResponse(BaseModel):
 
 class AuctionResponse(BaseModel):
     bidders: List[int]
+    bids: List[BidResponse]

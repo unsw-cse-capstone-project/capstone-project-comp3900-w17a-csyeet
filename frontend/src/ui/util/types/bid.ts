@@ -1,6 +1,6 @@
 export type Bid = {
-  listing_id: number;
-  bidder_id: number;
-  bid: number;
-  submitted: Date;
+  bid: number,
+  bidder_id: number,
+  placed_at: Date,
+  reserve_met: boolean,
 };

@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { ListingStore } from "./ListingStore";
 import { Details } from "./step1/Details";
+import {Images} from "./step2/Images";
 import { Description } from "./step3/Description";
 import { AuctionDetails } from "./step4/AuctionDetails";
 import { PaymentDetails } from "./step5/PaymentDetails";
@@ -31,7 +32,7 @@ export const AddListing: React.FC<{ store: ListingStore }> = observer(
         case 0:
           return <Details store={store} />;
         case 1:
-          return <Typography>Step 2 - Images</Typography>;
+          return <Images store={store}/>;
         case 2:
           return <Description store={store} />;
         case 3:
