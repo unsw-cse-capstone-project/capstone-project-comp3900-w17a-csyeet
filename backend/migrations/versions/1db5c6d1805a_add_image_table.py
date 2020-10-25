@@ -1,8 +1,8 @@
 """add image table
 
-Revision ID: c8646de63d04
+Revision ID: 1db5c6d1805a
 Revises: dcdb80510bd0
-Create Date: 2020-10-25 12:29:33.814737
+Create Date: 2020-10-25 16:53:05.345825
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c8646de63d04'
+revision = '1db5c6d1805a'
 down_revision = 'dcdb80510bd0'
 branch_labels = None
 depends_on = None
@@ -22,6 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('listing_id', sa.Integer(), nullable=False),
     sa.Column('data', sa.LargeBinary(), nullable=False),
+    sa.Column('image_type', sa.String(), nullable=False),
     sa.ForeignKeyConstraint(['listing_id'], ['listing.id'], name=op.f('fk_image_listing_id_listing'), ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_image'))
     )

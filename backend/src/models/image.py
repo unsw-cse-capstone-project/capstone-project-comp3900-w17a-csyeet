@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, LargeBinary
+from sqlalchemy import Column, Integer, String, ForeignKey, LargeBinary
 from .base import Base
 
 
@@ -9,4 +9,5 @@ class Image(Base):
     listing_id = Column(Integer, ForeignKey('listing.id', ondelete='CASCADE'), 
                         nullable=False)
     data = Column(LargeBinary, nullable=False)
+    image_type = Column(String, nullable=False)
     

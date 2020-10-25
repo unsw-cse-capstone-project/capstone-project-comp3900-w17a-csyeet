@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from dataclasses import asdict
 from typing import Optional, List
 import io
-from fastapi import APIRouter, Depends, HTTPException, File
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy import or_
 from sqlalchemy.orm import Session, Query
 from starlette.responses import StreamingResponse
@@ -159,8 +159,8 @@ def unstar(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 
 
 @router.post('/{id}/images', responses={404: {"description": "Resource not found"}})
-def upload_images(id: int, files: List[bytes] = File(...), signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
-    listing = session.query(Image).get(id)
+def upload_images(id: int, files: List[UploadFile] = File(...), signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    listing = session.query(Listing).get(id)
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
@@ -169,13 +169,13 @@ def upload_images(id: int, files: List[bytes] = File(...), signed_in_user: User 
         raise HTTPException(
             status_code=401, detail="User cannot upload image for this listing")
         
-    images = [Image(listing_id=id, data=image) for image in files]
+    images = [Image(listing_id=id, data=image.file.read(), image_type=image.content_type) for image in files]
     session.add_all(images)
     session.commit()
 
 @router.get('/{listing_id}/images/{image_id}', responses={404: {"description": "Resource not found"}})
 def get_image(listing_id: int, image_id: int, session: Session = Depends(get_session)):
-    listing = session.query(Image).get(listing_id)
+    listing = session.query(Listing).get(listing_id)
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
@@ -185,7 +185,7 @@ def get_image(listing_id: int, image_id: int, session: Session = Depends(get_ses
         raise HTTPException(
             status_code=404, detail="Requested image could not be found")
 
-    return StreamingResponse(io.BytesIO(image.data), media_type='image/jpg')
+    return StreamingResponse(io.BytesIO(image.data), media_type=image.image_type)
 
 
 # TODO: move these to helpers.py or common/helpers.py or sth
