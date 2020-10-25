@@ -9,7 +9,31 @@ import { HomePageStyle } from "./HomePage.css";
 export const HomePage = () => {
   const store = new SearchStore();
   const history = useHistory();
-  const onSubmit = () => history.push("/search?query=" + store.input);
+
+  const onSubmit = () => {
+    let featuresString = "_";
+    for (let feature of store.filters.features) {
+      featuresString += feature + "_";
+    }
+    history.push(
+      "/search?query=" +
+        store.input +
+        "&type=" +
+        store.filters.type +
+        "&beds=" +
+        store.filters.beds +
+        "&baths=" +
+        store.filters.baths +
+        "&cars=" +
+        store.filters.cars +
+        "&start=" +
+        store.filters.start_date.toISOString() +
+        "&end=" +
+        store.filters.end_date.toISOString() +
+        "&features=" +
+        featuresString
+    );
+  };
   const classes = HomePageStyle();
   return (
     <div className={classes.page}>

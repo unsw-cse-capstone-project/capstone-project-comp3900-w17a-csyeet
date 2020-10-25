@@ -25,9 +25,25 @@ export class SearchStore {
   @observable
   searchState?: "loading" | "loaded" | "error";
 
-  constructor(query?: string) {
+  constructor(
+    query?: string,
+    type?: string,
+    beds?: number,
+    baths?: number,
+    cars?: number,
+    start?: string,
+    end?: string,
+    features?: string[]
+  ) {
     makeObservable(this);
     this.input = query ? query : "";
+    this.filters.type = type ? type : "";
+    this.filters.beds = beds ? beds : 1;
+    this.filters.baths = baths ? baths : 1;
+    this.filters.cars = cars ? cars : 1;
+    this.filters.start_date = start ? new Date(start) : new Date();
+    this.filters.end_date = end ? new Date(end) : new Date();
+    this.filters.features = features ? features : [];
   }
 }
 
@@ -35,10 +51,31 @@ export class SearchPresenter {
   @action
   async search(store: SearchStore) {
     store.searchState = "loading";
-    // Parse through filters and format into a query string?
+
+    // Parse through filters and format into a query string
+    let searchQuery = `?location=${store.input}`;
+    if (store.filters.type !== "") searchQuery += `&type=${store.filters.type}`;
+    searchQuery += `&num_bedrooms=${store.filters.beds}`;
+    searchQuery += `&num_bathrooms=${store.filters.baths}`;
+    searchQuery += `&num_car_spaces=${store.filters.cars}`;
+    if (store.filters.start_date !== new Date())
+      searchQuery += `&auction_start=${store.filters.start_date.toISOString()}`;
+    if (store.filters.end_date !== new Date())
+      searchQuery += `&auction_end=${store.filters.end_date.toISOString()}`;
+
+    for (let feature of store.filters.features) {
+      searchQuery += `&features=${feature}`;
+    }
+
+    console.log("value of start date in store", store.filters.start_date);
+    console.log("value of new Date()", new Date());
+
+    console.log("in seachpresenter: search");
+    console.log(JSON.parse(JSON.stringify(store.filters)));
+    console.log("search query:", searchQuery);
     try {
       // Change this to add the filters
-      const response = await fetch(`/listings/?location=${store.input}`);
+      const response = await fetch(`/listings/${searchQuery}`);
       const content = await response.json();
       if ("detail" in content) {
         console.log("error", content.detail);
