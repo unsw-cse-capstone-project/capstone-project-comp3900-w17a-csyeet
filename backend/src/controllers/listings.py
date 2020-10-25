@@ -156,6 +156,21 @@ def unstar(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
     session.commit()
 
 
+@router.delete('/{id}', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
+def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Delete a listing '''
+    listing = session.query(Listing).get(id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+
+    if listing.owner_id != signed_in_user.id:
+        raise HTTPException(
+            status_code=403, detail="User cannot delete this listing")
+
+    session.delete(listing)
+    session.commit()
+
 # TODO: move these to helpers.py or common/helpers.py or sth
 
 
