@@ -1,11 +1,13 @@
 from datetime import datetime, timedelta
 from dataclasses import asdict
-from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Optional, List
+import io
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy import or_
 from sqlalchemy.orm import Session, Query
+from starlette.responses import StreamingResponse
 from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse
-from ..models import Listing, User, Starred, Bid, Registration, Landmark
+from ..models import Listing, User, Starred, Bid, Registration, Image
 from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response
 
 router = APIRouter()
@@ -164,6 +166,39 @@ def unstar(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
     session.commit()
 
 
+@router.post('/{id}/images', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
+def upload_images(id: int, files: List[UploadFile] = File(...), signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Upload images '''
+    listing = session.query(Listing).get(id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+    
+    if listing.owner_id != signed_in_user.id:
+        raise HTTPException(
+            status_code=403, detail="User cannot upload image for this listing")
+        
+    images = [Image(listing_id=id, data=image.file.read(), image_type=image.content_type) for image in files]
+    session.add_all(images)
+    session.commit()
+    
+
+@router.get('/{listing_id}/images/{image_id}', responses={404: {"description": "Resource not found"}})
+def get_image(listing_id: int, image_id: int, session: Session = Depends(get_session)):
+    ''' Get an image '''
+    listing = session.query(Listing).get(listing_id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+
+    image = session.query(Image).get(image_id)
+    if image is None:
+        raise HTTPException(
+            status_code=404, detail="Requested image could not be found")
+
+    return StreamingResponse(io.BytesIO(image.data), media_type=image.image_type)
+
+
 @router.delete('/{id}', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Delete a listing '''
@@ -188,6 +223,7 @@ def map_listing_to_response(listing: Listing, highest_bid: Optional[int], starre
     response['highest_bid'] = highest_bid
     response['reserve_met'] = highest_bid is not None and highest_bid >= listing.reserve_price
     response['landmarks'] = listing.landmarks
+    response['image_ids'] = [image.id for image in listing.images]
     response['features'] = []
     for field, feature in field_to_feature_map.items():
         if response[field]:
