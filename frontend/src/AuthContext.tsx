@@ -21,14 +21,18 @@ export default class Store {
         body: JSON.stringify({ email: email, password: password }),
       });
       const content = await response.json();
-      console.log(content);
       if ("detail" in content) {
         console.log("error", content.detail);
       } else {
         runInAction(
           () =>
-            (this.user = { name: content.name, id: 1, email: content.email })
+            (this.user = {
+              name: content.name,
+              id: content.id,
+              email: content.email,
+            })
         );
+        console.log(this.user);
       }
     } catch {
       console.log("error T-T");
@@ -48,10 +52,15 @@ export default class Store {
         }),
       });
       const content = await response.json();
-      console.log(content);
       runInAction(
-        () => (this.user = { name: content.name, id: 1, email: content.email })
+        () =>
+          (this.user = {
+            name: content.name,
+            id: content.id,
+            email: content.email,
+          })
       );
+      console.log(this.user);
     } catch {
       console.log("error T-T");
     }

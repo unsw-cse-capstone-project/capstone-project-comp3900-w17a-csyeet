@@ -4,7 +4,7 @@ import {
   createFakeActualListing,
 } from "../ui/util/fakes/listing";
 import { Listing, ListingActual } from "../ui/util/types/listing";
-import { delay } from "../ui/util/helper";
+import { delay, getListingFromResult } from "../ui/util/helper";
 export class BidderRegistrationStore {
   @observable
   initialBid: number = 0;
@@ -48,31 +48,7 @@ export class BidderRegistrationPresenter {
         runInAction(() => (store.loadingState = "error"));
         console.log("error " + result.detail);
       } else {
-        const results: ListingActual = {
-          type: result.type,
-          id: parseInt(result.id),
-          owner: {
-            email: result.owner.email,
-            name: result.owner.name,
-          },
-          title: result.title,
-          description: result.description,
-          street: result.street,
-          suburb: result.suburb,
-          postcode: result.postcode,
-          state: result.state,
-          country: result.country,
-          num_bedrooms: parseInt(result.num_bedrooms),
-          num_bathrooms: parseInt(result.num_bathrooms),
-          num_car_spaces: parseInt(result.num_car_spaces),
-          auction_start: new Date(result.auction_start),
-          auction_end: new Date(result.auction_end),
-          images: createFakeListing().images,
-          landmarks: result.landmarks,
-          features: result.features,
-          starred: false,
-          registered_bidder: false,
-        };
+        const results: ListingActual = getListingFromResult(result);
 
         runInAction(() => {
           store.listing = results;
@@ -108,7 +84,12 @@ export class BidderRegistrationPresenter {
         runInAction(() => (store.loadingState = "error"));
         console.log("error " + result.detail);
       } else {
-        runInAction(() => (store.submitState = "success"));
+        runInAction(() => {
+          store.submitState = "success";
+          if (store.listing) {
+            store.listing.auction_end = new Date(result.auction_end);
+          }
+        });
         afterSubmit();
       }
     } catch {

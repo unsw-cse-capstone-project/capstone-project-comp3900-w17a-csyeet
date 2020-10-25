@@ -51,4 +51,6 @@ export type ListingActual = {
   starred: boolean,
   registered_bidder: boolean,
   landmarks: Landmark[],
+  highest_bid: number,
+  reserve_met: boolean,
 };

@@ -1,9 +1,13 @@
 import { observable, makeObservable, action, runInAction } from "mobx";
 import { createFakeBid } from "../ui/util/fakes/bid";
-import { fetchListing, createFakeActualListing, createFakeListing } from '../ui/util/fakes/listing';
-import { delay } from "../ui/util/helper";
+import {
+  fetchListing,
+  createFakeActualListing,
+  createFakeListing,
+} from "../ui/util/fakes/listing";
+import { delay, getListingFromResult } from '../ui/util/helper';
 import { Bid } from "../ui/util/types/bid";
-import { ListingActual } from '../ui/util/types/listing';
+import { ListingActual } from "../ui/util/types/listing";
 
 export class AuctionPageStore {
   @observable
@@ -16,7 +20,7 @@ export class AuctionPageStore {
   bids: Bid[] = [];
 
   @observable
-  bidMakingStatus?: 'submitting' | 'error' | 'success';
+  bidMakingStatus?: "submitting" | "error" | "success";
 
   constructor() {
     makeObservable(this);
@@ -33,7 +37,6 @@ export class AuctionPagePresenter {
         this.fetchBids(listing_id),
       ]);
       if (listing === undefined || bids === undefined) {
-        console.log('here')
         runInAction(() => (store.loadingState = "error"));
         return;
       }
@@ -42,43 +45,21 @@ export class AuctionPagePresenter {
         store.bids = bids;
         store.loadingState = "loaded";
       });
-    } catch (e){
-      console.log(e)
+    } catch (e) {
+      console.log(e);
       runInAction(() => (store.loadingState = "error"));
     }
   }
 
-  private async fetchListing(listingId: number): Promise<ListingActual | undefined> {
+  private async fetchListing(
+    listingId: number
+  ): Promise<ListingActual | undefined> {
     const response = await fetch(`/listings/${listingId}`);
     const result = await response.json();
     if ("detail" in result) {
       return undefined;
     }
-    const listing: ListingActual = {
-      type: result.type,
-      id: parseInt(result.id),
-      owner: {
-        email: result.owner.email,
-        name: result.owner.name,
-      },
-      title: result.title,
-      description: result.description,
-      street: result.street,
-      suburb: result.suburb,
-      postcode: result.postcode,
-      state: result.state,
-      country: result.country,
-      num_bedrooms: parseInt(result.num_bedrooms),
-      num_bathrooms: parseInt(result.num_bathrooms),
-      num_car_spaces: parseInt(result.num_car_spaces),
-      auction_start: new Date(result.auction_start),
-      auction_end: new Date(result.auction_end),
-      images: createFakeListing().images,
-      landmarks: result.landmarks,
-      features: result.features,
-      starred: false,
-      registered_bidder: false,
-    };
+    const listing: ListingActual = getListingFromResult(result);
     return listing;
   }
 
@@ -93,21 +74,24 @@ export class AuctionPagePresenter {
       bidder_id: b.bidder_id,
       placed_at: new Date(b.placed_at),
       reserve_met: b.reserve_met,
-    }))
+    }));
     return bids;
   }
 
   @action
   async placeBid(store: AuctionPageStore, bid: number, onSuccess: () => void) {
-    store.bidMakingStatus = 'submitting';
+    store.bidMakingStatus = "submitting";
     try {
-      const response = await fetch(`/listings/${store.listing?.id}/auction/bid`, {
-        method: "post",
-        body: JSON.stringify({ bid: bid }),
-      });
+      const response = await fetch(
+        `/listings/${store.listing?.id}/auction/bid`,
+        {
+          method: "post",
+          body: JSON.stringify({ bid: bid }),
+        }
+      );
       const result = await response.json();
       if ("detail" in result) {
-        runInAction(() => store.bidMakingStatus = 'error');
+        runInAction(() => (store.bidMakingStatus = "error"));
         return;
       }
       if (!store.listing || store.listing === undefined) {
@@ -118,15 +102,17 @@ export class AuctionPagePresenter {
         bidder_id: result.bidder_id,
         placed_at: new Date(result.placed_at),
         reserve_met: result.reserve_met,
-      }
+      };
       runInAction(() => {
-        store.bidMakingStatus = 'success';
+        store.bidMakingStatus = "success";
         store.bids = [newBid, ...store.bids];
-        (store.listing as ListingActual).auction_end = new Date(result.auction_end);
+        (store.listing as ListingActual).auction_end = new Date(
+          result.auction_end
+        );
         onSuccess();
       });
     } catch {
-      runInAction(() => store.bidMakingStatus = 'error');
+      runInAction(() => (store.bidMakingStatus = "error"));
     }
   }
 }

@@ -32,7 +32,7 @@ export const BiddingBox = observer(
     bidState,
     BidderTag,
     isAuctionClosed = false,
-    enableBidding = true,
+    enableBidding,
     onPlaceBid,
     style,
   }: {
@@ -42,7 +42,7 @@ export const BiddingBox = observer(
     shouldDisableBiddingButton: IComputedValue<boolean>;
     BidderTag?: React.ComponentType;
     isAuctionClosed?: boolean;
-    enableBidding?: boolean;
+    enableBidding: boolean;
     onPlaceBid(price: number, onSuccess: () => void): void;
     style?: React.CSSProperties;
   }) => {

@@ -17,8 +17,10 @@ import { Map } from "./map/map";
 import { AuctionDetails } from "./auction_details/auctionDetails";
 import { AddressHeading } from "../ui/base/address_heading/AddressHeading";
 import { Star } from "../ui/base/star/Star";
+import { useStore } from '../AuthContext';
+import { observer } from 'mobx-react';
 
-export const ListingPage = (props: {
+export const ListingPage = observer((props: {
   listing: ListingActual;
   SuburbPanelContent: React.ComponentType;
 }) => {
@@ -50,6 +52,7 @@ export const ListingPage = (props: {
 
   const classes = listingPageStyle();
   const [open, setOpen] = React.useState(false);
+  const userStore = useStore();
 
   const handleOpen = () => {
     setOpen(true);
@@ -68,9 +71,11 @@ export const ListingPage = (props: {
       />
       {/* first three images */}
       <Paper elevation={0} className={classes.greyBackground}>
-        <div className={classes.starContainer}>
-          <Star id={id} starred={starred} />
-        </div>
+        {userStore?.user && 
+          <div className={classes.starContainer}>
+            <Star id={id} starred={starred} />
+          </div>
+        }
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
             <Badge
@@ -168,6 +173,7 @@ export const ListingPage = (props: {
             auction_end={auction_end}
             id={id}
             registered_bidder={registered_bidder}
+            isUser={userStore?.user !== undefined}
           />
           <Map listing={props.listing}></Map>
           <SellerProfile seller={"Jen Xu"}></SellerProfile>
@@ -175,4 +181,4 @@ export const ListingPage = (props: {
       </Grid>
     </div>
   );
-};
+});
