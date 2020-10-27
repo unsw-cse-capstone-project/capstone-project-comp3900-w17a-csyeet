@@ -6,7 +6,7 @@ from sqlalchemy import or_
 from sqlalchemy.orm import Session, Query
 from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse
 from ..models import Listing, User, Starred, Bid, Registration, Landmark
-from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response
+from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation
 
 router = APIRouter()
 
@@ -60,21 +60,33 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
         conditions.append(Listing.auction_start >= req.auction_start)
     if req.auction_end:
         conditions.append(Listing.auction_end <= req.auction_end)
-    if req.landmarks:
-        # listing has at least one nearby landmark for each of the specified types
-        conditions.extend(Listing.landmarks.any(Landmark.type == landmark)
-                          for landmark in req.landmarks)
     if req.features:
         # listing has all of the specified features
         conditions.extend(getattr(Listing, get_field_for_feature(feature)) == True
                           for feature in req.features)
+    if req.landmarks:
+        # listing has at least one nearby landmark for each of the specified types
+        conditions.extend(Listing.landmarks.any(Landmark.type == landmark)
+                          for landmark in req.landmarks)
+    if not req.include_closed_auctions:
+        # listing's auction must be open
+        now = datetime.now()
+        conditions.extend([Listing.auction_start <= now,
+                           Listing.auction_end > now])
+    if req.continuation:
+        # continue from last result
+        (listing_id,) = decode_continuation(req.continuation)
+        conditions.append(Listing.id > listing_id)
 
-    # TODO: consider default sort field
-    results = query.filter(*conditions).all()
+    results = query.filter(*conditions) \
+        .order_by(Listing.id.asc()) \
+        .limit(req.limit) \
+        .all()
 
     responses = [map_listing_response(listing, current_user, session)
                  for listing in results]
-    return {'results': responses}
+    continuation = encode_continuation(results, req.limit)
+    return {'results': responses, 'continuation': continuation}
 
 
 @router.get('/{id}', response_model=ListingResponse, responses={404: {"description": "Resource not found"}})
