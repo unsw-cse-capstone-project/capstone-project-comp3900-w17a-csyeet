@@ -77,7 +77,7 @@ const AddListingWrapper = observer(
                 <></>
               )}
             </div>
-            <ListingForm store={store} onPreview={onPreview} />
+            <ListingForm store={store} />
           </>
         )}
       </div>
