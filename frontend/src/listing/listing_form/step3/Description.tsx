@@ -1,8 +1,8 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { Typography, TextField } from "@material-ui/core";
-import { ListingStore } from "../ListingStore";
-import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
+import { ListingStore } from "../../ListingStore";
+import { TextFieldWrapper } from "../../../ui/base/textfield_wrapper/TextFieldWrapper";
 
 export const Description: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {

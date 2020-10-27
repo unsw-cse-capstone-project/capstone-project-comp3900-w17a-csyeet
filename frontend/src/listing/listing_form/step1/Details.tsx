@@ -5,9 +5,9 @@ import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
 import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
 
-import { ListingStore } from "../ListingStore";
+import { ListingStore } from "../../ListingStore";
 import { Features } from "./Features";
-import { SelectWrapper } from "../../ui/base/select_wrapper/SelectWrapper";
+import { SelectWrapper } from "../../../ui/base/select_wrapper/SelectWrapper";
 import { AddressInputs } from "./Address";
 import { DetailStyles } from "./Details.css";
 

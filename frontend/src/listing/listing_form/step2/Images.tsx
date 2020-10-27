@@ -6,7 +6,7 @@ import AddAPhotoOutlinedIcon from "@material-ui/icons/AddAPhotoOutlined";
 import EditIcon from "@material-ui/icons/Edit";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import { Button, IconButton } from "@material-ui/core";
-import { ListingStore } from "../ListingStore";
+import { ListingStore } from "../../ListingStore";
 import { ImagesStyles } from "./Images.css";
 
 export const Images: React.FC<{ store: ListingStore }> = observer(

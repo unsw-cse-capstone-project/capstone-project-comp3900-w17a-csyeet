@@ -1,8 +1,8 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { Tabs, Tab, Paper, FormGroup } from "@material-ui/core";
-import { ListingStore } from "../ListingStore";
-import { CheckboxWrapper } from "../../ui/base/checkbox_wrapper/CheckboxWrapper";
+import { ListingStore } from "../../ListingStore";
+import { CheckboxWrapper } from "../../../ui/base/checkbox_wrapper/CheckboxWrapper";
 
 export const Features: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {

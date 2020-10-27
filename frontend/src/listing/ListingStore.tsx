@@ -22,7 +22,12 @@ type Features = {
   has_pool: boolean;
   has_gym: boolean;
 };
+
+type Status = "editing" | "preview";
 export class ListingStore {
+  @observable status: Status = "editing";
+  @observable canPreview: boolean = false;
+
   @observable streetNo: string = "";
   @observable streetName: string = "";
   @observable streetType: string = "";
