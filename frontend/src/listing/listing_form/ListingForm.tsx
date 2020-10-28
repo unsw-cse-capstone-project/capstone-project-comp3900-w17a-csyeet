@@ -134,7 +134,7 @@ export const ListingForm: React.FC<{
             variant="contained"
             color="secondary"
             onClick={onPreview}
-            // disabled={!canPreview}
+            disabled={!canPreview}
           >
             Preview
           </Button>
