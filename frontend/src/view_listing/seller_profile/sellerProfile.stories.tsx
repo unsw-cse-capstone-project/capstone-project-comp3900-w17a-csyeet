@@ -14,4 +14,4 @@ export default {
   }
 } as Meta;
 
-export const Overview = () => <SellerProfile seller={"Jen Xu"} />;
+export const Overview = () => <SellerProfile id={1} name="Jeremy" email="Jeremy@example.com" />;

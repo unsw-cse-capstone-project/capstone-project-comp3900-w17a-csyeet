@@ -9,6 +9,7 @@ import {
   DialogContentText,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import MessageIcon from "@material-ui/icons/Message";
 import { useHistory } from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { createStyles } from "@material-ui/core/styles";
@@ -25,7 +26,13 @@ const OwnerStyle = makeStyles((theme: Theme) =>
   })
 );
 
-export const OwnerHeader = ({ onDelete }: { onDelete(): void }) => {
+export const OwnerHeader = ({
+  onDelete,
+  id,
+}: {
+  onDelete(): void;
+  id: number;
+}) => {
   const history = useHistory();
   const classes = OwnerStyle();
   const [confirmDelete, setConfirmDelete] = React.useState(false);
@@ -36,8 +43,20 @@ export const OwnerHeader = ({ onDelete }: { onDelete(): void }) => {
     await onDelete();
     history.push("/");
   };
+  const onMessageClick = () => {
+    history.push(`/listing/${id}/messages`);
+  }
   return (
     <div className={classes.listingHeader}>
+      <Button
+        onClick={onMessageClick}
+        variant="contained"
+        color="primary"
+        startIcon={<MessageIcon />}
+        style={{marginRight: "10px"}}
+      >
+        Messages
+      </Button>
       <Button
         onClick={onDeleteClick}
         variant="contained"

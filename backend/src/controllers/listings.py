@@ -7,8 +7,8 @@ from sqlalchemy import or_
 from sqlalchemy.orm import Session, Query
 from starlette.responses import StreamingResponse
 from ..schemas import CreateListingRequest, Feature, ListingResponse, field_to_feature_map, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse
-from ..models import Listing, User, Starred, Bid, Registration, Image
-from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response
+from ..models import Listing, User, Starred, Bid, Registration, Landmark, Image
+from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation
 
 router = APIRouter()
 
@@ -42,6 +42,7 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
     # TODO: maybe extract this helper code
     conditions = []
     if req.location:
+        # listing has an address component matching the `location` (case-insensitive)
         conditions.append(or_(
             Listing.suburb.ilike(req.location),
             Listing.street.ilike(req.location),
@@ -62,14 +63,32 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
     if req.auction_end:
         conditions.append(Listing.auction_end <= req.auction_end)
     if req.features:
-        conditions.extend(
-            getattr(Listing, get_field_for_feature(feature)) == True for feature in req.features)
+        # listing has all of the specified features
+        conditions.extend(getattr(Listing, get_field_for_feature(feature)) == True
+                          for feature in req.features)
+    if req.landmarks:
+        # listing has at least one nearby landmark for each of the specified types
+        conditions.extend(Listing.landmarks.any(Landmark.type == landmark)
+                          for landmark in req.landmarks)
+    if not req.include_closed_auctions:
+        # listing's auction must be open
+        now = datetime.now()
+        conditions.extend([Listing.auction_start <= now,
+                           Listing.auction_end > now])
+    if req.continuation:
+        # continue from last result
+        (listing_id,) = decode_continuation(req.continuation)
+        conditions.append(Listing.id > listing_id)
 
-    # TODO: consider default sort field
-    results = query.filter(*conditions).all()
+    results = query.filter(*conditions) \
+        .order_by(Listing.id.asc()) \
+        .limit(req.limit) \
+        .all()
 
-    responses = [map_listing_response(listing, current_user, session) for listing in results]       
-    return {'results': responses}
+    responses = [map_listing_response(listing, current_user, session)
+                 for listing in results]
+    continuation = encode_continuation(results, req.limit)
+    return {'results': responses, 'continuation': continuation}
 
 
 @router.get('/{id}', response_model=ListingResponse, responses={404: {"description": "Resource not found"}})
@@ -109,7 +128,8 @@ def place_bid(id: int, req: BidRequest, signed_in_user: User = Depends(get_signe
         raise HTTPException(
             status_code=401, detail="User is not registered to bid on this property")
 
-    highest_bid = get_highest_bid(listing.id, session) # user is registered so there's >= 1 bid
+    highest_bid = get_highest_bid(listing.id, session)
+    assert highest_bid is not None  # user is registered so there must be >= 1 bid
     if req.bid <= highest_bid:
         raise HTTPException(
             status_code=403, detail=f"Bid must be higher than the current highest bid of {highest_bid}")
@@ -229,7 +249,8 @@ def map_listing_to_response(listing: Listing, highest_bid: Optional[int], starre
 def map_listing_response(listing, current_user: Optional[User], session: Session) -> ListingResponse:
     highest_bid = get_highest_bid(listing.id, session)
     starred = is_listing_starred(listing, current_user, session)
-    registered_bidder = is_user_registered_bidder(listing, current_user, session)
+    registered_bidder = is_user_registered_bidder(
+        listing, current_user, session)
     return map_listing_to_response(listing, highest_bid, starred, registered_bidder)
 
 
