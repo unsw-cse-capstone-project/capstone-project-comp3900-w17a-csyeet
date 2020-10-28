@@ -12,5 +12,5 @@ export default {
 const store = new SearchStore();
 const presenter = new SearchPresenter();
 export const Overview = () => (
-  <SearchBar store={store} onSubmit={() => action(store.input)()} />
+  <SearchBar store={store} />
 );

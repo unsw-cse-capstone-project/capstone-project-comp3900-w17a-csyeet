@@ -18,11 +18,10 @@ export const SearchBarStyles = makeStyles((theme: Theme) =>
       textTransform: "capitalize",
     },
     formControl: {
-      margin: theme.spacing(3, 1, 1, 1),
+      margin: theme.spacing(1, 1),
       minWidth: 120,
     },
     selectControl: {
-      margin: theme.spacing(3, 1, 1, 1),
       minWidth: "47%",
     },
     filterDropdown: {
@@ -31,6 +30,8 @@ export const SearchBarStyles = makeStyles((theme: Theme) =>
     },
     filters: {
       width: "100%",
+      alignItems: "center",
+      flexWrap: "wrap",
       justifyContent: "space-between",
     },
   })

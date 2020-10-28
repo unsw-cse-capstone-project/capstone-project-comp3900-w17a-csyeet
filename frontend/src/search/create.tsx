@@ -4,7 +4,6 @@ import { SearchStore, SearchPresenter } from "./SearchPresenter";
 import { SearchResultsList } from "./search_results_list/SearchResultsList";
 import * as React from "react";
 import { SearchPage } from "./SearchPage";
-import { Filters } from "../ui/util/types/filters";
 
 export const createSearchPage = (
   query?: string,
@@ -31,13 +30,10 @@ export const createSearchPage = (
   if (query) {
     presenter.search(store);
   }
-
-  const onSubmit = () => {
-    presenter.search(store);
-  };
+  
 
   const SearchBarWrapper = observer(() => (
-    <SearchBar store={store} onSubmit={onSubmit} />
+    <SearchBar store={store}/>
   ));
 
   const SearchResult = observer(() => <SearchResultsList store={store} />);

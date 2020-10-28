@@ -21,7 +21,6 @@ export default class Store {
         body: JSON.stringify({ email: email, password: password }),
       });
       const content = await response.json();
-      console.log(content);
       if ("detail" in content) {
         console.log("error", content.detail);
       } else {

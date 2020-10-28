@@ -5,7 +5,6 @@ import {
   InputLabel,
   Select,
   TextField,
-  Typography,
   FormControl,
 } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
@@ -17,38 +16,62 @@ import { observer } from "mobx-react";
 import { Autocomplete } from "@material-ui/lab";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { Link } from "react-router-dom";
+import {
+  DateRangePicker,
+  DateRangeDelimiter,
+  DateRange,
+  LocalizationProvider,
+} from "@material-ui/pickers";
+import { toCamelCase, toSentenceCase } from "../../util/helper";
+import classNames from "classnames";
+import { useHistory } from "react-router-dom";
 
-export const SearchBar = observer(
-  ({ store, onSubmit }: { store: SearchStore; onSubmit(): void }) => {
-    const classes = SearchBarStyles();
-    const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      onSubmit();
-    };
-    return (
+export const SearchBar = observer(({ store }: { store: SearchStore }) => {
+  const classes = SearchBarStyles();
+  const history = useHistory();
+  const onSubmit = () => {
+    const {
+      input,
+      filters: { type, beds, baths, cars, start_date, end_date, features },
+    } = store;
+    let featuresString = features ? features.join("_") : "";
+
+    let searchQuery = input ? `query=${input}` : "";
+    searchQuery += type ? `&type=${type}` : "";
+    searchQuery += beds ? `&beds=${beds}` : "";
+    searchQuery += baths ? `&baths=${baths}` : "";
+    searchQuery += cars ? `&cars=${cars}` : "";
+    searchQuery += start_date ? `&start=${start_date.toISOString()}` : "";
+    searchQuery += end_date ? `&end=${end_date.toISOString()}` : "";
+    searchQuery += featuresString !== "" ? "&features=" + featuresString : "";
+
+    history.push("/search?" + searchQuery);
+  };
+  const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onSubmit();
+  };
+  return (
+    <div>
+      <form onSubmit={onFormSubmit} className={classes.form}>
+        <SearchInputWrapper store={store} />
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.formButton}
+          disabled={store.input === ""}
+        >
+          Search
+        </Button>
+      </form>
       <div>
-        <form onSubmit={onFormSubmit} className={classes.form}>
-          <SearchInputWrapper store={store} />
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            className={classes.formButton}
-            disabled={store.input === ""}
-          >
-            Search
-          </Button>
-        </form>
-        <div>
-          <SearchFilterWrapper store={store} />
-        </div>
+        <SearchFilterWrapper store={store} />
       </div>
-    );
-  }
-);
+    </div>
+  );
+});
 
 const SearchInputWrapper = ({ store }: { store: SearchStore }) => {
   const [value, setValue] = React.useState(store.input);
@@ -83,88 +106,52 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
   const [bedsFilter, setBedFilter] = React.useState(store.filters.beds);
   const [bathsFilter, setBathsFilter] = React.useState(store.filters.baths);
   const [carFilter, setCarFilter] = React.useState(store.filters.cars);
-  const [startDateValue, setStartDateFilter] = React.useState<Date | null>(
-    store.filters.start_date
-  );
-  const [endDateValue, setEndDateFilter] = React.useState<Date | null>(
-    store.filters.end_date
-  );
-
   const [featureFilters, setFeatureFilter] = React.useState(
-    store.filters.features
+    (store.filters.features || []).map((f) => {
+      return toSentenceCase(f);
+    })
   );
 
   const classes = SearchBarStyles();
 
-  const onTypeChange = action(
-    (event: React.ChangeEvent<{ value: unknown }>) => {
-      // Set values for filters in the store
-      console.log(event.target.value);
-      setTypeFilter(event.target.value as string);
-      (store as any).filters.type = event.target.value;
-      console.log(store.filters.type);
-      console.log("typeFilter:" + typeFilter);
-    }
-  );
+  const onTypeChange = action((event: React.ChangeEvent<HTMLInputElement>) => {
+    setTypeFilter(event.target.value as string);
+    store.filters.type =
+      event.target.value === "" ? undefined : event.target.value;
+  });
 
   const onBedChange = action((event: React.ChangeEvent<{ value: unknown }>) => {
-    // Set values for filters in the store
-    console.log(event.target.value);
     setBedFilter(event.target.value as number);
     (store as any).filters.beds = event.target.value;
-    console.log(store.filters.beds);
   });
 
   const onBathChange = action(
     (event: React.ChangeEvent<{ value: unknown }>) => {
-      // Set values for filters in the store
       setBathsFilter(event.target.value as number);
       (store as any).filters.baths = event.target.value;
-      console.log(store.filters.baths);
     }
   );
 
   const onCarChange = action((event: React.ChangeEvent<{ value: unknown }>) => {
-    // Set values for filters in the store
     (store as any).filters.cars = event.target.value;
     setCarFilter(store.filters.cars);
-    console.log(store.filters.cars);
-  });
-
-  const onStartDateChange = action((date: Date | null) => {
-    // Set values for filters in the store
-    setStartDateFilter(date as Date);
-    (store as any).filters.start_date = date;
-    console.log(store.filters.start_date);
-  });
-
-  const onEndDateChange = action((date: Date | null) => {
-    // Set values for filters in the store
-    setEndDateFilter(date as Date);
-    (store as any).filters.end_date = date;
-    console.log(store.filters.end_date);
   });
 
   const onFeaturesChange = action(
-    (event: React.ChangeEvent<{}>, values: { feature: string }[]) => {
-      // Set values for filters in the store
-      let tempFeatures = [];
-      (store as any).filters.features = [];
-      for (let features in values) {
-        (store as any).filters.features.push(values[features].feature);
-        tempFeatures.push(values[features].feature);
-      }
-      setFeatureFilter(tempFeatures);
+    (event: React.ChangeEvent<{}>, values: string[]) => {
+      store.filters.features = values.map((feature) =>
+        toCamelCase(feature.toLowerCase())
+      );
+      setFeatureFilter(values);
     }
   );
 
   const onLandmarksChange = action(
-    (event: React.ChangeEvent<{}>, values: { landmark: string }[]) => {
-      // Set values for filters in the store
-      (store as any).filters.landmarks = [];
-      for (let landmarks in values) {
-        (store as any).filters.landmarks.push(values[landmarks].landmark);
-      }
+    (event: React.ChangeEvent<{}>, values: string[]) => {
+      store.filters.landmarks = values.map((landmark) =>
+        toCamelCase(landmark.toLowerCase())
+      );
+      setFeatureFilter(store.filters.landmarks);
     }
   );
 
@@ -185,9 +172,20 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
           className={classes.filters}
           style={{ display: showing ? "flex" : "none" }}
         >
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="type-native-simple">Type</InputLabel>
-            <Select value={typeFilter} onChange={onTypeChange}>
+          <FormControl
+            className={classes.formControl}
+            size="small"
+            variant="outlined"
+            style={{ flex: 1 }}
+          >
+            <InputLabel id="type-label">Type</InputLabel>
+            <Select
+              value={typeFilter}
+              onChange={(event: any) => onTypeChange(event)}
+              labelId="type-label"
+              label="Type"
+            >
+              <option value={""}></option>
               <option value={"house"}>House</option>
               <option value={"apartment"}>Apartment</option>
               <option value={"townhouse"}>Townhouse</option>
@@ -195,62 +193,56 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
               <option value={"duplex"}>Duplex</option>
             </Select>
           </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="bed-native-simple">Bed</InputLabel>
-            <Select value={bedsFilter} onChange={onBedChange}>
-              <option value={1}>1 Bed</option>
-              <option value={2}>2 Beds</option>
-              <option value={3}>3 Beds</option>
-              <option value={4}>4 Beds</option>
-              <option value={5}>5 Beds</option>
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="bath-native-simple">Baths</InputLabel>
-            <Select value={bathsFilter} onChange={onBathChange}>
-              <option value={1}>1 Baths</option>
-              <option value={2}>2 Baths</option>
-              <option value={3}>3 Baths</option>
-              <option value={4}>4 Baths</option>
-              <option value={5}>5 Baths</option>
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="car-native-simple">Cars</InputLabel>
-            <Select value={carFilter} onChange={onCarChange}>
-              <option value={1}>1 Car</option>
-              <option value={2}>2 Car</option>
-              <option value={3}>3 Car</option>
-              <option value={4}>4 Car</option>
-              <option value={5}>5 Car</option>
-            </Select>
-          </FormControl>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <DatePicker
-              className={classes.formControl}
-              label="Auction Start Date"
-              value={startDateValue}
-              onChange={onStartDateChange}
-            />
-            <DatePicker
-              className={classes.formControl}
-              label="Auction End Date"
-              value={endDateValue}
-              onChange={onEndDateChange}
-            />
-          </MuiPickersUtilsProvider>
-        </div>
-        <div
-          className={classes.filters}
-          style={{ display: showing ? "flex" : "none" }}
-        >
+          <TextField
+            className={classes.formControl}
+            size="small"
+            variant="outlined"
+            style={{ flex: 1 }}
+            value={bedsFilter}
+            onChange={onBedChange}
+            type="number"
+            InputProps={{ inputProps: { min: 1 } }}
+            label="Beds"
+          />
+          <TextField
+            className={classes.formControl}
+            size="small"
+            variant="outlined"
+            style={{ flex: 1 }}
+            value={bathsFilter}
+            onChange={onBathChange}
+            type="number"
+            InputProps={{ inputProps: { min: 1 } }}
+            label="Baths"
+          />
+          <TextField
+            className={classes.formControl}
+            size="small"
+            variant="outlined"
+            style={{ flex: 1 }}
+            value={carFilter}
+            onChange={onCarChange}
+            type="number"
+            InputProps={{ inputProps: { min: 1 } }}
+            label="Cars"
+          />
+          <div className={classes.formControl} style={{ flex: 4 }}>
+            <LocalizationProvider dateAdapter={DateFnsUtils}>
+              <MinMaxDateRangePicker store={store} />
+            </LocalizationProvider>
+          </div>
+
           <Autocomplete
             multiple
+            size="small"
+            limitTags={2}
+            defaultValue={featureFilters}
+            className={classNames(classes.formControl, classes.selectControl)}
             id="features-checkboxes"
+            style={{ flex: 2 }}
             options={features}
             disableCloseOnSelect
             onChange={onFeaturesChange}
-            getOptionLabel={(option) => option.feature}
             renderOption={(option, { selected }) => (
               <React.Fragment>
                 <Checkbox
@@ -259,26 +251,22 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
                   style={{ marginRight: 8 }}
                   checked={selected}
                 />
-                {option.feature}
+                {option}
               </React.Fragment>
             )}
-            className={classes.selectControl}
             renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                label="Features"
-                placeholder="Features"
-              />
+              <TextField {...params} variant="outlined" label="Features" />
             )}
           />
           <Autocomplete
             multiple
+            size="small"
+            limitTags={2}
+            style={{ flex: 2 }}
             id="landmarks-checkboxes"
             options={landmarks}
             disableCloseOnSelect
             onChange={onLandmarksChange}
-            getOptionLabel={(option) => option.landmark}
             renderOption={(option, { selected }) => (
               <React.Fragment>
                 <Checkbox
@@ -287,17 +275,12 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
                   style={{ marginRight: 8 }}
                   checked={selected}
                 />
-                {option.landmark}
+                {option}
               </React.Fragment>
             )}
-            className={classes.selectControl}
+            className={classNames(classes.formControl, classes.selectControl)}
             renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                label="Landmarks"
-                placeholder="Landmarks"
-              />
+              <TextField {...params} variant="outlined" label="Landmarks" />
             )}
           />
         </div>
@@ -309,26 +292,55 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const features = [
-  { feature: "ensuite" },
-  { feature: "builtinWardobe" },
-  { feature: "bathtub" },
-  { feature: "furnished" },
-  { feature: "openKitchen" },
-  { feature: "separateKitchen" },
-  { feature: "islandKitchen" },
-  { feature: "gasStove" },
-  { feature: "electricStove" },
-  { feature: "inductionStove" },
-  { feature: "balcony" },
-  { feature: "oceanView" },
-  { feature: "bbq" },
-  { feature: "porch" },
-  { feature: "pool" },
-  { feature: "gym" },
+  "Ensuite",
+  "Builtin wardobe",
+  "Bathtub",
+  "Furnished",
+  "Open kitchen",
+  "Separate kitchen",
+  "Island kitchen",
+  "Gas stove",
+  "Electric stove",
+  "Induction stove",
+  "Balcony",
+  "Ocean view",
+  "Bbq",
+  "Porch",
+  "Pool",
+  "Gym",
 ];
+
 const landmarks = [
-  { landmark: "Primary School" },
-  { landmark: "Secondary School" },
-  { landmark: "Train Station" },
-  { landmark: "Park" },
+  "Primary School",
+  "Secondary School",
+  "Train Station",
+  "Park",
 ];
+
+export function MinMaxDateRangePicker(props: { store: SearchStore }) {
+  const [value, setValue] = React.useState<DateRange<Date>>([
+    props.store.filters.start_date || null,
+    props.store.filters.end_date || null,
+  ]);
+
+  const onChange = (newValue: DateRange<Date>) => {
+    props.store.filters.start_date = newValue[0] ? newValue[0] : undefined;
+    props.store.filters.end_date = newValue[1] ? newValue[1] : undefined;
+    setValue(newValue);
+  };
+
+  return (
+    <DateRangePicker
+      disablePast
+      value={value}
+      onChange={onChange}
+      renderInput={(startProps: any, endProps: any) => (
+        <React.Fragment>
+          <TextField {...startProps} size="small" helperText={undefined} />
+          <DateRangeDelimiter> to </DateRangeDelimiter>
+          <TextField {...endProps} size="small" helperText={undefined} />
+        </React.Fragment>
+      )}
+    />
+  );
+}

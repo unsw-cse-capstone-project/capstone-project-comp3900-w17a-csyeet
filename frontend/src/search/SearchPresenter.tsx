@@ -9,14 +9,14 @@ export class SearchStore {
 
   @observable
   filters: Filters = {
-    type: "",
-    beds: 1,
-    baths: 1,
-    cars: 1,
-    features: [],
-    start_date: new Date(),
-    end_date: new Date(),
-    landmarks: [],
+    type: undefined,
+    beds: undefined,
+    baths: undefined,
+    cars: undefined,
+    features: undefined,
+    start_date: undefined,
+    end_date: undefined,
+    landmarks: undefined,
   };
 
   @observable
@@ -37,13 +37,15 @@ export class SearchStore {
   ) {
     makeObservable(this);
     this.input = query ? query : "";
-    this.filters.type = type ? type : "";
-    this.filters.beds = beds ? beds : 1;
-    this.filters.baths = baths ? baths : 1;
-    this.filters.cars = cars ? cars : 1;
-    this.filters.start_date = start ? new Date(start) : new Date();
-    this.filters.end_date = end ? new Date(end) : new Date();
-    this.filters.features = features ? features : [];
+    this.filters = {
+      type,
+      beds,
+      baths,
+      cars,
+      start_date: start? new Date(start): undefined,
+      end_date: end? new Date(end): undefined,
+      features,
+    };
   }
 }
 
@@ -52,27 +54,17 @@ export class SearchPresenter {
   async search(store: SearchStore) {
     store.searchState = "loading";
 
+    const {type, beds, baths, cars, start_date, end_date, features} = store.filters;
     // Parse through filters and format into a query string
     let searchQuery = `?location=${store.input}`;
-    if (store.filters.type !== "") searchQuery += `&type=${store.filters.type}`;
-    searchQuery += `&num_bedrooms=${store.filters.beds}`;
-    searchQuery += `&num_bathrooms=${store.filters.baths}`;
-    searchQuery += `&num_car_spaces=${store.filters.cars}`;
-    if (store.filters.start_date !== new Date())
-      searchQuery += `&auction_start=${store.filters.start_date.toISOString()}`;
-    if (store.filters.end_date !== new Date())
-      searchQuery += `&auction_end=${store.filters.end_date.toISOString()}`;
-
-    for (let feature of store.filters.features) {
-      searchQuery += `&features=${feature}`;
-    }
-
-    console.log("value of start date in store", store.filters.start_date);
-    console.log("value of new Date()", new Date());
-
-    console.log("in seachpresenter: search");
-    console.log(JSON.parse(JSON.stringify(store.filters)));
-    console.log("search query:", searchQuery);
+    searchQuery += type? `&type=${type}`: "";
+    searchQuery += beds? `&num_bedrooms=${beds}`: "";
+    searchQuery += baths? `&num_bathrooms=${baths}`: "";
+    searchQuery += cars? `&num_car_spaces=${cars}`: "";
+    searchQuery += start_date? `&auction_start=${start_date.toISOString()}`: "";
+    searchQuery += end_date? `&auction_end=${end_date.toISOString()}`: "";
+    features && features.map(feature => searchQuery += `&features=${feature}`);
+    debugger;
     try {
       // Change this to add the filters
       const response = await fetch(`/listings/${searchQuery}`);
@@ -104,7 +96,6 @@ export class SearchPresenter {
           auction_end: new Date(result.auction_end),
           images: createFakeListing().images,
         }));
-        console.log(results);
         runInAction(() => {
           store.searchResults = results;
           store.searchState = "loaded";

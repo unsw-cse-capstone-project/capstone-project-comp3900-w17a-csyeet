@@ -9,50 +9,22 @@ export const useQuery = () => {
 
 export const SearchPage = () => {
   const query = useQuery().get("query");
-  const type = useQuery().get("type");
-  let beds = useQuery().get("beds");
-  let baths = useQuery().get("baths");
-  let cars = useQuery().get("cars");
-  const start = useQuery().get("start");
-  const end = useQuery().get("end");
-  const features = useQuery().get("features");
+  const type = useQuery().get("type") || undefined;
+  let beds = useQuery().get("beds") || undefined;
+  let baths = useQuery().get("baths") || undefined;
+  let cars = useQuery().get("cars") || undefined;
+  const start = useQuery().get("start") || undefined;
+  const end = useQuery().get("end") || undefined;
+  const features = useQuery().get("features") || undefined;
   let featureList = features?.split("_");
-  featureList = featureList?.filter((value) => {
-    return value !== "";
-  });
 
   if (query === null || query === "") {
     return <Redirect to="/" />;
   }
 
-  if (type === null || type === "") {
-    const Page = createSearchPage(query);
-    return <Page />;
-  }
-  if (beds === null || beds === "") {
-    return <Redirect to="/" />;
-  }
-  if (baths === null || baths === "") {
-    return <Redirect to="/" />;
-  }
-  if (cars === null || cars === "") {
-    return <Redirect to="/" />;
-  }
-  if (start === null || start === "") {
-    return <Redirect to="/" />;
-  }
-  if (end === null || end === "") {
-    return <Redirect to="/" />;
-  }
-  if (features === null || features === "") {
-    return <Redirect to="/" />;
-  }
-
-  let bedsNum = parseInt(beds);
-  let bathsNum = parseInt(baths);
-  let carsNum = parseInt(cars);
-
-  console.log(query);
+  let bedsNum = beds? parseInt(beds): undefined;
+  let bathsNum = baths? parseInt(baths): undefined;
+  let carsNum = cars? parseInt(cars): undefined;
 
   const Page = createSearchPage(
     query,
