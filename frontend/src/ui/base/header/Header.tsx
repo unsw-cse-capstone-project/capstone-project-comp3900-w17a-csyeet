@@ -4,19 +4,19 @@ import { action } from "mobx";
 import { useHistory, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Logo from "../logo/Logo";
-import SignInStore from "../sign_in/SignInStore";
-import SignUpStore from "../sign_up/SignUpStore";
-import SignIn from "../sign_in/SignIn";
-import SignUp from "../sign_up/SignUp";
+import { SignInStore } from "./sign_in/SignInStore";
+import { SignUpStore } from "./sign_up/SignUpStore";
+import { SignIn } from "./sign_in/SignIn";
+import { SignUp } from "./sign_up/SignUp";
 import { useStore } from "../../../AuthContext";
-import { Typography, useTheme } from '@material-ui/core';
+import { Typography, useTheme } from "@material-ui/core";
 
 export interface HeaderProps {
   signInStore: SignInStore;
   signUpStore: SignUpStore;
 }
 
-const Header: React.FC<HeaderProps> = observer(
+export const Header: React.FC<HeaderProps> = observer(
   ({ signInStore, signUpStore }) => {
     const history = useHistory();
     const location = useLocation();
@@ -70,6 +70,15 @@ const Header: React.FC<HeaderProps> = observer(
             <Typography variant="body1">{store.user.name}</Typography>
             <Button
               size="small"
+              color="primary"
+              variant="outlined"
+              style={{ marginLeft: "15px" }}
+              onClick={() => history.push("/messages")}
+            >
+              Message
+            </Button>
+            <Button
+              size="small"
               variant="outlined"
               color="primary"
               style={{ margin: "15px" }}
@@ -98,5 +107,3 @@ const Header: React.FC<HeaderProps> = observer(
     );
   }
 );
-
-export default Header;

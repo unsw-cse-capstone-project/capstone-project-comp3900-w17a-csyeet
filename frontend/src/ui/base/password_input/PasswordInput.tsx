@@ -1,9 +1,9 @@
 import React from "react";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
+import { TextFieldWrapper } from "../textfield_wrapper/TextFieldWrapper";
 
-const PasswordInput = ({
+export const PasswordInput = ({
   onChange,
   verify,
   value,
@@ -26,11 +26,13 @@ const PasswordInput = ({
       type={visible ? "text" : "password"}
       adornment={
         <div onClick={handleClick}>
-          {visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+          {visible ? (
+            <VisibilityIcon style={{ color: "#7b7b7b" }} />
+          ) : (
+            <VisibilityOffIcon style={{ color: "#7b7b7b" }} />
+          )}
         </div>
       }
     />
   );
 };
-
-export default PasswordInput;

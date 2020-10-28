@@ -1,7 +1,7 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
 // import { action } from "@storybook/addon-actions";
-import TextFieldWrapper, { TextFieldWrapperProps } from "./TextFieldWrapper";
+import { TextFieldWrapper, TextFieldWrapperProps } from "./TextFieldWrapper";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
 import { InputAdornment } from "@material-ui/core";
 

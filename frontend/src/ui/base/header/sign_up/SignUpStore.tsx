@@ -1,6 +1,6 @@
 import { observable, makeObservable } from "mobx";
 
-class SignUpStore {
+export class SignUpStore {
   @observable
   usernm: string = "";
 
@@ -38,5 +38,3 @@ class SignUpStore {
     makeObservable(this);
   }
 }
-
-export default SignUpStore;

@@ -1,16 +1,17 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import SignUp, { SignUpProps } from "./SignUp";
-import SignUpStore from "./SignUpStore";
+import { SignIn, SignInProps } from "./SignIn";
+import { SignInStore } from "./SignInStore";
 import { action } from "@storybook/addon-actions";
 
 export default {
-  title: "Authentication/Sign Up",
-  component: SignUp,
+  title: "Authentication/Sign in",
+  component: SignIn,
 } as Meta;
 
-let store = new SignUpStore();
-const Template: Story<SignUpProps> = (args) => <SignUp {...args} />;
+const Template: Story<SignInProps> = (args) => <SignIn {...args} />;
+
+let store = new SignInStore();
 export const Overview = Template.bind({});
 Overview.args = {
   onSubmit: action("onSubmit"),

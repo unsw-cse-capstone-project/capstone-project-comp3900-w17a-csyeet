@@ -5,13 +5,13 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
 export interface SelectWrapperProps {
-  label: string;
+  label?: string;
   field: string;
   data: Array<string>;
   value?: string;
   onChange: (value: string, field: string) => void;
 }
-const SelectWrapper= ({
+export const SelectWrapper = ({
   label,
   field,
   data,
@@ -30,8 +30,8 @@ const SelectWrapper= ({
         style={{
           minWidth: "120px",
           marginTop: "10px",
-          marginBottom: "10px",
         }}
+        fullWidth
       >
         <InputLabel id="select-outlined-label">{label}</InputLabel>
         <Select
@@ -54,5 +54,3 @@ const SelectWrapper= ({
     </div>
   );
 };
-
-export default SelectWrapper;

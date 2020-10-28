@@ -62,7 +62,7 @@ export const ListingPageWrapper = observer(
     let Header: React.ComponentType | undefined;
     if (userStore && userStore.user && userStore.user.email === listing.owner.email) {
       // eslint-disable-next-line react/display-name
-      Header = () => <OwnerHeader onDelete={presenter.deleteListing}/>;
+      Header = () => <OwnerHeader onDelete={presenter.deleteListing} id={listing.id}/>;
     }
     return <Container Content={Content} Header={Header}/>;
   }

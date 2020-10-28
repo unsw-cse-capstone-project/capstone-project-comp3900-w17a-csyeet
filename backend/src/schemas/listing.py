@@ -89,6 +89,7 @@ class ListingResponse(ListingBase):
     highest_bid: Optional[int]
     reserve_met: bool
     landmarks: List[LandmarkReponse]
+    image_ids: List[int]
 
 
 @dataclass
@@ -103,10 +104,14 @@ class SearchListingsRequest:
     auction_end: Optional[datetime] = Query(None)
     features: Optional[List[Feature]] = Query(None)
     landmarks: Optional[List[LandmarkType]] = Query(None)
+    include_closed_auctions: bool = Query(False)
+    limit: int = Query(10, ge=1)
+    continuation: Optional[str] = Query(None)
 
 
 class SearchListingsResponse(BaseModel):
     results: List[ListingResponse]
+    continuation: Optional[str]
 
 
 class AuctionResponse(BaseModel):

@@ -6,7 +6,7 @@ export interface ModalWrapperProps {
   open: boolean;
   onClose: () => void;
 }
-const ModalWrapper: React.FC<ModalWrapperProps> = ({
+export const ModalWrapper: React.FC<ModalWrapperProps> = ({
   open,
   onClose,
   children,
@@ -32,5 +32,3 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({
     </Modal>
   );
 };
-
-export default ModalWrapper;
