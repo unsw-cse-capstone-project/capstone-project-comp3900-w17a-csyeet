@@ -37,6 +37,7 @@ export const getListingFromResult = (result: any) => ({
   owner: {
     email: result.owner.email,
     name: result.owner.name,
+    id: parseInt(result.owner.id),
   },
   title: result.title,
   description: result.description,

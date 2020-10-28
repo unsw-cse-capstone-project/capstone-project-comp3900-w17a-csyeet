@@ -70,6 +70,15 @@ export const Header: React.FC<HeaderProps> = observer(
             <Typography variant="body1">{store.user.name}</Typography>
             <Button
               size="small"
+              color="primary"
+              variant="outlined"
+              style={{ marginLeft: "15px" }}
+              onClick={() => history.push("/messages")}
+            >
+              Message
+            </Button>
+            <Button
+              size="small"
               variant="outlined"
               color="primary"
               style={{ margin: "15px" }}
