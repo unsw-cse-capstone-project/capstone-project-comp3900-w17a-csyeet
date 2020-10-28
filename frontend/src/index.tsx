@@ -21,6 +21,8 @@ import SignInStore from "./ui/base/sign_in/SignInStore";
 import SignUpStore from "./ui/base/sign_up/SignUpStore";
 import SignIn from "./ui/base/sign_in/SignIn";
 import { runInAction } from "mobx";
+import { MessagesPage } from './messages/main';
+import { ListingMessagesPage } from './listing_messages/main';
 
 const ProtectedComponent = observer(
   ({
@@ -66,6 +68,16 @@ ReactDOM.render(
                     {...props}
                     signInStore={signInStore}
                     Component={BidderRegistrationPage}
+                  />
+                )}
+              />
+              <Route
+                path="/listing/:id/messages"
+                render={(props) => (
+                  <ProtectedComponent
+                    {...props}
+                    signInStore={signInStore}
+                    Component={ListingMessagesPage}
                   />
                 )}
               />
@@ -129,6 +141,16 @@ ReactDOM.render(
                     {...props}
                     signInStore={signInStore}
                     Component={AboutPage}
+                  />
+                )}
+              />
+              <Route
+                path="/messages"
+                render={(props) => (
+                  <ProtectedComponent
+                    {...props}
+                    signInStore={signInStore}
+                    Component={MessagesPage}
                   />
                 )}
               />
