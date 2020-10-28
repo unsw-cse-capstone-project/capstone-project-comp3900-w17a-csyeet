@@ -1,12 +1,13 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Typography, Grid, Card, Link } from "@material-ui/core";
+import { Typography, Card, Link } from "@material-ui/core";
 import Slider from "react-slick";
 import { ListingSummary } from "../../util/types/listing";
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
 import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
 import { AuctionTag } from "../auction_tag/AuctionTag";
+import { Star } from "../star/Star";
 import { ListingCardSmallStyles } from "./ListingCardSmall.css";
 
 export const ListingCardSmall: React.FC<{
@@ -51,7 +52,13 @@ export const ListingCardSmall: React.FC<{
           ))}
         </Slider>
       </div>
+
       <div className={classes.cardContent}>
+        {userStore?.user && (
+          <div className={classes.starContainer}>
+            <Star id={id} starred={starred} />
+          </div>
+        )}
         <Link
           onClick={() => history.push(`/listing/${id}`)}
           style={{ textDecoration: "none" }}

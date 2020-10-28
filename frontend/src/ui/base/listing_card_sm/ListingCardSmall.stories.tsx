@@ -3,6 +3,7 @@ import { Meta, Story } from "@storybook/react/types-6-0";
 import { AuthProvider } from "../../../AuthContext";
 import { ListingCardSmall } from "./ListingCardSmall";
 import { ListingSummary } from "../../util/types/listing";
+
 export default {
   title: "ui/base/listing card (small)",
   component: ListingCardSmall,
