@@ -60,7 +60,6 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
         <InputLabel
           htmlFor="outlined-adornment-card"
           style={{ background: "white" }}
-          shrink
         >
           Phone Number
         </InputLabel>
@@ -74,6 +73,7 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
           labelWidth={110}
           inputComponent={PhoneInput as any}
         />
+        {phoneError ? <>{phoneErrorMsg}</> : <></>}
       </FormControl>
       <TextFieldWrapper
         field="addressLine"
@@ -94,13 +94,15 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
           {phoneError ? <>{phoneErrorMsg}</> : <></>}
         </Grid>
         <Grid item xs>
-          <SelectWrapper
-            data={AUSstates}
-            field="state"
-            label="State"
-            value={store.state}
-            onChange={onChange}
-          />
+          <div style={{ marginTop: "10px" }}>
+            <SelectWrapper
+              data={AUSstates}
+              field="state"
+              label="State"
+              value={store.state}
+              onChange={onChange}
+            />
+          </div>
         </Grid>
       </Grid>
     </div>

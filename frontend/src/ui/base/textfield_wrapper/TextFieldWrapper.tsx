@@ -11,6 +11,7 @@ export interface TextFieldWrapperProps {
   onBlur?: () => void;
   onChange: (value: string, field: string) => void;
 }
+
 export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
   field,
   label,
@@ -40,11 +41,10 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
     if (onBlur) onBlur();
   };
   return (
-    <div>
+    <div style={{ marginTop: "20px" }}>
       <TextField
-        style={{ marginTop: "10px" }}
+        error={e || error ? true : false}
         fullWidth
-        error={e || error}
         variant="outlined"
         value={v}
         label={label}
