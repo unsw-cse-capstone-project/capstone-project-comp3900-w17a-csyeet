@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { Paper, Typography } from "@material-ui/core";
+import { Paper, Typography, Grid } from "@material-ui/core";
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
 import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
@@ -21,7 +21,9 @@ export const Details: React.FC<{
   };
   return (
     <div className={classes.container}>
+      <Typography> Property Address</Typography>
       <AddressInputs store={store} />
+      <Typography style={{ marginTop: "30px" }}> Property Details </Typography>
       <SelectWrapper
         data={propertyTypes}
         label="Property Type"
@@ -29,42 +31,50 @@ export const Details: React.FC<{
         value={store.type}
         onChange={onChange}
       />
-      <Paper className={classes.cardContainer}>
-        <div className={classes.cardLabel}>
-          <HotelOutlinedIcon style={{ marginRight: "10px" }} />
-          <Typography>Bedroom(s)</Typography>
-        </div>
-        <SelectWrapper
-          data={numbers}
-          field="nBedrooms"
-          value={store.nBedrooms}
-          onChange={onChange}
-        />
-      </Paper>
-      <Paper className={classes.cardContainer}>
-        <div className={classes.cardLabel}>
-          <BathtubOutlinedIcon style={{ marginRight: "10px" }} />
-          <Typography>Bathrooms(s)</Typography>
-        </div>
-        <SelectWrapper
-          data={numbers}
-          field="nBathrooms"
-          value={store.nBathrooms}
-          onChange={onChange}
-        />
-      </Paper>
-      <Paper className={classes.cardContainer}>
-        <div className={classes.cardLabel}>
-          <DriveEtaOutlinedIcon style={{ marginRight: "10px" }} />
-          <Typography>Garages(s)</Typography>
-        </div>
-        <SelectWrapper
-          data={numbers}
-          value={store.nGarages}
-          field="nGarages"
-          onChange={onChange}
-        />
-      </Paper>
+      <Grid container spacing={2}>
+        <Grid item xs>
+          <Paper className={classes.cardContainer}>
+            <div className={classes.cardLabel}>
+              <HotelOutlinedIcon style={{ marginRight: "10px" }} />
+              <Typography>Bedroom(s)</Typography>
+            </div>
+            <SelectWrapper
+              data={numbers}
+              field="nBedrooms"
+              value={store.nBedrooms}
+              onChange={onChange}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs>
+          <Paper className={classes.cardContainer}>
+            <div className={classes.cardLabel}>
+              <BathtubOutlinedIcon style={{ marginRight: "10px" }} />
+              <Typography>Bathrooms(s)</Typography>
+            </div>
+            <SelectWrapper
+              data={numbers}
+              field="nBathrooms"
+              value={store.nBathrooms}
+              onChange={onChange}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs>
+          <Paper className={classes.cardContainer}>
+            <div className={classes.cardLabel}>
+              <DriveEtaOutlinedIcon style={{ marginRight: "10px" }} />
+              <Typography>Garages(s)</Typography>
+            </div>
+            <SelectWrapper
+              data={numbers}
+              value={store.nGarages}
+              field="nGarages"
+              onChange={onChange}
+            />
+          </Paper>
+        </Grid>
+      </Grid>
     </div>
   );
 });

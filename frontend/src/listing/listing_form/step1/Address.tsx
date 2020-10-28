@@ -4,6 +4,7 @@ import { action } from "mobx";
 import { ListingStore } from "../../ListingStore";
 import { SelectWrapper } from "../../../ui/base/select_wrapper/SelectWrapper";
 import { TextFieldWrapper } from "../../../ui/base/textfield_wrapper/TextFieldWrapper";
+import { Grid } from "@material-ui/core";
 
 // Countries and states sourced from
 // https://github.com/stefanbinder/countries-states
@@ -47,30 +48,38 @@ export const AddressInputs: React.FC<{ store: ListingStore }> = observer(
           onChange={onChange}
           value={store.suburb}
         />
-        <TextFieldWrapper
-          field="postcode"
-          label="Postcode"
-          onChange={onChange}
-          value={store.postcode}
-        />
+        <Grid container spacing={2}>
+          <Grid item xs>
+            <TextFieldWrapper
+              field="postcode"
+              label="Postcode"
+              onChange={onChange}
+              value={store.postcode}
+            />
+          </Grid>
 
-        {/* Defaults to NSW */}
-        <SelectWrapper
-          field="state"
-          label="State"
-          data={states}
-          value={store.state}
-          onChange={onChange}
-        />
+          {/* Defaults to NSW */}
+          <Grid item xs>
+            <SelectWrapper
+              field="state"
+              label="State"
+              data={states}
+              value={store.state}
+              onChange={onChange}
+            />
+          </Grid>
 
-        {/* Defaults to Australia */}
-        <SelectWrapper
-          field="country"
-          label="Country"
-          data={countries}
-          value={store.country}
-          onChange={onChange}
-        />
+          {/* Defaults to Australia */}
+          <Grid item xs={6}>
+            <SelectWrapper
+              field="country"
+              label="Country"
+              data={countries}
+              value={store.country}
+              onChange={onChange}
+            />
+          </Grid>
+        </Grid>
       </>
     );
   }

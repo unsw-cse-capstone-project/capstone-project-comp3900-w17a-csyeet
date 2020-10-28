@@ -1,4 +1,3 @@
-import React from "react";
 import { observable } from "mobx";
 import { ImageListType } from "react-images-uploading";
 
@@ -20,16 +19,11 @@ export type Feature =
   | "has_pool"
   | "has_gym";
 
-type Status =
-  | "editing"
-  | "preview"
-  | "loading"
-  | "error"
-  | "publishing"
-  | "success";
+export type Status = "publishing" | "loading" | "error" | "success" | null;
+
 export class ListingStore {
-  @observable status: Status = "editing";
-  @observable canPreview: boolean = false;
+  @observable status: Status = null;
+  @observable canPreview: boolean = true;
   @observable id: number | null = null;
 
   @observable street: string = "";

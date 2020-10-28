@@ -1,13 +1,13 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { computed, action } from "mobx";
+import { computed } from "mobx";
 import {
   Button,
   Stepper,
   Step,
-  StepLabel,
   StepButton,
   Snackbar,
+  Typography,
 } from "@material-ui/core";
 import { ListingStore } from "../ListingStore";
 import { Details } from "./step1/Details";
@@ -19,7 +19,8 @@ import { ListingFormStyles } from "./ListingForm.css";
 import Alert from "@material-ui/lab/Alert";
 export const ListingForm: React.FC<{
   store: ListingStore;
-}> = observer(({ store }) => {
+  onPreview: () => void;
+}> = observer(({ store, onPreview }) => {
   const [activeStep, setActiveStep] = React.useState<number>(0);
   const steps = [
     "Property Details",
@@ -45,11 +46,6 @@ export const ListingForm: React.FC<{
     }
   };
 
-  const setPreview = action((preview: boolean) => {
-    store.canPreview = preview;
-  });
-
-  let completed = new Array<boolean>();
   const isStepComplete = (step: number) => {
     switch (step) {
       case 0:
@@ -81,7 +77,9 @@ export const ListingForm: React.FC<{
 
   const completedStep1 = computed(() => store.images.length > 0);
 
-  const completedStep2 = computed(() => store.descTitle !== "");
+  const completedStep2 = computed(
+    () => store.descTitle !== "" && store.desc !== ""
+  );
 
   const completedStep3 = computed(
     () =>
@@ -97,41 +95,27 @@ export const ListingForm: React.FC<{
       store.accNumber.length === 8
   );
 
-  const checkCompleted = () => {
-    // if not completed && in list, remove from list
-    if (!isStepComplete(activeStep) && completed[activeStep] == true) {
-      completed[activeStep] = false;
-      for (var i = 0; i < steps.length; ++i) {
-        if (completed[i] == false) {
-          setPreview(false);
-          return;
-        }
-      }
-    }
+  const canPreview =
+    completedStep0.get() &&
+    completedStep1.get() &&
+    completedStep2.get() &&
+    completedStep3.get() &&
+    completedStep4.get();
 
-    // if completed && not in list -> add to list
-    if (isStepComplete(activeStep) && completed[activeStep] == false) {
-      completed[activeStep] = true;
-      for (var i = 0; i < steps.length; ++i) {
-        if (completed[i] == false) return;
-      }
-      setPreview(true);
-    }
-  };
   const handleNext = () => {
-    checkCompleted();
-    activeStep === steps.length - 1
-      ? setSnack(true)
-      : setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep === steps.length - 1) {
+      if (store.canPreview == false) setSnack(true);
+      else onPreview();
+      return;
+    }
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
-    checkCompleted();
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleStep = (step: number) => () => {
-    checkCompleted();
     setActiveStep(step);
   };
 
@@ -139,23 +123,40 @@ export const ListingForm: React.FC<{
   const classes = ListingFormStyles();
   return (
     <div>
-      <Stepper alternativeLabel nonLinear activeStep={activeStep}>
-        {steps.map((label, index) => {
-          const stepProps: { completed?: boolean } = {};
-          const buttonProps: { optional?: React.ReactNode } = {};
-          return (
-            <Step key={label} {...stepProps}>
-              <StepButton
-                onClick={handleStep(index)}
-                completed={isStepComplete(index)}
-                {...buttonProps}
-              >
-                {label}
-              </StepButton>
-            </Step>
-          );
-        })}
-      </Stepper>
+      <div className={classes.header}>
+        <div className={classes.headerContent}>
+          <Typography variant="h3" align="center">
+            Add Listing
+          </Typography>
+          <Button
+            size="large"
+            style={{ margin: "5px" }}
+            variant="contained"
+            color="secondary"
+            onClick={onPreview}
+            // disabled={!canPreview}
+          >
+            Preview
+          </Button>
+        </div>
+        <Stepper alternativeLabel nonLinear activeStep={activeStep}>
+          {steps.map((label, index) => {
+            const stepProps: { completed?: boolean } = {};
+            const buttonProps: { optional?: React.ReactNode } = {};
+            return (
+              <Step key={label} {...stepProps}>
+                <StepButton
+                  onClick={handleStep(index)}
+                  completed={isStepComplete(index)}
+                  {...buttonProps}
+                >
+                  {label}
+                </StepButton>
+              </Step>
+            );
+          })}
+        </Stepper>
+      </div>
       <div className={classes.body}>
         {getContent(activeStep)}
         <div style={{ marginTop: "10px" }}>
@@ -181,9 +182,7 @@ export const ListingForm: React.FC<{
           onClose={() => setSnack(false)}
           severity={store.canPreview ? "success" : "error"}
         >
-          {store.canPreview
-            ? "All completed! Your preview is available now"
-            : "You have yet to fill out all the information!"}
+          You have yet to fill out all the information!
         </Alert>
       </Snackbar>
     </div>

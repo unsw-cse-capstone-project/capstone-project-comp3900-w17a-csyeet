@@ -31,6 +31,7 @@ export const PaymentDetails: React.FC<{ store: ListingStore }> = observer(
           format="### ###"
           mask="#"
           value={store.bsb}
+          error={BSBError}
           onValueChange={(values) => {
             onChange(values.value, "bsb");
           }}
@@ -50,6 +51,7 @@ export const PaymentDetails: React.FC<{ store: ListingStore }> = observer(
           format="#### ####"
           mask="#"
           value={store.accNumber}
+          error={AccNoError}
           onValueChange={(values) => {
             onChange(values.value, "accNumber");
           }}

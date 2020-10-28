@@ -15,7 +15,6 @@ export const Images: React.FC<{ store: ListingStore }> = observer(
     const maxNumber = 20;
     const onChange = action(
       (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
-        console.log(imageList, addUpdateIndex);
         setImages(imageList);
         store.images = imageList;
       }
