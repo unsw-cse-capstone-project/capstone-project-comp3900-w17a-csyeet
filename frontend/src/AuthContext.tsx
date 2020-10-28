@@ -1,24 +1,24 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import React from "react";
-
-export type User = {
-  name: string;
-  email: string;
-  id: number;
-};
+import { User, ListingType } from "./types";
 
 export default class Store {
   @observable user?: User;
   @observable openSignUp: boolean = false;
   @observable openSignIn: boolean = false;
+  @observable userListings: Array<ListingType> = [];
+  @observable userStarred: Array<ListingType> = [];
+  @observable userBids: Array<ListingType> = [];
 
-  // (Jenn TOOD: Hook API call)
   @action
   async signIn(email: string, password: string) {
     try {
       const response = await fetch("/login", {
         method: "post",
-        body: JSON.stringify({ email: email, password: password }),
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
       });
       const content = await response.json();
       if ("detail" in content) {
@@ -39,7 +39,6 @@ export default class Store {
     }
   }
 
-  // (Jenn TOOD: Hook API call)
   @action
   async signUp(email: string, password: string, name: string) {
     try {
@@ -66,7 +65,6 @@ export default class Store {
     }
   }
 
-  // (Jenn TOOD: Hook API call)
   @action
   async signOut() {
     try {
