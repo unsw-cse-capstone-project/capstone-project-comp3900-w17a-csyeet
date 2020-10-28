@@ -4,7 +4,7 @@ export const ListingResultCardStyles = makeStyles((theme: Theme) =>
   createStyles({
     imageContainer: {
       width: "100%",
-      height: "300px",
+      height: "00px",
       objectFit: "contain",
       backgroundColor: "rgba(0,0,0, 0.8)",
     },
@@ -13,8 +13,8 @@ export const ListingResultCardStyles = makeStyles((theme: Theme) =>
         display: "flex",
       },
     },
-    cardContent: { 
-      width: "100%", 
+    cardContent: {
+      width: "100%",
       position: "relative",
       boxSizing: "border-box",
     },
@@ -48,7 +48,7 @@ export const ListingResultCardStyles = makeStyles((theme: Theme) =>
     },
     reserve_not_met: {
       color: theme.palette.success.main,
-    }
+    },
   })
 );
 
