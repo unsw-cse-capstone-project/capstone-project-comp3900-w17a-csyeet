@@ -55,6 +55,7 @@ class Listing(Base):
     bids = relationship('Bid', back_populates='listing',
                         order_by="desc(Bid.bid)", cascade='delete', passive_deletes=True)
     landmarks = relationship('Landmark', cascade='delete', passive_deletes=True)
+    images = relationship('Image', cascade='delete', passive_deletes=True)
 
     def __repr__(self):
         return f"<Listing: {self.title}>"
