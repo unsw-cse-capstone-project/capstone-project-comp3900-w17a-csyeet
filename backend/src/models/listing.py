@@ -50,10 +50,11 @@ class Listing(Base):
     has_gym: Column = Column(Boolean, default=False, nullable=False)
 
     owner = relationship('User', back_populates='listings')
-    bidders = relationship('Registration', back_populates='listing')
+    bidders = relationship('Registration', back_populates='listing', 
+                            cascade='delete', passive_deletes=True)
     bids = relationship('Bid', back_populates='listing',
-                        order_by="desc(Bid.bid)")
-    landmarks = relationship('Landmark')
+                        order_by="desc(Bid.bid)", cascade='delete', passive_deletes=True)
+    landmarks = relationship('Landmark', cascade='delete', passive_deletes=True)
 
     def __repr__(self):
         return f"<Listing: {self.title}>"

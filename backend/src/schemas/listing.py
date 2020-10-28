@@ -7,7 +7,7 @@ from fastapi import Query
 from fastapi_utils.enums import CamelStrEnum
 from .user import UserResponse
 from .bid import BidResponse
-from .landmark import LandmarkReponse
+from .landmark import LandmarkReponse, LandmarkType
 
 
 class ListingType(CamelStrEnum):
@@ -102,10 +102,15 @@ class SearchListingsRequest:
     auction_start: Optional[datetime] = Query(None)
     auction_end: Optional[datetime] = Query(None)
     features: Optional[List[Feature]] = Query(None)
+    landmarks: Optional[List[LandmarkType]] = Query(None)
+    include_closed_auctions: bool = Query(False)
+    limit: int = Query(10, ge=1)
+    continuation: Optional[str] = Query(None)
 
 
 class SearchListingsResponse(BaseModel):
     results: List[ListingResponse]
+    continuation: Optional[str]
 
 
 class AuctionResponse(BaseModel):
