@@ -9,7 +9,7 @@ import SignUpStore from "../sign_up/SignUpStore";
 import SignIn from "../sign_in/SignIn";
 import SignUp from "../sign_up/SignUp";
 import { useStore } from "../../../AuthContext";
-import { Typography, useTheme } from '@material-ui/core';
+import { Typography, useTheme } from "@material-ui/core";
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -68,6 +68,15 @@ const Header: React.FC<HeaderProps> = observer(
             }}
           >
             <Typography variant="body1">{store.user.name}</Typography>
+            <Button
+              size="small"
+              color="primary"
+              variant="outlined"
+              style={{ marginLeft: "15px" }}
+              onClick={() => history.push("/messages")}
+            >
+              Message
+            </Button>
             <Button
               size="small"
               variant="outlined"

@@ -21,6 +21,7 @@ export type Listing = {
 export type Owner = {
   email: string;
   name: string;
+  id: number;
 };
 
 export type Landmark = {

@@ -32,6 +32,7 @@ export const createFakeActualListing = (opts?: Partial<ListingActual>) => ({
   owner: {
     email: "jeremy@example.com",
     name: "Jeremy",
+    id: 1,
   },
   title: "Immaculately presented family home",
   description: `This charming Federation style family home ensures a blissful family lifestyle of modern comfort and flexibility. Spacious interiors reveal a beautiful array of period features, complemented by a stylish renovation throughout, it is ready for you to move in and enjoy. The property is set in one of the best streets with a sun-drenched level block of 663.9sqm (approx).
