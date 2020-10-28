@@ -9,15 +9,6 @@ import { TextFieldWrapper } from "../../../ui/base/textfield_wrapper/TextFieldWr
 // https://github.com/stefanbinder/countries-states
 export const AddressInputs: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
-    const streetTypes = [
-      "Street",
-      "Road",
-      "Circuit",
-      "Boulevard",
-      "Avenue",
-      "Crescent",
-      "Rise",
-    ];
     const countryStateData = require("./country-state.json");
 
     // Get all the countries
@@ -45,23 +36,10 @@ export const AddressInputs: React.FC<{ store: ListingStore }> = observer(
     return (
       <>
         <TextFieldWrapper
-          field="streetNo"
-          label="Street Number"
+          field="street"
+          label="Street"
           onChange={onChange}
-          value={store.streetNo}
-        />
-        <TextFieldWrapper
-          field="streetName"
-          label="Street Name"
-          onChange={onChange}
-          value={store.streetName}
-        />
-        <SelectWrapper
-          field="streetType"
-          label="Street Type"
-          data={streetTypes}
-          value={store.streetType}
-          onChange={onChange}
+          value={store.street}
         />
         <TextFieldWrapper
           field="suburb"

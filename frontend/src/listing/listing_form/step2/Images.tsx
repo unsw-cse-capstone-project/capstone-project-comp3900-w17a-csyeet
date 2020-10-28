@@ -11,7 +11,7 @@ import { ImagesStyles } from "./Images.css";
 
 export const Images: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
-    const [images, setImages] = React.useState<ImageListType>([]);
+    const [images, setImages] = React.useState<ImageListType>(store.images);
     const maxNumber = 20;
     const onChange = action(
       (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {

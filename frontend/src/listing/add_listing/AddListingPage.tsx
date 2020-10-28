@@ -4,7 +4,7 @@ import { ListingStore } from "../ListingStore";
 import { observer } from "mobx-react";
 import { useHistory } from "react-router-dom";
 import { action, computed } from "mobx";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, Container, Paper } from "@material-ui/core";
 import { ListingForm } from "../listing_form/ListingForm";
 import { PreviewListing } from "../PreviewListing";
 import { AddListingStyles } from "./AddListing.css";
@@ -13,11 +13,15 @@ import { ArrowBackIos } from "@material-ui/icons";
 export const AddListingPage = () => {
   const presenter = new ListingPresenter();
   const store = new ListingStore();
+  const history = useHistory();
+  const onSuccess = () => {
+    history.push("/listing/" + store.id);
+  };
   return (
     <AddListingWrapper
       store={store}
       onPublish={() => {
-        //   presenter.publishListing();
+        presenter.publishListing(store, onSuccess);
         console.log("Publishing...");
       }}
     />
@@ -26,7 +30,6 @@ export const AddListingPage = () => {
 
 const AddListingWrapper = observer(
   ({ store, onPublish }: { store: ListingStore; onPublish: () => void }) => {
-    // const history = useHistory();
     const onStatusChange = action((status: string) => {
       store.status = "editing";
     });
@@ -35,7 +38,7 @@ const AddListingWrapper = observer(
 
     const classes = AddListingStyles();
     return (
-      <div>
+      <div className={classes.root}>
         {store.status === "preview" ? (
           <>
             <div className={classes.header}>
@@ -49,7 +52,7 @@ const AddListingWrapper = observer(
                 style={{ margin: "10px" }}
                 onClick={() => {
                   onStatusChange("publish");
-                  onPublish(); // TODO: Update props
+                  onPublish();
                 }}
               >
                 Publish
@@ -77,7 +80,9 @@ const AddListingWrapper = observer(
                 <></>
               )}
             </div>
-            <ListingForm store={store} />
+            <Paper className={classes.form}>
+              <ListingForm store={store} />
+            </Paper>
           </>
         )}
       </div>

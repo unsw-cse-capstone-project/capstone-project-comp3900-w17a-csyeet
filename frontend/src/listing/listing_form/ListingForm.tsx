@@ -49,7 +49,7 @@ export const ListingForm: React.FC<{
     store.canPreview = preview;
   });
 
-  const [completed, setCompleted] = React.useState(new Set<number>());
+  let completed = new Array<boolean>();
   const isStepComplete = (step: number) => {
     switch (step) {
       case 0:
@@ -69,9 +69,7 @@ export const ListingForm: React.FC<{
 
   const completedStep0 = computed(
     () =>
-      store.streetNo !== "" &&
-      store.streetName !== "" &&
-      store.streetType !== "" &&
+      store.street !== "" &&
       store.suburb !== "" &&
       store.state !== "" &&
       store.country !== "" &&
@@ -89,7 +87,7 @@ export const ListingForm: React.FC<{
     () =>
       store.auctionStart !== null &&
       store.auctionEnd !== null &&
-      store.reservePrice !== ""
+      store.reservePrice !== 0
   );
 
   const completedStep4 = computed(
@@ -99,30 +97,41 @@ export const ListingForm: React.FC<{
       store.accNumber.length === 8
   );
 
-  const checkCompleted = (step: number) => {
-    if (isStepComplete(activeStep) && !completed.has(activeStep)) {
-      const newCompleted = new Set(completed);
-      newCompleted.add(activeStep);
-      setCompleted(newCompleted);
+  const checkCompleted = () => {
+    // if not completed && in list, remove from list
+    if (!isStepComplete(activeStep) && completed[activeStep] == true) {
+      completed[activeStep] = false;
+      for (var i = 0; i < steps.length; ++i) {
+        if (completed[i] == false) {
+          setPreview(false);
+          return;
+        }
+      }
+    }
+
+    // if completed && not in list -> add to list
+    if (isStepComplete(activeStep) && completed[activeStep] == false) {
+      completed[activeStep] = true;
+      for (var i = 0; i < steps.length; ++i) {
+        if (completed[i] == false) return;
+      }
+      setPreview(true);
     }
   };
   const handleNext = () => {
-    checkCompleted(activeStep);
-    setPreview(completed.size === steps.length);
+    checkCompleted();
     activeStep === steps.length - 1
       ? setSnack(true)
       : setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
-    checkCompleted(activeStep);
-    setPreview(completed.size === steps.length);
+    checkCompleted();
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleStep = (step: number) => () => {
-    checkCompleted(activeStep);
-    setPreview(completed.size === steps.length);
+    checkCompleted();
     setActiveStep(step);
   };
 

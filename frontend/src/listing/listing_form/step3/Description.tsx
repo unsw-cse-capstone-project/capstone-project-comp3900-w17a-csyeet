@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import { Typography, TextField } from "@material-ui/core";
 import { ListingStore } from "../../ListingStore";
 import { TextFieldWrapper } from "../../../ui/base/textfield_wrapper/TextFieldWrapper";
+import { Features } from "./Features";
 
 export const Description: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
@@ -43,6 +44,7 @@ export const Description: React.FC<{ store: ListingStore }> = observer(
             }}
           />
         </div>
+        <Features store={store} />
       </div>
     );
   }

@@ -1,11 +1,72 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
+import { ListingStore } from "./ListingStore";
+import { getListingFromResult } from "../ui/util/helper";
+import { ListingActual } from "../ui/util/types/listing";
+
+const setResultsInStore = action((store: ListingStore, result: any) => {});
 
 export class ListingPresenter {
-  // Need function to upload Store Information (for the first time)
-  // ^ I think there's a separate endpoint for initial creation and editing
-  // I'm also not sure how the listing ID is made, I'm assuming that it's returned when the we all the endpoint to publish the listing
-  // In that case we might want to add a field in ListingStore called id or sth
-  //
+  @action
+  async fetchListing(store: ListingStore, listing_id: number) {
+    store.status = "loading";
+    try {
+      const response = await fetch(`/listings/${listing_id}`);
+      const result = await response.json();
+
+      // Error Handling
+      if ("detail" in result) {
+        runInAction(() => (store.state = "error"));
+      } else {
+        setResultsInStore(store, result);
+        runInAction(() => (store.state = "edit"));
+      }
+    } catch {
+      runInAction(() => (store.state = "error"));
+    }
+  }
+
+  @action
+  async publishListing(store: ListingStore, onSuccess: () => void) {
+    store.status = "publishing";
+    try {
+      const response = await fetch(`/listings/`, {
+        method: "post",
+        body: JSON.stringify({
+          type: store.type,
+          title: store.descTitle,
+          description: store.desc,
+          street: store.street,
+          suburb: store.suburb,
+          postcode: store.postcode,
+          state: store.state,
+          country: store.country,
+          num_bedrooms: store.nBedrooms,
+          num_bathrooms: store.nBathrooms,
+          num_car_spaces: store.nGarages,
+          auction_start: store.auctionStart?.toString(), // Not null
+          auction_end: store.auctionEnd?.toString(), // Not null
+          features: store.features,
+          reserve_price: store.reservePrice,
+          account_name: store.accName,
+          bsb: store.bsb,
+          account_number: store.accNumber,
+        }),
+      });
+      const result = await response.json();
+      if ("detail" in result) {
+        runInAction(() => (store.status = "error"));
+      } else {
+        runInAction(() => {
+          store.status = "success";
+          store.id = result.id;
+        });
+        onSuccess();
+      }
+    } catch {
+      runInAction(() => (store.state = "error"));
+    }
+  }
+
   // Need function to upload images (Annisa said we could do multiple at a time)
   // Uploading Images, I'm not sure waht type she used...
   //

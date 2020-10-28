@@ -6,7 +6,6 @@ import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
 
 import { ListingStore } from "../../ListingStore";
-import { Features } from "./Features";
 import { SelectWrapper } from "../../../ui/base/select_wrapper/SelectWrapper";
 import { AddressInputs } from "./Address";
 import { DetailStyles } from "./Details.css";
@@ -49,8 +48,8 @@ export const Details: React.FC<{
         </div>
         <SelectWrapper
           data={numbers}
-          field="nBedrooms"
-          value={store.nBedrooms}
+          field="nBathrooms"
+          value={store.nBathrooms}
           onChange={onChange}
         />
       </Paper>
@@ -66,7 +65,6 @@ export const Details: React.FC<{
           onChange={onChange}
         />
       </Paper>
-      <Features store={store} />
     </div>
   );
 });

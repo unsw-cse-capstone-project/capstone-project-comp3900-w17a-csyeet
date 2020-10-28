@@ -2,35 +2,37 @@ import React from "react";
 import { observable } from "mobx";
 import { ImageListType } from "react-images-uploading";
 
-type Features = {
-  has_ensuite: boolean;
-  has_built_in_wardrobe: boolean;
-  has_bathtub: boolean;
-  is_furnished: boolean;
+export type Feature =
+  | "has_ensuite"
+  | "has_built_in_wardrobe"
+  | "has_bathtub"
+  | "is_furnished"
+  | "has_open_kitchen"
+  | "has_separate_kitchen"
+  | "has_island_kitchen"
+  | "has_gas_stove"
+  | "has_electric_stove"
+  | "has_induction_stove"
+  | "has_balcony"
+  | "has_ocean_view"
+  | "has_bbq"
+  | "has_porch"
+  | "has_pool"
+  | "has_gym";
 
-  has_open_kitchen: boolean;
-  has_separate_kitchen: boolean;
-  has_island_kitchen: boolean;
-  has_gas_stove: boolean;
-  has_electric_stove: boolean;
-  has_induction_stove: boolean;
-
-  has_balcony: boolean;
-  has_ocean_view: boolean;
-  has_bbq: boolean;
-  has_porch: boolean;
-  has_pool: boolean;
-  has_gym: boolean;
-};
-
-type Status = "editing" | "preview";
+type Status =
+  | "editing"
+  | "preview"
+  | "loading"
+  | "error"
+  | "publishing"
+  | "success";
 export class ListingStore {
   @observable status: Status = "editing";
   @observable canPreview: boolean = false;
+  @observable id: number | null = null;
 
-  @observable streetNo: string = "";
-  @observable streetName: string = "";
-  @observable streetType: string = "";
+  @observable street: string = "";
   @observable suburb: string = "";
   @observable postcode: string = "";
   @observable state: string = "NSW";
@@ -40,30 +42,15 @@ export class ListingStore {
   @observable nBedrooms: string = "";
   @observable nBathrooms: string = "";
   @observable nGarages: string = "";
-  @observable features: Features = {
-    has_ensuite: false,
-    has_built_in_wardrobe: false,
-    has_bathtub: false,
-    is_furnished: false,
-    has_open_kitchen: false,
-    has_separate_kitchen: false,
-    has_island_kitchen: false,
-    has_gas_stove: false,
-    has_electric_stove: false,
-    has_induction_stove: false,
-    has_balcony: false,
-    has_ocean_view: false,
-    has_bbq: false,
-    has_porch: false,
-    has_pool: false,
-    has_gym: false,
-  };
+
+  @observable features: Array<Feature> = [];
+
   @observable descTitle: string = "";
   @observable desc: string = "";
 
   @observable auctionStart: Date | null = null;
   @observable auctionEnd: Date | null = null;
-  @observable reservePrice: string = "";
+  @observable reservePrice: number = 0;
 
   @observable accName: string = "";
   @observable bsb: string = "";
