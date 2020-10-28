@@ -5,6 +5,7 @@ import { Countdown } from "../ui/base/countdown/Countdown";
 import classNames from "classnames";
 import { auctionPageStyle } from "./AuctionPage.css";
 import { dateFormatter } from "../ui/util/helper";
+import { observer } from 'mobx-react';
 
 export type Address = {
   street: string;

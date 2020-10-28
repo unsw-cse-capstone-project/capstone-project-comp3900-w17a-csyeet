@@ -5,6 +5,7 @@ import { BiddingBox, BiddingBoxStore } from "./BiddingBox";
 import { action } from "@storybook/addon-actions";
 import { Typography } from "@material-ui/core";
 import { createFakeListing } from "../../ui/util/fakes/listing";
+import { computed } from 'mobx';
 
 export default {
   title: "auction/biddingBox",
@@ -57,6 +58,7 @@ const Template: Story<{
       enableBidding={props.enableBidding}
       isAuctionClosed={props.isAuctionClosed}
       bidState={props.bidState}
+      shouldDisableBiddingButton={computed(() => false)}
       BidderTag={() => <BidderTag bidderNumber={1234} />}
       onPlaceBid={action("Place bid button clicked")}
     />

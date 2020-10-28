@@ -1,7 +1,10 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
-import { delay } from "../ui/util/helper";
-import { fetchListing } from "../ui/util/fakes/listing";
-import { Listing } from "../ui/util/types/listing";
+import {
+  createFakeListing,
+  createFakeActualListing,
+} from "../ui/util/fakes/listing";
+import { Listing, ListingActual } from "../ui/util/types/listing";
+import { delay, getListingFromResult } from "../ui/util/helper";
 export class BidderRegistrationStore {
   @observable
   initialBid: number = 0;
@@ -22,7 +25,10 @@ export class BidderRegistrationStore {
   loadingState?: "loading" | "loaded" | "error";
 
   @observable
-  listing?: Listing;
+  submitState?: "submitting" | "error" | "success";
+
+  @observable
+  listing?: ListingActual;
 
   constructor() {
     makeObservable(this);
@@ -34,17 +40,60 @@ export class BidderRegistrationPresenter {
   async loadInformation(store: BidderRegistrationStore, listing_id: number) {
     store.loadingState = "loading";
     try {
-      const listing = await this.fetchListing(listing_id);
-      runInAction(() => {
-        store.listing = listing;
-        store.loadingState = "loaded";
-      });
+      const response = await fetch(`/listings/${listing_id}`);
+      const result = await response.json();
+
+      if ("detail" in result) {
+        // handle error
+        runInAction(() => (store.loadingState = "error"));
+        console.log("error " + result.detail);
+      } else {
+        const results: ListingActual = getListingFromResult(result);
+
+        runInAction(() => {
+          store.listing = results;
+          store.loadingState = "loaded";
+        });
+      }
     } catch {
       runInAction(() => (store.loadingState = "error"));
     }
   }
 
-  private fetchListing(listingId: number): Promise<Listing> {
-    return delay(400).then(() => fetchListing(listingId));
+  @action
+  async submit(store: BidderRegistrationStore, afterSubmit: () => void) {
+    store.submitState = "submitting";
+    const expiryDate = new Date(
+      parseInt(store.expiryDate.slice(2)) + 2000,
+      parseInt(store.expiryDate.slice(0, 2)) - 1,
+      0
+    );
+    try {
+      const response = await fetch(`/registrations/${store.listing?.id}`, {
+        method: "post",
+        body: JSON.stringify({
+          bid: store.initialBid,
+          card_number: store.cardNumber,
+          expiry: expiryDate.toISOString(),
+          ccv: store.ccv,
+        }),
+      });
+      const result = await response.json();
+      if ("detail" in result) {
+        // handle error
+        runInAction(() => (store.loadingState = "error"));
+        console.log("error " + result.detail);
+      } else {
+        runInAction(() => {
+          store.submitState = "success";
+          if (store.listing) {
+            store.listing.auction_end = new Date(result.auction_end);
+          }
+        });
+        afterSubmit();
+      }
+    } catch {
+      runInAction(() => (store.submitState = "error"));
+    }
   }
 }

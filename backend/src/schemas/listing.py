@@ -84,6 +84,10 @@ class CreateListingRequest(ListingBase):
 class ListingResponse(ListingBase):
     id: str
     owner: UserResponse
+    starred: bool
+    registered_bidder: bool
+    highest_bid: Optional[int]
+    reserve_met: bool
     landmarks: List[LandmarkReponse]
 
 

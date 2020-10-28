@@ -5,13 +5,13 @@ export const SuburbPanelStyle = makeStyles((theme: Theme) => ({
   accordianSummary: {
     paddingLeft: "0px",
     marginBottom: 0,
-    borderBottom: "solid 1px #eee"
   },
   accordianDetails: {
     padding: 0,
     display: "flex",
     flexDirection: "column",
-    paddingTop: theme.spacing(3)
+    paddingTop: theme.spacing(2),
+    borderTop: "solid 1px #eee",
   },
   textContainer: {
     backgroundColor: theme.palette.secondary.light,

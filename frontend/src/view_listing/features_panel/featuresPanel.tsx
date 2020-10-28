@@ -5,7 +5,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import { Typography } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-export const FeaturesPanel = ({ features }: { features: string }) => {
+export const FeaturesPanel = ({ features }: { features: string[] }) => {
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
 
   const handleChange = (panel: string) => (
@@ -29,11 +29,15 @@ export const FeaturesPanel = ({ features }: { features: string }) => {
       >
         <Typography variant="h5">Features</Typography>
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails style={{borderTop: "solid 1px #eee",}}>
         <ul>
-          <li>
-            <Typography>Ensuite</Typography>
-          </li>
+          {features.map((feature, i) => (
+            <li key={i}>
+              <Typography>
+                {feature[0].toUpperCase() + feature.slice(1)}
+              </Typography>
+            </li>
+          ))}
         </ul>
       </AccordionDetails>
     </Accordion>

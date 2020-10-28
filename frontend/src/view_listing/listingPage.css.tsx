@@ -72,5 +72,18 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
         },
       },
     },
+    starContainer: {
+      position: "absolute",
+      top: "40px",
+      right: "calc(15vw + 10px)",
+      cursor: "pointer",
+      zIndex: 100000,
+    },
+    greyBackground: {
+      margin: "20px -15vw",
+      padding: "30px 15vw",
+      backgroundColor: "#f3f4f5",
+      position: "relative",
+    }
   })
 );

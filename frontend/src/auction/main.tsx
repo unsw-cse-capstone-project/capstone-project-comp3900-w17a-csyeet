@@ -4,7 +4,7 @@ import { AuctionPageStore, AuctionPagePresenter } from "./AuctionPagePresenter";
 import { AuctionPage as AuctionPageBase } from "./AuctionPage";
 import { observer } from "mobx-react";
 import { auctionPageStyle } from "./AuctionPage.css";
-import { Button, Typography, useTheme } from "@material-ui/core";
+import { Button, Snackbar, Typography, useTheme } from "@material-ui/core";
 import { ArrowBackIos } from "@material-ui/icons";
 import { BiddingBox, BiddingBoxStore } from "./bidding_box/BiddingBox";
 import { BidderTag } from "../ui/base/bidder_tag/BidderTag";
@@ -12,6 +12,9 @@ import { useStore } from "../AuthContext";
 import { Bid } from "../ui/util/types/bid";
 import { BiddersList } from "./bidders_list/BiddersList";
 import { BidsList } from "./bids_list/BidsList";
+import { computed, action } from "mobx";
+import { isError } from "util";
+import MuiAlert from "@material-ui/lab/Alert";
 
 export const AuctionPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,7 +25,9 @@ export const AuctionPage = () => {
     <AuctionPageWrapper
       store={store}
       id={parseInt(id)}
-      onPlaceBid={(bid: Bid) => presenter.placeBid(store, bid)}
+      onPlaceBid={(bid: number, onSuccess: () => void) =>
+        presenter.placeBid(store, bid, onSuccess)
+      }
     />
   );
 };
@@ -35,29 +40,41 @@ export const AuctionPageWrapper = observer(
   }: {
     store: AuctionPageStore;
     id: number;
-    onPlaceBid(bid: Bid): void;
+    onPlaceBid(bid: number, onSuccess: () => void): void;
   }) => {
     if (!store.loadingState) {
       return null;
     }
+    const theme = useTheme();
 
     const userStore = useStore();
-    const Container = ({ Content }: { Content: React.ComponentType }) => {
-      const classes = auctionPageStyle();
-      const history = useHistory();
-      return (
-        <div className={classes.page} style={{ paddingBottom: "200px" }}>
-          <Button
-            className={classes.backButton}
-            onClick={() => history.push(`/listing/${id}`)}
-          >
-            <ArrowBackIos />
-            Back to Listing
-          </Button>
-          <Content />
-        </div>
-      );
-    };
+    const Container = observer(
+      ({ Content }: { Content: React.ComponentType }) => {
+        const classes = auctionPageStyle();
+        const history = useHistory();
+        return (
+          <div className={classes.page} style={{ paddingBottom: "200px" }}>
+            <Button
+              className={classes.backButton}
+              onClick={() => history.push(`/listing/${id}`)}
+            >
+              <ArrowBackIos />
+              Back to Listing
+            </Button>
+            <Content />
+            <Snackbar
+              open={store.bidMakingStatus === "error"}
+              autoHideDuration={2000}
+              onClose={action(() => (store.bidMakingStatus = undefined))}
+            >
+              <MuiAlert elevation={6} severity="error">
+                Error occurred while placing bid, please try again
+              </MuiAlert>
+            </Snackbar>
+          </div>
+        );
+      }
+    );
 
     if (store.loadingState === "loading") {
       const Content = () => <Typography>Loading...</Typography>;
@@ -65,7 +82,6 @@ export const AuctionPageWrapper = observer(
     }
 
     if (store.loadingState === "error" || !store.listing) {
-      const theme = useTheme();
       const Content = () => (
         <Typography
           style={{ textAlign: "center", color: theme.palette.error.main }}
@@ -82,36 +98,39 @@ export const AuctionPageWrapper = observer(
       if (!listing || !bids) {
         return null;
       }
+      console.log(listing);
       return (
         <BiddingBox
           store={biddingBoxStore}
           currentBid={bids.length !== 0 ? bids[0].bid : undefined}
+          shouldDisableBiddingButton={computed(
+            () => store.bidMakingStatus === "submitting"
+          )}
           enableBidding={
             new Date().getTime() >= listing.auction_start.getTime() &&
+            listing.registered_bidder &&
             userStore?.user !== undefined
-          } // TODO add a check
+          }
           isAuctionClosed={
             listing.auction_end.getTime() <= new Date().getTime()
           }
           bidState={
             bids.length !== 0
-              ? bids[0].bid >= listing.reserve_price
+              ? bids[0].reserve_met
                 ? "reserve_met"
                 : "reserve_not_met"
               : "current"
           }
-          BidderTag={() => <BidderTag bidderNumber={1234} />}
-          onPlaceBid={(price: number) =>
-            onPlaceBid({
-              bid: price,
-              bidder_id: userStore?.user?.id as number,
-              listing_id: id,
-              submitted: new Date(),
-            })
+          BidderTag={
+            bids.length !== 0
+              ? () => <BidderTag bidderNumber={bids[0].bidder_id} />
+              : undefined
           }
+          onPlaceBid={onPlaceBid}
         />
       );
     });
+
     const {
       street,
       postcode,
@@ -121,8 +140,15 @@ export const AuctionPageWrapper = observer(
       auction_start,
       auction_end,
       images,
-      reserve_price,
     } = store.listing;
+
+    const BiddersListWrapper = observer(() => (
+      <BiddersList
+        bidders={Array.from(new Set(bids.map((bid) => bid.bidder_id)))}
+        currentUser={userStore?.user?.id}
+      />
+    ));
+
     const Content = () => {
       return (
         <AuctionPageBase
@@ -131,15 +157,8 @@ export const AuctionPageWrapper = observer(
           auction_end={auction_end}
           mainImage={images[0]}
           BiddingBox={BiddingBoxWrapper}
-          BidsList={() => (
-            <BidsList bids={bids} reserve_price={reserve_price} />
-          )}
-          BiddersList={() => (
-            <BiddersList
-              bidders={Array.from(new Set(bids.map((bid) => bid.bidder_id)))}
-              currentUser={userStore?.user?.id as number}
-            />
-          )}
+          BidsList={() => <BidsList bids={bids} reserve_price={5000000} />}
+          BiddersList={BiddersListWrapper}
         />
       );
     };
