@@ -6,11 +6,11 @@ export const AddListingStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
-      height: "900px",
-      padding: theme.spacing(2, "15%", 0, "15%"),
+      padding: theme.spacing(2, "15%", "200px", "15%"),
       boxSizing: "border-box",
       overflow: "scroll",
       marginTop: "0px",
+
     },
     main: {
       display: "flex",
