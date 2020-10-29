@@ -9,12 +9,14 @@ export const Password = ({
   onChange,
   value,
   error,
+  onBlur,
 }: {
   field: string;
   label: string;
   onChange: (value: string, field: string) => void;
   value?: string;
   error?: boolean;
+  onBlur?: () => void;
 }) => {
   const [visible, setVisible] = React.useState(false);
   const handleClick = () => {
@@ -28,6 +30,7 @@ export const Password = ({
       label={label}
       value={value}
       onChange={onChange}
+      onBlur={onBlur ? onBlur : undefined}
       type={visible ? "text" : "password"}
       adornment={
         <div onClick={handleClick}>

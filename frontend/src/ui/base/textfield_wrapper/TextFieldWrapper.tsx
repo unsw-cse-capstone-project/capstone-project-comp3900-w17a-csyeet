@@ -39,6 +39,7 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
   );
 
   const customOnBlur = () => {
+    if (readOnly) return;
     v === "" ? setError(true) : setError(false);
     if (onBlur) onBlur();
   };

@@ -68,6 +68,7 @@ const Step0: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
         value={store.passwdVerify}
         onChange={onChange}
         error={passwdError}
+        onBlur={validatePasswd}
       />
       {passwdError ? <>{passwdErrorMsg}</> : <></>}
     </div>

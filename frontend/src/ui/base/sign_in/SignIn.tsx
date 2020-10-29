@@ -15,7 +15,7 @@ const success = (
 );
 
 export interface SignInProps {
-  onSubmit: (email: string, passwd: string) => void; // (Jenn) TODO: Update with API call
+  onSubmit: (email: string, passwd: string) => void;
   store: SignInStore;
 }
 
@@ -49,7 +49,12 @@ const SignIn = observer(({ onSubmit, store }: SignInProps) => {
               onChange={onChange}
               adornment={<AlternateEmailIcon />}
             />
-            <Password value={store.passwd} onChange={onChange} />
+            <Password
+              field="passwd"
+              label="Password"
+              value={store.passwd}
+              onChange={onChange}
+            />
             <Button
               variant="outlined"
               color="primary"
