@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     infoStyle: {
       position: "absolute",
       top: "0",
-      right: "10px",
+      right: "0",
     },
     bidPrice: {
       borderRadius: theme.spacing(10000),
@@ -89,7 +89,7 @@ export const BidPrice = ({
       >
         <Typography variant={textType}>{formattedPrice}</Typography>
       </Paper>
-      <InfoPopup data={getInfo()} className={classes.infoStyle} />
+      <InfoPopup size="small" data={getInfo()} className={classes.infoStyle} />
     </div>
   );
 };
