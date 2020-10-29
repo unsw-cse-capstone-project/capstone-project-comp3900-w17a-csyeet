@@ -6,7 +6,7 @@ import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import SignInStore from "./SignInStore";
 import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
 import ModalWrapper from "../modal_wrapper/ModalWrapper";
-import PasswordInput from "../password_input/PasswordInput";
+import { Password } from "../input/Password";
 
 const success = (
   <Typography variant="h3" align="center" style={{ margin: "35px" }}>
@@ -49,7 +49,7 @@ const SignIn = observer(({ onSubmit, store }: SignInProps) => {
               onChange={onChange}
               adornment={<AlternateEmailIcon />}
             />
-            <PasswordInput value={store.passwd} onChange={onChange} />
+            <Password value={store.passwd} onChange={onChange} />
             <Button
               variant="outlined"
               color="primary"

@@ -5,7 +5,7 @@ import { FormHelperText } from "@material-ui/core";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
-import PasswordInput from "../password_input/PasswordInput";
+import { Password } from "../input/Password";
 import SignUpStore from "./SignUpStore";
 
 const Step0: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
@@ -56,15 +56,18 @@ const Step0: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
         adornment={<AlternateEmailIcon style={{ color: "#7b7b7b" }} />}
       />
       {emailError ? <>{emailErrorMsg}</> : <></>}
-      <PasswordInput value={store.passwd} onChange={onChange} />
-      <TextFieldWrapper
-        error={passwdError}
-        value={store.passwdVerify}
-        type="password"
+      <Password
+        field="passwd"
+        label="Password"
+        value={store.passwd}
+        onChange={onChange}
+      />
+      <Password
         field="passwdVerify"
         label="Confirm Password"
+        value={store.passwdVerify}
         onChange={onChange}
-        onBlur={validatePasswd}
+        error={passwdError}
       />
       {passwdError ? <>{passwdErrorMsg}</> : <></>}
     </div>
