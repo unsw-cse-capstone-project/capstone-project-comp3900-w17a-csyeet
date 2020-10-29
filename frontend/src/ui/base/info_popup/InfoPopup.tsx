@@ -3,11 +3,15 @@ import Typography from "@material-ui/core/Typography";
 import { IconButton, Popover } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import { infoStyles } from "./infoPopup.css";
+import classNames from "classnames";
 
+type SizeType = "small" | "default" | "large";
 export const InfoPopup: React.FC<{
+  className?: string;
   color?: string;
   data: string;
-}> = ({ color = "#CDCDCD", data }) => {
+  size?: SizeType;
+}> = ({ className, color = "#F2F2F2", size = "large", data }) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
   const handlePopoverOpen = (
@@ -23,12 +27,12 @@ export const InfoPopup: React.FC<{
   const open = Boolean(anchorEl);
   const classes = infoStyles();
   return (
-    <div>
+    <div className={classNames(className)}>
       <IconButton
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
       >
-        <InfoIcon style={{ color: color }} fontSize="small" />
+        <InfoIcon style={{ color: color }} fontSize={size} />
       </IconButton>
 
       <Popover
@@ -38,6 +42,15 @@ export const InfoPopup: React.FC<{
           paper: classes.paper,
         }}
         open={open}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
