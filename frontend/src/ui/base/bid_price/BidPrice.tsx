@@ -19,8 +19,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     infoStyle: {
       position: "absolute",
-      top: "0",
-      right: "0",
+      top: theme.spacing(1),
+      right: theme.spacing(1),
     },
     bidPrice: {
       borderRadius: theme.spacing(10000),
@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center",
       color: theme.palette.background.default,
       minWidth: "min-content",
+    },
+    small: {
+      padding: theme.spacing(1, 4),
     },
     reserve_met: {
       backgroundColor: theme.palette.success.main,
@@ -58,12 +61,14 @@ export const BidPrice = ({
   className,
   style,
   textType = "h4",
+  size = 'large',
 }: {
   bid?: number;
   state: BidPriceState;
   className?: string;
   style?: React.CSSProperties;
   textType?: "h4" | "h1" | "h2" | "h3" | "h5" | "h6";
+  size?: 'small' | 'large';
 }) => {
   const classes = useStyles();
   const formattedPrice = bid ? priceFormatter.format(bid) : "Unknown";
@@ -82,9 +87,9 @@ export const BidPrice = ({
     }
   };
   return (
-    <div className={classes.root}>
+    <div className={classNames(classes.root, className)}>
       <Paper
-        className={classNames(classes.bidPrice, classes[state], className)}
+        className={classNames(classes.bidPrice, classes[state], {[classes.small] : size === 'small'})}
         style={style}
       >
         <Typography variant={textType}>{formattedPrice}</Typography>

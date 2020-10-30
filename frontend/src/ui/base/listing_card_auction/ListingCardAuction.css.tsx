@@ -6,8 +6,6 @@ export const ListingCardAuctionStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up("xs")]: {
         display: "flex",
       },
-      width: "250px",
-      height: "300px",
       display: "flex",
       flexDirection: "column",
       position: "relative",
@@ -38,22 +36,38 @@ export const ListingCardAuctionStyles = makeStyles((theme: Theme) =>
     bidPriceContent: {
       display: "flex",
       justifyContent: "center",
+      alignItems: "center",
       flexDirection: "column",
     },
     bidPriceStyle: {
+      width: "100%",
       borderRadius: theme.spacing(200),
       padding: theme.spacing(1, 1),
+      marginTop: "5px",
     },
     auctionTagStyle: {
       position: "absolute",
-      top: theme.spacing(1),
-      left: theme.spacing(1),
+      top: theme.spacing(2),
+      left: theme.spacing(2),
+      marginTop: "2px",
+      marginBottom: "2px",
     },
     reserve_met: {
       color: theme.palette.success.main,
     },
     reserve_not_met: {
       color: theme.palette.success.main,
+    },
+    link: {
+      cursor: "pointer",
+      "&:hover": {
+        color: theme.palette.primary.main,
+        textDecoration: "none",
+        "& p": {
+          color: theme.palette.primary.main,
+        },
+      },
+      textDecoration: "none",
     },
   })
 );

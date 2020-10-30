@@ -2,16 +2,20 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Typography, Card, Link } from "@material-ui/core";
 import Slider from "react-slick";
-import { ListingSummary } from "../../util/types/listing";
+import { ListingActual } from "../../util/types/listing";
 import { AuctionTag } from "../auction_tag/AuctionTag";
 import { Star } from "../star/Star";
 import { useStore } from "../../../AuthContext";
 import { ListingCardAuctionStyles } from "./ListingCardAuction.css";
 import { BidPrice } from "../bid_price/BidPrice";
-import { priceFormatter } from "../../util/helper";
+import { formatAddress, priceFormatter } from "../../util/helper";
 
-export const ListingCardAuction: React.FC<{ data: ListingSummary }> = ({
-  data,
+export const ListingCardAuction = ({
+  listing,
+  user_bid,
+}: {
+  listing: ListingActual;
+  user_bid: number;
 }) => {
   const {
     id,
@@ -25,8 +29,7 @@ export const ListingCardAuction: React.FC<{ data: ListingSummary }> = ({
     auction_end,
     reserve_met,
     highest_bid,
-    user_bid,
-  } = data;
+  } = listing;
   const history = useHistory();
   const userStore = useStore();
 
@@ -38,12 +41,17 @@ export const ListingCardAuction: React.FC<{ data: ListingSummary }> = ({
   };
 
   const getState = () => {
-    if (highest_bid === null) return "current";
+    if (highest_bid === 0) return "current";
     if (reserve_met) return "reserve_met";
-    else return "reserve_not_met";
+    return "reserve_not_met";
   };
+  const { streetAddress, remainingAddress } = formatAddress({
+    street,
+    suburb,
+    state,
+    postcode,
+  });
 
-  const formattedBid = priceFormatter.format(user_bid as number);
   const classes = ListingCardAuctionStyles();
   return (
     <Card className={classes.card}>
@@ -66,36 +74,29 @@ export const ListingCardAuction: React.FC<{ data: ListingSummary }> = ({
       )}
       <AuctionTag
         className={classes.auctionTagStyle}
-        start={auction_start as Date}
-        end={auction_end as Date}
-        style={{ marginTop: "2px", marginBottom: "2px" }}
+        start={auction_start}
+        end={auction_end}
       />
       <div className={classes.cardContent}>
         <Link
           onClick={() => history.push(`/listing/${id}`)}
-          style={{ textDecoration: "none" }}
+          className={classes.link}
+          color="textPrimary"
         >
-          <Typography variant="body1" style={{ textTransform: "capitalize" }}>
-            {street}
-            {", "}
-          </Typography>
-          <Typography variant="body2" style={{ textTransform: "capitalize" }}>
-            {suburb} <span style={{ textTransform: "uppercase" }}>{state}</span>{" "}
-            {postcode}
+          <Typography variant="h6">{streetAddress}</Typography>
+          <Typography variant="body1" color="textSecondary">
+            {remainingAddress}
           </Typography>
         </Link>
         <div className={classes.bidPriceContent}>
           <BidPrice
             className={classes.bidPriceStyle}
-            bid={highest_bid as number}
+            bid={highest_bid}
             state={getState()}
-            textType={"h6"}
-            style={{ marginTop: "5px" }}
+            textType="h6"
+            size="small"
           />
-          {/* (Jenn) TODO: IT WONT CENTER >:(((((( */}
-          <Typography style={{ marginLeft: "30px", marginTop: "5px" }}>
-            Your bid: {formattedBid}
-          </Typography>
+          <Typography>Your bid: {priceFormatter.format(user_bid)}</Typography>
         </div>
       </div>
     </Card>

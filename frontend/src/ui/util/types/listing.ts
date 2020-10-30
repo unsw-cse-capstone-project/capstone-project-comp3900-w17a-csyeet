@@ -46,7 +46,6 @@ export type ListingActual = {
   num_car_spaces: number;
   auction_start: Date;
   auction_end: Date;
-  // reserve_price: number;
   images: string[];
   features: string[];
   starred: boolean;

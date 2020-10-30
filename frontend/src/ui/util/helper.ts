@@ -59,3 +59,10 @@ export const getListingFromResult = (result: any) => ({
   highest_bid: result.highest_bid,
   reserve_met: result.reserve_met,
 })
+
+export const formatAddress = ({street, suburb, state, postcode}: {street: string, suburb: string, state: string, postcode: string}) => {
+  return {
+    streetAddress: street.replace(/(^\w|\s\w)/g, m => m.toUpperCase()) + ", ",
+    remainingAddress: suburb.replace(/(^\w|\s\w)/g, m => m.toUpperCase()) + " " + state.toUpperCase() + " " + postcode,
+  }
+}
