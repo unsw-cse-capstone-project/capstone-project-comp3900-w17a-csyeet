@@ -1,15 +1,15 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import { InputAdornment, FormHelperText } from "@material-ui/core";
+import { InputAdornment, FormHelperText, InputProps } from "@material-ui/core";
 export interface TextFieldWrapperProps {
   field: string;
   label: string;
+  value: string | number;
+  onChange: (value: string, field: string) => void;
   type?: string;
   adornment?: React.ReactNode;
-  value?: string;
   error?: boolean;
   onBlur?: () => void;
-  onChange: (value: string, field: string) => void;
 }
 
 export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
