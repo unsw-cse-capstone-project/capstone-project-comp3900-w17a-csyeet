@@ -17,7 +17,7 @@ class SignUpStore {
   phoneNo: string = "";
 
   @observable
-  addressLine: string = "";
+  street: string = "";
 
   @observable
   suburb: string = "";

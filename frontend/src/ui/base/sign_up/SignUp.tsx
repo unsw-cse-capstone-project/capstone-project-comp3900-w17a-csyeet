@@ -23,7 +23,7 @@ export interface SignUpProps {
     // passwd: string,
     // passwdVerify: string,
     // phoneNo: string,
-    // addressLine: string,
+    // street: string,
     // suburb: string,
     // state: string,
     // postcode: string
@@ -86,10 +86,10 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
   const canProceedStep1 = computed(
     () =>
       store.phoneNo.length === 10 &&
-      store.addressLine !== "" &&
+      store.street !== "" &&
       store.suburb !== "" &&
       store.postcode !== "" &&
-      store.addressLine.length !== 0 &&
+      store.street.length !== 0 &&
       store.suburb.length > 0 &&
       store.postcode.length > 0 &&
       store.state !== "none"
@@ -113,7 +113,7 @@ const SignUpForm: React.FC<SignUpProps> = observer(({ onSubmit, store }) => {
     //   store.passwd,
     //   store.passwdVerify,
     //   store.phoneNo,
-    //   store.addressLine,
+    //   store.street,
     //   store.suburb,
     //   store.state,
     //   store.postcode

@@ -2,7 +2,6 @@ import React from "react";
 import { observer } from "mobx-react";
 import { action } from "mobx";
 import {
-  Grid,
   InputLabel,
   FormControl,
   OutlinedInput,
@@ -11,8 +10,7 @@ import {
 } from "@material-ui/core";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
 import SignUpStore from "./SignUpStore";
-import TextFieldWrapper from "../textfield_wrapper/TextFieldWrapper";
-import { SelectWrapper } from "../select_wrapper/SelectWrapper";
+import { AddressForm } from "../address_form/AddressForm";
 import NumberFormat from "react-number-format";
 
 type NumberFormatCustomProps = {
@@ -20,7 +18,6 @@ type NumberFormatCustomProps = {
   name: string;
 };
 
-const AUSstates = ["NSW", "ACT", "NT", "SA", "QLD", "WA", "TAS"];
 const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
   const onChange = action((value: string, name: string) => {
     (store as any)[name] = value;
@@ -55,12 +52,7 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
 
   return (
     <div style={{ marginBottom: "10px" }}>
-      <FormControl
-        fullWidth
-        variant="outlined"
-        error={phoneError}
-        // style={{ marginBottom: "20px" }}
-      >
+      <FormControl fullWidth variant="outlined" error={phoneError}>
         <InputLabel
           htmlFor="outlined-adornment-card"
           style={{ background: "white" }}
@@ -79,35 +71,7 @@ const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
         />
         {phoneError ? <>{phoneErrorMsg}</> : <></>}
       </FormControl>
-      <TextFieldWrapper
-        field="addressLine"
-        label="Address Line"
-        value={store.addressLine}
-        onChange={onChange}
-      />
-      <TextFieldWrapper field="suburb" label="Suburb" onChange={onChange} />
-
-      <Grid container spacing={1}>
-        <Grid item xs={6}>
-          <TextFieldWrapper
-            field="postcode"
-            label="Postcode"
-            value={store.postcode}
-            onChange={onChange}
-          />
-        </Grid>
-        <Grid item xs>
-          <div style={{ marginTop: "10px" }}>
-            <SelectWrapper
-              data={AUSstates}
-              field="state"
-              label="State"
-              value={store.state}
-              onChange={onChange}
-            />
-          </div>
-        </Grid>
-      </Grid>
+      <AddressForm onChange={onChange} />
     </div>
   );
 });
