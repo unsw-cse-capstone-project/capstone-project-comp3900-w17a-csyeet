@@ -11,11 +11,11 @@ export interface SelectWrapperProps {
   value?: string;
   onChange: (value: string, field: string) => void;
 }
-const SelectWrapper= ({
+export const SelectWrapper = ({
   label,
   field,
   data,
-  value = "",
+  value,
   onChange,
 }: SelectWrapperProps) => {
   const [selected, setSelected] = React.useState(value);
@@ -26,11 +26,11 @@ const SelectWrapper= ({
   return (
     <div>
       <FormControl
+        fullWidth
         variant="outlined"
         style={{
           minWidth: "120px",
-          marginTop: "10px",
-          marginBottom: "10px",
+          marginTop: "20px",
         }}
       >
         <InputLabel id="select-outlined-label">{label}</InputLabel>
@@ -54,5 +54,3 @@ const SelectWrapper= ({
     </div>
   );
 };
-
-export default SelectWrapper;
