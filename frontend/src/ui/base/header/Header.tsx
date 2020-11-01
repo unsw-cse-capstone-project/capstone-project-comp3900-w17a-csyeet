@@ -4,10 +4,10 @@ import { action } from "mobx";
 import { useHistory, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Logo from "../logo/Logo";
-import SignInStore from "../sign_in/SignInStore";
-import SignUpStore from "../sign_up/SignUpStore";
-import SignIn from "../sign_in/SignIn";
-import SignUp from "../sign_up/SignUp";
+import { SignInStore } from "./sign_in/SignInStore";
+import { SignUpStore } from "./sign_up/SignUpStore";
+import { SignIn } from "./sign_in/SignIn";
+import { SignUp } from "./sign_up/SignUp";
 import { useStore } from "../../../AuthContext";
 import { Typography, useTheme } from "@material-ui/core";
 
@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = observer(
         }}
       >
         {location.pathname === "/" ? (
-          <div></div>
+          <></>
         ) : (
           <Logo size="small" onClick={() => history.push("/")} />
         )}
@@ -93,15 +93,35 @@ const Header: React.FC<HeaderProps> = observer(
         )}
         <SignIn
           store={signInStore}
-          onSubmit={(email: string, password: string) =>
-            store.signIn(email, password)
+          onSubmit={(email: string, password: string, onError: () => void) =>
+            store.signIn(email, password, onError)
           }
         />
         <SignUp
           store={signUpStore}
-          onSubmit={(email: string, password: string, name: string) =>
-            store.signUp(email, password, name)
-          }
+          onSubmit={(
+            name: string,
+            email: string,
+            password: string,
+            phone_number: string,
+            street: string,
+            suburb: string,
+            postcode: string,
+            state: string,
+            country: string
+          ) => {
+            store.signUp(
+              name,
+              email,
+              password,
+              phone_number,
+              street,
+              suburb,
+              postcode,
+              state,
+              country
+            );
+          }}
         />
       </div>
     );

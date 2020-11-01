@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const SignUpStyles = makeStyles((theme) => ({
+export const SignInStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     height: "100%",
@@ -12,13 +12,8 @@ const SignUpStyles = makeStyles((theme) => ({
     flexDirection: "column",
     boxSizing: "border-box",
   },
-  backButton: {
-    marginRight: theme.spacing(1),
-  },
-  instructions: {
+  message: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
 }));
-
-export default SignUpStyles;

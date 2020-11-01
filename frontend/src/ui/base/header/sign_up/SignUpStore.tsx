@@ -1,6 +1,6 @@
 import { observable, makeObservable } from "mobx";
 
-class SignUpStore {
+export class SignUpStore {
   @observable
   usernm: string = "";
 
@@ -17,13 +17,16 @@ class SignUpStore {
   phoneNo: string = "";
 
   @observable
-  addressLine: string = "";
+  street: string = "";
 
   @observable
   suburb: string = "";
 
   @observable
   state: string = "";
+
+  @observable
+  country: string = "";
 
   @observable
   postcode: string = "";
@@ -38,5 +41,3 @@ class SignUpStore {
     makeObservable(this);
   }
 }
-
-export default SignUpStore;
