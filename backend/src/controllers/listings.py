@@ -72,7 +72,7 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
                           for landmark in req.landmarks)
     if not req.include_closed_auctions:
         # listing's auction cannot have ended
-        conditions.extend(Listing.auction_end > datetime.now())
+        conditions.append(Listing.auction_end > datetime.now())
     if req.continuation:
         # continue from last result
         (listing_id,) = decode_continuation(req.continuation)
