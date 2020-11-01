@@ -5,10 +5,15 @@ import * as React from "react";
 import { SearchBarStyles } from "./SearchBar.css";
 import { SearchStore } from "../../../search/SearchPresenter";
 import { observer } from "mobx-react";
+import { useHistory } from 'react-router-dom';
 
 export const SearchBar = observer(
-  ({ store, onSubmit }: { store: SearchStore; onSubmit(): void }) => {
+  ({ store }: { store: SearchStore }) => {
     const classes = SearchBarStyles();
+    const history = useHistory();
+    const onSubmit = () => {
+      history.push(`/search?query=${store.input}`);
+    }
     const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       onSubmit();

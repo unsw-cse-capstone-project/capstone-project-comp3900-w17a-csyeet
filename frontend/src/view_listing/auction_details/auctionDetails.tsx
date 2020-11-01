@@ -1,8 +1,7 @@
 import * as React from "react";
-import { Typography, Button, Divider } from "@material-ui/core";
+import { Typography, Divider } from "@material-ui/core";
 import { auctionDetailsStyle } from "./auctionDetails.css";
 import { AuctionTag } from "../../ui/base/auction_tag/AuctionTag";
-import { useHistory } from "react-router-dom";
 import { dateFormatter } from "../../ui/util/helper";
 import { AuctionActionButton } from "../../ui/base/auction_action_button/AuctionActionButton";
 
@@ -20,7 +19,6 @@ export const AuctionDetails = ({
   isUser: boolean;
 }) => {
   const classes = auctionDetailsStyle();
-  const history = useHistory();
   return (
     <div>
       <Typography variant="h5" className={classes.header}>

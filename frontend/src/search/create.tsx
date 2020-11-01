@@ -13,14 +13,11 @@ export const createSearchPage = (query?: string) => {
     presenter.search(store);
   }
 
-  const onSubmit = () => {
-    presenter.search(store);
-  };
   const SearchBarWrapper = observer(() => (
-    <SearchBar store={store} onSubmit={onSubmit} />
+    <SearchBar store={store} />
   ));
 
-  const SearchResult = observer(() => <SearchResultsList store={store} />);
+  const SearchResult = observer(() => <SearchResultsList store={store} presenter={presenter} />);
   // eslint-disable-next-line react/display-name
   return () => (
     <SearchPage SearchResults={SearchResult} SearchBar={SearchBarWrapper} />

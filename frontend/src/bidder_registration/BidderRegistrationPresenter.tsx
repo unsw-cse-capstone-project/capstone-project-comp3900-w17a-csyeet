@@ -1,10 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
-import {
-  createFakeListing,
-  createFakeActualListing,
-} from "../ui/util/fakes/listing";
-import { Listing, ListingActual } from "../ui/util/types/listing";
-import { delay, getListingFromResult } from "../ui/util/helper";
+import { ListingActual } from "../ui/util/types/listing";
+import { getListingFromResult } from "../ui/util/helper";
 export class BidderRegistrationStore {
   @observable
   initialBid: number = 0;

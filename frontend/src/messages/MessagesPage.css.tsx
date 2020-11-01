@@ -1,5 +1,4 @@
 import { makeStyles, Theme, createStyles } from "@material-ui/core";
-import { callbackify } from "util";
 
 export const MessagesPageStyles = makeStyles((theme: Theme) =>
   createStyles({
