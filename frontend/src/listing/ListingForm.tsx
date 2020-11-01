@@ -9,12 +9,12 @@ import {
   Snackbar,
   Typography,
 } from "@material-ui/core";
-import { ListingStore } from "../ListingStore";
+import { ListingStore } from "./ListingStore";
 import { Details } from "./listing_steps/Details";
 import { Images } from "./listing_steps/Images";
 import { Description } from "./listing_steps/Description";
 import { AuctionDetails } from "./listing_steps/AuctionDetails";
-import { PaymentDetails } from "./listing_steps/PaymentDetails";
+import { PaymentDetails } from "./listing_steps/Payment";
 import { ListingFormStyles } from "./ListingForm.css";
 import Alert from "@material-ui/lab/Alert";
 export const ListingForm: React.FC<{
@@ -168,7 +168,7 @@ export const ListingForm: React.FC<{
             Back
           </Button>
           <Button variant="contained" color="primary" onClick={handleNext}>
-            {activeStep === steps.length - 1 ? "Finish" : "Next"}
+            {activeStep === steps.length - 1 ? "Add Listing" : "Next"}
           </Button>
         </div>
       </div>
