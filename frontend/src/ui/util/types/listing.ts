@@ -52,8 +52,9 @@ export type ListingActual = {
   starred: boolean;
   registered_bidder: boolean;
   landmarks: Landmark[];
-  highest_bid: number;
+  highest_bid: number | null;
   reserve_met: boolean;
+  user_bid?: number;
 };
 
 export type ListingSummary = {

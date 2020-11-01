@@ -39,8 +39,8 @@ export const ListingCardAuctionStyles = makeStyles((theme: Theme) =>
     },
     auctionTagStyle: {
       position: "absolute",
-      top: theme.spacing(1),
-      left: theme.spacing(1),
+      top: theme.spacing(2),
+      left: theme.spacing(2),
     },
     reserve_met: {
       color: theme.palette.success.main,
