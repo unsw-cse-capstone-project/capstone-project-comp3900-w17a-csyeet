@@ -12,9 +12,8 @@ export default class Store {
   @observable openSignUp: boolean = false;
   @observable openSignIn: boolean = false;
 
-  // (Jenn TOOD: Hook API call)
   @action
-  async signIn(email: string, password: string) {
+  async signIn(email: string, password: string, onError: () => void) {
     try {
       const response = await fetch("/login", {
         method: "post",
@@ -23,6 +22,7 @@ export default class Store {
       const content = await response.json();
       if ("detail" in content) {
         console.log("error", content.detail);
+        onError();
       } else {
         runInAction(
           () =>
@@ -39,16 +39,31 @@ export default class Store {
     }
   }
 
-  // (Jenn TOOD: Hook API call)
   @action
-  async signUp(email: string, password: string, name: string) {
+  async signUp(
+    name: string,
+    email: string,
+    password: string,
+    phone_number: string,
+    street: string,
+    suburb: string,
+    postcode: string,
+    state: string,
+    country: string
+  ) {
     try {
       const response = await fetch("/signup", {
         method: "post",
         body: JSON.stringify({
+          name: name,
           email: email,
           password: password,
-          name: name,
+          phone_number: phone_number,
+          street: street,
+          suburb: suburb,
+          postcode: postcode,
+          state: state,
+          country: country,
         }),
       });
       const content = await response.json();
@@ -66,7 +81,6 @@ export default class Store {
     }
   }
 
-  // (Jenn TOOD: Hook API call)
   @action
   async signOut() {
     try {

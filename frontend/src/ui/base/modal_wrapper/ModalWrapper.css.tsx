@@ -3,10 +3,9 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 const ModalStyles = makeStyles((theme: Theme) =>
   createStyles({
     modal: {
+      padding: theme.spacing(2, "20%", 0, "20%"),
       display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 1,
+      flexDirection: "column",
     },
     paper: {
       backgroundColor: theme.palette.background.paper,

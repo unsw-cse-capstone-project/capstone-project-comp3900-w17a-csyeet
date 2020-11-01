@@ -32,12 +32,6 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
   };
 
   const [e, setError] = React.useState<boolean>(false);
-  const errorMsg = (
-    <FormHelperText style={{ color: "red" }}>
-      {label} is required*
-    </FormHelperText>
-  );
-
   const customOnBlur = () => {
     if (readOnly) return;
     v === "" ? setError(true) : setError(false);
@@ -61,9 +55,11 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
           ),
         }}
       />
-      {e ? <>{errorMsg}</> : <></>}
+      {error !== true && e && (
+        <FormHelperText style={{ color: "red" }}>
+          {label} is required*
+        </FormHelperText>
+      )}
     </div>
   );
 };
-
-export default TextFieldWrapper;
