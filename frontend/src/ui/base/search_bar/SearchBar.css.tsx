@@ -6,6 +6,8 @@ export const SearchBarStyles = makeStyles((theme: Theme) =>
       "& *": {
         borderRadius: "1000px",
       },
+      borderRadius: "1000px",
+      backgroundColor: theme.palette.background.paper,
     },
     form: {
       display: "flex",

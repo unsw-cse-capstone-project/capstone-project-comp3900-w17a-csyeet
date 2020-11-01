@@ -29,29 +29,33 @@ const Header: React.FC<HeaderProps> = observer(
     const openSignInModal = action(() => {
       signInStore.open = true;
     });
+    const location = useLocation();
+    const isHome = location.pathname === '/';
     return (
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: isHome? "flex-end": "space-between",
           verticalAlign: "center",
           alignItems: "center",
           paddingBottom: theme.spacing(0.5),
+          backgroundColor: isHome? "#f3f4f5": "white",
         }}
       >
-        {/* {location.pathname === "/" ? (
-          <></>
-        ) : ( */}
-        <Logo size="small" onClick={() => history.push("/")} />
-        {/* )} */}
+        {!isHome && <Logo size="small" onClick={() => history.push("/")} />}
         {!store.user ? (
           <div>
-            <Button size="small" onClick={openSignInModal}>
+            <Button
+              size="small"
+              color="primary"
+              variant="outlined"
+              onClick={openSignInModal}
+            >
               Log In
             </Button>
             <Button
               size="small"
-              variant="outlined"
+              variant="contained"
               color="primary"
               style={{ margin: "15px" }}
               onClick={openSignUpModal}

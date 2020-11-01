@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
-import SelectWrapper from "./SelectWrapper";
+import { SelectWrapper } from "./SelectWrapper";
 import { action } from "mobx";
 
 export default {
