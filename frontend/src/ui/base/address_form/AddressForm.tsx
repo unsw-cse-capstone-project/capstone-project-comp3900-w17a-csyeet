@@ -46,7 +46,7 @@ export const AddressForm: React.FC<{
   const getStates = (state: string) => {
     var newStates: string[] = [];
     for (var i = 0; i < countryStateData.length; ++i) {
-      if (countryStateData[i].name == state) {
+      if (countryStateData[i].name === state) {
         for (var j = 0; j < countryStateData[i].states.length; ++j) {
           newStates.push(countryStateData[i].states[j].name);
         }
