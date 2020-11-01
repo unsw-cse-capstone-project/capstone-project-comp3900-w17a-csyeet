@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = observer(
           verticalAlign: "center",
           alignItems: "center",
           paddingBottom: theme.spacing(0.5),
-          backgroundColor: isHome? "#f3f4f5": "none",
+          backgroundColor: isHome? "#f3f4f5": "white",
         }}
       >
         {!isHome && <Logo size="small" onClick={() => history.push("/")} />}
