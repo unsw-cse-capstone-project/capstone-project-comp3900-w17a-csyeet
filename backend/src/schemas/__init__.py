@@ -3,3 +3,4 @@ from .listing import ListingType, Feature, CreateListingRequest, ListingResponse
 from .registration import CreateRegistrationRequest, RegistrationResponse
 from .bid import BidRequest, BidResponse, PlaceBidResponse
 from .landmark import LandmarkType
+from .recommendations import InteractionsRecommendations
