@@ -17,12 +17,12 @@ import { AuctionPage } from "./auction/main";
 import { HomePage } from "./home/main";
 import { ViewListingPage } from "./view_listing/main";
 import Header from "./ui/base/header/Header";
-import SignInStore from "./ui/base/sign_in/SignInStore";
-import SignUpStore from "./ui/base/sign_up/SignUpStore";
-import SignIn from "./ui/base/sign_in/SignIn";
+import { SignInStore } from "./ui/base/header/sign_in/SignInStore";
+import { SignUpStore } from "./ui/base/header/sign_up/SignUpStore";
+import { SignIn } from "./ui/base/header/sign_in/SignIn";
 import { runInAction } from "mobx";
-import { MessagesPage } from './messages/main';
-import { ListingMessagesPage } from './listing_messages/main';
+import { MessagesPage } from "./messages/main";
+import { ListingMessagesPage } from "./listing_messages/main";
 
 const ProtectedComponent = observer(
   ({
@@ -39,8 +39,8 @@ const ProtectedComponent = observer(
       return (
         <SignIn
           store={signInStore}
-          onSubmit={(email: string, password: string) =>
-            store.signIn(email, password)
+          onSubmit={(email: string, password: string, onError: () => void) =>
+            store.signIn(email, password, onError)
           }
         />
       );
