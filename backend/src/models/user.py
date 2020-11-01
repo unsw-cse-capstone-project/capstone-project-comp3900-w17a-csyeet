@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text
+from sqlalchemy import Column, Integer, String, Text, LargeBinary
 from sqlalchemy.orm import relationship
 from .base import Base
 
@@ -11,11 +11,12 @@ class User(Base):
     hashed_password = Column(String(), nullable=False)
     name = Column(String(), nullable=False)
     blurb = Column(Text(), nullable=True)
+    avatar_data = Column(LargeBinary(), nullable=True)
+    avatar_image_type = Column(String(), nullable=True)
 
     listings = relationship('Listing', back_populates='owner')
     registrations = relationship('Registration', back_populates='user')
     starred_listings = relationship('Starred', back_populates='user')
-    profile_image = relationship('Profile_Image', cascade='delete', passive_deletes=True, uselist=False)
 
     def __repr__(self):
         return f"<User: {self.name}>"
