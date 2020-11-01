@@ -1,11 +1,5 @@
 import { observable, makeObservable, action, runInAction } from "mobx";
-import { createFakeBid } from "../ui/util/fakes/bid";
-import {
-  fetchListing,
-  createFakeActualListing,
-  createFakeListing,
-} from "../ui/util/fakes/listing";
-import { delay, getListingFromResult } from '../ui/util/helper';
+import { getListingFromResult } from '../ui/util/helper';
 import { Bid } from "../ui/util/types/bid";
 import { ListingActual } from "../ui/util/types/listing";
 

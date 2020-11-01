@@ -1,6 +1,5 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
-import { createFakeListing } from "../ui/util/fakes/listing";
 import { getListingFromResult } from '../ui/util/helper';
 
 export class SearchStore {
@@ -13,6 +12,8 @@ export class SearchStore {
   @observable
   searchState?: "loading" | "loaded" | "error";
 
+  continuation?: string;
+
   constructor(query?: string) {
     makeObservable(this);
     this.input = query ? query : "";
@@ -22,21 +23,25 @@ export class SearchStore {
 export class SearchPresenter {
   @action
   async search(store: SearchStore) {
-    store.searchState = "loading";
+    if (!store.continuation) {
+      runInAction(() => {store.searchState = "loading"});
+    }
+    // console.log('searching...')
+    const continuation = store.continuation? `&continuation=${store.continuation}`: ""; 
     try {
-      const response = await fetch(`/listings/?location=${store.input}`);
+      const response = await fetch(`/listings/?location=${store.input}${continuation}&limit=2`);
       const content = await response.json();
+      console.log(content);
       if ("detail" in content) {
-        console.log("error", content.detail);
         runInAction(() => {
-          store.searchState = "loaded";
+          store.searchState = "error";
         });
       } else {
         const results: ListingActual[] = content.results.map((result: any) => getListingFromResult(result));
-        console.log(results);
         runInAction(() => {
-          store.searchResults = results;
+          store.searchResults = [...store.searchResults, ...results];
           store.searchState = "loaded";
+          store.continuation = content.continuation;
         });
       }
     } catch {

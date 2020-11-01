@@ -1,5 +1,4 @@
 import { observable, makeObservable, action, runInAction } from "mobx";
-import { createFakeListing } from "../ui/util/fakes/listing";
 import { ListingActual } from "../ui/util/types/listing";
 import { delay, getListingFromResult } from '../ui/util/helper';
 

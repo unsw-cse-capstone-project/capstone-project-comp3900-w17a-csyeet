@@ -9,11 +9,9 @@ import { ArrowBackIos } from "@material-ui/icons";
 import { BiddingBox, BiddingBoxStore } from "./bidding_box/BiddingBox";
 import { BidderTag } from "../ui/base/bidder_tag/BidderTag";
 import { useStore } from "../AuthContext";
-import { Bid } from "../ui/util/types/bid";
 import { BiddersList } from "./bidders_list/BiddersList";
 import { BidsList } from "./bids_list/BidsList";
 import { computed, action } from "mobx";
-import { isError } from "util";
 import MuiAlert from "@material-ui/lab/Alert";
 
 export const AuctionPage = () => {
