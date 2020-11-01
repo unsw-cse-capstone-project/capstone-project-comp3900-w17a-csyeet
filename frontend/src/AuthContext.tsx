@@ -5,6 +5,12 @@ export type User = {
   name: string;
   email: string;
   id: number;
+  phone_number: string;
+  street: string;
+  suburb: string;
+  postcode: string;
+  state: string;
+  country: string;
 };
 
 export default class Store {

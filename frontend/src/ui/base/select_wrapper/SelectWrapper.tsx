@@ -9,6 +9,7 @@ export interface SelectWrapperProps {
   field: string;
   data: Array<string>;
   value?: string;
+  readOnly?: boolean;
   onChange: (value: string, field: string) => void;
 }
 export const SelectWrapper = ({
@@ -16,6 +17,7 @@ export const SelectWrapper = ({
   field,
   data,
   value,
+  readOnly = false,
   onChange,
 }: SelectWrapperProps) => {
   const [selected, setSelected] = React.useState(value);
@@ -35,6 +37,7 @@ export const SelectWrapper = ({
       >
         <InputLabel id="select-outlined-label">{label}</InputLabel>
         <Select
+          readOnly={readOnly}
           labelId="select-outlined-label"
           id="select-outlined"
           value={selected}
