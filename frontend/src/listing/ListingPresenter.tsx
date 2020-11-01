@@ -1,7 +1,6 @@
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, runInAction } from "mobx";
 import { ListingStore } from "./ListingStore";
 import { getListingFromResult } from "../ui/util/helper";
-import { ListingActual } from "../ui/util/types/listing";
 
 const setResultsInStore = action((store: ListingStore, result: any) => {});
 
@@ -68,7 +67,6 @@ export class ListingPresenter {
   }
 
   // Need function to upload images (Annisa said we could do multiple at a time)
-  // Uploading Images, I'm not sure waht type she used...
   //
   // Currently it's stored as "ImageListType"
   //   export interface ImageType {

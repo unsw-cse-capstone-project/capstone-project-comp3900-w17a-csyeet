@@ -2,9 +2,15 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import React from "react";
 
 export type User = {
+  id: number;
   name: string;
   email: string;
-  id: number;
+  phoneNo: string;
+  street: string;
+  suburb: string;
+  postcode: string;
+  state: string;
+  country: string;
 };
 
 export default class Store {
@@ -12,7 +18,6 @@ export default class Store {
   @observable openSignUp: boolean = false;
   @observable openSignIn: boolean = false;
 
-  // (Jenn TOOD: Hook API call)
   @action
   async signIn(email: string, password: string) {
     try {
@@ -30,6 +35,12 @@ export default class Store {
               name: content.name,
               id: content.id,
               email: content.email,
+              phoneNo: content.phoneNo,
+              street: content.street,
+              suburb: content.suburb,
+              postcode: content.postcode,
+              state: content.state,
+              country: content.country,
             })
         );
         console.log(this.user);
@@ -39,7 +50,6 @@ export default class Store {
     }
   }
 
-  // (Jenn TOOD: Hook API call)
   @action
   async signUp(email: string, password: string, name: string) {
     try {

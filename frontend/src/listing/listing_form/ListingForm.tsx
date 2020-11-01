@@ -50,14 +50,14 @@ export const ListingForm: React.FC<{
     switch (step) {
       case 0:
         return completedStep0.get();
-      case 1:
-        return completedStep1.get();
-      case 2:
-        return completedStep2.get();
-      case 3:
-        return completedStep3.get();
-      case 4:
-        return completedStep4.get();
+      // case 1:
+      //   return completedStep1.get();
+      // case 2:
+      //   return completedStep2.get();
+      // case 3:
+      //   return completedStep3.get();
+      // case 4:
+      //   return completedStep4.get();
       default:
         return false;
     }
@@ -75,32 +75,31 @@ export const ListingForm: React.FC<{
       store.nGarages !== null
   );
 
-  const completedStep1 = computed(() => store.images.length > 0);
+  // const completedStep1 = computed(() => store.images.length > 0);
 
-  const completedStep2 = computed(
-    () => store.descTitle !== "" && store.desc !== ""
-  );
+  // const completedStep2 = computed(
+  //   () => store.descTitle !== "" && store.desc !== ""
+  // );
 
-  const completedStep3 = computed(
-    () =>
-      store.auctionStart !== null &&
-      store.auctionEnd !== null &&
-      store.reservePrice !== 0
-  );
+  // const completedStep3 = computed(
+  //   () =>
+  //     store.auctionStart !== null &&
+  //     store.auctionEnd !== null &&
+  //     store.reservePrice !== 0
+  // );
 
-  const completedStep4 = computed(
-    () =>
-      store.accName !== "" &&
-      store.bsb.length === 6 &&
-      store.accNumber.length === 8
-  );
+  // const completedStep4 = computed(
+  //   () =>
+  //     store.accName !== "" &&
+  //     store.bsb.length === 6 &&
+  //     store.accNumber.length === 8
+  // );
 
-  const canPreview =
-    completedStep0.get() &&
-    completedStep1.get() &&
-    completedStep2.get() &&
-    completedStep3.get() &&
-    completedStep4.get();
+  const canPreview = completedStep0.get();
+  // completedStep1.get() &&
+  // completedStep2.get() &&
+  // completedStep3.get() &&
+  // completedStep4.get();
 
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
