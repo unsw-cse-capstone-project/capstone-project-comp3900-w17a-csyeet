@@ -74,3 +74,18 @@ export type ListingSummary = {
   highest_bid?: number | null;
   user_bid?: number;
 };
+
+export type ListingSummary = {
+  id: number;
+  street: string;
+  suburb: string;
+  postcode: string;
+  state: string;
+  images: string[];
+  num_bedrooms: number;
+  num_bathrooms: number;
+  num_car_spaces: number;
+  auction_start: Date;
+  auction_end: Date;
+  starred: boolean;
+};

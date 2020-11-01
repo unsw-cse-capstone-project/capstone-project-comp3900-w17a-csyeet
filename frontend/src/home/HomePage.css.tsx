@@ -41,5 +41,14 @@ export const HomePageStyle = makeStyles((theme: Theme) =>
       fontWeight: "bold",
       paddingBottom: theme.spacing(2),
     },
+    recommendations: {
+      display: "flex",
+      width: "80%",
+    },
+    recommendationsTitle: {
+      padding: theme.spacing(12, 0, 2, 0),
+      fontWeight: "bold",
+      width: "80%",
+    }
   })
 );
