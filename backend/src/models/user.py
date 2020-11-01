@@ -10,7 +10,7 @@ class User(Base):
     email = Column(String(), unique=True, nullable=False)
     hashed_password = Column(String(), nullable=False)
     name = Column(String(), nullable=False)
-    blurb = Column(Text())  
+    blurb = Column(Text(), nullable=True)
 
     listings = relationship('Listing', back_populates='owner')
     registrations = relationship('Registration', back_populates='user')
