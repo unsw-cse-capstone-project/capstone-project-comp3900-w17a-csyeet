@@ -71,10 +71,8 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
         conditions.extend(Listing.landmarks.any(Landmark.type == landmark)
                           for landmark in req.landmarks)
     if not req.include_closed_auctions:
-        # listing's auction must be open
-        now = datetime.now()
-        conditions.extend([Listing.auction_start <= now,
-                           Listing.auction_end > now])
+        # listing's auction cannot have ended
+        conditions.extend(Listing.auction_end > datetime.now())
     if req.continuation:
         # continue from last result
         (listing_id,) = decode_continuation(req.continuation)
@@ -185,15 +183,16 @@ def upload_images(id: int, files: List[UploadFile] = File(...), signed_in_user: 
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
-    
+
     if listing.owner_id != signed_in_user.id:
         raise HTTPException(
             status_code=403, detail="User cannot upload image for this listing")
-        
-    images = [Image(listing_id=id, data=image.file.read(), image_type=image.content_type) for image in files]
+
+    images = [Image(listing_id=id, data=image.file.read(), image_type=image.content_type)
+              for image in files]
     session.add_all(images)
     session.commit()
-    
+
 
 @router.get('/{listing_id}/images/{image_id}', responses={404: {"description": "Resource not found"}})
 def get_image(listing_id: int, image_id: int, session: Session = Depends(get_session)):
