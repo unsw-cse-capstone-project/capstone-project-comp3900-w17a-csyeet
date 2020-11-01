@@ -9,7 +9,7 @@ import {
 import { BidderRegistration } from "./BidderRegistration";
 import { bidderRegistrationStyle } from "./BidderRegistration.css";
 import { ArrowBackIos } from "@material-ui/icons";
-import { Listing, ListingActual } from "../ui/util/types/listing";
+import { ListingActual } from "../ui/util/types/listing";
 
 export const BidderRegistrationPage = () => {
   const { id } = useParams<{ id: string }>();

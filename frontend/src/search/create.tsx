@@ -13,7 +13,8 @@ export const createSearchPage = (
   cars?: number,
   start?: string,
   end?: string,
-  featureList?: string[]
+  featureList?: string[],
+  landmarkList?: string[],
 ) => {
   const store = new SearchStore(
     query,
@@ -23,17 +24,18 @@ export const createSearchPage = (
     cars,
     start,
     end,
-    featureList
+    featureList,
+    landmarkList,
   );
   const presenter = new SearchPresenter();
 
   if (query) {
     presenter.search(store);
   }
-  
+
 
   const SearchBarWrapper = observer(() => (
-    <SearchBar store={store}/>
+    <SearchBar store={store} />
   ));
 
   const SearchResult = observer(() => <SearchResultsList store={store} />);

@@ -1,8 +1,7 @@
 import * as React from "react";
-import { Typography, Button, Divider } from "@material-ui/core";
+import { Typography, Divider } from "@material-ui/core";
 import { auctionDetailsStyle } from "./auctionDetails.css";
 import { AuctionTag } from "../../ui/base/auction_tag/AuctionTag";
-import { useHistory } from "react-router-dom";
 import { dateFormatter } from "../../ui/util/helper";
 import { AuctionActionButton } from "../../ui/base/auction_action_button/AuctionActionButton";
 
@@ -20,7 +19,6 @@ export const AuctionDetails = ({
   isUser: boolean;
 }) => {
   const classes = auctionDetailsStyle();
-  const history = useHistory();
   return (
     <div>
       <Typography variant="h5" className={classes.header}>
@@ -38,13 +36,13 @@ export const AuctionDetails = ({
           <AuctionTag start={auction_start} end={auction_end} />
         </div>
       ) : (
-        <div>
-          <Typography variant="body2">
-            End Time: {dateFormatter.format(auction_end)}
-          </Typography>
-          <AuctionTag start={auction_start} end={auction_end} />
-        </div>
-      )}
+          <div>
+            <Typography variant="body2">
+              End Time: {dateFormatter.format(auction_end)}
+            </Typography>
+            <AuctionTag start={auction_start} end={auction_end} />
+          </div>
+        )}
       <AuctionActionButton id={id} auction_start={auction_start} registered_bidder={registered_bidder} isUser={isUser} />
     </div>
   );

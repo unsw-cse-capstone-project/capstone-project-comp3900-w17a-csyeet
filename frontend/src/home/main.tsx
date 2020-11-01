@@ -3,7 +3,6 @@ import * as React from "react";
 import logo from "../images/logo.png";
 import { SearchBar } from '../ui/base/search_bar/SearchBar';
 import { SearchStore } from "../search/SearchPresenter";
-import { useHistory } from "react-router-dom";
 import { HomePageStyle } from "./HomePage.css";
 
 export const HomePage = () => {

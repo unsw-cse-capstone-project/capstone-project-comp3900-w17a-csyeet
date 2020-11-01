@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Typography, Link } from "@material-ui/core";
+import { Card, CardContent, Typography, Link } from "@material-ui/core";
 import * as React from "react";
 import Slider from "react-slick";
 import { ListingActual } from "../../util/types/listing";
@@ -93,7 +93,7 @@ export const ListingResultCard = observer(
           </Slider>
         </div>
         <CardContent className={classes.cardContent}>
-          {userStore?.user && (
+          {userStore ?.user && (
             <div className={classes.starContainer}>
               <Star id={id} starred={starred} />
             </div>
@@ -132,7 +132,7 @@ export const ListingResultCard = observer(
               id={id}
               auction_start={auction_start}
               registered_bidder={registered_bidder}
-              isUser={userStore?.user !== undefined}
+              isUser={userStore ?.user !== undefined}
             />
             <BidStatus />
             {registered_bidder && userStore && userStore.user && (
