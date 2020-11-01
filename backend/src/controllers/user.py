@@ -27,26 +27,26 @@ def get_user_profile(id: int, session: Session = Depends(get_session)):
 
 
 @router.post('/profile/avatar')
-def upload_profile_image(file: UploadFile = File(...), signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
-    ''' Create or update profile image for signed in user '''
+def upload_avatar(file: UploadFile = File(...), signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Create or update avatar for signed in user '''
     signed_in_user.avatar_data = file.file.read()
     signed_in_user.avatar_image_type = file.content_type
     session.commit()
 
 
 @router.get('/profile/avatar', responses={404: {"description": "Resource not found"}})
-def get_own_profile_image(signed_in_user: User = Depends(get_signed_in_user)):
-    ''' Get signed in user's profile image '''
+def get_own_avatar(signed_in_user: User = Depends(get_signed_in_user)):
+    ''' Get signed in user's avatar '''
     if signed_in_user.avatar_data is None:
         raise HTTPException(
-            status_code=404, detail="User has not uploaded profile image")
+            status_code=404, detail="User has not uploaded avatar")
     
     return StreamingResponse(io.BytesIO(signed_in_user.avatar_data), media_type=signed_in_user.avatar_image_type)
 
 
-@router.get('/{id}/profile/image', responses={404: {"description": "Resource not found"}})
-def get_user_profile_image(id: int, session: Session = Depends(get_session)):
-    ''' Get a user's profile image '''
+@router.get('/{id}/profile/avatar', responses={404: {"description": "Resource not found"}})
+def get_user_avatar(id: int, session: Session = Depends(get_session)):
+    ''' Get a user's avatar '''
     user = session.query(User).get(id)
     if user is None:
        raise HTTPException(
@@ -54,7 +54,7 @@ def get_user_profile_image(id: int, session: Session = Depends(get_session)):
     
     if user.avatar_data is None:
         raise HTTPException(
-            status_code=404, detail="User has not uploaded profile image")
+            status_code=404, detail="User has not uploaded avatar")
     
     return StreamingResponse(io.BytesIO(user.avatar_data), media_type=user.avatar_image_type)
 
