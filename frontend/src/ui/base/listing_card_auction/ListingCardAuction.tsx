@@ -99,9 +99,13 @@ export const ListingCardAuction: React.FC<{
               textType={"h6"}
               style={{ marginTop: "5px" }}
             />
-            {/* (Jenn) TODO: IT WONT CENTER >:(((((( */}
             {getState() !== "current" && (
-              <Typography style={{ marginLeft: "30px", marginTop: "5px" }}>
+              <Typography
+                style={{
+                  alignItems: "center",
+                  marginTop: "5px",
+                }}
+              >
                 Your bid: {formattedBid}
               </Typography>
             )}
