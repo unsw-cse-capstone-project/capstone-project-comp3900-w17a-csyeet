@@ -2,17 +2,19 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Typography, Card, Link } from "@material-ui/core";
 import Slider from "react-slick";
-import { ListingSummary } from "../../util/types/listing";
+import { ListingActual } from "../../util/types/listing";
 import { AuctionTag } from "../auction_tag/AuctionTag";
 import { Star } from "../star/Star";
 import { useStore } from "../../../AuthContext";
 import { ListingCardAuctionStyles } from "./ListingCardAuction.css";
 import { BidPrice } from "../bid_price/BidPrice";
 import { priceFormatter } from "../../util/helper";
+import { formatAddress } from "../../util/helper";
 
-export const ListingCardAuction: React.FC<{ data: ListingSummary }> = ({
-  data,
-}) => {
+export const ListingCardAuction: React.FC<{
+  listing: ListingActual;
+  style?: React.CSSProperties;
+}> = ({ listing, style }) => {
   const {
     id,
     street,
@@ -26,7 +28,7 @@ export const ListingCardAuction: React.FC<{ data: ListingSummary }> = ({
     reserve_met,
     highest_bid,
     user_bid,
-  } = data;
+  } = listing;
   const history = useHistory();
   const userStore = useStore();
 
@@ -43,10 +45,17 @@ export const ListingCardAuction: React.FC<{ data: ListingSummary }> = ({
     else return "reserve_not_met";
   };
 
+  const { streetAddress, remainingAddress } = formatAddress({
+    street,
+    suburb,
+    state,
+    postcode,
+  });
+
   const formattedBid = priceFormatter.format(user_bid as number);
   const classes = ListingCardAuctionStyles();
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} style={style}>
       <div className={classes.sliderContainer}>
         <Slider {...settings}>
           {images.map((image, i) => (
@@ -73,15 +82,12 @@ export const ListingCardAuction: React.FC<{ data: ListingSummary }> = ({
       <div className={classes.cardContent}>
         <Link
           onClick={() => history.push(`/listing/${id}`)}
-          style={{ textDecoration: "none" }}
+          className={classes.link}
+          color="textPrimary"
         >
-          <Typography variant="body1" style={{ textTransform: "capitalize" }}>
-            {street}
-            {", "}
-          </Typography>
-          <Typography variant="body2" style={{ textTransform: "capitalize" }}>
-            {suburb} <span style={{ textTransform: "uppercase" }}>{state}</span>{" "}
-            {postcode}
+          <Typography variant="h6">{streetAddress}</Typography>
+          <Typography variant="body1" color="textSecondary">
+            {remainingAddress}
           </Typography>
         </Link>
         <div className={classes.bidPriceContent}>
