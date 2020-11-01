@@ -32,12 +32,13 @@ export const Step0: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
   const [passTooShort, setPassTooShort] = React.useState<boolean>();
   const checkPassword = () => {
     if (store.passwd.length < 5) setPassTooShort(true);
+    else setPassTooShort(false);
   };
 
   // Password Validation
   const [passwdError, setPasswdError] = React.useState<boolean>();
   const validatePasswd = () => {
-    store.passwd != store.passwdVerify
+    store.passwd !== store.passwdVerify
       ? setPasswdError(true)
       : setPasswdError(false);
   };

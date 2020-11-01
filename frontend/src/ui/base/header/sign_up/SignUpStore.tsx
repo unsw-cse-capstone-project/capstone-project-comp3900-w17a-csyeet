@@ -26,7 +26,7 @@ export class SignUpStore {
   state: string = "";
 
   @observable
-  country: string = "";
+  country: string = "Australia";
 
   @observable
   postcode: string = "";

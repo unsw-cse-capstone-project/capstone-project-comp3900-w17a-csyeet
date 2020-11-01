@@ -8,10 +8,10 @@ import {
   Stepper,
   Step,
 } from "@material-ui/core";
-import { SignUpStore } from "./SignUpStore";
 import logo from "../../../../images/logo.png";
 import { Step0, Step1, Step2 } from "./Steps";
-import ModalWrapper from "../modal_wrapper/ModalWrapper";
+import { ModalWrapper } from "../../modal_wrapper/ModalWrapper";
+import { SignUpStore } from "./SignUpStore";
 import { SignUpStyles } from "./SignUp.css";
 
 export const SignUp: React.FC<{
@@ -110,9 +110,11 @@ export const SignUp: React.FC<{
           width="200px"
           src={logo}
           alt="Adobe logo"
-          style={{ marginBottom: "10px" }}
+          style={{ marginBottom: "10px", alignContent: "center" }}
         />
-        <Typography>Join our family today</Typography>
+        <Typography style={{ alignContent: "center" }}>
+          Join our family today
+        </Typography>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label) => (
             <Step key={label}>
@@ -139,7 +141,7 @@ export const SignUp: React.FC<{
                 }
                 disabled={disableNext()}
               >
-                {activeStep === 2 ? () => "Sign Up" : "Next"}
+                {activeStep === 2 ? "Sign Up" : "Next"}
               </Button>
             </div>
           </div>

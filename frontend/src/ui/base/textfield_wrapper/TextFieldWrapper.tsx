@@ -51,7 +51,7 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
           ),
         }}
       />
-      {e && (
+      {error !== true && e && (
         <FormHelperText style={{ color: "red" }}>
           {label} is required*
         </FormHelperText>

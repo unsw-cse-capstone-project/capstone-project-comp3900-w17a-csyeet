@@ -19,7 +19,7 @@ export interface HeaderProps {
 const Header: React.FC<HeaderProps> = observer(
   ({ signInStore, signUpStore }) => {
     const history = useHistory();
-    const location = useLocation();
+    // const location = useLocation();
     const store = useStore();
     const theme = useTheme();
     if (!store) throw Error("Store should never be null");
@@ -39,11 +39,11 @@ const Header: React.FC<HeaderProps> = observer(
           paddingBottom: theme.spacing(0.5),
         }}
       >
-        {location.pathname === "/" ? (
+        {/* {location.pathname === "/" ? (
           <></>
-        ) : (
-          <Logo size="small" onClick={() => history.push("/")} />
-        )}
+        ) : ( */}
+        <Logo size="small" onClick={() => history.push("/")} />
+        {/* )} */}
         {!store.user ? (
           <div>
             <Button size="small" onClick={openSignInModal}>
