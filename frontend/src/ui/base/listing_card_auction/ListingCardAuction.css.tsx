@@ -5,12 +5,8 @@ export const ListingCardAuctionStyles = makeStyles((theme: Theme) =>
     card: {
       [theme.breakpoints.up("xs")]: {
         display: "flex",
-      },
-      width: "250px",
-      height: "300px",
       display: "flex",
       flexDirection: "column",
-      position: "relative",
     },
     cardContent: {
       position: "relative",
@@ -23,7 +19,6 @@ export const ListingCardAuctionStyles = makeStyles((theme: Theme) =>
       objectFit: "contain",
       backgroundColor: "rgba(0,0,0, 0.8)",
     },
-
     sliderContainer: {
       [theme.breakpoints.up("xs")]: {
         width: "100%",
@@ -46,14 +41,25 @@ export const ListingCardAuctionStyles = makeStyles((theme: Theme) =>
     },
     auctionTagStyle: {
       position: "absolute",
-      top: theme.spacing(1),
-      left: theme.spacing(1),
+      top: theme.spacing(2),
+      left: theme.spacing(2),
     },
     reserve_met: {
       color: theme.palette.success.main,
     },
     reserve_not_met: {
       color: theme.palette.success.main,
+    },
+    link: {
+      cursor: "pointer",
+      "&:hover": {
+        color: theme.palette.primary.main,
+        textDecoration: "none",
+        "& p": {
+          color: theme.palette.primary.main,
+        },
+      },
+      textDecoration: "none",
     },
   })
 );

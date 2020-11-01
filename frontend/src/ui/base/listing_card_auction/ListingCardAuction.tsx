@@ -2,17 +2,19 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Typography, Card, Link } from "@material-ui/core";
 import Slider from "react-slick";
-import { ListingSummary } from "../../util/types/listing";
+import { ListingActual } from "../../util/types/listing";
 import { AuctionTag } from "../auction_tag/AuctionTag";
 import { Star } from "../star/Star";
 import { useStore } from "../../../AuthContext";
 import { ListingCardAuctionStyles } from "./ListingCardAuction.css";
 import { BidPrice } from "../bid_price/BidPrice";
 import { priceFormatter } from "../../util/helper";
+import { formatAddress } from "../../util/helper";
 
-export const ListingCardAuction: React.FC<{ data: ListingSummary }> = ({
-  data,
-}) => {
+export const ListingCardAuction: React.FC<{
+  listing: ListingActual;
+  style?: React.CSSProperties;
+}> = ({ listing, style }) => {
   const {
     id,
     street,
@@ -26,7 +28,7 @@ export const ListingCardAuction: React.FC<{ data: ListingSummary }> = ({
     reserve_met,
     highest_bid,
     user_bid,
-  } = data;
+  } = listing;
   const history = useHistory();
   const userStore = useStore();
 
@@ -43,59 +45,71 @@ export const ListingCardAuction: React.FC<{ data: ListingSummary }> = ({
     else return "reserve_not_met";
   };
 
+  const { streetAddress, remainingAddress } = formatAddress({
+    street,
+    suburb,
+    state,
+    postcode,
+  });
+
   const formattedBid = priceFormatter.format(user_bid as number);
   const classes = ListingCardAuctionStyles();
   return (
-    <Card className={classes.card}>
-      <div className={classes.sliderContainer}>
-        <Slider {...settings}>
-          {images.map((image, i) => (
-            <img
-              className={classes.imageContainer}
-              src={image}
-              key={i}
-              alt={"sm-img-" + i}
-            />
-          ))}
-        </Slider>
-      </div>
-      {userStore?.user && (
-        <div className={classes.starContainer}>
-          <Star id={id} starred={starred} />
-        </div>
-      )}
-      <AuctionTag
-        className={classes.auctionTagStyle}
-        start={auction_start as Date}
-        end={auction_end as Date}
-        style={{ marginTop: "2px", marginBottom: "2px" }}
-      />
+    <Card className={classes.card} style={style}>
       <div className={classes.cardContent}>
-        <Link
-          onClick={() => history.push(`/listing/${id}`)}
-          style={{ textDecoration: "none" }}
-        >
-          <Typography variant="body1" style={{ textTransform: "capitalize" }}>
-            {street}
-            {", "}
-          </Typography>
-          <Typography variant="body2" style={{ textTransform: "capitalize" }}>
-            {suburb} <span style={{ textTransform: "uppercase" }}>{state}</span>{" "}
-            {postcode}
-          </Typography>
-        </Link>
-        <div className={classes.bidPriceContent}>
-          <BidPrice
-            className={classes.bidPriceStyle}
-            bid={highest_bid as number}
-            state={getState()}
-            textType={"h6"}
-            style={{ marginTop: "5px" }}
-          />
-          {/* (Jenn) TODO: IT WONT CENTER >:(((((( */}
-          <Typography style={{ marginLeft: "30px", marginTop: "5px" }}>
-            Your bid: {formattedBid}
-          </Typography>
+        <div className={classes.sliderContainer}>
+          <Slider {...settings}>
+            {images.map((image, i) => (
+              <img
+                className={classes.imageContainer}
+                src={image}
+                key={i}
+                alt={"sm-img-" + i}
+              />
+            ))}
+          </Slider>
+        </div>
+        {userStore?.user && (
+          <div className={classes.starContainer}>
+            <Star id={id} starred={starred} />
+          </div>
+        )}
+        <AuctionTag
+          className={classes.auctionTagStyle}
+          start={auction_start as Date}
+          end={auction_end as Date}
+          style={{ marginTop: "2px", marginBottom: "2px" }}
+        />
+        <div className={classes.cardContent}>
+          <Link
+            onClick={() => history.push(`/listing/${id}`)}
+            className={classes.link}
+            color="textPrimary"
+          >
+            <Typography variant="h6">{streetAddress}</Typography>
+            <Typography variant="body1" color="textSecondary">
+              {remainingAddress}
+            </Typography>
+          </Link>
+          <div className={classes.bidPriceContent}>
+            <BidPrice
+              className={classes.bidPriceStyle}
+              bid={highest_bid as number}
+              state={getState()}
+              textType={"h6"}
+              style={{ marginTop: "5px" }}
+            />
+            {getState() !== "current" && (
+              <Typography
+                style={{
+                  alignItems: "center",
+                  marginTop: "5px",
+                }}
+              >
+                Your bid: {formattedBid}
+              </Typography>
+            )}
+          </div>
         </div>
       </div>
     </Card>
