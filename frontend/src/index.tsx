@@ -6,11 +6,7 @@ import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { AuthProvider, useStore } from "./AuthContext";
 import { observer } from "mobx-react";
 import { SearchPage } from "./search/main";
-import { StarredPage } from "./profile/starred/main";
-import { ListingsPage } from "./profile/listings/main";
-import { DetailsPage } from "./profile/details/main";
-import { BidsPage } from "./profile/bids/main";
-import { AboutPage } from "./profile/about/main";
+import { ProfilePage } from "./profile/main";
 import { AddListingPage } from "./add_listing/main";
 import { BidderRegistrationPage } from "./bidder_registration/main";
 import { AuctionPage } from "./auction/main";
@@ -95,52 +91,12 @@ ReactDOM.render(
               />
               {/* Profile Pages */}
               <Route
-                path="/profile/starred"
+                path="/profile"
                 render={(props) => (
                   <ProtectedComponent
                     {...props}
                     signInStore={signInStore}
-                    Component={StarredPage}
-                  />
-                )}
-              />
-              <Route
-                path="/profile/listings"
-                render={(props) => (
-                  <ProtectedComponent
-                    {...props}
-                    signInStore={signInStore}
-                    Component={ListingsPage}
-                  />
-                )}
-              />
-              <Route
-                path="/profile/details"
-                render={(props) => (
-                  <ProtectedComponent
-                    {...props}
-                    signInStore={signInStore}
-                    Component={DetailsPage}
-                  />
-                )}
-              />
-              <Route
-                path="/profile/bids"
-                render={(props) => (
-                  <ProtectedComponent
-                    {...props}
-                    signInStore={signInStore}
-                    Component={BidsPage}
-                  />
-                )}
-              />
-              <Route
-                path="/profile/about"
-                render={(props) => (
-                  <ProtectedComponent
-                    {...props}
-                    signInStore={signInStore}
-                    Component={AboutPage}
+                    Component={ProfilePage}
                   />
                 )}
               />
