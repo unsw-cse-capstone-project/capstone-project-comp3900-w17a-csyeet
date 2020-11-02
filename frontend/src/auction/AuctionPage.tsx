@@ -81,54 +81,54 @@ export const AuctionPage = ({
         {", "}
         <span style={{ textTransform: "uppercase" }}>{state}</span> {postcode}
       </Typography>
-      <Paper elevation={0} style={{margin: "20px -15vw", padding: "20px 15vw", backgroundColor: "#f3f4f5"}}>
-      <AuctionTime />
-      <Hidden lgDown>
-        <Grid container spacing={3}>
-          <Grid item xs={4}>
-            <div
-              className={classes.mainImage}
-              style={{ backgroundImage: `url(${mainImage})` }}
-            />
+      <Paper elevation={0} style={{ margin: "20px -15vw", padding: "20px 15vw", backgroundColor: "#f3f4f5" }}>
+        <AuctionTime />
+        <Hidden lgDown>
+          <Grid container spacing={3}>
+            <Grid item xs={4}>
+              <div
+                className={classes.mainImage}
+                style={{ backgroundImage: `url(${mainImage})` }}
+              />
+            </Grid>
+            <Grid item xs={8}>
+              <BiddingBox />
+            </Grid>
           </Grid>
-          <Grid item xs={8}>
-            <BiddingBox />
+        </Hidden>
+        <Hidden only={["xs", "sm", "xl"]}>
+          <Grid container spacing={3}>
+            <Grid item xs={5}>
+              <div
+                className={classes.mainImage}
+                style={{ backgroundImage: `url(${mainImage})` }}
+              />
+            </Grid>
+            <Grid item xs={7}>
+              <BiddingBox />
+            </Grid>
           </Grid>
-        </Grid>
-      </Hidden>
-      <Hidden only={["xs", "sm", "xl"]}>
-        <Grid container spacing={3}>
-          <Grid item xs={5}>
-            <div
-              className={classes.mainImage}
-              style={{ backgroundImage: `url(${mainImage})` }}
-            />
+        </Hidden>
+        <Hidden mdUp>
+          {/* xs sm */}
+          <Grid container>
+            <Grid item xs={12}>
+              <div
+                className={classes.mainImage}
+                style={{
+                  backgroundImage: `url(${mainImage})`,
+                  height: "auto",
+                  paddingTop: "67%",
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <BiddingBox />
+            </Grid>
           </Grid>
-          <Grid item xs={7}>
-            <BiddingBox />
-          </Grid>
-        </Grid>
-      </Hidden>
-      <Hidden mdUp>
-        {/* xs sm */}
-        <Grid container>
-          <Grid item xs={12}>
-            <div
-              className={classes.mainImage}
-              style={{
-                backgroundImage: `url(${mainImage})`,
-                height: "auto",
-                paddingTop: "67%",
-              }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <BiddingBox />
-          </Grid>
-        </Grid>
-      </Hidden>
+        </Hidden>
       </Paper>
-      
+
       {/* bids list */}
       <div className={classes.biddingInfo}>
         <Hidden smDown>

@@ -65,7 +65,7 @@ export class BidderRegistrationPresenter {
       0
     );
     try {
-      const response = await fetch(`/registrations/${store.listing?.id}`, {
+      const response = await fetch(`/registrations/${store.listing ?.id}`, {
         method: "post",
         body: JSON.stringify({
           bid: store.initialBid,

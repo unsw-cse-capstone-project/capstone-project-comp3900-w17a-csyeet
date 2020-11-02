@@ -36,13 +36,13 @@ export const AuctionDetails = ({
           <AuctionTag start={auction_start} end={auction_end} />
         </div>
       ) : (
-        <div>
-          <Typography variant="body2">
-            End Time: {dateFormatter.format(auction_end)}
-          </Typography>
-          <AuctionTag start={auction_start} end={auction_end} />
-        </div>
-      )}
+          <div>
+            <Typography variant="body2">
+              End Time: {dateFormatter.format(auction_end)}
+            </Typography>
+            <AuctionTag start={auction_start} end={auction_end} />
+          </div>
+        )}
       <AuctionActionButton id={id} auction_start={auction_start} registered_bidder={registered_bidder} isUser={isUser} />
     </div>
   );

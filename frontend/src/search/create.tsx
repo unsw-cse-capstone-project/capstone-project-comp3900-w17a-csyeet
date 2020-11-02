@@ -5,8 +5,28 @@ import { SearchResultsList } from "./search_results_list/SearchResultsList";
 import * as React from "react";
 import { SearchPage } from "./SearchPage";
 
-export const createSearchPage = (query?: string) => {
-  const store = new SearchStore(query);
+export const createSearchPage = (
+  query?: string,
+  type?: string,
+  beds?: number,
+  baths?: number,
+  cars?: number,
+  start?: string,
+  end?: string,
+  featureList?: string[],
+  landmarkList?: string[],
+) => {
+  const store = new SearchStore(
+    query,
+    type,
+    beds,
+    baths,
+    cars,
+    start,
+    end,
+    featureList,
+    landmarkList,
+  );
   const presenter = new SearchPresenter();
 
   if (query) {

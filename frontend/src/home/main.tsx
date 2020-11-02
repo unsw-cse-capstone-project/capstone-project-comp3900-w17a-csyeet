@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import * as React from "react";
 import logo from "../images/logo.png";
-import { SearchBar } from "../ui/base/search_bar/SearchBar";
+import { SearchBar } from '../ui/base/search_bar/SearchBar';
 import { SearchStore } from "../search/SearchPresenter";
 import { HomePageStyle } from "./HomePage.css";
 import { createUpcomingAuction } from './upcoming_auctions/create';

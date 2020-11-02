@@ -77,7 +77,7 @@ export class AuctionPagePresenter {
     store.bidMakingStatus = "submitting";
     try {
       const response = await fetch(
-        `/listings/${store.listing?.id}/auction/bid`,
+        `/listings/${store.listing ?.id}/auction/bid`,
         {
           method: "post",
           body: JSON.stringify({ bid: bid }),
