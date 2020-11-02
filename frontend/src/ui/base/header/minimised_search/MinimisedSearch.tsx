@@ -19,6 +19,12 @@ const MinimisedSearchStyle = makeStyles((theme: Theme) =>
         borderRadius: "1000px",
       },
     },
+    searchButton: {
+      width: "42px",
+      height: "42px",
+      padding: 0,
+      marginRight: "12px",
+    },
   })
 );
 
@@ -30,22 +36,22 @@ export const MinimisedSearch = () => {
   const inputEl = React.useRef<HTMLInputElement>(null);
 
   const onClick = () => {
-		setOpen((isOpen) => !isOpen);
-		if (!!inputEl.current){
-			inputEl.current.focus();
-		}
+    setOpen((isOpen) => !isOpen);
+    if (!!inputEl.current) {
+      inputEl.current.focus();
+    }
   };
 
   const onSubmit = (event: any) => {
     event.preventDefault();
     if (query !== "") {
-			history.push(`/search?query=${query}`);
-			setOpen(false);
+      history.push(`/search?query=${query}`);
+      setOpen(false);
     }
   };
 
   return open ? (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} style={{marginRight: "12px"}}>
       <TextField
         id="Search"
         value={query}
@@ -69,7 +75,11 @@ export const MinimisedSearch = () => {
       />
     </form>
   ) : (
-    <IconButton aria-label="Search" onClick={onClick} style={{width: "42px", height: "42px", padding: 0, marginRight: "12px"}}>
+    <IconButton
+      aria-label="Search"
+      onClick={onClick}
+      className={classes.searchButton}
+    >
       <Search fontSize="inherit" />
     </IconButton>
   );

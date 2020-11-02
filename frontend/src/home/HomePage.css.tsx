@@ -6,7 +6,7 @@ export const HomePageStyle = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      padding: theme.spacing(15, 0, 12, 0),
+      padding: theme.spacing(0, 0, 12, 0),
     },
     top: {
       display: "flex",
@@ -15,7 +15,7 @@ export const HomePageStyle = makeStyles((theme: Theme) =>
       alignItems: "center",
       width: "100%",
       position: "relative",
-      paddingBottom: theme.spacing(25),
+      padding: theme.spacing(15, 0, 25, 0),
     },
     background: {
       backgroundColor: "#f3f4f5",

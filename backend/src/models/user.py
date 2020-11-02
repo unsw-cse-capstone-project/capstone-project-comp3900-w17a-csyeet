@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Text, LargeBinary
 from sqlalchemy.orm import relationship
 from .base import Base
 
@@ -10,6 +10,15 @@ class User(Base):
     email = Column(String(), unique=True, nullable=False)
     hashed_password = Column(String(), nullable=False)
     name = Column(String(), nullable=False)
+    blurb = Column(Text(), nullable=True)
+    avatar_data = Column(LargeBinary(), nullable=True)
+    avatar_image_type = Column(String(), nullable=True)
+    phone_number = Column(String(), nullable=False)
+    street = Column(String(), nullable=False)
+    suburb = Column(String(), nullable=False)
+    postcode = Column(String(), nullable=False)
+    state = Column(String(), nullable=False)
+    country = Column(String(), nullable=False)
 
     listings = relationship('Listing', back_populates='owner')
     registrations = relationship('Registration', back_populates='user')
