@@ -2,14 +2,15 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { InputAdornment, FormHelperText } from "@material-ui/core";
 export interface TextFieldWrapperProps {
-  field: string;
+  field?: string;
   label: string;
   type?: string;
   adornment?: React.ReactNode;
   value?: string;
   error?: boolean;
   onBlur?: () => void;
-  onChange: (value: string, field: string) => void;
+  onChange?: (value: string, field: string) => void;
+  readOnly?: boolean;
 }
 
 export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
@@ -21,16 +22,18 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
   error,
   onBlur,
   onChange,
+  readOnly,
 }) => {
   const [v, setValue] = React.useState(value);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value, field);
+    if (onChange) onChange(e.target.value, field as string);
     setValue(e.target.value);
     if (!error) setError(false);
   };
 
   const [e, setError] = React.useState<boolean>(false);
   const customOnBlur = () => {
+    if (readOnly) return;
     v === "" ? setError(true) : setError(false);
     if (onBlur) onBlur();
   };
@@ -46,6 +49,7 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
         onBlur={customOnBlur}
         onChange={handleChange}
         InputProps={{
+          readOnly: readOnly,
           endAdornment: (
             <InputAdornment position="end">{adornment}</InputAdornment>
           ),
