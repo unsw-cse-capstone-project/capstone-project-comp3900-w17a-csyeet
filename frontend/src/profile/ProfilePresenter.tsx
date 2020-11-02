@@ -19,22 +19,31 @@ export class ProfileStore {
 export class ProfilePresenter {
   @action
   async getProfileInfo(store: ProfileStore) {
+    console.log("here");
     try {
-      const response = await fetch(`/listings/`);
+      const response = await fetch(`/users/profile`);
       const content = await response.json();
-      if ("detail in content") {
+      if ("detail" in content) {
         runInAction(() => {
           store.loadingState = "error";
+          console.log("error T-T");
         });
       } else {
-        const results: ListingActual[] = content.map((result: any) =>
-          getListingFromResult(result)
+        console.log("profile presenter", content);
+        const ListingResults: ListingActual[] = content.listings.map(
+          (result: any) => getListingFromResult(result)
+        );
+        const BidsResults: ListingActual[] = content.registrations.map(
+          (result: any) => getListingFromResult(result)
+        );
+        const StarredResults: ListingActual[] = content.starred_listings.map(
+          (result: any) => getListingFromResult(result)
         );
         runInAction(() => {
           store.loadingState = "loaded";
-          store.myBidsResults = [];
-          store.myListingsResults = [];
-          store.starredResults = [];
+          store.myBidsResults = BidsResults;
+          store.myListingsResults = ListingResults;
+          store.starredResults = StarredResults;
         });
       }
     } catch {

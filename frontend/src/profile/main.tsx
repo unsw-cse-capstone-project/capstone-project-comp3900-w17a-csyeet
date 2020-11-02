@@ -35,9 +35,7 @@ export const ProfilePageWrapper = observer(
           <Typography variant="h4">{userStore.user.name}</Typography>
           <Typography variant="body1">{userStore.user.email}</Typography>
         </div>
-        <div>
-          <ProfileTabs store={store} />
-        </div>
+        <ProfileTabs store={store} />
       </div>
     );
   }
