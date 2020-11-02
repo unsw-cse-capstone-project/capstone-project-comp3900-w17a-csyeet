@@ -26,7 +26,6 @@ export class ListingPresenter {
 
   @action
   async publishListing(store: ListingStore, onSuccess: () => void) {
-    store.status = "publishing";
     try {
       const response = await fetch(`/listings/`, {
         method: "post",
