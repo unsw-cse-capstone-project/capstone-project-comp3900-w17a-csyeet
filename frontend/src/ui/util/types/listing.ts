@@ -65,11 +65,11 @@ export type ListingSummary = {
   state: string;
   images: string[];
   starred: boolean;
-  num_bedrooms?: number;
-  num_bathrooms?: number;
-  num_car_spaces?: number;
-  auction_start?: Date;
-  auction_end?: Date;
+  num_bedrooms: number;
+  num_bathrooms: number;
+  num_car_spaces: number;
+  auction_start: Date;
+  auction_end: Date;
   reserve_met?: boolean;
   highest_bid?: number | null;
   user_bid?: number;
