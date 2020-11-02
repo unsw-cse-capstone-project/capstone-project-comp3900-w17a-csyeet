@@ -56,7 +56,7 @@ export const ListingResultCard = observer(
     const userStore = useStore();
 
     const BidStatus = () => {
-      if (new Date().getTime() < auction_start.getTime()) {
+      if (new Date().getTime() < auction_start.getTime() || highest_bid === null) {
         return null;
       }
       return (

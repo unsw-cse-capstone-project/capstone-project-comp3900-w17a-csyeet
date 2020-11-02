@@ -2,15 +2,10 @@ import React from "react";
 import { Modal, Backdrop, Fade } from "@material-ui/core";
 import ModalStyles from "./ModalWrapper.css";
 
-export interface ModalWrapperProps {
+export const ModalWrapper: React.FC<{
   open: boolean;
   onClose: () => void;
-}
-const ModalWrapper: React.FC<ModalWrapperProps> = ({
-  open,
-  onClose,
-  children,
-}) => {
+}> = ({ open, onClose, children }) => {
   const classes = ModalStyles();
 
   return (
@@ -32,5 +27,3 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({
     </Modal>
   );
 };
-
-export default ModalWrapper;

@@ -25,6 +25,8 @@ export class SearchStore {
   @observable
   searchState?: "loading" | "loaded" | "error";
 
+  continuation?: string;
+  
   constructor(
     query?: string,
     type?: string,
@@ -54,8 +56,9 @@ export class SearchStore {
 export class SearchPresenter {
   @action
   async search(store: SearchStore) {
-    store.searchState = "loading";
-
+    if (!store.continuation) {
+      runInAction(() => {store.searchState = "loading"});
+    }
     const { type, beds, baths, cars, start_date, end_date, features, landmarks } = store.filters;
     // Parse through filters and format into a query string
     let searchQuery = `?location=${store.input}`;
@@ -67,27 +70,22 @@ export class SearchPresenter {
     searchQuery += end_date ? `&auction_end=${end_date.toISOString()}` : "";
     features && features.map(feature => searchQuery += `&features=${feature}`);
     landmarks && landmarks.map(landmark => searchQuery += `&landmarks=${landmark}`);
-    // future to add:
-    // - include closed auctions
-    // - limit
-    // - continuation
-    console.log(searchQuery);
-
-
+    searchQuery += store.continuation? `&continuation=${store.continuation}`: ""; 
+    searchQuery += "&limit=2"; 
     try {
       // Change this to add the filters
       const response = await fetch(`/listings/${searchQuery}`);
       const content = await response.json();
       if ("detail" in content) {
-        console.log("error", content.detail);
         runInAction(() => {
-          store.searchState = "loaded";
+          store.searchState = "error";
         });
       } else {
         const results: ListingActual[] = content.results.map((result: any) => getListingFromResult(result));
         runInAction(() => {
-          store.searchResults = results;
+          store.searchResults = [...store.searchResults, ...results];
           store.searchState = "loaded";
+          store.continuation = content.continuation;
         });
       }
     } catch {

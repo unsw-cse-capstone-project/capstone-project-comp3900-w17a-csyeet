@@ -3,6 +3,8 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 export const SearchBarStyles = makeStyles((theme: Theme) =>
   createStyles({
     textInput: {
+      borderRadius: "1000px",
+      backgroundColor: theme.palette.background.paper,
       "& *": {
         borderRadius: "1000px",
       },
