@@ -47,6 +47,7 @@ const AuctionStyles = makeStyles((theme: Theme) =>
     },
     infoContainer: {
       position: "absolute",
+      width: "40%",
       top: "15px",
       right: "5px",
     },

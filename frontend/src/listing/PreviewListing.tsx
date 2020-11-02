@@ -1,10 +1,11 @@
 import React from "react";
 import { ListingStore } from "./ListingStore";
 import { Typography, Button } from "@material-ui/core";
-export const PreviewListing: React.FC<{
+export const PreviewListing = ({ store, onPublish, onBack }: {
   store: ListingStore;
   onPublish: () => void;
-}> = ({ store, onPublish }) => {
+  onBack: () => void,
+}) => {
   return (
     <div>
       <Typography>Preview Listing </Typography>
