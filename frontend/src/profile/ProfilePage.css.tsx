@@ -5,7 +5,7 @@ export const ProfilePageStyles = makeStyles((theme: Theme) =>
     userInfo: {
       position: "sticky",
       backgroundColor: "#F3F4F5",
-      padding: "20px",
+      padding: theme.spacing(5, 0),
       zIndex: 5,
       top: "0",
       display: "flex",
