@@ -1,5 +1,5 @@
 import * as React from "react";
-import { makeStyles, Theme } from "@material-ui/core/styles";
+import { observer } from "mobx-react";
 import { Avatar, Typography, Tab, Tabs } from "@material-ui/core";
 import { ProfilePageStyles } from "./ProfilePage.css";
 import { AboutMePage as AboutMe } from "./about/AboutMePage";
@@ -7,25 +7,47 @@ import { MyBidsPage as MyBids } from "./bids/MyBidsPage";
 import { MyDetailsPage as MyDetails } from "./details/MyDetailsPage";
 import { MyListingsPage as MyListings } from "./listings/MyListingsPage";
 import { StarredPropertiesPage as StarredProperties } from "./starred/StarredPropertiesPage";
+import { ProfileStore, ProfilePresenter } from "./ProfilePresenter";
 
-export function ProfilePage() {
-  const classes = ProfilePageStyles();
-  return (
-    <div>
-      <div className={classes.userInfo}>
-        <Avatar
-          src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
-          className={classes.avatar}
-        ></Avatar>
-        <Typography variant="h4">Jennifer Xu</Typography>
-        <Typography variant="body1">jennifer@example.com</Typography>
-      </div>
+export const ProfilePage = () => {
+  const store = new ProfileStore();
+  const presenter = new ProfilePresenter();
+  presenter.getProfileInfo(store);
+  return <ProfilePageWrapper store={store} />;
+};
+
+export const ProfilePageWrapper = observer(
+  ({ store }: { store: ProfileStore }) => {
+    const classes = ProfilePageStyles();
+    if (!store.loadingState) {
+      return null;
+    }
+
+    if (store.loadingState === "loading") {
+      return <div>Loading</div>;
+    }
+
+    if (store.loadingState === "error") {
+      return <div>Error loading</div>;
+    }
+
+    return (
       <div>
-        <ScrollableTabsButtonAuto />
+        <div className={classes.userInfo}>
+          <Avatar
+            src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
+            className={classes.avatar}
+          ></Avatar>
+          <Typography variant="h4">Jennifer Xu</Typography>
+          <Typography variant="body1">jennifer@example.com</Typography>
+        </div>
+        <div>
+          <ProfileTabs store={store} />
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
 
 function TabPanel(props: {
   children?: React.ReactNode;
@@ -54,7 +76,7 @@ function a11yProps(index: any) {
   };
 }
 
-function ScrollableTabsButtonAuto() {
+function ProfileTabs({ store }: { store: ProfileStore }) {
   const classes = ProfilePageStyles();
   const [value, setValue] = React.useState(0);
 
@@ -83,19 +105,19 @@ function ScrollableTabsButtonAuto() {
       </div>
 
       <TabPanel value={value} index={0}>
-        <AboutMe />
+        <AboutMe store={store} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <MyBids />
+        <MyBids store={store} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <MyListings />
+        <MyListings store={store} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <StarredProperties />
+        <StarredProperties store={store} />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <MyDetails />
+        <MyDetails store={store} />
       </TabPanel>
     </div>
   );

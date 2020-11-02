@@ -1,4 +1,4 @@
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, observable, runInAction } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
 import { getListingFromResult } from "../ui/util/helper";
 import { User } from "../AuthContext";
@@ -15,6 +15,9 @@ export class ProfileStore {
 
   @observable
   starredResults: ListingActual[] = [];
+
+  @observable
+  loadingState?: "loading" | "loaded" | "error";
 }
 
 export class ProfilePresenter {
@@ -25,13 +28,14 @@ export class ProfilePresenter {
       const content = await response.json();
       if ("detail in content") {
         runInAction(() => {
-          console.log("failed to load");
+          store.loadingState = "error";
         });
       } else {
         const results: ListingActual[] = content.map((result: any) =>
           getListingFromResult(result)
         );
         runInAction(() => {
+          store.loadingState = "loaded";
           store.myBidsResults = [];
           store.myListingsResults = [];
           store.starredResults = [];
@@ -39,6 +43,7 @@ export class ProfilePresenter {
       }
     } catch {
       console.log("error :(");
+      runInAction(() => (store.loadingState = "error"));
     }
   }
 }
