@@ -10,7 +10,7 @@ export interface SelectWrapperProps {
   field: string;
   data: Array<string>;
   onChange: (value: string, field: string) => void;
-  required: boolean;
+  required?: boolean;
   value?: string;
 }
 export const SelectWrapper = ({
@@ -19,7 +19,7 @@ export const SelectWrapper = ({
   data,
   value,
   onChange,
-  required,
+  required = true,
 }: SelectWrapperProps) => {
   const [selected, setSelected] = React.useState(value);
   const handleChange = (e: React.ChangeEvent<{ value: unknown }>) => {
@@ -29,7 +29,7 @@ export const SelectWrapper = ({
 
   const [error, setError] = React.useState<boolean>(false);
   const handleBlur = () => {
-    if (required && selected !== "") setError(true);
+    if (required && selected === "") setError(true);
     else setError(false);
   };
 
@@ -65,7 +65,7 @@ export const SelectWrapper = ({
       </FormControl>
       {error && (
         <FormHelperText style={{ color: "red" }}>
-          {Label} is required*
+          {label} is required*
         </FormHelperText>
       )}
     </div>

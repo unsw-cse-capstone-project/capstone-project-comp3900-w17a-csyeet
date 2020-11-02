@@ -10,6 +10,7 @@ import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
 
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { computed } from "mobx";
 
 export const DetailStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,13 +40,26 @@ export const Details: React.FC<{
   const classes = DetailStyles();
   const propertyTypes = ["Apartment", "Duplex", "House", "Studio", "Townhouse"];
   const onChange = (value: string, field: string) => {
+    console.log("OnChange ", field, "new", value);
     (store as any)[field] = value;
   };
+
+  const getAddressData = computed(() => {
+    return {
+      street: store.street,
+      suburb: store.suburb,
+      postcode: store.postcode,
+      state: store.state,
+      country: store.country,
+    };
+  });
   return (
     <div className={classes.container}>
-      <Typography> Property Address</Typography>
-      <AddressForm onChange={onChange} />
-      <Typography style={{ marginTop: "30px" }}> Property Details </Typography>
+      <Typography variant={"subtitle1"}> Property Address</Typography>
+      <AddressForm onChange={onChange} addressData={getAddressData.get()} />
+      <Typography variant={"subtitle1"} style={{ marginTop: "30px" }}>
+        Property Details
+      </Typography>
       <SelectWrapper
         data={propertyTypes}
         label="Property Type"

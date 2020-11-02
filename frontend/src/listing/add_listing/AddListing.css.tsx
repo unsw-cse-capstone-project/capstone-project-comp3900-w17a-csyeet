@@ -4,6 +4,7 @@ export const AddListingStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
+      height: "100%",
       padding: theme.spacing(2, "15%", "200px", "15%"),
       boxSizing: "border-box",
       overflow: "scroll",

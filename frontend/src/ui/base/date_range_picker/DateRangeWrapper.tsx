@@ -35,6 +35,13 @@ export const DateRangeWrapper: React.FC<{
                   {...startProps}
                   size="small"
                   helperText={undefined}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarTodayIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <DateRangeDelimiter> to </DateRangeDelimiter>
                 <TextField

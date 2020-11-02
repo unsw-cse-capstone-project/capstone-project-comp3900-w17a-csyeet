@@ -5,26 +5,29 @@ const setResultsInStore = action((store: ListingStore, result: any) => {});
 
 export class ListingPresenter {
   @action
-  async fetchListing(store: ListingStore, listing_id: number) {
-    store.status = "loading";
+  async fetchListing(
+    store: ListingStore,
+    listing_id: number,
+    onError: () => void
+  ) {
     try {
       const response = await fetch(`/listings/${listing_id}`);
       const result = await response.json();
 
       // Error Handling
-      if ("detail" in result) {
-        runInAction(() => (store.state = "error"));
-      } else {
-        setResultsInStore(store, result);
-        runInAction(() => (store.state = "edit"));
-      }
+      if ("detail" in result) onError();
+      else setResultsInStore(store, result);
     } catch {
-      runInAction(() => (store.state = "error"));
+      onError();
     }
   }
 
   @action
-  async publishListing(store: ListingStore, onSuccess: () => void) {
+  async publishListing(
+    store: ListingStore,
+    onSuccess: () => void,
+    onError: () => void
+  ) {
     try {
       const response = await fetch(`/listings/`, {
         method: "post",
@@ -50,17 +53,10 @@ export class ListingPresenter {
         }),
       });
       const result = await response.json();
-      if ("detail" in result) {
-        runInAction(() => (store.status = "error"));
-      } else {
-        runInAction(() => {
-          store.status = "success";
-          store.id = result.id;
-        });
-        onSuccess();
-      }
+      if ("detail" in result) onError();
+      else onSuccess();
     } catch {
-      runInAction(() => (store.state = "error"));
+      onError();
     }
   }
 

@@ -19,10 +19,7 @@ export type Feature =
   | "has_pool"
   | "has_gym";
 
-export type Status = "publishing" | "loading" | "error" | "success" | null;
-
 export class ListingStore {
-  @observable status: Status = null;
   @observable canPreview: boolean = true;
   @observable id: number | null = null;
 

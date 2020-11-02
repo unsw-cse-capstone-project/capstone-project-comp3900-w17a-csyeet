@@ -8,7 +8,9 @@ export const PreviewListing: React.FC<{
   return (
     <div>
       <Typography>Preview Listing </Typography>
-      <Button variant={"contained"} color={"primary"} onClick={onPublish} />
+      <Button variant={"contained"} color={"primary"} onClick={onPublish}>
+        Publish
+      </Button>
     </div>
   );
 };
