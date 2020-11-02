@@ -19,6 +19,10 @@ export const ProfilePage = () => {
 export const ProfilePageWrapper = observer(
   ({ store }: { store: ProfileStore }) => {
     const classes = ProfilePageStyles();
+    const userStore = useStore();
+    if (!userStore || !userStore.user) {
+      return null;
+    }
     if (!store.loadingState) {
       return null;
     }
