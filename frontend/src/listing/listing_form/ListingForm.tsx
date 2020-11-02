@@ -111,7 +111,7 @@ export const ListingForm = observer(
 
     const handleNext = () => {
       if (activeStep === steps.length - 1) {
-        if (canPreview == false) setSnack(true);
+        if (canPreview === false) setSnack(true);
         else onPreview();
         return;
       }

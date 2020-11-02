@@ -1,13 +1,11 @@
 import * as React from "react";
 import { ListingPresenter } from "../ListingPresenter";
 import { ListingStore } from "../ListingStore";
-import { observer } from "mobx-react";
 import { useHistory } from "react-router-dom";
-import { Button, Snackbar } from "@material-ui/core";
+import { Snackbar } from "@material-ui/core";
 import { ListingForm } from "../listing_form/ListingForm";
 import { PreviewListing } from "../PreviewListing";
 import { AddListingStyles } from "./AddListing.css";
-import { ArrowBackIos } from "@material-ui/icons";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 
 function Alert(props: AlertProps) {
@@ -25,10 +23,6 @@ export const AddListingPage = () => {
   const onSuccess = () => {
     setStatus("success");
     history.push("/listing/" + store.id);
-  };
-
-  const onError = () => {
-    setStatus("error");
   };
 
   const snackContent = (status: string) => {
