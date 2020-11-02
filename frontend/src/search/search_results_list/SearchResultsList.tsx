@@ -1,8 +1,7 @@
 import { createStyles, makeStyles, Theme, Typography } from "@material-ui/core";
 import { observer } from "mobx-react";
-import { action } from "mobx";
 import * as React from "react";
-import { SearchStore } from "../SearchPresenter";
+import { SearchStore, SearchPresenter } from "../SearchPresenter";
 import {
   ListingResultCard,
   ListingResultCardLoading,
@@ -18,7 +17,13 @@ const SearchResultsListStyles = makeStyles((theme: Theme) =>
 );
 
 export const SearchResultsList = observer(
-  ({ store }: { store: SearchStore }) => {
+  ({
+    store,
+    presenter,
+  }: {
+    store: SearchStore;
+    presenter: SearchPresenter;
+  }) => {
     const classes = SearchResultsListStyles();
     if (!store.searchState) {
       return null;
@@ -45,24 +50,14 @@ export const SearchResultsList = observer(
         ) : (
           <InfiniteScroll
             dataLength={store.searchResults.length}
-            next={() =>
-              setTimeout(
-                action(() =>
-                  store.searchResults.push(...store.searchResults.slice(0, 3))
-                ),
-                600
-              )
-            }
-            hasMore={true}
+            next={() => presenter.search(store)}
+            hasMore={!!store.continuation}
             loader={
-              // <div style={{ padding: "20px 0 100px 0", textAlign: "center" }}>
-              //   <LinearProgress />
-              // </div>
               <ListingResultCardLoading className={classes.cardContainer} />
             }
             endMessage={
               <p style={{ textAlign: "center" }}>
-                <b>Yay! You have seen it all</b>
+                <b>No more results</b>
               </p>
             }
             style={{ overflow: "visible" }}

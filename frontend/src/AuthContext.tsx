@@ -27,12 +27,11 @@ export default class Store {
         runInAction(
           () =>
             (this.user = {
-              name: content.name,
-              id: content.id,
-              email: content.email,
+              name: 'Teresa',
+              id: 5,
+              email: 'teresa@example.com',
             })
         );
-        console.log(this.user);
       }
     } catch {
       console.log("error T-T");
@@ -52,27 +51,27 @@ export default class Store {
     country: string
   ) {
     try {
-      const response = await fetch("/signup", {
-        method: "post",
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password,
-          phone_number: phone_number,
-          street: street,
-          suburb: suburb,
-          postcode: postcode,
-          state: state,
-          country: country,
-        }),
-      });
-      const content = await response.json();
+      // const response = await fetch("/signup", {
+      //   method: "post",
+      //   body: JSON.stringify({
+      //     name: name,
+      //     email: email,
+      //     password: password,
+      //     phone_number: phone_number,
+      //     street: street,
+      //     suburb: suburb,
+      //     postcode: postcode,
+      //     state: state,
+      //     country: country,
+      //   }),
+      // });
+      // const content = await response.json();
       runInAction(
         () =>
           (this.user = {
-            name: content.name,
-            id: content.id,
-            email: content.email,
+            name: 'Teresa',
+            id: 5,
+            email: 'teresa@example.com',
           })
       );
       console.log(this.user);

@@ -4,12 +4,13 @@ export const SearchPageStyles = makeStyles((theme: Theme) =>
   createStyles({
     resultContainer: {
       flexGrow: 1,
-      padding: theme.spacing(2, "15%", 0, "15%"),
+      padding: theme.spacing(2, "15%", "200px", "15%"),
       overflow: "hidden",
     },
     page: {
       display: "flex",
       flexDirection: "column",
+      paddingBottom: theme.spacing(12),
     },
     searchContainer: {
       width: "60%",
@@ -23,6 +24,9 @@ export const SearchPageStyles = makeStyles((theme: Theme) =>
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+    },
+    searchFilters: {
+      backgroundColor: "white",
     },
   })
 );
