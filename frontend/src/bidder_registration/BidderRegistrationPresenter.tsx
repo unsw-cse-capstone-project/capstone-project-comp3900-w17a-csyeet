@@ -1,10 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
-import {
-  createFakeListing,
-  createFakeActualListing,
-} from "../ui/util/fakes/listing";
-import { Listing, ListingActual } from "../ui/util/types/listing";
-import { delay, getListingFromResult } from "../ui/util/helper";
+import { ListingActual } from "../ui/util/types/listing";
+import { getListingFromResult } from "../ui/util/helper";
 export class BidderRegistrationStore {
   @observable
   initialBid: number = 0;
@@ -69,7 +65,7 @@ export class BidderRegistrationPresenter {
       0
     );
     try {
-      const response = await fetch(`/registrations/${store.listing?.id}`, {
+      const response = await fetch(`/registrations/${store.listing ?.id}`, {
         method: "post",
         body: JSON.stringify({
           bid: store.initialBid,

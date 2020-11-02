@@ -6,6 +6,12 @@ from .listing import ListingResponse
 class SignupRequest(UserBase):
     password: str
     name: str
+    phone_number: str
+    street: str
+    suburb: str
+    postcode: str
+    state: str
+    country: str
 
 
 class LoginRequest(UserBase):

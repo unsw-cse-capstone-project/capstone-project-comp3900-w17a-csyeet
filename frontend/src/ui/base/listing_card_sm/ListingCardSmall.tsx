@@ -1,8 +1,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Typography, Card, Link } from "@material-ui/core";
+import { Typography, Card, Link, CardContent } from "@material-ui/core";
 import Slider from "react-slick";
-import { ListingActual } from "../../util/types/listing";
+import { ListingActual, ListingSummary } from '../../util/types/listing';
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
 import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
@@ -11,12 +11,13 @@ import { Star } from "../star/Star";
 import { ListingCardSmallStyles } from "./ListingCardSmall.css";
 import { useStore } from "../../../AuthContext";
 import { formatAddress } from "../../util/helper";
+import ReactPlaceholder from "react-placeholder/lib";
 
 export const ListingCardSmall = ({
   listing,
   style,
 }: {
-  listing: ListingActual;
+  listing: ListingSummary | ListingActual;
   style?: React.CSSProperties;
 }) => {
   const {
@@ -101,6 +102,32 @@ export const ListingCardSmall = ({
           </div>
         </div>
       </div>
+    </Card>
+  );
+};
+
+export const ListingCardSmallPlaceholder = () => {
+  const classes = ListingCardSmallStyles();
+  return (
+    <Card elevation={2} className={classes.card} style={{ height: "310px" }}>
+      <ReactPlaceholder
+        showLoadingAnimation={true}
+        type="rect"
+        ready={false}
+        style={{ width: "100%", height: "170px" }}
+      >
+        {null}
+      </ReactPlaceholder>
+      <CardContent>
+      <ReactPlaceholder
+        showLoadingAnimation={true}
+        type="text"
+        ready={false}
+        style={{ width: "100%"}}
+      >
+        {null}
+      </ReactPlaceholder>
+      </CardContent>
     </Card>
   );
 };
