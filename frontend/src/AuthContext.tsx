@@ -27,9 +27,9 @@ export default class Store {
         runInAction(
           () =>
             (this.user = {
-              name: 'Teresa',
-              id: 5,
-              email: 'teresa@example.com',
+              name: content.name,
+              id: content.id,
+              email: content.email,
             })
         );
       }
@@ -51,27 +51,27 @@ export default class Store {
     country: string
   ) {
     try {
-      // const response = await fetch("/signup", {
-      //   method: "post",
-      //   body: JSON.stringify({
-      //     name: name,
-      //     email: email,
-      //     password: password,
-      //     phone_number: phone_number,
-      //     street: street,
-      //     suburb: suburb,
-      //     postcode: postcode,
-      //     state: state,
-      //     country: country,
-      //   }),
-      // });
-      // const content = await response.json();
+      const response = await fetch("/signup", {
+        method: "post",
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          password: password,
+          phone_number: phone_number,
+          street: street,
+          suburb: suburb,
+          postcode: postcode,
+          state: state,
+          country: country,
+        }),
+      });
+      const content = await response.json();
       runInAction(
         () =>
           (this.user = {
-            name: 'Teresa',
-            id: 5,
-            email: 'teresa@example.com',
+            name: content.name,
+            id: content.id,
+            email: content.email,
           })
       );
       console.log(this.user);
