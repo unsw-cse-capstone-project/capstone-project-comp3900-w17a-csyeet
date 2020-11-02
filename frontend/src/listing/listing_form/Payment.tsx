@@ -8,6 +8,7 @@ import {
   InputLabel,
   OutlinedInput,
   FormHelperText,
+  Typography,
 } from "@material-ui/core";
 import NumberFormat from "react-number-format";
 
@@ -65,6 +66,7 @@ export const PaymentDetails: React.FC<{ store: ListingStore }> = observer(
     });
     return (
       <>
+        <Typography variant={"subtitle1"}>Payment Details</Typography>
         <TextFieldWrapper
           field="accName"
           label="Account Name"

@@ -42,12 +42,13 @@ const AuctionStyles = makeStyles((theme: Theme) =>
     },
     reserveLabel: {
       marginTop: "15px",
+      width: "150px",
       position: "relative",
     },
     infoContainer: {
       position: "absolute",
-      top: "0px",
-      right: "0px",
+      top: "15px",
+      right: "5px",
     },
   })
 );
@@ -76,16 +77,22 @@ export const AuctionDetails: React.FC<{ store: ListingStore }> = observer(
     const classes = AuctionStyles();
     return (
       <div className={classes.container}>
+        <Typography
+          variant="subtitle1"
+          style={{ marginBottom: "5px", marginTop: "35px" }}
+        >
+          Property Auction Period
+        </Typography>
         <DateRangeWrapper onDateChange={handleDateChange} />
         <div className={classes.reserveLabel}>
           <Typography
             variant="subtitle1"
-            style={{ marginBottom: "5px", marginTop: "35px" }}
+            style={{ marginBottom: "10px", marginTop: "35px" }}
           >
             Reserve Price
           </Typography>
           <div className={classes.infoContainer}>
-            <InfoPopup data={reservePriceInfo} color="#c2c2c2" />
+            <InfoPopup data={reservePriceInfo} color="#c2c2c2" size="small" />
           </div>
         </div>
         <FormControl fullWidth variant="outlined">

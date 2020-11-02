@@ -134,6 +134,7 @@ export const ListingForm: React.FC<{
             variant="contained"
             color="secondary"
             onClick={onPreview}
+            // (jenn)  COMMENTED OUT FOR TESTING PURPOSES (it works)
             // disabled={!canPreview}
           >
             Preview
