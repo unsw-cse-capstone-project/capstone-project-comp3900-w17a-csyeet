@@ -10,6 +10,8 @@ import { SignIn } from "./sign_in/SignIn";
 import { SignUp } from "./sign_up/SignUp";
 import { useStore } from "../../../AuthContext";
 import { Typography, useTheme } from "@material-ui/core";
+import { UserMenu } from './user_menu/UserMenu';
+import { MinimisedSearch } from './minimised_search/MinimisedSearch';
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -19,7 +21,6 @@ export interface HeaderProps {
 const Header: React.FC<HeaderProps> = observer(
   ({ signInStore, signUpStore }) => {
     const history = useHistory();
-    // const location = useLocation();
     const store = useStore();
     const theme = useTheme();
     if (!store) throw Error("Store should never be null");
@@ -31,6 +32,7 @@ const Header: React.FC<HeaderProps> = observer(
     });
     const location = useLocation();
     const isHome = location.pathname === '/';
+    const isSearch = location.pathname.startsWith('/search');
     return (
       <div
         style={{
@@ -69,30 +71,11 @@ const Header: React.FC<HeaderProps> = observer(
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              padding: "10px",
             }}
           >
-            <Typography variant="body1">{store.user.name}</Typography>
-            <Button
-              size="small"
-              color="primary"
-              variant="outlined"
-              style={{ marginLeft: "15px" }}
-              onClick={() => history.push("/messages")}
-            >
-              Message
-            </Button>
-            <Button
-              size="small"
-              variant="outlined"
-              color="primary"
-              style={{ margin: "15px" }}
-              onClick={() => {
-                store.signOut();
-                history.push("/");
-              }}
-            >
-              Sign out
-            </Button>
+            {!isSearch && <MinimisedSearch />}
+            <UserMenu />
           </div>
         )}
         <SignIn
