@@ -38,7 +38,6 @@ export default class Store {
               email: content.email,
             })
         );
-        console.log(this.user);
       }
     } catch {
       console.log("error T-T");

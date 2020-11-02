@@ -2,12 +2,10 @@ import { Button, Snackbar, Typography } from "@material-ui/core";
 import { ArrowBackIos } from "@material-ui/icons";
 import * as React from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { listingPageStyle } from "../view_listing/listingPage.css";
 import { ListingMessagesPageStyles } from "./ListingMessagesPage.css";
 import { MessagePlaceholder } from "../messages/main";
 import { useStore } from "../AuthContext";
 import Talk from "talkjs";
-import { action } from "mobx";
 import MuiAlert from "@material-ui/lab/Alert";
 
 export const ListingMessagesPage = () => {
@@ -57,6 +55,7 @@ export const ListingMessagesPage = () => {
       inbox.mount(talkJsContainer.current);
       inbox.setFeedFilter({ custom: { listingId: ["==", id] } });
     });
+    // eslint-disable-next-line
   }, [userStore?.user]);
   return (
     <div className={classes.page}>

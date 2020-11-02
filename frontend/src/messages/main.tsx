@@ -60,6 +60,7 @@ export const MessagesPage = observer(() => {
       }
 
     });
+    // eslint-disable-next-line
   }, [userStore?.user]);
   return (
     <div className={classes.page}>

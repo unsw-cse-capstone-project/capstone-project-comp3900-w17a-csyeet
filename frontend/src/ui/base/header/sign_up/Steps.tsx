@@ -122,7 +122,7 @@ export const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
           onChange(values.value, "phoneNo");
         }}
         onBlur={() => {
-          store.phone_number.length != 10
+          store.phoneNo.length !== 10
             ? setPhoneError(true)
             : setPhoneError(false);
         }}

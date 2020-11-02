@@ -8,11 +8,35 @@ export const useQuery = () => {
 
 export const SearchPage = () => {
   const query = useQuery().get("query");
+  const type = useQuery().get("type") || undefined;
+  let beds = useQuery().get("beds") || undefined;
+  let baths = useQuery().get("baths") || undefined;
+  let cars = useQuery().get("cars") || undefined;
+  const start = useQuery().get("start") || undefined;
+  const end = useQuery().get("end") || undefined;
+  const features = useQuery().get("features") || undefined;
+  const landmarks = useQuery().get("landmarks") || undefined;
+  let featureList = features ?.split("_");
+  let landmarkList = landmarks ?.split("_");
 
   if (query === null || query === "") {
     return <Redirect to="/" />;
   }
 
-  const Page = createSearchPage(query);
+  let bedsNum = beds ? parseInt(beds) : undefined;
+  let bathsNum = baths ? parseInt(baths) : undefined;
+  let carsNum = cars ? parseInt(cars) : undefined;
+
+  const Page = createSearchPage(
+    query,
+    type,
+    bedsNum,
+    bathsNum,
+    carsNum,
+    start,
+    end,
+    featureList,
+    landmarkList,
+  );
   return <Page />;
 };
