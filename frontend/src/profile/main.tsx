@@ -42,8 +42,8 @@ export const ProfilePageWrapper = observer(
             src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
             className={classes.avatar}
           ></Avatar>
-          <Typography variant="h4">Jennifer Xu</Typography>
-          <Typography variant="body1">jennifer@example.com</Typography>
+          <Typography variant="h4">{userStore.user.name}</Typography>
+          <Typography variant="body1">{userStore.user.email}</Typography>
         </div>
         <div>
           <ProfileTabs store={store} />
