@@ -60,7 +60,7 @@ export const UserMenu = () => {
           </ListItemIcon>
           <ListItemText primary="Messages" />
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => history.push("/profile")}>
           <ListItemIcon>
             <AccountCircle fontSize="small" />
           </ListItemIcon>
