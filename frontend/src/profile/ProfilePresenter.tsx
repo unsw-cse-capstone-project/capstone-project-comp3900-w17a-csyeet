@@ -1,12 +1,8 @@
 import { action, observable, runInAction } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
 import { getListingFromResult } from "../ui/util/helper";
-import { User } from "../AuthContext";
 
 export class ProfileStore {
-  @observable
-  user?: User;
-
   @observable
   myBidsResults: ListingActual[] = [];
 

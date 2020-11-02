@@ -8,6 +8,7 @@ import { MyDetailsPage as MyDetails } from "./details/MyDetailsPage";
 import { MyListingsPage as MyListings } from "./listings/MyListingsPage";
 import { StarredPropertiesPage as StarredProperties } from "./starred/StarredPropertiesPage";
 import { ProfileStore, ProfilePresenter } from "./ProfilePresenter";
+import { useStore } from "../AuthContext";
 
 export const ProfilePage = () => {
   const store = new ProfileStore();
@@ -22,17 +23,6 @@ export const ProfilePageWrapper = observer(
     const userStore = useStore();
     if (!userStore || !userStore.user) {
       return null;
-    }
-    if (!store.loadingState) {
-      return null;
-    }
-
-    if (store.loadingState === "loading") {
-      return <div>Loading</div>;
-    }
-
-    if (store.loadingState === "error") {
-      return <div>Error loading</div>;
     }
 
     return (
