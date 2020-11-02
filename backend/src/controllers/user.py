@@ -64,8 +64,8 @@ def map_user_to_own_profile_response(user: User, session: Session) -> OwnProfile
     response['name'] = user.name
     response['blurb'] = user.blurb
     response['listings'] = [map_listing_response(listing, user, session) for listing in user.listings]
-    response['registrations'] = [map_listing_response(listing, user, session) for listing in user.registrations]
-    response['starred_listings'] = [map_listing_response(listing, user, session) for listing in user.starred_listings]
+    response['registrations'] = [map_listing_response(registration.listing, user, session) for registration in user.registrations]
+    response['starred_listings'] = [map_listing_response(starred.listing, user, session) for starred in user.starred_listings]
     return response #type: ignore
 
 
