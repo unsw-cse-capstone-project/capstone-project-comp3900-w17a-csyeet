@@ -15,11 +15,12 @@ export const HomePageStyle = makeStyles((theme: Theme) =>
       alignItems: "center",
       width: "100%",
       position: "relative",
+      paddingBottom: theme.spacing(25),
     },
     background: {
       backgroundColor: "#f3f4f5",
       zIndex: -1,
-      height: "calc(100% + 250px + 120px)",
+      height: "calc(100% + 100px)",
       position: "absolute",
       top: theme.spacing(-15),
       width: "100%",
@@ -35,7 +36,6 @@ export const HomePageStyle = makeStyles((theme: Theme) =>
     },
     upcomingAuctionContainer: {
       width: "80%",
-      paddingTop: theme.spacing(12),
     },
     upcomingAuctionTitle: {
       fontWeight: "bold",
@@ -43,12 +43,22 @@ export const HomePageStyle = makeStyles((theme: Theme) =>
     },
     recommendations: {
       display: "flex",
+      paddingBottom: theme.spacing(12),
       width: "80%",
+      "& .react-swipeable-view-container > div": {
+        overflow: "visible !important",
+      },
+
+      "& > div > div": {
+        overflow: "visible !important",
+      }
     },
     recommendationsTitle: {
-      padding: theme.spacing(12, 0, 2, 0),
-      fontWeight: "bold",
+      paddingBottom: theme.spacing(2),
       width: "80%",
+      "& h5": {
+        fontWeight: "bold",
+      }
     }
   })
 );

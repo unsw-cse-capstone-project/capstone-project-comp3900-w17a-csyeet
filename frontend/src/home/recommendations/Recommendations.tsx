@@ -1,16 +1,30 @@
 import * as React from "react";
 import { RecommendationsStore } from "./RecommendationsPresenter";
-import { ListingCardSmall } from "../../ui/base/listing_card_sm/ListingCardSmall";
+import {
+  ListingCardSmall,
+  ListingCardSmallPlaceholder,
+} from "../../ui/base/listing_card_sm/ListingCardSmall";
 import { observer } from "mobx-react";
-import { Grid, Icon, IconButton, withWidth } from "@material-ui/core";
+import { Grid, IconButton, withWidth } from "@material-ui/core";
 import { ArrowBackIos, ArrowForwardIos } from "@material-ui/icons";
 import SwipeableViews from "react-swipeable-views";
+import { RecommendationsStyles } from "./Recommendations.css";
 
 export const RecommendationNoWidth = observer(
   ({ store, width }: { store: RecommendationsStore; width: string }) => {
     const [page, setPage] = React.useState(0);
+    const classes = RecommendationsStyles();
     if (store.state === "loading") {
-      return <div>Loading</div>;
+      return (
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+            <ListingCardSmallPlaceholder />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+            <ListingCardSmallPlaceholder />
+          </Grid>
+        </Grid>
+      );
     }
 
     if (store.state === "error") {
@@ -34,43 +48,35 @@ export const RecommendationNoWidth = observer(
 
     const numOnPage = getNumOnPage();
 
-    // if (page % numOnPage != 0) {
-    //   setPage((page) => page - (page % numOnPage));
-    // }
+    if (page % numOnPage !== 0) {
+      setPage((page) => page - (page % numOnPage));
+    }
 
     return (
-      <div style={{ position: "relative", padding: "0 75px" }}>
+      <Grid container spacing={3} className={classes.root}>
         <IconButton
-          style={{
-            position: "absolute",
-            left: "0",
-            top: "50%",
-            transform: "translateY(-50%)",
-          }}
+          className={classes.leftIcon}
           onClick={() => setPage((page) => page - numOnPage)}
           disabled={page - numOnPage < 0}
         >
           <ArrowBackIos></ArrowBackIos>
         </IconButton>
         <IconButton
-          style={{
-            position: "absolute",
-            right: "0",
-            top: "50%",
-            transform: "translateY(-50%)",
-          }}
+          className={classes.rightIcon}
           disabled={page + numOnPage > store.recommendations.length - 1}
           onClick={() => setPage((page) => page + numOnPage)}
         >
           <ArrowForwardIos></ArrowForwardIos>
         </IconButton>
         <SwipeableViews
-        index={page}>
+          index={page / numOnPage}
+          className={classes.swipeableView}
+        >
           {Array.from(
             Array(Math.ceil(store.recommendations.length / numOnPage))
           ).map((_, n) => (
-            <div key={n} style={{position: "relative"}}>
-              {n === page ? (
+            <div key={n}>
+              {n === page / numOnPage ? (
                 <Grid container spacing={3}>
                   {store.recommendations
                     .slice(page, page + numOnPage)
@@ -83,15 +89,8 @@ export const RecommendationNoWidth = observer(
               ) : null}
             </div>
           ))}
-          {/* {store.recommendations
-            .slice(page, page + numOnPage)
-            .map((listing, i) => (
-              <Grid item key={i} xs={12} sm={6} md={4} lg={3}>
-                <ListingCardSmall listing={listing} />
-              </Grid>
-            ))} */}
         </SwipeableViews>
-      </div>
+      </Grid>
     );
   }
 );

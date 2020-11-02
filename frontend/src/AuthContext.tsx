@@ -15,15 +15,15 @@ export default class Store {
   @action
   async signIn(email: string, password: string, onError: () => void) {
     try {
-      // const response = await fetch("/login", {
-      //   method: "post",
-      //   body: JSON.stringify({ email: email, password: password }),
-      // });
-      // const content = await response.json();
-      // if ("detail" in content) {
-      //   console.log("error", content.detail);
-      //   onError();
-      // } else {
+      const response = await fetch("/login", {
+        method: "post",
+        body: JSON.stringify({ email: email, password: password }),
+      });
+      const content = await response.json();
+      if ("detail" in content) {
+        console.log("error", content.detail);
+        onError();
+      } else {
         runInAction(
           () =>
             (this.user = {
@@ -32,8 +32,7 @@ export default class Store {
               email: 'teresa@example.com',
             })
         );
-      //   console.log(this.user);
-      // }
+      }
     } catch {
       console.log("error T-T");
     }
