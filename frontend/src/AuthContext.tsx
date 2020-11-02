@@ -36,6 +36,12 @@ export default class Store {
               name: content.name,
               id: content.id,
               email: content.email,
+              phone_number: "0412345678",
+              street: "12 Street St",
+              suburb: "Fairfield",
+              postcode: "2194",
+              state: "NSW",
+              country: "Australia",
             })
         );
       }
@@ -78,6 +84,12 @@ export default class Store {
             name: content.name,
             id: content.id,
             email: content.email,
+            phone_number: "0412345678",
+            street: "12 Street St",
+            suburb: "Fairfield",
+            postcode: "2194",
+            state: "NSW",
+            country: "Australia",
           })
       );
       console.log(this.user);

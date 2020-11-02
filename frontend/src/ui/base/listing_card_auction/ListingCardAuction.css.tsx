@@ -5,6 +5,7 @@ export const ListingCardAuctionStyles = makeStyles((theme: Theme) =>
     card: {
       [theme.breakpoints.up("xs")]: {
         display: "flex",
+      },
       display: "flex",
       flexDirection: "column",
     },

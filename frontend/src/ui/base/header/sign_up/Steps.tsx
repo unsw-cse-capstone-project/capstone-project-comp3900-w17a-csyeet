@@ -117,7 +117,7 @@ export const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
         format="#### ### ###"
         mask="#"
         placeholder="04"
-        value={store.phone_number}
+        value={store.phoneNo}
         onValueChange={(values) => {
           onChange(values.value, "phoneNo");
         }}

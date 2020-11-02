@@ -14,7 +14,7 @@ export class SignUpStore {
   passwdVerify: string = "";
 
   @observable
-  phone_number: string = "";
+  phoneNo: string = "";
 
   @observable
   street: string = "";
