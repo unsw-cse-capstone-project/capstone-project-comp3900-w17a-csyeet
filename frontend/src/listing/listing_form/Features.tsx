@@ -1,26 +1,76 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { Tabs, Tab, Paper, FormGroup } from "@material-ui/core";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Paper,
+  FormGroup,
+  Typography,
+} from "@material-ui/core";
 import { ListingStore, Feature } from "../ListingStore";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { CheckboxWrapper } from "../../ui/base/checkbox_wrapper/CheckboxWrapper";
+
+const FeatureStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: "100%",
+    },
+    heading: {
+      fontSize: theme.typography.pxToRem(15),
+      flexBasis: "33.33%",
+      flexShrink: 0,
+    },
+    secondaryHeading: {
+      fontSize: theme.typography.pxToRem(15),
+      color: theme.palette.text.secondary,
+    },
+  })
+);
 
 export const Features: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
-    const [tab, setTab] = React.useState<number>(0);
-    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-      setTab(newValue);
+    const removeFeature = (array: Feature[], feature: Feature) => {
+      return array.filter(function (e) {
+        return e != feature;
+      });
     };
 
     const onChecked = (checked: boolean, field: string) => {
-      if (checked && !store.features.includes(field as Feature))
+      if (checked && !store.features.includes(field as Feature)) {
         store.features.push(field as Feature);
+      } else if (!checked && store.features.includes(field as Feature)) {
+        store.features = removeFeature(store.features, field as Feature);
+      }
     };
 
-    const getTabContent = (tab: number) => {
-      switch (tab) {
-        case 0:
-          return (
-            <>
+    const classes = FeatureStyles();
+    const [expanded, setExpanded] = React.useState<string | false>(false);
+
+    const handleChange = (panel: string) => (
+      event: React.ChangeEvent<{}>,
+      isExpanded: boolean
+    ) => {
+      setExpanded(isExpanded ? panel : false);
+    };
+
+    return (
+      <div className={classes.root}>
+        <Accordion
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+          >
+            <Typography className={classes.heading}>Room Features </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <FormGroup>
               <CheckboxWrapper
                 checked={store.features.includes("has_ensuite")}
                 field="has_ensuite"
@@ -45,11 +95,22 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
                 label="Newly Furnished"
                 onChange={onChecked}
               />
-            </>
-          );
-        case 1:
-          return (
-            <>
+            </FormGroup>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          expanded={expanded === "panel2"}
+          onChange={handleChange("panel2")}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2bh-content"
+            id="panel2bh-header"
+          >
+            <Typography className={classes.heading}>Users</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <FormGroup>
               <CheckboxWrapper
                 checked={store.features.includes("has_open_kitchen")}
                 field="has_open_kitchen"
@@ -86,11 +147,24 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
                 label="Induction Stove"
                 onChange={onChecked}
               />
-            </>
-          );
-        case 2:
-          return (
-            <>
+            </FormGroup>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          expanded={expanded === "panel3"}
+          onChange={handleChange("panel3")}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel3bh-content"
+            id="panel3bh-header"
+          >
+            <Typography className={classes.heading}>
+              Outdoor Features
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <FormGroup>
               <CheckboxWrapper
                 checked={store.features.includes("has_balcony")}
                 field="has_balcony"
@@ -127,29 +201,10 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
                 label="Gym"
                 onChange={onChecked}
               />
-            </>
-          );
-      }
-    };
-
-    return (
-      <>
-        <Paper style={{ marginTop: "10px", marginBottom: "10px" }}>
-          <Tabs
-            value={tab}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-          >
-            <Tab label="Room Features" />
-            <Tab label="Kitchen Features" />
-            <Tab label="Outdoor Features" />
-          </Tabs>
-        </Paper>
-        <FormGroup style={{ marginLeft: "10px" }}>
-          {getTabContent(tab)}
-        </FormGroup>
-      </>
+            </FormGroup>
+          </AccordionDetails>
+        </Accordion>
+      </div>
     );
   }
 );

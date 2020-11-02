@@ -44,6 +44,12 @@ export const Description: React.FC<{ store: ListingStore }> = observer(
             }}
           />
         </div>
+        <Typography
+          variant="subtitle1"
+          style={{ marginBottom: "5px", marginTop: "35px" }}
+        >
+          Tell us some features of your property
+        </Typography>
         <Features store={store} />
       </div>
     );

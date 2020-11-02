@@ -9,12 +9,12 @@ import {
   Snackbar,
   Typography,
 } from "@material-ui/core";
-import { ListingStore } from "./ListingStore";
-import { Details } from "./listing_steps/Details";
-import { Images } from "./listing_steps/Images";
-import { Description } from "./listing_steps/Description";
-import { AuctionDetails } from "./listing_steps/AuctionDetails";
-import { PaymentDetails } from "./listing_steps/Payment";
+import { ListingStore } from "../ListingStore";
+import { Details } from "./Details";
+import { Images } from "./Images";
+import { Description } from "./Description";
+import { AuctionDetails } from "./AuctionDetails";
+import { PaymentDetails } from "./Payment";
 import { ListingFormStyles } from "./ListingForm.css";
 import Alert from "@material-ui/lab/Alert";
 export const ListingForm: React.FC<{

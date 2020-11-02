@@ -11,7 +11,7 @@ import { ListingsPage } from "./profile/listings/main";
 import { DetailsPage } from "./profile/details/main";
 import { BidsPage } from "./profile/bids/main";
 import { AboutPage } from "./profile/about/main";
-import { AddListingPage } from "./add_listing/main";
+import { AddListingPage } from "./listing/add_listing/main";
 import { BidderRegistrationPage } from "./bidder_registration/main";
 import { AuctionPage } from "./auction/main";
 import { HomePage } from "./home/main";

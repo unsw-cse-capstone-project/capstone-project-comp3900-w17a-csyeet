@@ -1,16 +1,15 @@
 import * as React from "react";
-import { ListingPresenter } from "./ListingPresenter";
-import { ListingStore } from "./ListingStore";
+import { ListingPresenter } from "../ListingPresenter";
+import { ListingStore } from "../ListingStore";
 import { observer } from "mobx-react";
 import { useHistory } from "react-router-dom";
-import { action, computed, runInAction } from "mobx";
-import { Typography, Button, Paper } from "@material-ui/core";
-import { ListingForm } from "./ListingForm";
-import { PreviewListing } from "./PreviewListing";
+import { Button } from "@material-ui/core";
+import { ListingForm } from "../listing_form/ListingForm";
+import { PreviewListing } from "../PreviewListing";
 import { AddListingStyles } from "./AddListing.css";
-import { ArrowBackIos, SentimentSatisfiedAlt } from "@material-ui/icons";
+import { ArrowBackIos } from "@material-ui/icons";
 
-export const AddListing = () => {
+export const AddListingPage = () => {
   const presenter = new ListingPresenter();
   const store = new ListingStore();
   const history = useHistory();

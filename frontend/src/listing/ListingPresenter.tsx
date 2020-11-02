@@ -1,6 +1,5 @@
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, runInAction } from "mobx";
 import { ListingStore } from "./ListingStore";
-import { getListingFromResult } from "../ui/util/helper";
 
 const setResultsInStore = action((store: ListingStore, result: any) => {});
 
