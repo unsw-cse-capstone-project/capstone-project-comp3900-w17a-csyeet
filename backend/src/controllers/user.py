@@ -1,8 +1,9 @@
 import io
+from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from starlette.responses import StreamingResponse
-from ..schemas import OwnProfileResponse, UserProfileResponse
+from ..schemas import OwnProfileResponse, UserProfileResponse, UpdateMyDetailsRequest, UpdateAboutMeRequest
 from ..helpers import get_signed_in_user, get_session, map_listing_response
 from ..models import User
 
@@ -58,11 +59,17 @@ def get_user_avatar(id: int, session: Session = Depends(get_session)):
     return StreamingResponse(io.BytesIO(user.avatar_data), media_type=user.avatar_image_type)
 
 
+@router.post('/profile/aboutme', response_model=OwnProfileResponse)
+def update_about_me(req: UpdateAboutMeRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    about_me_data = req.dict()
+    for key, value in about_me_data.items():
+        setattr(signed_in_user, key, value)
+    session.commit()
+    return map_user_to_own_profile_response(signed_in_user, session)
+
+
 def map_user_to_own_profile_response(user: User, session: Session) -> OwnProfileResponse:
-    response = {}
-    response['email'] = user.email
-    response['name'] = user.name
-    response['blurb'] = user.blurb
+    response = asdict(user)
     response['listings'] = [map_listing_response(listing, user, session) for listing in user.listings]
     response['registrations'] = [map_listing_response(listing, user, session) for listing in user.registrations]
     response['starred_listings'] = [map_listing_response(listing, user, session) for listing in user.starred_listings]
@@ -70,9 +77,6 @@ def map_user_to_own_profile_response(user: User, session: Session) -> OwnProfile
 
 
 def map_user_to_user_profile_response(user: User, session: Session) -> UserProfileResponse:
-    response = {}
-    response['email'] = user.email
-    response['name'] = user.name
-    response['blurb'] = user.blurb
+    response = asdict(user)
     response['listings'] = [map_listing_response(listing, user, session) for listing in user.listings]
     return response #type: ignore
