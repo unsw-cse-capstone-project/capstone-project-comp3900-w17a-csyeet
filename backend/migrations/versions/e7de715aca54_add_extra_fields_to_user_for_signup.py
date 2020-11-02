@@ -25,7 +25,7 @@ def upgrade():
     op.add_column('user', sa.Column('street', sa.String(), nullable=True))
     op.add_column('user', sa.Column('suburb', sa.String(), nullable=True))
     connection = op.get_bind()
-    connection.execute("UPDATE \"user\" SET country='Australia', postcode='2033', state='NSW', street='100 Anzac Parade', suburb='Kensington', phone_number='0400000000'")
+    connection.execute("UPDATE \"user\" SET country='Australia', postcode='2033', state='NSW', street='100 Anzac Parade', suburb='Kensington', phone_number='0412426859'")
     op.alter_column('user', 'country', nullable=False)
     op.alter_column('user', 'phone_number', nullable=False)
     op.alter_column('user', 'postcode', nullable=False)
