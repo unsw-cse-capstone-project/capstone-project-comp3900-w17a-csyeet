@@ -1,7 +1,7 @@
 """add blurb and avatar to user table
 
 Revision ID: 2eb333c03b34
-Revises: 1db5c6d1805a
+Revises: e7de715aca54
 Create Date: 2020-11-01 19:05:48.084429
 
 """
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '2eb333c03b34'
-down_revision = '1db5c6d1805a'
+down_revision = 'e7de715aca54'
 branch_labels = None
 depends_on = None
 
