@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 from pydantic.dataclasses import dataclass
 from fastapi import Query
 from fastapi_utils.enums import CamelStrEnum
-from .user import UserResponse
+from .common import UserResponse
 from .bid import BidResponse
 from .landmark import LandmarkReponse, LandmarkType
 
