@@ -3,7 +3,15 @@ import { StarBorderRounded, StarRounded } from "@material-ui/icons";
 import * as React from "react";
 import MuiAlert from "@material-ui/lab/Alert";
 
-export const Star = ({ id, starred }: { id: number; starred: boolean }) => {
+export const Star = ({
+  id,
+  starred,
+  onChange,
+}: {
+  id: number;
+  starred: boolean;
+  onChange?: () => void;
+}) => {
   const [isStarred, setIsStarred] = React.useState(starred);
   const [isError, setIsError] = React.useState(false);
   const onClick = async () => {
@@ -18,6 +26,7 @@ export const Star = ({ id, starred }: { id: number; starred: boolean }) => {
           return;
         }
         setIsStarred(false);
+        onChange();
       } catch {
         setIsError(true);
       }
@@ -28,7 +37,7 @@ export const Star = ({ id, starred }: { id: number; starred: boolean }) => {
         method: "post",
       });
       const result = await response.json();
-        if (result !== null) {
+      if (result !== null) {
         setIsError(true);
         return;
       }

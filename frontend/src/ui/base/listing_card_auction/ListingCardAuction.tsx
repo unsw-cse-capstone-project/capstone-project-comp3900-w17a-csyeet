@@ -52,15 +52,15 @@ export const ListingCardAuction: React.FC<{
     postcode,
   });
 
-  // Get user bid
-  const user_id = userStore?.user?.id || 0;
-  let user_bid = "0";
-  getBidFromAuction(id, user_id).then((r) => {
-    user_bid = r;
-  });
+  const [userBid, setUserBid] = React.useState<number | undefined>(undefined);
 
-  console.log("here in listintgcardauction, user_bid is", user_bid);
-  const formattedBid = priceFormatter.format(parseInt(user_bid));
+  // Get user bid
+  React.useEffect(() => {
+    const user_id = userStore?.user?.id || 0;
+    getBidFromAuction(id, user_id).then((r) => {
+      setUserBid(r);
+    });
+  }, []);
   const classes = ListingCardAuctionStyles();
   return (
     <Card className={classes.card} style={style}>
@@ -114,7 +114,7 @@ export const ListingCardAuction: React.FC<{
                   marginTop: "5px",
                 }}
               >
-                Your bid: {formattedBid}
+                {!userBid ? "Loading..." : priceFormatter.format(userBid)}
               </Typography>
             )}
           </div>
@@ -129,14 +129,14 @@ async function getBidFromAuction(auction_id: Number, user_id: Number) {
   const content = await response.json();
 
   if ("detail" in content) {
-    return "No bid found";
+    return -1;
   } else {
     let bids = content.bids;
-    let return_bid = "No bid found";
+    let return_bid = -1;
     bids.forEach((bid: Bid) => {
       if (bid.bidder_id === user_id) {
         console.log("returning bid:", bid.bid);
-        return_bid = bid.bid.toString();
+        return_bid = bid.bid;
       }
     });
     return return_bid;
