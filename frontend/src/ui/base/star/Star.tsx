@@ -28,7 +28,7 @@ export const Star = ({ id, starred }: { id: number; starred: boolean }) => {
         method: "post",
       });
       const result = await response.json();
-        if (result !== null) {
+      if (result !== null) {
         setIsError(true);
         return;
       }
@@ -48,6 +48,7 @@ export const Star = ({ id, starred }: { id: number; starred: boolean }) => {
         open={isError}
         autoHideDuration={2000}
         onClose={() => setIsError(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <MuiAlert elevation={6} severity="error">
           Error occurred, please try again
