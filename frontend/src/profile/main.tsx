@@ -40,8 +40,14 @@ export const ProfilePageWrapper = observer(
       <div>
         <div className={classes.userInfoContainer}>
           {/* (jenn) Grid is half half, can adjust later :) */}
-          <Grid container spacing={1}>
-            <Grid item xs>
+          <Grid
+            container
+            spacing={1}
+            direction={"row"}
+            justify={"flex-start"}
+            alignItems={"center"}
+          >
+            <Grid item>
               <Avatar
                 src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
                 className={classes.avatar}
@@ -49,7 +55,7 @@ export const ProfilePageWrapper = observer(
               <Typography variant="h4">{userStore.user.name}</Typography>
               <Typography variant="body1">{userStore.user.email}</Typography>
             </Grid>
-            <Grid item xs>
+            <Grid item xs={7}>
               <Blurb
                 className={classes.blurbStyle}
                 blurb={store.blurb}
