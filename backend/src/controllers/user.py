@@ -3,8 +3,8 @@ from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from starlette.responses import StreamingResponse
-from ..schemas import OwnProfileResponse, UserProfileResponse, UpdateMyDetailsRequest, UpdateAboutMeRequest
-from ..helpers import get_signed_in_user, get_session, map_listing_response
+from ..schemas import OwnProfileResponse, UserProfileResponse, UpdateMyDetailsRequest, UpdateAboutMeRequest, ChangePasswordRequest
+from ..helpers import get_signed_in_user, get_session, map_listing_response, password_matches, hash_password
 from ..models import User
 
 router = APIRouter()
@@ -61,18 +61,37 @@ def get_user_avatar(id: int, session: Session = Depends(get_session)):
 
 @router.post('/profile/aboutme', response_model=OwnProfileResponse)
 def update_about_me(req: UpdateAboutMeRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Update about me data for signed-in user '''
     about_me_data = req.dict()
-    for key, value in about_me_data.items():
-        setattr(signed_in_user, key, value)
+    update_user(signed_in_user, about_me_data)
     session.commit()
     return map_user_to_own_profile_response(signed_in_user, session)
+
+
+@router.post('/profile/mydetails', response_model=OwnProfileResponse)
+def update_my_details(req: UpdateMyDetailsRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Update my details data for signed-in user '''
+    my_details_data = req.dict()
+    update_user(signed_in_user, my_details_data)
+    session.commit()
+    return map_user_to_own_profile_response(signed_in_user, session)
+
+
+@router.post('/profile/changepassword', responses={401: {'description': 'Invalid credentials'}})
+def change_password(req: ChangePasswordRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Change password for signed-in user'''
+    if not password_matches(signed_in_user.hashed_password, req.old_password):
+        raise HTTPException(401, detail='Invalid password')
+
+    signed_in_user.hashed_password = hash_password(req.new_password)
+    session.commit()
 
 
 def map_user_to_own_profile_response(user: User, session: Session) -> OwnProfileResponse:
     response = asdict(user)
     response['listings'] = [map_listing_response(listing, user, session) for listing in user.listings]
-    response['registrations'] = [map_listing_response(listing, user, session) for listing in user.registrations]
-    response['starred_listings'] = [map_listing_response(listing, user, session) for listing in user.starred_listings]
+    response['registrations'] = [map_listing_response(registration.listing, user, session) for registration in user.registrations]
+    response['starred_listings'] = [map_listing_response(starred.listing, user, session) for starred in user.starred_listings]
     return response #type: ignore
 
 
@@ -80,3 +99,8 @@ def map_user_to_user_profile_response(user: User, session: Session) -> UserProfi
     response = asdict(user)
     response['listings'] = [map_listing_response(listing, user, session) for listing in user.listings]
     return response #type: ignore
+
+
+def update_user(user: User, data: dict):
+    for key, value in data.items():
+        setattr(user, key, value)

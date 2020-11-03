@@ -52,4 +52,8 @@ class UpdateMyDetailsRequest(BaseModel):
     postcode: str
     state: str 
     country: str
-    
+
+
+class ChangePasswordRequest(BaseModel):
+    old_password: str
+    new_password: str
