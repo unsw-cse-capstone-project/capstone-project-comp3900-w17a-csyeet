@@ -1,12 +1,13 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import { Avatar, Typography, Tab, Tabs, Grid } from "@material-ui/core";
+import { Typography, Tab, Tabs } from "@material-ui/core";
 import { ProfilePageStyles } from "./ProfilePage.css";
 import { MyBidsPage as MyBids } from "./bids/MyBidsPage";
 import { DetailsPage as MyDetails } from "./details/DetailsPage";
 import { MyListingsPage as MyListings } from "./listings/MyListingsPage";
 import { StarredPropertiesPage as StarredProperties } from "./starred/StarredPropertiesPage";
 import { Blurb } from "./about/Blurb";
+import { ProfileAvatar } from "./about/ProfileAvatar";
 import { ProfileStore, ProfilePresenter } from "./ProfilePresenter";
 import { useStore } from "../AuthContext";
 
@@ -18,6 +19,7 @@ export const ProfilePage = () => {
     <ProfilePageWrapper
       store={store}
       onEditBlurb={(blurb: string) => presenter.updateBlurb(blurb, store)}
+      onEditAvatar={(image: string) => presenter.updateAvatar(image, store)}
     />
   );
 };
@@ -26,9 +28,11 @@ export const ProfilePageWrapper = observer(
   ({
     store,
     onEditBlurb,
+    onEditAvatar,
   }: {
     store: ProfileStore;
     onEditBlurb: (blurb: string) => void;
+    onEditAvatar: (image: string) => void;
   }) => {
     const classes = ProfilePageStyles();
     const userStore = useStore();
@@ -39,10 +43,7 @@ export const ProfilePageWrapper = observer(
     return (
       <div>
         <div className={classes.userInfoContainer}>
-          <Avatar
-            src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
-            className={classes.avatar}
-          ></Avatar>
+          <ProfileAvatar onUpload={onEditAvatar} avatar={userStore.avatar} />
           <Typography variant="h4">{userStore.user.name}</Typography>
           <Typography variant="body1">{userStore.user.email}</Typography>
           <Blurb

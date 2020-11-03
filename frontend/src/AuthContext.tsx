@@ -5,50 +5,62 @@ export type User = {
   name: string;
   email: string;
   id: number;
-  phone_number: string;
-  street: string;
-  suburb: string;
-  postcode: string;
-  state: string;
-  country: string;
+  // avatar: string;
+  phone_number?: string;
+  street?: string;
+  suburb?: string;
+  postcode?: string;
+  state?: string;
+  country?: string;
 };
 
 export default class Store {
   @observable user?: User;
+  @observable avatar: string =
+    "https://avatarfiles.alphacoders.com/791/79102.png";
   @observable openSignUp: boolean = false;
   @observable openSignIn: boolean = false;
 
   @action
   async signIn(email: string, password: string, onError: () => void) {
-    try {
-      const response = await fetch("/login", {
-        method: "post",
-        body: JSON.stringify({ email: email, password: password }),
-      });
-      const content = await response.json();
-      if ("detail" in content) {
-        console.log("error", content.detail);
-        onError();
-      } else {
-        runInAction(
-          () =>
-            (this.user = {
-              name: content.name,
-              id: content.id,
-              email: content.email,
-              phone_number: "0412345678",
-              street: "12 Street St",
-              suburb: "Fairfield",
-              postcode: "2194",
-              state: "NSW",
-              country: "Australia",
-            })
-        );
-      }
-    } catch {
-      console.log("error T-T");
-    }
+    runInAction(
+      () =>
+        (this.user = {
+          name: "jenn",
+          email: "jenn@gmail.com",
+          id: 5,
+        })
+    );
   }
+  // try {
+  //   const response = await fetch("/login", {
+  //     method: "post",
+  //     body: JSON.stringify({ email: email, password: password }),
+  //   });
+  //   const content = await response.json();
+  //   if ("detail" in content) {
+  //     console.log("error", content.detail);
+  //     onError();
+  //   } else {
+  //     runInAction(
+  //       () =>
+  //         (this.user = {
+  //           name: content.name,
+  //           id: content.id,
+  //           email: content.email,
+  //           phone_number: "0412345678",
+  //           street: "12 Street St",
+  //           suburb: "Fairfield",
+  //           postcode: "2194",
+  //           state: "NSW",
+  //           country: "Australia",
+  //         })
+  //     );
+  //   }
+  // } catch {
+  //   console.log("error T-T");
+  // }
+  // }
 
   @action
   async signUp(
@@ -112,6 +124,29 @@ export default class Store {
 
   constructor() {
     makeObservable(this);
+  }
+
+  convertBlobToBase64(blob: Blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  @action
+  async getAvatar() {
+    try {
+      const response = await fetch(`users/avatar`);
+      const result = await response.blob();
+      const avatar = await this.convertBlobToBase64(result);
+      runInAction(() => (this.avatar = avatar as string));
+    } catch {
+      console.log("error :(");
+    }
   }
 }
 

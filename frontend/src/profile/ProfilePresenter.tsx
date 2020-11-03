@@ -1,11 +1,11 @@
 import { action, observable, runInAction } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
 import { getListingFromResult } from "../ui/util/helper";
-import { ImageType } from "react-images-uploading";
 
 export class ProfileStore {
-  @observable blurb: string = "Update your bio"; // Tempporary
-  @observable avatar: ImageType | null = null;
+  @observable blurb: string = "Tell other users something about yourself!"; // Tempporary
+  @observable avatar: string =
+    "https://avatarfiles.alphacoders.com/791/79102.png";
 
   @observable
   myBidsResults: ListingActual[] = [];
@@ -85,6 +85,28 @@ export class ProfilePresenter {
     } catch {
       console.log("Error updating about me");
       runInAction(() => (store.loadingState = "error"));
+    }
+  }
+
+  @action
+  async updateAvatar(image: string, store: ProfileStore) {
+    store.loadingState = "updating";
+    let form = new FormData();
+    form.append("avatar", image);
+    try {
+      const response = await fetch(`users/avatar`, {
+        method: "post",
+        body: form,
+      });
+      const result = await response.json();
+      if ("detail" in result) runInAction(() => (store.loadingState = "error"));
+      else {
+        runInAction(() => {
+          store.loadingState = "success";
+        });
+      }
+    } catch {
+      console.log("Error :( ");
     }
   }
 }

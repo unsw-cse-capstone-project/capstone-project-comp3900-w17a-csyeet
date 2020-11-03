@@ -1,7 +1,6 @@
 import React from "react";
 import { TextField, Typography, IconButton, Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import CheckIcon from "@material-ui/icons/Check";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import classNames from "classnames";
 

@@ -27,10 +27,5 @@ export const ProfilePageStyles = makeStyles((theme: Theme) =>
       justifyContent: "center",
       alignItems: "center",
     },
-    avatar: {
-      width: "200px",
-      height: "200px",
-      margin: theme.spacing(1, 1, 2, 1),
-    },
   })
 );

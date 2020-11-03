@@ -21,14 +21,20 @@ export const DetailsPage = () => {
       state,
       country,
     } = userStore.user;
-    store.id = id;
-    store.name = name;
-    store.phone_number = phone_number;
-    store.street = street;
-    store.suburb = suburb;
-    store.postcode = postcode;
-    store.state = state;
-    store.country = country;
+    store.id = id as number;
+    store.name = name as string;
+    store.phone_number = "0000 000 000";
+    store.street = "23 Holland Avenue";
+    store.suburb = "CrossVill";
+    store.postcode = "1234";
+    store.state = "NSW";
+    store.country = "Australia";
+    // store.phone_number = phone_number;
+    // store.street = street;
+    // store.suburb = suburb;
+    // store.postcode = postcode;
+    // store.state = state;
+    // store.country = country;
   });
 
   const onUpdate = () => {
