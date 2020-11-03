@@ -6,11 +6,13 @@ import MuiAlert from "@material-ui/lab/Alert";
 export const Star = ({
   id,
   starred,
-  onChange,
+  onStar,
+  onUnstar,
 }: {
   id: number;
   starred: boolean;
-  onChange?: () => void;
+  onStar?: () => void;
+  onUnstar?: () => void;
 }) => {
   const [isStarred, setIsStarred] = React.useState(starred);
   const [isError, setIsError] = React.useState(false);
@@ -26,7 +28,7 @@ export const Star = ({
           return;
         }
         setIsStarred(false);
-        onChange();
+        onUnstar && onUnstar();
       } catch {
         setIsError(true);
       }
@@ -42,6 +44,7 @@ export const Star = ({
         return;
       }
       setIsStarred(true);
+      onStar && onStar();
     } catch {
       setIsError(true);
     }

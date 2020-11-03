@@ -12,10 +12,17 @@ import { priceFormatter } from "../../util/helper";
 import { formatAddress } from "../../util/helper";
 import { Bid } from "../../util/types/bid";
 
-export const ListingCardAuction: React.FC<{
+export const ListingCardAuction = ({
+  listing,
+  onStar,
+  onUnstar,
+  style,
+}: {
   listing: ListingActual;
   style?: React.CSSProperties;
-}> = ({ listing, style }) => {
+  onStar?: () => void;
+  onUnstar?: () => void;
+}) => {
   const {
     id,
     street,
@@ -77,11 +84,6 @@ export const ListingCardAuction: React.FC<{
             ))}
           </Slider>
         </div>
-        {userStore?.user && (
-          <div className={classes.starContainer}>
-            <Star id={id} starred={starred} />
-          </div>
-        )}
         <AuctionTag
           className={classes.auctionTagStyle}
           start={auction_start as Date}
@@ -89,6 +91,16 @@ export const ListingCardAuction: React.FC<{
           style={{ marginTop: "2px", marginBottom: "2px" }}
         />
         <div className={classes.cardContent}>
+          {userStore?.user && (
+            <div className={classes.starContainer}>
+              <Star
+                id={id}
+                starred={starred}
+                onStar={onStar}
+                onUnstar={onUnstar}
+              />
+            </div>
+          )}
           <Link
             onClick={() => history.push(`/listing/${id}`)}
             className={classes.link}

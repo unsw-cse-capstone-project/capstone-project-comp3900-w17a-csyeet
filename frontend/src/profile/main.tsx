@@ -17,7 +17,7 @@ export const ProfilePage = () => {
   return <ProfilePageWrapper store={store} />;
 };
 
-export const ProfilePageWrapper = observer(
+export const ProfilePageWrapper = 
   ({ store }: { store: ProfileStore }) => {
     const classes = ProfilePageStyles();
     const userStore = useStore();
@@ -38,8 +38,7 @@ export const ProfilePageWrapper = observer(
         <ProfileTabs store={store} />
       </div>
     );
-  }
-);
+  };
 
 function TabPanel(props: {
   children?: React.ReactNode;
@@ -68,21 +67,20 @@ function a11yProps(index: any) {
   };
 }
 
-function ProfileTabs({ store }: { store: ProfileStore }) {
+const ProfileTabs = ({ store }: { store: ProfileStore }) => {
   const classes = ProfilePageStyles();
   const [value, setValue] = React.useState(0);
-  const [localStore, setStore] = React.useState(store);
-  const presenter = new ProfilePresenter();
+  // const [localStore, setStore] = React.useState(store);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    presenter.getProfileInfo(localStore);
+    // presenter.getProfileInfo(localStore);
     setValue(newValue);
     console.log("setting Store");
-    setStore(localStore);
+    // setStore(localStore);
   };
 
   return (
-    <div>
+    <div style={{paddingBottom: "200px"}}>
       <div className={classes.tabBar}>
         <Tabs
           value={value}
@@ -102,20 +100,20 @@ function ProfileTabs({ store }: { store: ProfileStore }) {
       </div>
 
       <TabPanel value={value} index={0}>
-        <AboutMe store={localStore} />
+        <AboutMe store={store} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <MyBids store={localStore} />
+        <MyBids store={store} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <MyListings store={localStore} />
+        <MyListings store={store} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <StarredProperties store={localStore} />
+        <StarredProperties store={store} />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <MyDetails store={localStore} />
+        <MyDetails store={store} />
       </TabPanel>
     </div>
   );
-}
+};

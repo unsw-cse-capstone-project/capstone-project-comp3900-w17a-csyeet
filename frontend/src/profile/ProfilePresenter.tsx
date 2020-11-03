@@ -1,4 +1,4 @@
-import { action, observable, runInAction } from "mobx";
+import { action, observable, runInAction, makeObservable } from 'mobx';
 import { ListingActual } from "../ui/util/types/listing";
 import { getListingFromResult } from "../ui/util/helper";
 
@@ -14,6 +14,10 @@ export class ProfileStore {
 
   @observable
   loadingState?: "loading" | "loaded" | "error";
+
+  constructor() {
+    makeObservable(this);
+  }
 }
 
 export class ProfilePresenter {
@@ -33,6 +37,7 @@ export class ProfilePresenter {
         const ListingResults: ListingActual[] = content.listings.map(
           (result: any) => getListingFromResult(result)
         );
+        console.log(ListingResults)
         const BidsResults: ListingActual[] = content.registrations.map(
           (result: any) => getListingFromResult(result)
         );
