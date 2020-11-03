@@ -58,7 +58,7 @@ export const ListingCardSmallStyles = makeStyles((theme: Theme) =>
       "&:hover": {
         color: theme.palette.primary.main,
         textDecoration: "none",
-        "& p": {
+        "& p, & h6": {
           color: theme.palette.primary.main,
         },
       },

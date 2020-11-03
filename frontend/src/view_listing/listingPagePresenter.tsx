@@ -27,7 +27,6 @@ export class ListingPagePresenter {
         console.log("error " + result.detail);
       } else {
         const results: ListingActual = getListingFromResult(result);
-
         runInAction(() => {
           store.listing = results;
           store.loadingState = "loaded";
