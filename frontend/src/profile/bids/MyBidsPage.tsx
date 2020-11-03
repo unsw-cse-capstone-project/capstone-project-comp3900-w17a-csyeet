@@ -6,7 +6,7 @@ import { ListingCardAuction } from "../../ui/base/listing_card_auction/ListingCa
 export function MyBidsPage({ store }: { store: ProfileStore }) {
   const listings = store.myBidsResults;
   return (
-    <div style={{ width: "80%", margin: "auto" }}>
+    <div style={{ width: "80%", margin: "auto", paddingBottom: "100px" }}>
       {listings.length === 0 ? (
         <div style={{ textAlign: "center" }}>
           You have not registered as a registered bidder for any auctions
