@@ -27,8 +27,6 @@ export default class Store {
         body: JSON.stringify({ email: email, password: password }),
       });
       const content = await response.json();
-      console.log(response.headers)
-
       if ("detail" in content) {
         console.log("error", content.detail);
         onError();
@@ -97,7 +95,6 @@ export default class Store {
           })
       );
       window.localStorage.setItem('id', content.id);
-      console.log(this.user);
     } catch {
       console.log("error T-T");
     }
