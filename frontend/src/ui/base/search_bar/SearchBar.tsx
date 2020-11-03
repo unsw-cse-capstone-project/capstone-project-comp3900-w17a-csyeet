@@ -174,7 +174,7 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
             onChange={onCarChange}
             label="Cars"
           />
-          <div className={classes.formControl} style={{ flex: 4 }}>
+          <div className={classes.dateInput} style={{ flex: 4 }}>
             <LocalizationProvider dateAdapter={DateFnsUtils}>
               <MinMaxDateRangePicker store={store} />
             </LocalizationProvider>
@@ -390,9 +390,19 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
       onChange={onChange}
       renderInput={(startProps: any, endProps: any) => (
         <React.Fragment>
-          <TextField {...startProps} size="small" helperText={undefined} />
+          <TextField
+            {...startProps}
+            size="small"
+            style={{ backgroundColor: "white" }}
+            helperText={undefined}
+          />
           <DateRangeDelimiter> to </DateRangeDelimiter>
-          <TextField {...endProps} size="small" helperText={undefined} />
+          <TextField
+            {...endProps}
+            size="small"
+            style={{ backgroundColor: "white" }}
+            helperText={undefined}
+          />
         </React.Fragment>
       )}
     />
