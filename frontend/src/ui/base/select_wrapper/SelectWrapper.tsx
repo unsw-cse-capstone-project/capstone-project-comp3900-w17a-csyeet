@@ -9,6 +9,8 @@ export interface SelectWrapperProps {
   label: string;
   field: string;
   data: Array<string>;
+  value?: string;
+  readOnly?: boolean;
   onChange: (value: string, field: string) => void;
   required?: boolean;
   value?: string;
@@ -18,6 +20,7 @@ export const SelectWrapper = ({
   field,
   data,
   value,
+  readOnly = false,
   onChange,
   required = true,
 }: SelectWrapperProps) => {
@@ -45,6 +48,7 @@ export const SelectWrapper = ({
       >
         <InputLabel id="select-outlined-label">{label}</InputLabel>
         <Select
+          readOnly={readOnly}
           labelId="select-outlined-label"
           id="select-outlined"
           value={selected}

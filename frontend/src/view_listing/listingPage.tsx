@@ -68,6 +68,7 @@ export const ListingPage = observer(
     const handleClose = () => {
       setOpen(false);
     };
+
     return (
       <div style={{ paddingBottom: "200px" }}>
         <AddressHeading

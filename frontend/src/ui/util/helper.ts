@@ -61,7 +61,7 @@ export const getListingFromResult = (result: any) => ({
   num_car_spaces: parseInt(result.num_car_spaces),
   auction_start: new Date(result.auction_start),
   auction_end: new Date(result.auction_end),
-  images: createFakeListing().images,
+  images: result["image_ids"].length !== 0? result["image_ids"].map((id: any) => `/listings/${result.id}/images/${id}`):createFakeListing().images,
   landmarks: result.landmarks,
   features: result.features,
   starred: result.starred,
@@ -72,7 +72,7 @@ export const getListingFromResult = (result: any) => ({
 
 export const formatAddress = ({street, suburb, state, postcode}: {street: string, suburb: string, state: string, postcode: string}) => {
   return {
-    streetAddress: street.replace(/(^\w|\s\w)/g, m => m.toUpperCase()) + ", ",
+    streetAddress: street.replace(/(^\w|\s\w)/g, m => m.toUpperCase()),
     remainingAddress: suburb.replace(/(^\w|\s\w)/g, m => m.toUpperCase()) + " " + state.toUpperCase() + " " + postcode,
   }
 };

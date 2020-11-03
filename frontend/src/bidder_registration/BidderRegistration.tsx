@@ -9,7 +9,7 @@ import { InitialBidStep } from "./InitialBidStep";
 import { PaymentStep } from "./PaymentStep";
 import { bidderRegistrationStyle } from "./BidderRegistration.css";
 import { ConfirmationStep } from "./ConfirmationStep";
-import MuiAlert from '@material-ui/lab/Alert';
+import MuiAlert from "@material-ui/lab/Alert";
 import {
   Dialog,
   DialogTitle,
@@ -57,9 +57,9 @@ export const BidderRegistration = observer(
         store.ccv.length === 3 &&
         store.expiryDate.length === 4
     );
-    const canSubmit = computed(() => store.submitState !== 'submitting');
+    const canSubmit = computed(() => store.submitState !== "submitting");
     const steps = getSteps();
-    const isError = computed(() => store.submitState === 'error');
+    const isError = computed(() => store.submitState === "error");
 
     const handleNext = () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -158,7 +158,12 @@ export const BidderRegistration = observer(
             </Button>
           </DialogActions>
         </Dialog>
-        <Snackbar open={isError.get()} autoHideDuration={2000} onClose={action(() => store.submitState = undefined)}>
+        <Snackbar
+          open={isError.get()}
+          autoHideDuration={2000}
+          onClose={action(() => (store.submitState = undefined))}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
           <MuiAlert elevation={6} severity="error">
             Error occurred while trying to submit, please try again
           </MuiAlert>

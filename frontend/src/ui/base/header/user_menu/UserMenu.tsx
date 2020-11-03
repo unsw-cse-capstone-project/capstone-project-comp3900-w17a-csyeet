@@ -54,13 +54,23 @@ export const UserMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => history.push("/messages")}>
+        <MenuItem
+          onClick={() => {
+            history.push("/messages");
+            handleClose();
+          }}
+        >
           <ListItemIcon>
             <Message fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Messages" />
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            history.push("/profile");
+            handleClose();
+          }}
+        >
           <ListItemIcon>
             <AccountCircle fontSize="small" />
           </ListItemIcon>

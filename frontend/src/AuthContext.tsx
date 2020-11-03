@@ -5,6 +5,12 @@ export type User = {
   name: string;
   email: string;
   id: number;
+  phone_number: string;
+  street: string;
+  suburb: string;
+  postcode: string;
+  state: string;
+  country: string;
 };
 
 export default class Store {
@@ -17,6 +23,7 @@ export default class Store {
     try {
       const response = await fetch("/login", {
         method: "post",
+        credentials:"include",
         body: JSON.stringify({ email: email, password: password }),
       });
       const content = await response.json();
@@ -30,8 +37,15 @@ export default class Store {
               name: content.name,
               id: content.id,
               email: content.email,
+              phone_number: "0412345678",
+              street: "12 Street St",
+              suburb: "Fairfield",
+              postcode: "2194",
+              state: "NSW",
+              country: "Australia",
             })
         );
+        window.localStorage.setItem('id', content.id);
       }
     } catch {
       console.log("error T-T");
@@ -72,9 +86,15 @@ export default class Store {
             name: content.name,
             id: content.id,
             email: content.email,
+            phone_number: "0412345678",
+            street: "12 Street St",
+            suburb: "Fairfield",
+            postcode: "2194",
+            state: "NSW",
+            country: "Australia",
           })
       );
-      console.log(this.user);
+      window.localStorage.setItem('id', content.id);
     } catch {
       console.log("error T-T");
     }
@@ -97,10 +117,38 @@ export default class Store {
   }
 }
 
+const checkSession = async (store: Store) => {
+  let session = document.cookie.split(' ').find(cookie => cookie.startsWith('session='));
+  if (session && window.localStorage.getItem('id') !== null) {
+    try {
+      const response = await fetch("/users/profile", {
+        headers: {
+          'Cookie': session.split('=')[1],
+        }
+      });
+      const result = await response.json();
+      runInAction(() => store.user = {
+        id: parseInt(window.localStorage.getItem('id') as string),
+        name: result.name,
+        email: result.email,
+        phone_number: "0412345678",
+        street: "12 Street St",
+        suburb: "Fairfield",
+        postcode: "2194",
+        state: "NSW",
+        country: "Australia",
+      })
+    } catch {
+      console.log("error T-T");
+    }
+  }
+}
+
 export const AuthContext = React.createContext<Store | null>(null);
 
 export const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const store = new Store();
+  checkSession(store);
   return <AuthContext.Provider value={store}>{children}</AuthContext.Provider>;
 };
 

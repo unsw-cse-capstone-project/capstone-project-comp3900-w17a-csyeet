@@ -23,7 +23,9 @@ export interface AddressData {
 export const AddressForm: React.FC<{
   onChange: (value: string, field: string) => void;
   addressData?: AddressData;
-}> = observer(({ onChange, addressData }) => {
+  style?: React.CSSProperties;
+  readOnly?: boolean;
+}> = observer(({ onChange, addressData, style, readOnly = false }) => {
   // If no data is given, it is an empty form
   // Initialise with "NSW" and "Australia"
   if (!addressData) {
@@ -60,14 +62,16 @@ export const AddressForm: React.FC<{
   const [states, setStates] = React.useState<Array<string>>(getStates(country));
   const [countryValue, setCountry] = React.useState<string>(country);
   return (
-    <>
+    <div style={style}>
       <TextFieldWrapper
+        readOnly={readOnly}
         field="street"
         label="Street"
         onChange={onChange}
         value={street}
       />
       <TextFieldWrapper
+        readOnly={readOnly}
         field="suburb"
         label="Suburb"
         onChange={onChange}
@@ -76,6 +80,7 @@ export const AddressForm: React.FC<{
       <Grid container spacing={2}>
         <Grid item xs>
           <TextFieldWrapper
+            readOnly={readOnly}
             field="postcode"
             label="Postcode"
             onChange={onChange}
@@ -87,6 +92,7 @@ export const AddressForm: React.FC<{
         <Grid item xs>
           <SelectWrapper
             onChange={onChange}
+            readOnly={readOnly}
             field="state"
             label="State"
             data={states}
@@ -108,6 +114,7 @@ export const AddressForm: React.FC<{
             <Select
               labelId="select-outlined-label"
               id="select-outlined"
+              readOnly={readOnly}
               value={countryValue}
               onChange={(e: React.ChangeEvent<{ value: unknown }>) => {
                 onChange(e.target.value as string, "country");
@@ -128,6 +135,6 @@ export const AddressForm: React.FC<{
           </FormControl>
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 });
