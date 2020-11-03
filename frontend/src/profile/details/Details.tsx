@@ -57,7 +57,7 @@ export const Details: React.FC<{
           onChange(values.value, "phone_number");
         }}
         onBlur={() => {
-          store.phone_number.length != 10
+          store.phone_number.length !== 10
             ? setPhoneError(true)
             : setPhoneError(false);
         }}

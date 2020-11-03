@@ -89,12 +89,12 @@ export class ProfilePresenter {
   }
 
   @action
-  async updateAvatar(image: string, store: ProfileStore) {
+  async updateAvatar(image: File, img_url: string, store: ProfileStore) {
     store.loadingState = "updating";
     let form = new FormData();
     form.append("avatar", image);
     try {
-      const response = await fetch(`users/avatar`, {
+      const response = await fetch(`/users/avatar`, {
         method: "post",
         body: form,
       });
@@ -103,6 +103,7 @@ export class ProfilePresenter {
       else {
         runInAction(() => {
           store.loadingState = "success";
+          store.avatar = img_url;
         });
       }
     } catch {

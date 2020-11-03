@@ -19,7 +19,9 @@ export const ProfilePage = () => {
     <ProfilePageWrapper
       store={store}
       onEditBlurb={(blurb: string) => presenter.updateBlurb(blurb, store)}
-      onEditAvatar={(image: string) => presenter.updateAvatar(image, store)}
+      onEditAvatar={(image: File, img_url: string) =>
+        presenter.updateAvatar(image, img_url, store)
+      }
     />
   );
 };
@@ -32,7 +34,7 @@ export const ProfilePageWrapper = observer(
   }: {
     store: ProfileStore;
     onEditBlurb: (blurb: string) => void;
-    onEditAvatar: (image: string) => void;
+    onEditAvatar: (image: File, img_url: string) => void;
   }) => {
     const classes = ProfilePageStyles();
     const userStore = useStore();
@@ -43,7 +45,7 @@ export const ProfilePageWrapper = observer(
     return (
       <div>
         <div className={classes.userInfoContainer}>
-          <ProfileAvatar onUpload={onEditAvatar} avatar={userStore.avatar} />
+          <ProfileAvatar onUpload={onEditAvatar} avatar={store.avatar} />
           <Typography variant="h4">{userStore.user.name}</Typography>
           <Typography variant="body1">{userStore.user.email}</Typography>
           <Blurb

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, IconButton, Avatar } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import PublishIcon from "@material-ui/icons/Publish";
 import AddAPhotoOutlinedIcon from "@material-ui/icons/AddAPhotoOutlined";
@@ -26,7 +26,7 @@ export const AvatarStyles = makeStyles((theme: Theme) =>
 );
 
 export const ProfileAvatar: React.FC<{
-  onUpload: (image: string) => void;
+  onUpload: (image: File, img_url: string) => void;
   avatar?: string;
   className?: string;
 }> = ({ avatar = "", onUpload, className }) => {
@@ -63,7 +63,11 @@ export const ProfileAvatar: React.FC<{
               right: "0px",
             }}
           >
-            Edit <EditIcon style={{ marginRight: "5px" }} fontSize="small" />
+            Edit{" "}
+            <EditIcon
+              style={{ color: "#a9a9a9", marginLeft: "8px" }}
+              fontSize="small"
+            />
           </Button>
         </div>
       )}
@@ -72,7 +76,7 @@ export const ProfileAvatar: React.FC<{
 };
 
 const ImageEditor: React.FC<{
-  onUpload: (image: string) => void;
+  onUpload: (image: File, img_url: string) => void;
   onBack: () => void;
   avatarClassName: string;
 }> = ({ onUpload, onBack, avatarClassName }) => {
@@ -109,7 +113,10 @@ const ImageEditor: React.FC<{
                       color="primary"
                       size={"small"}
                       onClick={() => {
-                        onUpload(images[0].dataURL as string);
+                        onUpload(
+                          images[0].file as File,
+                          images[0].dataURL as string
+                        );
                         onBack();
                       }}
                       style={{

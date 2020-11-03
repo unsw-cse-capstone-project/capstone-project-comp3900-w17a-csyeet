@@ -45,7 +45,6 @@ export const Blurb: React.FC<{
             <IconButton onClick={() => setEdit(true)}>
               <EditIcon
                 style={{
-                  marginLeft: "2px",
                   color: "#a9a9a9",
                 }}
                 fontSize={"small"}
