@@ -9,5 +9,5 @@ export default {
 } as Meta;
 
 export const Overview = () => (
-  <AddressForm onChange={() => action("oChange")} />
+  <AddressForm onChange={() => action("onChange")} />
 );
