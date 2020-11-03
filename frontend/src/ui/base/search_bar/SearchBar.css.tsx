@@ -22,6 +22,11 @@ export const SearchBarStyles = makeStyles((theme: Theme) =>
     formControl: {
       margin: theme.spacing(1, 1),
       minWidth: 120,
+      backgroundColor: theme.palette.background.paper,
+    },
+    dateInput: {
+      margin: theme.spacing(1, 1),
+      minWidth: 120,
     },
     selectControl: {
       minWidth: "47%",
