@@ -4,8 +4,26 @@ import { Grid } from "@material-ui/core";
 import { ListingCardAuction } from "../../ui/base/listing_card_auction/ListingCardAuction";
 import { action } from "mobx";
 import { observer } from "mobx-react";
+import { ListingCardSmallPlaceholder } from "../../ui/base/listing_card_sm/ListingCardSmall";
 
 export const MyBidsPage = observer(({ store }: { store: ProfileStore }) => {
+  if (store.loadingState === "loading") {
+    return (
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+          <ListingCardSmallPlaceholder />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+          <ListingCardSmallPlaceholder />
+        </Grid>
+      </Grid>
+    );
+  }
+
+  if (store.loadingState === "error") {
+    return <div>Error</div>;
+  }
+
   return (
     <div style={{ width: "80%", margin: "auto" }}>
       {store.myBidsResults.length === 0 ? (

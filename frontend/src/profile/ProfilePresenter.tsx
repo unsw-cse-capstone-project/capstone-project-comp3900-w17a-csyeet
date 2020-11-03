@@ -1,4 +1,4 @@
-import { action, observable, runInAction, makeObservable } from 'mobx';
+import { action, observable, runInAction, makeObservable } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
 import { getListingFromResult } from "../ui/util/helper";
 
@@ -23,7 +23,7 @@ export class ProfileStore {
 export class ProfilePresenter {
   @action
   async getProfileInfo(store: ProfileStore) {
-    console.log("here");
+    store.loadingState = "loading";
     try {
       const response = await fetch(`/users/profile`);
       const content = await response.json();
@@ -37,7 +37,7 @@ export class ProfilePresenter {
         const ListingResults: ListingActual[] = content.listings.map(
           (result: any) => getListingFromResult(result)
         );
-        console.log(ListingResults)
+        console.log(ListingResults);
         const BidsResults: ListingActual[] = content.registrations.map(
           (result: any) => getListingFromResult(result)
         );

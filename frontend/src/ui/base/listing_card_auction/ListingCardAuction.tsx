@@ -67,7 +67,7 @@ export const ListingCardAuction = ({
     getBidFromAuction(id, user_id).then((r) => {
       setUserBid(r);
     });
-  }, []);
+  }, [id, userStore]);
   const classes = ListingCardAuctionStyles();
   return (
     <Card className={classes.card} style={style}>
@@ -126,7 +126,9 @@ export const ListingCardAuction = ({
                   marginTop: "5px",
                 }}
               >
-                {!userBid ? "Loading..." : priceFormatter.format(userBid)}
+                {!userBid
+                  ? "Loading..."
+                  : `Your Bid: ${priceFormatter.format(userBid)}`}
               </Typography>
             )}
           </div>
