@@ -1,12 +1,12 @@
 import * as React from "react";
 import { ProfileStore } from "../ProfilePresenter";
 import { Grid } from "@material-ui/core";
-import { ListingCardSmall } from "../../ui/base/listing_card_sm/ListingCardSmall";
+import { ListingCardAuction } from "../../ui/base/listing_card_auction/ListingCardAuction";
 
 export function MyBidsPage({ store }: { store: ProfileStore }) {
   const listings = store.myBidsResults;
   return (
-    <div>
+    <div style={{ width: "80%", margin: "auto" }}>
       {listings.length === 0 ? (
         <div style={{ textAlign: "center" }}>
           You have not registered as a registered bidder for any auctions
@@ -16,7 +16,7 @@ export function MyBidsPage({ store }: { store: ProfileStore }) {
           <Grid container spacing={3}>
             {listings.map((listing, i) => (
               <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={i}>
-                <ListingCardSmall listing={listing} />
+                <ListingCardAuction listing={listing} />
               </Grid>
             ))}
           </Grid>

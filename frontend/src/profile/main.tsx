@@ -71,9 +71,14 @@ function a11yProps(index: any) {
 function ProfileTabs({ store }: { store: ProfileStore }) {
   const classes = ProfilePageStyles();
   const [value, setValue] = React.useState(0);
+  const [localStore, setStore] = React.useState(store);
+  const presenter = new ProfilePresenter();
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    presenter.getProfileInfo(localStore);
     setValue(newValue);
+    console.log("setting Store");
+    setStore(localStore);
   };
 
   return (
@@ -97,19 +102,19 @@ function ProfileTabs({ store }: { store: ProfileStore }) {
       </div>
 
       <TabPanel value={value} index={0}>
-        <AboutMe store={store} />
+        <AboutMe store={localStore} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <MyBids store={store} />
+        <MyBids store={localStore} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <MyListings store={store} />
+        <MyListings store={localStore} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <StarredProperties store={store} />
+        <StarredProperties store={localStore} />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <MyDetails store={store} />
+        <MyDetails store={localStore} />
       </TabPanel>
     </div>
   );

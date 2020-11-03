@@ -10,6 +10,7 @@ import { ListingCardAuctionStyles } from "./ListingCardAuction.css";
 import { BidPrice } from "../bid_price/BidPrice";
 import { priceFormatter } from "../../util/helper";
 import { formatAddress } from "../../util/helper";
+import { Bid } from "../../util/types/bid";
 
 export const ListingCardAuction: React.FC<{
   listing: ListingActual;
@@ -27,7 +28,6 @@ export const ListingCardAuction: React.FC<{
     auction_end,
     reserve_met,
     highest_bid,
-    user_bid,
   } = listing;
   const history = useHistory();
   const userStore = useStore();
@@ -52,7 +52,15 @@ export const ListingCardAuction: React.FC<{
     postcode,
   });
 
-  const formattedBid = priceFormatter.format(user_bid as number);
+  // Get user bid
+  const user_id = userStore?.user?.id || 0;
+  let user_bid = "0";
+  getBidFromAuction(id, user_id).then((r) => {
+    user_bid = r;
+  });
+
+  console.log("here in listintgcardauction, user_bid is", user_bid);
+  const formattedBid = priceFormatter.format(parseInt(user_bid));
   const classes = ListingCardAuctionStyles();
   return (
     <Card className={classes.card} style={style}>
@@ -115,3 +123,22 @@ export const ListingCardAuction: React.FC<{
     </Card>
   );
 };
+
+async function getBidFromAuction(auction_id: Number, user_id: Number) {
+  const response = await fetch(`/listings/${auction_id}/auction`);
+  const content = await response.json();
+
+  if ("detail" in content) {
+    return "No bid found";
+  } else {
+    let bids = content.bids;
+    let return_bid = "No bid found";
+    bids.forEach((bid: Bid) => {
+      if (bid.bidder_id === user_id) {
+        console.log("returning bid:", bid.bid);
+        return_bid = bid.bid.toString();
+      }
+    });
+    return return_bid;
+  }
+}

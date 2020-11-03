@@ -6,7 +6,7 @@ import { ListingCardSmall } from "../../ui/base/listing_card_sm/ListingCardSmall
 export function MyListingsPage({ store }: { store: ProfileStore }) {
   const listings = store.myListingsResults;
   return (
-    <div>
+    <div style={{ width: "80%", margin: "auto" }}>
       {listings.length === 0 ? (
         <div style={{ textAlign: "center" }}>No Listings found</div>
       ) : (

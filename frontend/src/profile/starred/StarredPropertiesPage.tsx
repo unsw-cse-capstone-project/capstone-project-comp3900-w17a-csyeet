@@ -6,7 +6,7 @@ import { ListingCardSmall } from "../../ui/base/listing_card_sm/ListingCardSmall
 export function StarredPropertiesPage({ store }: { store: ProfileStore }) {
   const listings = store.starredResults;
   return (
-    <div>
+    <div style={{ width: "80%", margin: "auto" }}>
       {listings.length === 0 ? (
         <div style={{ textAlign: "center" }}>No Starred Properties</div>
       ) : (
