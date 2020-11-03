@@ -10,15 +10,13 @@ export const ListingFormStyles = makeStyles((theme: Theme) =>
     header: {
       position: "sticky",
       backgroundColor: "white",
-      padding: "20px",
+      paddingTop: "30px",
       zIndex: 5,
       top: "0",
     },
     headerContent: {
       display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginBottom: "30px",
+      flexDirection: "column",
     },
     body: {
       flexGrow: 1,
@@ -29,5 +27,18 @@ export const ListingFormStyles = makeStyles((theme: Theme) =>
     backButton: {
       marginRight: theme.spacing(1),
     },
+    backToEditingButton: {
+      width: "fit-content",
+      marginBottom: theme.spacing(2),
+    },
+    headerButtons: {
+      display: "flex",
+      justifyContent: "space-between",
+    },
+    footer: {
+      marginTop: "30px",
+      display: 'flex',
+      justifyContent: "center",
+    }
   })
 );

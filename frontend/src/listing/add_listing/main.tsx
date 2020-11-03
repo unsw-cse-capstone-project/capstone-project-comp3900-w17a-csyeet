@@ -1,15 +1,12 @@
 import * as React from "react";
 import { ListingPresenter } from "../ListingPresenter";
 import { ListingStore } from "../ListingStore";
-import { observer } from "mobx-react";
 import { useHistory } from "react-router-dom";
-import { Button, Snackbar } from "@material-ui/core";
+import { Snackbar } from "@material-ui/core";
 import { ListingForm } from "../listing_form/ListingForm";
 import { PreviewListing } from "../PreviewListing";
 import { AddListingStyles } from "./AddListing.css";
-import { ArrowBackIos } from "@material-ui/icons";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
-import { wait } from "@testing-library/react";
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -21,13 +18,11 @@ export const AddListingPage = () => {
   const history = useHistory();
   const [status, setStatus] = React.useState<string | null>(null);
   const [openSnack, setOpen] = React.useState<boolean>(false);
+  const [isEditing, setIsEditing] = React.useState<boolean>(true);
+  const classes = AddListingStyles();
   const onSuccess = () => {
     setStatus("success");
     history.push("/listing/" + store.id);
-  };
-
-  const onError = () => {
-    setStatus("error");
   };
 
   const snackContent = (status: string) => {
@@ -45,14 +40,15 @@ export const AddListingPage = () => {
 
   return (
     <>
-      <AddListingWrapper
-        store={store}
-        onPublish={() => {
-          setStatus("publishing");
-          presenter.publishListing(store, onSuccess, onError);
-        }}
-        onBack={() => history.push("/")}
-      />
+      <div className={classes.root}>
+        <div className={classes.main}>
+          {isEditing ? (
+            <ListingForm store={store} onBack={() => history.push('/')} onPreview={() => setStatus("preview")} />
+          ) : (
+            <PreviewListing store={store} onBack={() => setIsEditing(true)} onPublish={onSuccess} />
+          )}
+        </div>
+      </div>
       {status !== null && (
         <Snackbar
           open={openSnack}
@@ -68,40 +64,3 @@ export const AddListingPage = () => {
     </>
   );
 };
-
-const AddListingWrapper = observer(
-  ({
-    store,
-    onPublish,
-    onBack,
-  }: {
-    store: ListingStore;
-    onPublish: () => void;
-    onBack: () => void;
-  }) => {
-    const [status, setStatus] = React.useState<string>("edit");
-    const classes = AddListingStyles();
-    return (
-      <div className={classes.root}>
-        <div className={classes.main}>
-          <div className={classes.header}>
-            <Button
-              className={classes.backToEditingButton}
-              onClick={() => {
-                status === "edit" ? onBack() : setStatus("edit");
-              }}
-            >
-              <ArrowBackIos />
-              Back {status === "preview" && "to editing"}
-            </Button>
-          </div>
-          {status === "edit" ? (
-            <ListingForm store={store} onPreview={() => setStatus("preview")} />
-          ) : (
-            <PreviewListing store={store} onPublish={onPublish} />
-          )}
-        </div>
-      </div>
-    );
-  }
-);

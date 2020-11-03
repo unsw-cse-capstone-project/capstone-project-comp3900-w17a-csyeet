@@ -5,7 +5,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Paper,
   FormGroup,
   Typography,
 } from "@material-ui/core";
@@ -34,7 +33,7 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
     const removeFeature = (array: Feature[], feature: Feature) => {
       return array.filter(function (e) {
-        return e != feature;
+        return e !== feature;
       });
     };
 

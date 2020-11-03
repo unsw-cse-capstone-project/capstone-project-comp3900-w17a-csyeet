@@ -1,4 +1,4 @@
-import { action, runInAction } from "mobx";
+import { action } from "mobx";
 import { ListingStore } from "./ListingStore";
 
 const setResultsInStore = action((store: ListingStore, result: any) => {});

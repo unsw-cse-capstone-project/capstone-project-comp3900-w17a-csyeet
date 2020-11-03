@@ -5,7 +5,7 @@ export const AddListingStyles = makeStyles((theme: Theme) =>
     root: {
       width: "100%",
       height: "100%",
-      padding: theme.spacing(2, "15%", "200px", "15%"),
+      padding: theme.spacing(0, "15%", "200px", "15%"),
       boxSizing: "border-box",
       overflow: "scroll",
       marginTop: "0px",
@@ -25,11 +25,6 @@ export const AddListingStyles = makeStyles((theme: Theme) =>
     },
     backButton: {
       marginRight: theme.spacing(1),
-    },
-
-    backToEditingButton: {
-      width: "fit-content",
-      marginBottom: theme.spacing(2),
     },
   })
 );
