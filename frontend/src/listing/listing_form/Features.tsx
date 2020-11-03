@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { ListingStore, Feature } from "../ListingStore";
+import {action} from 'mobx';
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { CheckboxWrapper } from "../../ui/base/checkbox_wrapper/CheckboxWrapper";
 
@@ -37,13 +38,13 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
       });
     };
 
-    const onChecked = (checked: boolean, field: string) => {
+    const onChecked = action((checked: boolean, field: string) => {
       if (checked && !store.features.includes(field as Feature)) {
         store.features.push(field as Feature);
       } else if (!checked && store.features.includes(field as Feature)) {
         store.features = removeFeature(store.features, field as Feature);
       }
-    };
+    });
 
     const classes = FeatureStyles();
     const [expanded, setExpanded] = React.useState<string | false>(false);

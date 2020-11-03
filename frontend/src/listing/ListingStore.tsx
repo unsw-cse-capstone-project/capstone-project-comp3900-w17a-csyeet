@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { observable, makeObservable } from 'mobx';
 import { ImageListType } from "react-images-uploading";
 
 export type Feature =
@@ -48,4 +48,8 @@ export class ListingStore {
   @observable accNumber: string = "";
 
   @observable images: ImageListType = [];
+
+  constructor() {
+    makeObservable(this);
+  }
 }

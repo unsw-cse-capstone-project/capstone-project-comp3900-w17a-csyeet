@@ -4,12 +4,13 @@ import { Typography, TextField } from "@material-ui/core";
 import { ListingStore } from "../ListingStore";
 import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
 import { Features } from "./Features";
+import { action } from "mobx";
 
 export const Description: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
-    const onChange = (value: string, field: string) => {
+    const onChange = action((value: string, field: string) => {
       (store as any)[field] = value;
-    };
+    });
 
     const [desc, setDesc] = React.useState(store.desc);
     return (

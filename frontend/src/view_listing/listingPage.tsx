@@ -78,7 +78,7 @@ export const ListingPage = observer(
         />
         {/* first three images */}
         <Paper elevation={0} className={classes.greyBackground}>
-          {userStore?.user && (
+          {userStore?.user && userStore?.user.id !== owner.id && (
             <div className={classes.starContainer}>
               <Star id={id} starred={starred} />
             </div>

@@ -146,7 +146,7 @@ export const ListingForm = observer(
               color="secondary"
               onClick={onPreview}
               // (jenn)  COMMENTED OUT FOR TESTING PURPOSES (it works)
-              disabled={!canPreview}
+              // disabled={!canPreview}
             >
               Preview
             </Button>
