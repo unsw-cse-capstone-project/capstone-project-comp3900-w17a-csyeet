@@ -32,7 +32,7 @@ def login(req: LoginRequest, response: Response, session: Session = Depends(get_
         raise HTTPException(401, detail='Invalid password')
 
     token = create_token(req.email)
-    response.set_cookie(cookie_name, token.decode(), httponly=True)
+    response.set_cookie(cookie_name, token.decode(), httponly=False)
     return user
 
 

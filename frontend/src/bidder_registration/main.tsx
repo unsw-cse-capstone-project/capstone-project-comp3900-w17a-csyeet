@@ -1,4 +1,4 @@
-import { Button, Typography, useTheme } from "@material-ui/core";
+import { Button, Snackbar, Typography } from "@material-ui/core";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { useHistory, useParams } from "react-router-dom";
@@ -10,6 +10,10 @@ import { BidderRegistration } from "./BidderRegistration";
 import { bidderRegistrationStyle } from "./BidderRegistration.css";
 import { ArrowBackIos } from "@material-ui/icons";
 import { ListingActual } from "../ui/util/types/listing";
+import { formatAddress } from "../ui/util/helper";
+import ReactPlaceholder from "react-placeholder/lib";
+import MuiAlert from "@material-ui/lab/Alert";
+import { useStore } from "../AuthContext";
 
 export const BidderRegistrationPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +26,7 @@ export const BidderRegistrationPage = () => {
       onSubmit={(afterSubmit: () => void) =>
         presenter.submit(store, afterSubmit)
       }
+      id={parseInt(id)}
     />
   );
 };
@@ -30,22 +35,70 @@ export const BidderRegistrationWrapper = observer(
   ({
     store,
     onSubmit,
+    id,
   }: {
     store: BidderRegistrationStore;
     onSubmit: (afterSubmit: () => void) => void;
+    id: number;
   }) => {
-    const theme = useTheme();
     const history = useHistory();
+    const userStore = useStore();
     if (!store.loadingState) {
       return null;
     }
 
+    const HeaderOnlyContainer = ({
+      Content,
+    }: {
+      Content: React.ComponentType;
+    }) => {
+      const classes = bidderRegistrationStyle();
+      return (
+        <div className={classes.root}>
+          <div className={classes.main}>
+            <Button
+              className={classes.backToListingButton}
+              onClick={() => history.push("/listing/" + id)}
+            >
+              <ArrowBackIos />
+              Back to Listing
+            </Button>
+            <Content />
+          </div>
+        </div>
+      );
+    };
+
     if (store.loadingState === "loading") {
-      return <div>Loading</div>;
+      const Content = () => (
+        <ReactPlaceholder showLoadingAnimation={true} type="text" ready={false}>
+          {null}
+        </ReactPlaceholder>
+      );
+      return <HeaderOnlyContainer Content={Content} />;
     }
 
-    if (store.loadingState === "error" || !store.listing) {
-      return <div>Error loading</div>;
+    const Content = ({ message }: { message: string }) => (
+      <Snackbar open={true} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <MuiAlert elevation={6} severity="error">
+          {message}
+        </MuiAlert>
+      </Snackbar>
+    );
+
+    if (
+      store.loadingState === "error" ||
+      !store.listing ||
+      !userStore ||
+      !userStore.user
+    ) {
+      return (
+        <HeaderOnlyContainer
+          Content={() => (
+            <Content message="Error while loading the page, please try again" />
+          )}
+        />
+      );
     }
 
     const BidderRego = () => (
@@ -56,7 +109,21 @@ export const BidderRegistrationWrapper = observer(
       />
     );
 
-    const { id, street, suburb, postcode, state } = store.listing;
+    const {
+      street,
+      suburb,
+      postcode,
+      state,
+      owner,
+      registered_bidder,
+    } = store.listing;
+    const { streetAddress, remainingAddress } = formatAddress({
+      street,
+      suburb,
+      postcode,
+      state,
+    });
+
     const Container = ({ Content }: { Content: React.ComponentType }) => {
       const classes = bidderRegistrationStyle();
       return (
@@ -73,12 +140,7 @@ export const BidderRegistrationWrapper = observer(
               Register as a Bidder
             </Typography>
             <Typography variant="h5" align="center" className={classes.address}>
-              {street}
-              {", "}
-              {suburb}
-              {", "}
-              <span style={{ textTransform: "uppercase" }}>{state}</span>{" "}
-              {postcode}
+              {streetAddress + ", " + remainingAddress}
             </Typography>
             <Content />
           </div>
@@ -86,26 +148,36 @@ export const BidderRegistrationWrapper = observer(
       );
     };
 
-    if (new Date().getTime() >= store.listing.auction_end.getTime()) {
-      const Content = () => (
-        <Typography
-          style={{ textAlign: "center", color: theme.palette.error.main }}
-        >
-          Auction Closed
-        </Typography>
+    if (owner.id === userStore.user.id) {
+      return (
+        <Container
+          Content={() => (
+            <Content message="The owner of the property cannot register as a bidder." />
+          )}
+        />
       );
-      return <Container Content={Content} />;
+    }
+
+    if (registered_bidder) {
+      return (
+        <Container
+          Content={() => (
+            <Content message="You have already registered as a bidder." />
+          )}
+        />
+      );
+    }
+
+    if (new Date().getTime() >= store.listing.auction_end.getTime()) {
+      return <Container Content={() => <Content message="Auction Closed" />} />;
     }
 
     if (new Date().getTime() >= store.listing.auction_start.getTime()) {
-      const Content = () => (
-        <Typography
-          style={{ textAlign: "center", color: theme.palette.error.main }}
-        >
-          Auction has already commenced
-        </Typography>
+      return (
+        <Container
+          Content={() => <Content message="Auction has already commenced" />}
+        />
       );
-      return <Container Content={Content} />;
     }
 
     return <Container Content={BidderRego} />;

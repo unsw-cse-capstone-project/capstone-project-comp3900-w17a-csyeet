@@ -36,7 +36,7 @@ export const SuburbPanel = ({
         id="panel3a-header"
         className={classes.accordianSummary}
       >
-        <Typography variant="h5">{listing.suburb} Suburb Profile</Typography>
+        <Typography variant="h5">{listing.suburb[0].toUpperCase() + listing.suburb.slice(1)} Suburb Profile</Typography>
       </AccordionSummary>
       <AccordionDetails className={classes.accordianDetails}>
         <Paper className={classes.textContainer}>

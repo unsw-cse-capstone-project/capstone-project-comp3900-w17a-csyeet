@@ -60,6 +60,7 @@ export const Star = ({
         open={isError}
         autoHideDuration={2000}
         onClose={() => setIsError(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <MuiAlert elevation={6} severity="error">
           Error occurred, please try again
