@@ -61,6 +61,7 @@ export const AuctionPageWrapper = observer(
             </Button>
             <Content />
             <Snackbar
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
               open={store.bidMakingStatus === "error"}
               autoHideDuration={2000}
               onClose={action(() => (store.bidMakingStatus = undefined))}
@@ -106,8 +107,8 @@ export const AuctionPageWrapper = observer(
           )}
           enableBidding={
             new Date().getTime() >= listing.auction_start.getTime() &&
-              listing.registered_bidder &&
-              userStore ?.user !== undefined
+            listing.registered_bidder &&
+            userStore?.user !== undefined
           }
           isAuctionClosed={
             listing.auction_end.getTime() <= new Date().getTime()
@@ -143,7 +144,7 @@ export const AuctionPageWrapper = observer(
     const BiddersListWrapper = observer(() => (
       <BiddersList
         bidders={Array.from(new Set(bids.map((bid) => bid.bidder_id)))}
-        currentUser={userStore ?.user ?.id}
+        currentUser={userStore?.user?.id}
       />
     ));
 

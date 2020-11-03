@@ -42,7 +42,6 @@ export const Details: React.FC<{
   const onChange = (value: string, field: string) => {
     console.log("OnChange ", field, "new", value);
     runInAction(() => (store as any)[field] = value);
-    console.log(store);
   };
 
   const getAddressData = computed(() => {

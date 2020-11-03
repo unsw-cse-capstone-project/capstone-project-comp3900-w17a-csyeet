@@ -44,7 +44,7 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
       } else if (!checked && store.features.includes(field as Feature)) {
         store.features = removeFeature(store.features, field as Feature);
       }
-    });
+    };
 
     const classes = FeatureStyles();
     const [expanded, setExpanded] = React.useState<string | false>(false);

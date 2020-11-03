@@ -19,7 +19,7 @@ export const SignUp: React.FC<{
     name: string,
     email: string,
     password: string,
-    phone_number: string,
+    phoneNo: string,
     street: string,
     suburb: string,
     postcode: string,

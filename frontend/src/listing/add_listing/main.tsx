@@ -44,9 +44,6 @@ export const AddListingPageBase = observer(
       }
     };
 
-    console.log("penis");
-    console.log(store);
-
     return (
       <>
         <div className={classes.root}>

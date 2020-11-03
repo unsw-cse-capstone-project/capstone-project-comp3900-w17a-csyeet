@@ -3,6 +3,9 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 export const ListingCardAuctionStyles = makeStyles((theme: Theme) =>
   createStyles({
     card: {
+      [theme.breakpoints.up("xs")]: {
+        display: "flex",
+      },
       display: "flex",
       flexDirection: "column",
     },

@@ -79,6 +79,7 @@ export const ListingMessagesPage = () => {
       <Snackbar
         open={error !== undefined}
         autoHideDuration={2000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <MuiAlert elevation={6} severity="error">
           {error}
