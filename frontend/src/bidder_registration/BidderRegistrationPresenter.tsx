@@ -1,6 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
-import { getListingFromResult } from "../ui/util/helper";
+import { getListingFromResult } from '../ui/util/helper';
 export class BidderRegistrationStore {
   @observable
   initialBid: number = 0;
@@ -38,7 +38,6 @@ export class BidderRegistrationPresenter {
     try {
       const response = await fetch(`/listings/${listing_id}`);
       const result = await response.json();
-
       if ("detail" in result) {
         // handle error
         runInAction(() => (store.loadingState = "error"));
@@ -65,7 +64,7 @@ export class BidderRegistrationPresenter {
       0
     );
     try {
-      const response = await fetch(`/registrations/${store.listing ?.id}`, {
+      const response = await fetch(`/registrations/${store.listing?.id}`, {
         method: "post",
         body: JSON.stringify({
           bid: store.initialBid,
@@ -79,12 +78,10 @@ export class BidderRegistrationPresenter {
         // handle error
         runInAction(() => (store.loadingState = "error"));
         console.log("error " + result.detail);
+        return;
       } else {
         runInAction(() => {
           store.submitState = "success";
-          if (store.listing) {
-            store.listing.auction_end = new Date(result.auction_end);
-          }
         });
         afterSubmit();
       }
