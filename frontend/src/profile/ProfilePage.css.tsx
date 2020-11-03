@@ -3,7 +3,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 export const ProfilePageStyles = makeStyles((theme: Theme) =>
   createStyles({
     userInfo: {
-      position: "sticky",
+      position: "relative",
       backgroundColor: "#F3F4F5",
       padding: theme.spacing(5, 0),
       zIndex: 5,

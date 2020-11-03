@@ -1,5 +1,4 @@
 import * as React from "react";
-import { observer } from "mobx-react";
 import { Avatar, Typography, Tab, Tabs } from "@material-ui/core";
 import { ProfilePageStyles } from "./ProfilePage.css";
 import { AboutMePage as AboutMe } from "./about/AboutMePage";
@@ -17,31 +16,27 @@ export const ProfilePage = () => {
   return <ProfilePageWrapper store={store} />;
 };
 
-export const ProfilePageWrapper = observer(
-  ({ store }: { store: ProfileStore }) => {
-    const classes = ProfilePageStyles();
-    const userStore = useStore();
-    if (!userStore || !userStore.user) {
-      return null;
-    }
-
-    return (
-      <div>
-        <div className={classes.userInfo}>
-          <Avatar
-            src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
-            className={classes.avatar}
-          ></Avatar>
-          <Typography variant="h4">{userStore.user.name}</Typography>
-          <Typography variant="body1">{userStore.user.email}</Typography>
-        </div>
-        <div>
-          <ProfileTabs store={store} />
-        </div>
-      </div>
-    );
+export const ProfilePageWrapper = ({ store }: { store: ProfileStore }) => {
+  const classes = ProfilePageStyles();
+  const userStore = useStore();
+  if (!userStore || !userStore.user) {
+    return null;
   }
-);
+
+  return (
+    <div>
+      <div className={classes.userInfo}>
+        <Avatar
+          src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
+          className={classes.avatar}
+        ></Avatar>
+        <Typography variant="h4">{userStore.user.name}</Typography>
+        <Typography variant="body1">{userStore.user.email}</Typography>
+      </div>
+      <ProfileTabs store={store} />
+    </div>
+  );
+};
 
 function TabPanel(props: {
   children?: React.ReactNode;
@@ -70,16 +65,20 @@ function a11yProps(index: any) {
   };
 }
 
-function ProfileTabs({ store }: { store: ProfileStore }) {
+const ProfileTabs = ({ store }: { store: ProfileStore }) => {
   const classes = ProfilePageStyles();
   const [value, setValue] = React.useState(0);
+  // const [localStore, setStore] = React.useState(store);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    // presenter.getProfileInfo(localStore);
     setValue(newValue);
+    console.log("setting Store");
+    // setStore(localStore);
   };
 
   return (
-    <div>
+    <div style={{ paddingBottom: "200px" }}>
       <div className={classes.tabBar}>
         <Tabs
           value={value}
@@ -115,4 +114,4 @@ function ProfileTabs({ store }: { store: ProfileStore }) {
       </TabPanel>
     </div>
   );
-}
+};

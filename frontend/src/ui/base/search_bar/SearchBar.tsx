@@ -45,7 +45,7 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
       },
     } = store;
     let featuresString = features ? features.join("_") : "";
-    let landmarkssString = landmarks ? landmarks.join("_") : "";
+    let landmarksString = landmarks ? landmarks.join("_") : "";
 
     let searchQuery = input ? `query=${input}` : "";
     searchQuery += type ? `&type=${type}` : "";
@@ -56,7 +56,7 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
     searchQuery += end_date ? `&end=${end_date.toISOString()}` : "";
     searchQuery += featuresString !== "" ? "&features=" + featuresString : "";
     searchQuery +=
-      landmarkssString !== "" ? "&landmarks=" + landmarkssString : "";
+      landmarksString !== "" ? "&landmarks=" + landmarksString : "";
 
     history.push("/search?" + searchQuery);
   };
