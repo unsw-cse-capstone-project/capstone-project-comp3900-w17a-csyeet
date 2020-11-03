@@ -1,13 +1,7 @@
 import React from "react";
-import {
-  TextField,
-  Typography,
-  Paper,
-  Button,
-  IconButton,
-} from "@material-ui/core";
+import { TextField, Typography, IconButton, Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import CloseIcon from "@material-ui/icons/Close";
+import CheckIcon from "@material-ui/icons/Check";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import classNames from "classnames";
 
@@ -20,20 +14,12 @@ export const BlurbStyle = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
     },
-    content: {
-      position: "relative",
-      boxSizing: "border-box",
-      padding: "10px",
-      minHeight: "150px",
-    },
-    editButton: {
-      position: "absolute",
-      top: theme.spacing(1),
-      right: theme.spacing(1),
-    },
-    editContent: {
-      position: "relative",
-      boxSizing: "border-box",
+
+    blurbView: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "flexStart",
+      verticalAlign: "center",
     },
   })
 );
@@ -47,30 +33,28 @@ export const Blurb: React.FC<{
   const classes = BlurbStyle();
   return (
     <div className={classNames(className, classes.root)}>
-      <div className={classes.content}>
-        {edit ? (
-          <EditBlurb
-            blurb={blurb}
-            onEdit={onEdit}
-            onBack={() => setEdit(false)}
-            className={classes.editContent}
-          />
-        ) : (
-          <>
-            <IconButton
-              style={{ position: "absolute", right: "0px", top: "0px" }}
-              onClick={() => setEdit(true)}
-              className={classes.editButton}
-            >
+      {edit ? (
+        <EditBlurb
+          blurb={blurb}
+          onEdit={onEdit}
+          onBack={() => setEdit(false)}
+        />
+      ) : (
+        <div className={classes.blurbView}>
+          <Typography variant="body2">{blurb}</Typography>
+          <div style={{ marginBottom: "10px" }}>
+            <IconButton onClick={() => setEdit(true)}>
               <EditIcon
-                style={{ marginLeft: "2px", color: "#a9a9a9" }}
+                style={{
+                  marginLeft: "2px",
+                  color: "#a9a9a9",
+                }}
                 fontSize={"small"}
               />
             </IconButton>
-            <Typography>{blurb}</Typography>
-          </>
-        )}
-      </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -84,49 +68,34 @@ const EditBlurb: React.FC<{
   const [value, setValue] = React.useState<string>(blurb);
   return (
     <div className={className}>
-      <div
-        style={{
-          position: "relative",
-          boxSizing: "border-box",
-          padding: "10px",
-          paddingLeft: "0px",
+      <TextField
+        size="small"
+        style={{ display: "flex" }}
+        variant={"outlined"}
+        InputProps={{
+          endAdornment: (
+            <Button
+              size={"small"}
+              onClick={onBack}
+              variant="contained"
+              color="secondary"
+            >
+              Save
+            </Button>
+          ),
         }}
-      >
-        <IconButton
-          onClick={onBack}
-          style={{ position: "absolute", right: "0px", top: "0px" }}
-        >
-          <CloseIcon
-            style={{ marginLeft: "2px", color: "#a9a9a9" }}
-            fontSize={"small"}
-          />
-        </IconButton>
-        <Typography variant="body1" style={{ marginBottom: "15px" }}>
-          Update your bio
-        </Typography>
-        <TextField
-          fullWidth
-          label="User Blurb"
-          variant="outlined"
-          multiline
-          rows="5"
-          value={value}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setValue(e.target.value);
-          }}
-        />
-      </div>
-      <Button
-        variant="contained"
-        color={"primary"}
-        // style={{ marginTop: "10px" }}
-        onClick={() => {
-          onEdit(value);
-          onBack();
+        value={value}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setValue(e.target.value)
+        }
+        onBlur={onBack}
+        onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            onEdit(value);
+          }
         }}
-      >
-        Update
-      </Button>
+      />
     </div>
   );
 };

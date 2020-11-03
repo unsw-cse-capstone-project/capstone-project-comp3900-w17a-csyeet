@@ -39,30 +39,17 @@ export const ProfilePageWrapper = observer(
     return (
       <div>
         <div className={classes.userInfoContainer}>
-          {/* (jenn) Grid is half half, can adjust later :) */}
-          <Grid
-            container
-            spacing={1}
-            direction={"row"}
-            justify={"flex-start"}
-            alignItems={"center"}
-          >
-            <Grid item>
-              <Avatar
-                src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
-                className={classes.avatar}
-              ></Avatar>
-              <Typography variant="h4">{userStore.user.name}</Typography>
-              <Typography variant="body1">{userStore.user.email}</Typography>
-            </Grid>
-            <Grid item xs={7}>
-              <Blurb
-                className={classes.blurbStyle}
-                blurb={store.blurb}
-                onEdit={onEditBlurb}
-              />
-            </Grid>
-          </Grid>
+          <Avatar
+            src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
+            className={classes.avatar}
+          ></Avatar>
+          <Typography variant="h4">{userStore.user.name}</Typography>
+          <Typography variant="body1">{userStore.user.email}</Typography>
+          <Blurb
+            className={classes.blurbStyle}
+            blurb={store.blurb}
+            onEdit={onEditBlurb}
+          />
         </div>
         <div>
           <ProfileTabs store={store} />

@@ -13,12 +13,9 @@ export const ProfilePageStyles = makeStyles((theme: Theme) =>
       top: "0",
       display: "flex",
       flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
     },
     blurbStyle: {
-      marginTop: theme.spacing(5),
-      borderWidth: "1px",
+      marginTop: theme.spacing(1),
     },
     tabBar: {
       position: "sticky",
