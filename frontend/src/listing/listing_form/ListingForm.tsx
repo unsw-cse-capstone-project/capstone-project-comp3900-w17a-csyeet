@@ -17,7 +17,7 @@ import { AuctionDetails } from "./AuctionDetails";
 import { PaymentDetails } from "./Payment";
 import { ListingFormStyles } from "./ListingForm.css";
 import Alert from "@material-ui/lab/Alert";
-import { ArrowBackIos } from '@material-ui/icons';
+import { ArrowBackIos } from "@material-ui/icons";
 export const ListingForm = observer(
   ({
     store,
@@ -133,27 +133,21 @@ export const ListingForm = observer(
         <div className={classes.header}>
           <div className={classes.headerContent}>
             <div className={classes.headerButtons}>
-            <Button
-              className={classes.backToEditingButton}
-              onClick={onBack}
-            >
-              <ArrowBackIos />
-              Back
-            </Button>
-            <Button
-              size="large"
-              variant="contained"
-              color="secondary"
-              onClick={onPreview}
-              // (jenn)  COMMENTED OUT FOR TESTING PURPOSES (it works)
-              // disabled={!canPreview}
-            >
-              Preview
-            </Button>
+              <Button className={classes.backToEditingButton} onClick={onBack}>
+                <ArrowBackIos />
+                Back
+              </Button>
+              <Button
+                size="large"
+                variant="contained"
+                color="secondary"
+                onClick={onPreview}
+                disabled={!canPreview}
+              >
+                Preview
+              </Button>
             </div>
-            <Typography variant="h3">
-              Add Listing
-            </Typography>
+            <Typography variant="h3">Add Listing</Typography>
           </div>
           <Stepper alternativeLabel nonLinear activeStep={activeStep}>
             {steps.map((label, index) => {
@@ -184,7 +178,7 @@ export const ListingForm = observer(
               Back
             </Button>
             <Button variant="contained" color="primary" onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Add Listing" : "Next"}
+              {activeStep === steps.length - 1 ? "Preview Listing" : "Next"}
             </Button>
           </div>
         </div>
@@ -194,10 +188,7 @@ export const ListingForm = observer(
           anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
           onClose={() => setSnack(false)}
         >
-          <Alert
-            onClose={() => setSnack(false)}
-            severity="error"
-          >
+          <Alert onClose={() => setSnack(false)} severity="error">
             You have yet to fill out all the information
           </Alert>
         </Snackbar>

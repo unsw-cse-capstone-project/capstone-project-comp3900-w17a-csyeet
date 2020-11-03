@@ -50,6 +50,7 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
         transform: "translate(10%, 40%)",
         boxShadow: theme.shadows[1],
       },
+      width: "100%",
     },
     photoGrid: {
       [theme.breakpoints.up("md")]: {

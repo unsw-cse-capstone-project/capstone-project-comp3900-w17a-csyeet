@@ -67,31 +67,31 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
             aria-controls="panel1bh-content"
             id="panel1bh-header"
           >
-            <Typography className={classes.heading}>Room Features </Typography>
+            <Typography className={classes.heading}>Room Features</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <FormGroup>
               <CheckboxWrapper
-                checked={store.features.includes("has_ensuite")}
-                field="has_ensuite"
+                checked={store.features.includes("ensuite")}
+                field="ensuite"
                 label="Ensuite"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_built_in_wardrobe")}
-                field="has_built_in_wardrobe"
+                checked={store.features.includes("builtInWardrobe")}
+                field="builtInWardrobe"
                 label="Built-in Wardrobe"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_bathtub")}
-                field="has_bathtub"
+                checked={store.features.includes("bathtub")}
+                field="bathtub"
                 label="Bathtub"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("is_furnished")}
-                field="is_furnished"
+                checked={store.features.includes("furnished")}
+                field="furnished"
                 label="Newly Furnished"
                 onChange={onChecked}
               />
@@ -107,43 +107,43 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
             aria-controls="panel2bh-content"
             id="panel2bh-header"
           >
-            <Typography className={classes.heading}>Users</Typography>
+            <Typography className={classes.heading}>Kitchen Features</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <FormGroup>
               <CheckboxWrapper
-                checked={store.features.includes("has_open_kitchen")}
-                field="has_open_kitchen"
+                checked={store.features.includes("openKitchen")}
+                field="openKitchen"
                 label="Open Kitchen"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_separate_kitchen")}
-                field="has_separate_kitchen"
+                checked={store.features.includes("separateKitchen")}
+                field="separateKitchen"
                 label="Separate Kitchen"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_island_kitchen")}
-                field="has_island_kitchen"
+                checked={store.features.includes("islandKitchen")}
+                field="islandKitchen"
                 label="Island Kitchen"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_gas_stove")}
-                field="has_gas_stove"
+                checked={store.features.includes("gasStove")}
+                field="gasStove"
                 label="Gas Stove"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_electric_stove")}
-                field="has_electric_stove"
+                checked={store.features.includes("electricStove")}
+                field="electricStove"
                 label="Electric Stove"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_induction_stove")}
-                field="has_induction_stove"
+                checked={store.features.includes("inductionStove")}
+                field="inductionStove"
                 label="Induction Stove"
                 onChange={onChecked}
               />
@@ -166,38 +166,38 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
           <AccordionDetails>
             <FormGroup>
               <CheckboxWrapper
-                checked={store.features.includes("has_balcony")}
-                field="has_balcony"
+                checked={store.features.includes("balcony")}
+                field="balcony"
                 label="Balcony"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_ocean_view")}
-                field="has_ocean_view"
+                checked={store.features.includes("oceanView")}
+                field="oceanView"
                 label="Ocean View"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_bbq")}
-                field="has_bbq"
+                checked={store.features.includes("bbq")}
+                field="bbq"
                 label="BBQ Area"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_porch")}
-                field="has_porch"
+                checked={store.features.includes("porch")}
+                field="porch"
                 label="Porch"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_pool")}
-                field="has_pool"
+                checked={store.features.includes("pool")}
+                field="pool"
                 label="Pool"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("has_gym")}
-                field="has_gym"
+                checked={store.features.includes("gym")}
+                field="gym"
                 label="Gym"
                 onChange={onChecked}
               />

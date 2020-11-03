@@ -29,7 +29,7 @@ export const FeaturesPanel = ({ features }: { features: string[] }) => {
       >
         <Typography variant="h5">Features</Typography>
       </AccordionSummary>
-      <AccordionDetails style={{borderTop: "solid 1px #eee",}}>
+      <AccordionDetails style={{ borderTop: "solid 1px #eee" }}>
         <ul>
           {features.map((feature, i) => (
             <li key={i}>
