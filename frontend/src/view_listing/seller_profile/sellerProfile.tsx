@@ -12,7 +12,7 @@ import {
 import { sellerProfileStyle } from "./sellerProfile.css";
 import { ListingActual } from "../../ui/util/types/listing";
 import { getListingFromResult, toCapitaliseCase } from "../../ui/util/helper";
-import { ListingCardSmall } from "../../ui/base/listing_card_sm/ListingCardSmall";
+import { ListingCardSmall, ListingCardSmallPlaceholder } from '../../ui/base/listing_card_sm/ListingCardSmall';
 
 export const SellerProfile = ({
   id,
@@ -43,6 +43,7 @@ export const SellerProfile = ({
 
   React.useEffect(() => {
     getInfoFromProfile(id).then((r) => {
+      console.log("r.listings", r.listings);
       setBlurb(r.blurb);
       setListings(r.listings);
     });
@@ -109,18 +110,30 @@ function ProfileDialog(props: {
         </div>
         <div className={classes.listings}>
           {!props.listings ? (
-            <div style={{ textAlign: "center" }}>No Listings found</div>
-          ) : (
-            <div>
+            <div style={{ textAlign: "center" }}>
               <Grid container spacing={3}>
-                {props.listings.map((listing, i) => (
-                  <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={i}>
-                    <ListingCardSmall listing={listing} />
-                  </Grid>
-                ))}
+                <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+                  <ListingCardSmallPlaceholder />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+                  <ListingCardSmallPlaceholder />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+                  <ListingCardSmallPlaceholder />
+                </Grid>
               </Grid>
             </div>
-          )}
+          ) : (
+              <div>
+                <Grid container spacing={3}>
+                  {props.listings.map((listing, i) => (
+                    <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={i}>
+                      <ListingCardSmall listing={listing} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </div>
+            )}
         </div>
       </DialogContent>
     </Dialog>
