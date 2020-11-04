@@ -13,6 +13,8 @@ import MessageIcon from "@material-ui/icons/Message";
 import { useHistory } from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { createStyles } from "@material-ui/core/styles";
+import MuiAlert from "@material-ui/lab/Alert";
+import { Snackbar } from "@material-ui/core";
 
 const OwnerStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,22 +32,27 @@ export const OwnerHeader = ({
   onDelete,
   id,
 }: {
-  onDelete(): void;
+  onDelete(): Promise<boolean>;
   id: number;
 }) => {
   const history = useHistory();
   const classes = OwnerStyle();
+  const [error, setError] = React.useState<string | undefined>(undefined);
   const [confirmDelete, setConfirmDelete] = React.useState(false);
   const onDeleteClick = () => {
     setConfirmDelete(true);
   };
   const onDeleteConfirmed = async () => {
-    await onDelete();
-    history.push("/");
+    const isSuccessful = await onDelete();
+    if (isSuccessful) {
+      history.push("/");
+    } else {
+      setError("Error occurred while deleting listing, please try again");
+    }
   };
   const onMessageClick = () => {
     history.push(`/listing/${id}/messages`);
-  }
+  };
   return (
     <div className={classes.listingHeader}>
       <Button
@@ -53,7 +60,7 @@ export const OwnerHeader = ({
         variant="contained"
         color="primary"
         startIcon={<MessageIcon />}
-        style={{marginRight: "10px"}}
+        style={{ marginRight: "10px" }}
       >
         Messages
       </Button>
@@ -86,6 +93,16 @@ export const OwnerHeader = ({
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={!!error}
+        onClose={() => setError(undefined)}
+        autoHideDuration={2000}
+      >
+        <MuiAlert elevation={6} severity="error">
+          {error}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };

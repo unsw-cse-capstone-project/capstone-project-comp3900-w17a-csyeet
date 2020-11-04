@@ -6,6 +6,7 @@ import {
   createStyles,
   makeStyles,
   Theme,
+  CircularProgress,
 } from "@material-ui/core";
 import { ListingPage } from "../view_listing/listingPage";
 import { ListingActual } from "../ui/util/types/listing";
@@ -39,6 +40,7 @@ export const PreviewListing = observer(
     onBack: () => void;
   }) => {
     const userStore = useStore();
+    const [isSubmitting, setSubmitting] = React.useState(false);
     if (!userStore || !userStore.user) {
       return null;
     }
@@ -73,6 +75,11 @@ export const PreviewListing = observer(
       toSentenceCase(feature)
     );
 
+    const onClick = () => {
+      setSubmitting(true);
+      onPublish();
+    }
+
     const classes = PreviewListingStyle();
     return (
       <div>
@@ -81,8 +88,8 @@ export const PreviewListing = observer(
             <ArrowBackIos />
             Back
           </Button>
-          <Button variant={"contained"} color={"primary"} onClick={onPublish}>
-            Publish
+          <Button variant={"contained"} disabled={isSubmitting} color={"primary"} onClick={onClick}>
+            {isSubmitting? <CircularProgress />: "Publish"}
           </Button>
         </div>
         <ListingPage

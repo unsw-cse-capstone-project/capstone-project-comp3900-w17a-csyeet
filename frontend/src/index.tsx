@@ -7,7 +7,7 @@ import { AuthProvider, useStore } from "./AuthContext";
 import { observer } from "mobx-react";
 import { SearchPage } from "./search/main";
 import { ProfilePage } from "./profile/main";
-import { AddListingPage } from "./add_listing/main";
+import { AddListingPage } from "./listing/add_listing/main";
 import { BidderRegistrationPage } from "./bidder_registration/main";
 import { AuctionPage } from "./auction/main";
 import { HomePage } from "./home/main";

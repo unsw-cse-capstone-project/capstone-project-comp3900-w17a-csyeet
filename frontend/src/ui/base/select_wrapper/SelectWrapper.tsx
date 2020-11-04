@@ -10,6 +10,7 @@ export interface SelectWrapperProps {
   field: string;
   data: Array<string>;
   onChange: (value: string, field: string) => void;
+  readOnly?: boolean;
   required?: boolean;
   value?: string;
 }

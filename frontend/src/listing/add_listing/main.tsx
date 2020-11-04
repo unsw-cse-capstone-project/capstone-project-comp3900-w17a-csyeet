@@ -16,29 +16,36 @@ function Alert(props: AlertProps) {
 export const AddListingPage = () => {
   const presenter = new ListingPresenter();
   const store = new ListingStore();
-  return <AddListingPageBase store={store} />;
+  return <AddListingPageBase store={store} presenter={presenter} />;
 };
 
 export const AddListingPageBase = observer(
-  ({ store }: { store: ListingStore }) => {
+  ({ store, presenter }: { store: ListingStore; presenter: ListingPresenter }) => {
     const history = useHistory();
     const [status, setStatus] = React.useState<string | null>(null);
     const [openSnack, setOpen] = React.useState<boolean>(false);
     const [isEditing, setIsEditing] = React.useState<boolean>(true);
     const classes = AddListingStyles();
     const onSuccess = () => {
-      setStatus("success");
-      history.push("/listing/" + store.id);
+      setStatus("publishing");
+      presenter.publishListing(store, () => {
+        setOpen(true);
+        setStatus('success');
+        history.push("/listing/" + store.id);
+      }, () => {
+        setOpen(true);
+        setStatus('error');
+      })
     };
 
     const snackContent = (status: string) => {
       switch (status) {
         case "success":
-          return <Alert severity="success">Successfully published</Alert>;
+          return <MuiAlert severity="success">Successfully published</MuiAlert>;
         case "publishing":
-          return <Alert severity="info">Publishing your listing...</Alert>;
+          return <MuiAlert severity="info">Publishing your listing...</MuiAlert>;
         case "error":
-          return <Alert severity="error">There was an error publishing</Alert>;
+          return <MuiAlert severity="error">There was an error publishing</MuiAlert>;
         default:
           return <></>;
       }
@@ -66,6 +73,7 @@ export const AddListingPageBase = observer(
         {status !== null && (
           <Snackbar
             open={openSnack}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
             autoHideDuration={1500}
             onClose={() => {
               setOpen(false);
