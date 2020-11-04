@@ -1,4 +1,5 @@
 from typing import List, Optional
+from pydantic import BaseModel
 from .common import UserBase
 from .listing import ListingResponse
 
@@ -19,15 +20,46 @@ class LoginRequest(UserBase):
 
 
 class ProfileBase(UserBase):
+    id: int
     name: str
     blurb: Optional[str]
     listings: List[ListingResponse]
 
 
 class OwnProfileResponse(ProfileBase):
+    phone_number: str
+    street: str
+    suburb: str
+    postcode: str
+    state: str 
+    country: str
     registrations: List[ListingResponse]
     starred_listings: List[ListingResponse]
 
 
 class UserProfileResponse(ProfileBase):
     pass
+
+
+class UpdateUserBase(BaseModel):
+    name: str
+    blurb: str
+    phone_number: str
+    street: str
+    suburb: str
+    postcode: str
+    state: str 
+    country: str
+
+
+class UpdateUserRequest(UpdateUserBase):
+    pass
+
+
+class UpdateUserResponse(UpdateUserBase):
+    pass
+
+
+class ChangePasswordRequest(BaseModel):
+    old_password: str
+    new_password: str
