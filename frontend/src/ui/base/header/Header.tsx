@@ -10,8 +10,8 @@ import { SignIn } from "./sign_in/SignIn";
 import { SignUp } from "./sign_up/SignUp";
 import { useStore } from "../../../AuthContext";
 import { useTheme } from "@material-ui/core";
-import { UserMenu } from './user_menu/UserMenu';
-import { MinimisedSearch } from './minimised_search/MinimisedSearch';
+import { UserMenu } from "./user_menu/UserMenu";
+import { MinimisedSearch } from "./minimised_search/MinimisedSearch";
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -31,17 +31,17 @@ const Header: React.FC<HeaderProps> = observer(
       signInStore.open = true;
     });
     const location = useLocation();
-    const isHome = location.pathname === '/';
-    const isSearch = location.pathname.startsWith('/search');
+    const isHome = location.pathname === "/";
+    const isSearch = location.pathname.startsWith("/search");
     return (
       <div
         style={{
           display: "flex",
-          justifyContent: isHome? "flex-end": "space-between",
+          justifyContent: isHome ? "flex-end" : "space-between",
           verticalAlign: "center",
           alignItems: "center",
           paddingBottom: theme.spacing(0.5),
-          backgroundColor: isHome? "#f3f4f5": "white",
+          backgroundColor: isHome ? "#f3f4f5" : "white",
         }}
       >
         {!isHome && <Logo size="small" onClick={() => history.push("/")} />}
@@ -75,6 +75,15 @@ const Header: React.FC<HeaderProps> = observer(
             }}
           >
             {!isSearch && <MinimisedSearch />}
+            <Button
+              variant={"contained"}
+              color={"secondary"}
+              size="medium"
+              style={{ marginRight: "12px" }}
+              onClick={() => history.push("/add")}
+            >
+              Add Listing
+            </Button>
             <UserMenu />
           </div>
         )}

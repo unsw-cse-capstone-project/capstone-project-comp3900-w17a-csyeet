@@ -1,11 +1,13 @@
 import * as React from "react";
-import { Avatar, Typography, Tab, Tabs } from "@material-ui/core";
+import { observer } from "mobx-react";
+import { Typography, Tab, Tabs } from "@material-ui/core";
 import { ProfilePageStyles } from "./ProfilePage.css";
-import { AboutMePage as AboutMe } from "./about/AboutMePage";
 import { MyBidsPage as MyBids } from "./bids/MyBidsPage";
-import { MyDetailsPage as MyDetails } from "./details/MyDetailsPage";
+import { DetailsPage as MyDetails } from "./details/DetailsPage";
 import { MyListingsPage as MyListings } from "./listings/MyListingsPage";
 import { StarredPropertiesPage as StarredProperties } from "./starred/StarredPropertiesPage";
+import { Blurb } from "./about/Blurb";
+import { ProfileAvatar } from "./about/ProfileAvatar";
 import { ProfileStore, ProfilePresenter } from "./ProfilePresenter";
 import { useStore } from "../AuthContext";
 
@@ -13,30 +15,52 @@ export const ProfilePage = () => {
   const store = new ProfileStore();
   const presenter = new ProfilePresenter();
   presenter.getProfileInfo(store);
-  return <ProfilePageWrapper store={store} />;
-};
-
-export const ProfilePageWrapper = ({ store }: { store: ProfileStore }) => {
-  const classes = ProfilePageStyles();
-  const userStore = useStore();
-  if (!userStore || !userStore.user) {
-    return null;
-  }
-
   return (
-    <div>
-      <div className={classes.userInfo}>
-        <Avatar
-          src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
-          className={classes.avatar}
-        ></Avatar>
-        <Typography variant="h4">{userStore.user.name}</Typography>
-        <Typography variant="body1">{userStore.user.email}</Typography>
-      </div>
-      <ProfileTabs store={store} />
-    </div>
+    <ProfilePageWrapper
+      store={store}
+      onEditBlurb={(blurb: string) => presenter.updateBlurb(blurb, store)}
+      onEditAvatar={(image: File, img_url: string) =>
+        presenter.updateAvatar(image, img_url, store)
+      }
+    />
   );
 };
+
+export const ProfilePageWrapper = observer(
+  ({
+    store,
+    onEditBlurb,
+    onEditAvatar,
+  }: {
+    store: ProfileStore;
+    onEditBlurb: (blurb: string) => void;
+    onEditAvatar: (image: File, img_url: string) => void;
+  }) => {
+    const classes = ProfilePageStyles();
+    const userStore = useStore();
+    if (!userStore || !userStore.user) {
+      return null;
+    }
+
+    return (
+      <div>
+        <div className={classes.userInfo}>
+          <ProfileAvatar onUpload={onEditAvatar} avatar={store.avatar} />
+          <Typography variant="h4">{userStore.user.name}</Typography>
+          <Typography variant="body1">{userStore.user.email}</Typography>
+          <Blurb
+            className={classes.blurbStyle}
+            blurb={store.blurb}
+            onEdit={onEditBlurb}
+          />
+        </div>
+        <div>
+          <ProfileTabs store={store} />
+        </div>
+      </div>
+    );
+  }
+);
 
 function TabPanel(props: {
   children?: React.ReactNode;
@@ -89,28 +113,24 @@ const ProfileTabs = ({ store }: { store: ProfileStore }) => {
           scrollButtons="auto"
           aria-label="scrollable auto tabs example"
         >
-          <Tab label="About Me" {...a11yProps(0)} />
-          <Tab label="My Bids" {...a11yProps(1)} />
-          <Tab label="My Listings" {...a11yProps(2)} />
-          <Tab label="Starred Properties" {...a11yProps(3)} />
-          <Tab label="My Details" {...a11yProps(4)} />
+          <Tab label="My Bids" {...a11yProps(0)} />
+          <Tab label="My Listings" {...a11yProps(1)} />
+          <Tab label="Starred Properties" {...a11yProps(2)} />
+          <Tab label="My Details" {...a11yProps(3)} />
         </Tabs>
       </div>
 
       <TabPanel value={value} index={0}>
-        <AboutMe store={store} />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
         <MyBids store={store} />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={1}>
         <MyListings store={store} />
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={value} index={2}>
         <StarredProperties store={store} />
       </TabPanel>
-      <TabPanel value={value} index={4}>
-        <MyDetails store={store} />
+      <TabPanel value={value} index={3}>
+        <MyDetails />
       </TabPanel>
     </div>
   );

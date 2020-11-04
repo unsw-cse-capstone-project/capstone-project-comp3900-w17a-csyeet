@@ -25,7 +25,12 @@ import { observer } from "mobx-react";
 import { useHistory } from "react-router-dom";
 
 export const ListingPage = observer(
-  (props: {
+  ({
+    disableActions = false,
+    listing,
+    SuburbPanelContent,
+  }: {
+    disableActions?: boolean;
     listing: ListingActual;
     SuburbPanelContent: React.ComponentType;
   }) => {
@@ -54,7 +59,7 @@ export const ListingPage = observer(
       registered_bidder,
       landmarks,
       owner,
-    } = props.listing;
+    } = listing;
 
     const classes = listingPageStyle();
     const [open, setOpen] = React.useState(false);
@@ -89,7 +94,7 @@ export const ListingPage = observer(
         />
         {/* first three images */}
         <Paper elevation={0} className={classes.greyBackground}>
-          {userStore?.user && (
+          {userStore?.user && userStore?.user.id !== owner.id && (
             <div className={classes.starContainer}>
               <Star id={id} starred={starred} />
             </div>
@@ -110,24 +115,24 @@ export const ListingPage = observer(
                 color="secondary"
               >
                 <img
-                  src={props.listing.images[0]}
+                  src={listing.images[0]}
                   onClick={handleOpen}
-                  style={{ width: "100%", height: "100%" }}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                   alt={`Property view 1`}
                 />
               </Badge>
             </Grid>
             <Grid item xs={12} md={4} className={classes.photoGrid}>
               <img
-                src={props.listing.images[1]}
+                src={listing.images[1]}
                 onClick={handleOpen}
                 alt={`Property view 2`}
-              ></img>
+              />
               <img
-                src={props.listing.images[2]}
+                src={listing.images[2]}
                 onClick={handleOpen}
                 alt={`Property view 3`}
-              ></img>
+              />
             </Grid>
           </Grid>
         </Paper>
@@ -145,7 +150,7 @@ export const ListingPage = observer(
         >
           <div className={classes.sliderContainer}>
             <Slider {...settings}>
-              {props.listing.images.map((image, i) => (
+              {listing.images.map((image, i) => (
                 <img
                   className={classes.imageContainer}
                   src={image}
@@ -185,12 +190,12 @@ export const ListingPage = observer(
               {description}
             </Typography>
 
-            <FeaturesPanel features={features}></FeaturesPanel>
-            <FacilitiesPanel facilities={landmarks}></FacilitiesPanel>
-            <SuburbPanel
-              listing={props.listing}
-              Content={props.SuburbPanelContent}
-            ></SuburbPanel>
+            <FeaturesPanel features={features} />
+            <FacilitiesPanel
+              facilities={landmarks}
+              isPreview={disableActions}
+            />
+            <SuburbPanel listing={listing} Content={SuburbPanelContent} />
           </Grid>
           {/* right column */}
           <Grid item xs={12} md={4}>
@@ -198,10 +203,11 @@ export const ListingPage = observer(
               auction_start={auction_start}
               auction_end={auction_end}
               id={id}
+              disableAction={disableActions}
               registered_bidder={registered_bidder}
               isUser={userStore?.user !== undefined}
             />
-            <Map listing={props.listing}></Map>
+            <Map listing={listing}></Map>
             <SellerProfile
               id={owner.id}
               name={owner.name}
