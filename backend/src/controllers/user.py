@@ -81,7 +81,7 @@ def update_my_details(req: UpdateMyDetailsRequest, signed_in_user: User = Depend
 def change_password(req: ChangePasswordRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Change password for signed-in user'''
     if not password_matches(signed_in_user.hashed_password, req.old_password):
-        raise HTTPException(401, detail='Invalid password')
+        raise HTTPException(401, detail='Old password doesn't match')
 
     signed_in_user.hashed_password = hash_password(req.new_password)
     session.commit()
