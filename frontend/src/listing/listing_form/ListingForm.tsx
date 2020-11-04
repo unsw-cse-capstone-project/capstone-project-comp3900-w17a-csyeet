@@ -178,7 +178,7 @@ export const ListingForm = observer(
               Back
             </Button>
             <Button variant="contained" color="primary" onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Add Listing" : "Next"}
+              {activeStep === steps.length - 1 ? "Preview Listing" : "Next"}
             </Button>
           </div>
         </div>

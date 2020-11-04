@@ -1,23 +1,23 @@
-import { observable } from "mobx";
+import { observable, makeObservable } from 'mobx';
 import { ImageListType } from "react-images-uploading";
 
 export type Feature =
-  | "has_ensuite"
-  | "has_built_in_wardrobe"
-  | "has_bathtub"
-  | "is_furnished"
-  | "has_open_kitchen"
-  | "has_separate_kitchen"
-  | "has_island_kitchen"
-  | "has_gas_stove"
-  | "has_electric_stove"
-  | "has_induction_stove"
-  | "has_balcony"
-  | "has_ocean_view"
-  | "has_bbq"
-  | "has_porch"
-  | "has_pool"
-  | "has_gym";
+  | "ensuite"
+  | "builtInWardrobe"
+  | "bathtub"
+  | "furnished"
+  | "openKitchen"
+  | "separateKitchen"
+  | "islandKitchen"
+  | "gasStove"
+  | "electricStove"
+  | "inductionStove"
+  | "balcony"
+  | "oceanView"
+  | "bbq"
+  | "porch"
+  | "pool"
+  | "gym";
 
 export class ListingStore {
   @observable canPreview: boolean = true;
@@ -48,4 +48,8 @@ export class ListingStore {
   @observable accNumber: string = "";
 
   @observable images: ImageListType = [];
+
+  constructor() {
+    makeObservable(this);
+  }
 }

@@ -10,7 +10,7 @@ import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
 
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { computed } from "mobx";
+import { computed, runInAction } from 'mobx';
 
 export const DetailStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,7 +41,7 @@ export const Details: React.FC<{
   const propertyTypes = ["Apartment", "Duplex", "House", "Studio", "Townhouse"];
   const onChange = (value: string, field: string) => {
     console.log("OnChange ", field, "new", value);
-    (store as any)[field] = value;
+    runInAction(() => (store as any)[field] = value);
   };
 
   const getAddressData = computed(() => {

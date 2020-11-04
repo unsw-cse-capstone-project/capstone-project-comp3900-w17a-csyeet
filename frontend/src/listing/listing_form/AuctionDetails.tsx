@@ -58,7 +58,10 @@ export const AuctionDetails: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
     const handlePriceChange = action(
       (e: React.ChangeEvent<HTMLInputElement>) => {
-        (store as any)["reservePrice"] = e.target.value;
+        (store as any)["reservePrice"] = parseInt(
+          e.target.value.replace(/,/g, "")
+        );
+        console.log(store.reservePrice)
       }
     );
 

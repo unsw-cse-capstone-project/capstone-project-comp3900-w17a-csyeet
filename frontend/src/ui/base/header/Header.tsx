@@ -75,7 +75,13 @@ const Header: React.FC<HeaderProps> = observer(
             }}
           >
             {!isSearch && <MinimisedSearch />}
-            <Button variant={"contained"} color={"secondary"} size="medium">
+            <Button
+              variant={"contained"}
+              color={"secondary"}
+              size="medium"
+              style={{ marginRight: "12px" }}
+              onClick={() => history.push("/add")}
+            >
               Add Listing
             </Button>
             <UserMenu />

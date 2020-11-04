@@ -32,15 +32,25 @@ export const priceFormatter = new Intl.NumberFormat("en-US", {
 });
 
 export const toCamelCase = (str: string) => {
-  return str.replace(/(?:^.|[A-Z]|\b.)/g, function(letter, index) {
-    return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
-  }).replace(/\s+/g, '');
-}
+  return str
+    .replace(/(?:^.|[A-Z]|\b.)/g, function (letter, index) {
+      return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
+    })
+    .replace(/\s+/g, "");
+};
 
 export const toSentenceCase = (str: string) => {
   let temp = str.replace(/([A-Z]+)*([A-Z][a-z])/g, "$1 $2").toLowerCase();
   return temp[0].toUpperCase() + temp.slice(1);
-}
+};
+
+export const toCapitaliseCase = (str: string) => {
+  return str
+    .split(" ")
+    .map((word) => word[0].toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 export const getListingFromResult = (result: any) => ({
   type: result.type,
   id: parseInt(result.id),
@@ -68,9 +78,19 @@ export const getListingFromResult = (result: any) => ({
   registered_bidder: result.registered_bidder,
   highest_bid: result.highest_bid,
   reserve_met: result.reserve_met,
-})
+});
 
-export const formatAddress = ({street, suburb, state, postcode}: {street: string, suburb: string, state: string, postcode: string}) => {
+export const formatAddress = ({
+  street,
+  suburb,
+  state,
+  postcode,
+}: {
+  street: string;
+  suburb: string;
+  state: string;
+  postcode: string;
+}) => {
   return {
     streetAddress: street.replace(/(^\w|\s\w)/g, m => m.toUpperCase()),
     remainingAddress: suburb.replace(/(^\w|\s\w)/g, m => m.toUpperCase()) + " " + state.toUpperCase() + " " + postcode,
