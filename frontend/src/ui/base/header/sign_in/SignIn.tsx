@@ -63,7 +63,7 @@ export const SignIn: React.FC<{
           style={{ marginTop: "10px" }}
           onClick={() => {
             onSubmit(store.email, store.passwd, handleError);
-            closeModal();
+            if (!error) closeModal();
           }}
         >
           Sign In
