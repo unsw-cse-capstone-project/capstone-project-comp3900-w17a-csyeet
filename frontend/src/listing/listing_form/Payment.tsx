@@ -20,46 +20,40 @@ export const PaymentDetails: React.FC<{ store: ListingStore }> = observer(
 
     type NumberFormatCustomProps = {
       inputRef: (instance: NumberFormat | null) => void;
+      error: boolean;
       name: string;
     };
 
     const [BSBError, setBSBError] = React.useState<boolean>(false);
     const BSBInput = observer((props: NumberFormatCustomProps) => {
-      const { inputRef, ...other } = props;
+      const { inputRef, error, ...other } = props;
       return (
         <NumberFormat
           {...other}
           format="### ###"
           mask="#"
           value={store.bsb}
-          error={BSBError}
+          error={error}
           onValueChange={(values) => {
             onChange(values.value, "bsb");
           }}
-          onBlur={() => {
-            store.bsb.length !== 6 ? setBSBError(true) : setBSBError(false);
-          }}
+          
         />
       );
     });
 
     const [AccNoError, setAccNoError] = React.useState<boolean>(false);
     const AccNoInput = observer((props: NumberFormatCustomProps) => {
-      const { inputRef, ...other } = props;
+      const { inputRef, error, ...other } = props;
       return (
         <NumberFormat
           {...other}
           format="#### ####"
           mask="#"
           value={store.accNumber}
-          error={AccNoError}
+          error={error}
           onValueChange={(values) => {
             onChange(values.value, "accNumber");
-          }}
-          onBlur={() => {
-            store.accNumber.length !== 8
-              ? setAccNoError(true)
-              : setAccNoError(false);
           }}
         />
       );
@@ -81,8 +75,12 @@ export const PaymentDetails: React.FC<{ store: ListingStore }> = observer(
           </InputLabel>
           <OutlinedInput
             id="outlined-adornment-card"
-            labelWidth={110}
+            labelWidth={40}
+            error={BSBError}
             inputComponent={BSBInput as any}
+            onBlur={() => {
+              store.bsb.length !== 6 ? setBSBError(true) : setBSBError(false);
+            }}
           />
           {BSBError && (
             <FormHelperText style={{ color: "red" }}>
@@ -100,6 +98,12 @@ export const PaymentDetails: React.FC<{ store: ListingStore }> = observer(
           <OutlinedInput
             id="outlined-adornment-card"
             labelWidth={110}
+            error={AccNoError}
+            onBlur={() => {
+              store.accNumber.length !== 8
+                ? setAccNoError(true)
+                : setAccNoError(false);
+            }}
             inputComponent={AccNoInput as any}
           />
           {AccNoError && (

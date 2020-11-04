@@ -82,6 +82,9 @@ export const AddressForm: React.FC<{
           <TextFieldWrapper
             readOnly={readOnly}
             field="postcode"
+            style={{
+              minWidth: "100px",
+            }}
             label="Postcode"
             onChange={onChange}
             value={postcode}

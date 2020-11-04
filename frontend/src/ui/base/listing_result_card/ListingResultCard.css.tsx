@@ -48,7 +48,18 @@ export const ListingResultCardStyles = makeStyles((theme: Theme) =>
     },
     reserve_not_met: {
       color: theme.palette.success.main,
-    }
+    },
+    link: {
+      cursor: "pointer",
+      "&:hover": {
+        color: theme.palette.primary.main,
+        textDecoration: "none",
+        "& h6, & h4": {
+          color: theme.palette.primary.main,
+        },
+      },
+      textDecoration: "none",
+    },
   })
 );
 

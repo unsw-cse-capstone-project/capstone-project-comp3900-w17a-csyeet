@@ -11,6 +11,7 @@ export interface TextFieldWrapperProps {
   onBlur?: () => void;
   onChange?: (value: string, field: string) => void;
   readOnly?: boolean;
+  style?: React.CSSProperties;
 }
 
 export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
@@ -20,6 +21,7 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
   adornment = null,
   value = "",
   error,
+  style,
   onBlur,
   onChange,
   readOnly,
@@ -43,6 +45,7 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
       <TextField
         error={e || error ? true : false}
         fullWidth
+        style={style}
         variant="outlined"
         value={v}
         label={label}

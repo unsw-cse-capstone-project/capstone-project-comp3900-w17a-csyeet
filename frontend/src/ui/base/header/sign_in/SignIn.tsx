@@ -29,7 +29,14 @@ export const SignIn: React.FC<{
   const classes = SignInStyles();
   return (
     <ModalWrapper open={store.open} onClose={closeModal}>
-      <div className={classes.root}>
+      <form
+        className={classes.root}
+        onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+          event.preventDefault();
+          onSubmit(store.email, store.passwd, handleError);
+          if (!error) closeModal();
+        }}
+      >
         <img
           width="200px"
           src={logo}
@@ -60,6 +67,7 @@ export const SignIn: React.FC<{
           variant="outlined"
           color="primary"
           fullWidth
+          type="submit"
           style={{ marginTop: "10px" }}
           onClick={() => {
             onSubmit(store.email, store.passwd, handleError);
@@ -68,7 +76,7 @@ export const SignIn: React.FC<{
         >
           Sign In
         </Button>
-      </div>
+      </form>
     </ModalWrapper>
   );
 });

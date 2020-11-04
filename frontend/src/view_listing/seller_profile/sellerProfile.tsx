@@ -43,9 +43,9 @@ export const SellerProfile = ({
 
   React.useEffect(() => {
     getInfoFromProfile(id).then((r) => {
-      console.log("r.listings", r.listings);
-      setBlurb(r.blurb);
-      setListings(r.listings);
+      // console.log("r.listings", r.listings);
+      // setBlurb(r.blurb);
+      // setListings(r.listings);
     });
   }, [id]);
 
@@ -106,7 +106,7 @@ function ProfileDialog(props: {
           </div>
         </div>
         <div className={classes.listingTitle}>
-          <Typography variant="h5">{capitalName}'s Listings:</Typography>
+          <Typography variant="h5">{capitalName}{"'s"} Listings:</Typography>
         </div>
         <div className={classes.listings}>
           {!props.listings ? (

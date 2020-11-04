@@ -9,6 +9,9 @@ export const AddListingStyles = makeStyles((theme: Theme) =>
       boxSizing: "border-box",
       overflow: "auto",
       marginTop: "0px",
+      [theme.breakpoints.down("xs")]: {
+        padding: theme.spacing(0, "5%", "200px", "5%"),
+      },
     },
     main: {
       display: "flex",

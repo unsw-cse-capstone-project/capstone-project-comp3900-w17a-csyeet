@@ -25,6 +25,9 @@ export const ListingFormStyles = makeStyles((theme: Theme) =>
       boxSizing: "border-box",
       overflow: "auto",
       marginTop: "0px",
+      [theme.breakpoints.down("sm")]: {
+        padding: theme.spacing(0, 2, "200px", 2),
+      },
     },
     backButton: {
       marginRight: theme.spacing(1),
