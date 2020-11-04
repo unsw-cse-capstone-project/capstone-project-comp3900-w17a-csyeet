@@ -58,10 +58,9 @@ export const ProfilePageWrapper = observer(
           <ProfileTabs store={store} />
         </div>
       </div>
-      <ProfileTabs store={store} />
-    </div>
-  );
-};
+    );
+  }
+);
 
 function TabPanel(props: {
   children?: React.ReactNode;

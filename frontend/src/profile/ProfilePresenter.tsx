@@ -47,13 +47,13 @@ export class ProfilePresenter {
         const StarredResults: ListingActual[] = content.starred_listings.map(
           (result: any) => getListingFromResult(result)
         );
-        
-        if (result["blurb"] === "") {
-          result["blurb"] = "Update your bio";
+
+        if (content["blurb"] === "") {
+          content["blurb"] = "Update your bio";
         }
         runInAction(() => {
           store.loadingState = "loaded";
-          store.blurb = result["blurb"];
+          store.blurb = content["blurb"];
           store.myBidsResults = BidsResults;
           store.myListingsResults = ListingResults;
           store.starredResults = StarredResults;
@@ -105,4 +105,11 @@ export class ProfilePresenter {
         runInAction(() => {
           store.loadingState = "success";
           store.avatar = img_url;
+        })
+      }
+    } catch {
+      console.log("Error updating avatar");
+      runInAction(() => (store.loadingState = "error"));
+    }
   }
+}
