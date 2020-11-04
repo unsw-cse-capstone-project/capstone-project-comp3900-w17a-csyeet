@@ -17,6 +17,7 @@ export const ImageUploader: React.FC<{
   value?: ImageType;
   imageHeight?: string;
   multiple?: boolean;
+  max?: number;
   style?: React.CSSProperties;
   className?: string;
 }> = observer(
@@ -25,13 +26,13 @@ export const ImageUploader: React.FC<{
     value = [],
     imageHeight = "300px",
     multiple = true,
+    max = 20,
     style,
     className,
   }) => {
     const [images, setImages] = React.useState<ImageListType>(
       value as ImageListType
     );
-    const maxNumber = 20;
     const onChange = action(
       (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
         setImages(imageList);
@@ -46,7 +47,7 @@ export const ImageUploader: React.FC<{
           multiple={multiple}
           value={images}
           onChange={onChange}
-          maxNumber={maxNumber}
+          maxNumber={max}
           dataURLKey="data_url"
         >
           {({

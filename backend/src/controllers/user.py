@@ -3,7 +3,7 @@ from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from starlette.responses import StreamingResponse
-from ..schemas import OwnProfileResponse, UserProfileResponse, UpdateUserRequest, UpdateUserResponse, ChangePasswordRequest
+from ..schemas import OwnProfileResponse, UserProfileResponse, UserResponse, UpdateUserRequest, UpdateUserResponse, ChangePasswordRequest
 from ..helpers import get_signed_in_user, get_session, map_listing_response, password_matches, hash_password
 from ..models import User
 
@@ -76,6 +76,16 @@ def change_password(req: ChangePasswordRequest, signed_in_user: User = Depends(g
 
     signed_in_user.hashed_password = hash_password(req.new_password)
     session.commit()
+
+    
+@router.get('/{id}', response_model=UserResponse, responses={404: {"description": "Resource not found"}})
+def get_user_info(id: int, session: Session = Depends(get_session)):
+    ''' Get a user's basic info '''
+    user = session.query(User).get(id)
+    if user is None:
+        raise HTTPException(
+            status_code=404, detail="Requested user could not be found")
+    return user
 
 
 def map_user_to_own_profile_response(user: User, session: Session) -> OwnProfileResponse:

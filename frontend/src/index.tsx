@@ -41,6 +41,7 @@ const ProtectedComponent = observer(
         />
       );
     }
+    runInAction(() => (signInStore.open = false));
     return <Component />;
   }
 );
