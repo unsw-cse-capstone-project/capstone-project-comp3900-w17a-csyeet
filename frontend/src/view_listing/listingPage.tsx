@@ -58,6 +58,7 @@ export const ListingPage = observer(
 
     const classes = listingPageStyle();
     const [open, setOpen] = React.useState(false);
+    const [avatar, setAvatar] = React.useState("");
     const userStore = useStore();
     const history = useHistory();
 
@@ -68,6 +69,15 @@ export const ListingPage = observer(
     const handleClose = () => {
       setOpen(false);
     };
+
+    // Get user bid
+    React.useEffect(() => {
+      const userId = owner.id;
+      getAvatarFromUser(userId).then((r) => {
+        console.log("r", r);
+        setAvatar(r);
+      });
+    }, [owner.id]);
 
     return (
       <div style={{ paddingBottom: "200px" }}>
@@ -192,11 +202,17 @@ export const ListingPage = observer(
               isUser={userStore?.user !== undefined}
             />
             <Map listing={props.listing}></Map>
-            <SellerProfile id={owner.id} name={owner.name} email={owner.email}>
+            <SellerProfile
+              id={owner.id}
+              name={owner.name}
+              email={owner.email}
+              avatar={avatar}
+            >
               {userStore?.user?.id !== owner.id ? (
                 <Button
                   variant="contained"
                   color="primary"
+                  style={{ marginTop: "10px" }}
                   onClick={() =>
                     history.push(
                       `/messages?to=${owner.id}&name=${owner.name}&email=${owner.email}&listing=${id}`
@@ -213,3 +229,14 @@ export const ListingPage = observer(
     );
   }
 );
+
+const getAvatarFromUser = async (user_id: number) => {
+  const response = await fetch(`/users/${user_id}/avatar`);
+  const result = await response.json();
+
+  if ("detail" in result) {
+    return result.detail;
+  }
+
+  return result;
+};

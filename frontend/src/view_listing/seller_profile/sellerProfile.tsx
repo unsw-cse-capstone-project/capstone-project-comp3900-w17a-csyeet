@@ -19,11 +19,13 @@ export const SellerProfile = ({
   name,
   email,
   children,
+  avatar,
 }: {
   id: number;
   name: string;
   email: string;
   children?: JSX.Element;
+  avatar: string;
 }) => {
   const classes = sellerProfileStyle();
   const [open, setOpen] = React.useState(false);
@@ -53,7 +55,7 @@ export const SellerProfile = ({
       </Typography>
       <Divider className={classes.divider} />
       <div style={{ display: "flex", alignItems: "center" }}>
-        <Avatar src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg" />
+        <Avatar src={avatar} />
         <Typography variant="body1" style={{ paddingLeft: "10px" }}>
           <Link onClick={handleClickOpen}>{name}</Link>
         </Typography>
@@ -65,6 +67,7 @@ export const SellerProfile = ({
         name={name}
         open={open}
         onClose={handleClose}
+        avatar={avatar}
       />
     </div>
   );
@@ -76,6 +79,7 @@ function ProfileDialog(props: {
   blurb: string | undefined;
   open: boolean;
   onClose: () => void;
+  avatar: string;
 }) {
   const classes = sellerProfileStyle();
   const capitalName = toCapitaliseCase(props.name);
@@ -90,10 +94,7 @@ function ProfileDialog(props: {
       <DialogTitle id="profoile-dialog-title">Seller Profile</DialogTitle>
       <DialogContent dividers>
         <div className={classes.about}>
-          <Avatar
-            src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
-            className={classes.modalImage}
-          />
+          <Avatar src={props.avatar} className={classes.modalImage} />
           <div className={classes.meta}>
             <Typography className={classes.name} variant="h3">
               {capitalName}
