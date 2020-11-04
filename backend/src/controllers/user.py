@@ -3,7 +3,7 @@ from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from starlette.responses import StreamingResponse
-from ..schemas import OwnProfileResponse, UserProfileResponse, UpdateMyDetailsRequest, UpdateAboutMeRequest, ChangePasswordRequest
+from ..schemas import OwnProfileResponse, UserProfileResponse, UpdateUserRequest, UpdateUserResponse, ChangePasswordRequest
 from ..helpers import get_signed_in_user, get_session, map_listing_response, password_matches, hash_password
 from ..models import User
 
@@ -59,29 +59,20 @@ def get_user_avatar(id: int, session: Session = Depends(get_session)):
     return StreamingResponse(io.BytesIO(user.avatar_data), media_type=user.avatar_image_type)
 
 
-@router.post('/profile/aboutme', response_model=OwnProfileResponse)
-def update_about_me(req: UpdateAboutMeRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
-    ''' Update about me data for signed-in user '''
-    about_me_data = req.dict()
-    update_user(signed_in_user, about_me_data)
+@router.post('/profile/aboutme', response_model=UpdateUserResponse)
+def update_user_details(req: UpdateUserRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Update user details for signed-in user '''
+    data = req.dict()
+    update_user(signed_in_user, data)
     session.commit()
-    return map_user_to_own_profile_response(signed_in_user, session)
-
-
-@router.post('/profile/mydetails', response_model=OwnProfileResponse)
-def update_my_details(req: UpdateMyDetailsRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
-    ''' Update my details data for signed-in user '''
-    my_details_data = req.dict()
-    update_user(signed_in_user, my_details_data)
-    session.commit()
-    return map_user_to_own_profile_response(signed_in_user, session)
+    return asdict(signed_in_user)
 
 
 @router.post('/profile/changepassword', responses={401: {'description': 'Invalid credentials'}})
 def change_password(req: ChangePasswordRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Change password for signed-in user'''
     if not password_matches(signed_in_user.hashed_password, req.old_password):
-        raise HTTPException(401, detail='Old password doesn't match')
+        raise HTTPException(401, detail='Old password does not match')
 
     signed_in_user.hashed_password = hash_password(req.new_password)
     session.commit()

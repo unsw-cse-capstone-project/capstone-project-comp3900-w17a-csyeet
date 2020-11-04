@@ -20,6 +20,7 @@ class LoginRequest(UserBase):
 
 
 class ProfileBase(UserBase):
+    id: int
     name: str
     blurb: Optional[str]
     listings: List[ListingResponse]
@@ -40,18 +41,23 @@ class UserProfileResponse(ProfileBase):
     pass
 
 
-class UpdateAboutMeRequest(BaseModel):
+class UpdateUserBase(BaseModel):
     name: str
     blurb: str
-
-
-class UpdateMyDetailsRequest(BaseModel):
     phone_number: str
     street: str
     suburb: str
     postcode: str
     state: str 
     country: str
+
+
+class UpdateUserRequest(UpdateUserBase):
+    pass
+
+
+class UpdateUserResponse(UpdateUserBase):
+    pass
 
 
 class ChangePasswordRequest(BaseModel):
