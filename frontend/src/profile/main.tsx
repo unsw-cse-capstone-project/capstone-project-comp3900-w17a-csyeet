@@ -3,7 +3,7 @@ import { Avatar, Typography, Tab, Tabs } from "@material-ui/core";
 import { ProfilePageStyles } from "./ProfilePage.css";
 import { AboutMePage as AboutMe } from "./about/AboutMePage";
 import { MyBidsPage as MyBids } from "./bids/MyBidsPage";
-import { MyDetailsPage as MyDetails } from "./details/MyDetailsPage";
+import { MyDetailsPage as MyDetails } from "./details/main";
 import { MyListingsPage as MyListings } from "./listings/MyListingsPage";
 import { StarredPropertiesPage as StarredProperties } from "./starred/StarredPropertiesPage";
 import { ProfileStore, ProfilePresenter } from "./ProfilePresenter";
@@ -110,7 +110,7 @@ const ProfileTabs = ({ store }: { store: ProfileStore }) => {
         <StarredProperties store={store} />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <MyDetails store={store} />
+        <MyDetails />
       </TabPanel>
     </div>
   );

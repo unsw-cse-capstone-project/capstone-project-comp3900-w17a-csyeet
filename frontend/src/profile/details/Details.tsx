@@ -15,7 +15,7 @@ import {
 import { Password } from "../../ui/base/input/Password";
 import NumberFormat from "react-number-format";
 import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
-import { DetailStore } from "./DetailStore";
+import { DetailStore } from "./DetailPresenter";
 import { ModalWrapper } from "../../ui/base/modal_wrapper/ModalWrapper";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
 import {
@@ -23,55 +23,6 @@ import {
   AddressData,
 } from "../../ui/base/address_form/AddressForm";
 import { DetailStyles } from "./Detail.css";
-
-export const DetailWrapper = () => {
-  const userStore = useStore();
-  if (!userStore) throw Error("User Store cannot be null");
-
-  const store = new DetailStore();
-  const fillDetailStore = action(() => {
-    if (!userStore.user) throw Error("User does not exit");
-    const {
-      id,
-      name,
-      phone_number,
-      street,
-      suburb,
-      postcode,
-      state,
-      country,
-    } = userStore.user;
-    store.id = id;
-    store.name = name;
-    store.phone_number = phone_number;
-    store.street = street;
-    store.suburb = suburb;
-    store.postcode = postcode;
-    store.state = state;
-    store.country = country;
-  });
-
-  const onUpdate = () => {
-    // (Jenn) TODO: Update
-    console.log("Updating");
-  };
-
-  const onChangePassword = (onError: () => void) => {
-    // (Jenn) TODO: Update
-    console.log("Changing password");
-  };
-  fillDetailStore();
-
-  return (
-    <Details
-      store={store}
-      onUpdate={onUpdate}
-      onChangePassword={onChangePassword}
-    />
-    // Snack for error on update here.
-    // Snack for success update here.
-  );
-};
 
 type NumberFormatCustomProps = {
   inputRef: (instance: NumberFormat | null) => void;
@@ -81,12 +32,11 @@ type NumberFormatCustomProps = {
 export const Details: React.FC<{
   store: DetailStore;
   onUpdate: () => void;
-  onChangePassword: (onError: () => void) => void;
+  onChangePassword: () => void;
 }> = observer(({ store, onUpdate, onChangePassword }) => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [readOnly, setReadOnly] = React.useState<boolean>(true);
   const [passTooShort, setPassTooShort] = React.useState<boolean>(false);
-  const [passIncorrect, setPassIncorrect] = React.useState<boolean>(false);
   const [passMatchError, setPassMatchError] = React.useState<boolean>(false);
 
   const onChange = action((value: string, field: string) => {
@@ -165,6 +115,7 @@ export const Details: React.FC<{
               }
               labelWidth={110}
               inputComponent={PhoneInput as any}
+              readOnly={readOnly}
             />
             {phoneError && (
               <FormHelperText style={{ color: "red" }}>
@@ -211,11 +162,7 @@ export const Details: React.FC<{
           label="Current Password"
           onChange={onChange}
         />
-        {passIncorrect && (
-          <FormHelperText style={{ color: "red" }}>
-            Password incorrect, could not change password
-          </FormHelperText>
-        )}
+
         <Grid container spacing={2}>
           <Grid item xs>
             <Password
@@ -257,9 +204,7 @@ export const Details: React.FC<{
           style={{ marginTop: "15px" }}
           variant="contained"
           onClick={() => {
-            setPassIncorrect(false);
-
-            onChangePassword(() => setPassIncorrect(true));
+            onChangePassword();
           }}
           disabled={passTooShort || passMatchError}
         >
