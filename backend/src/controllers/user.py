@@ -60,7 +60,7 @@ def get_user_avatar(id: int, session: Session = Depends(get_session)):
 
 @router.get('/{id}', response_model=UserResponse, responses={404: {"description": "Resource not found"}})
 def get_user_info(id: int, session: Session = Depends(get_session)):
-    ''' Get user info '''
+    ''' Get a user's basic info '''
     user = session.query(User).get(id)
     if user is None:
         raise HTTPException(
