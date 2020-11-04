@@ -1,6 +1,5 @@
 import { action, runInAction } from "mobx";
 import { ListingStore } from "./ListingStore";
-import { delay } from "../ui/util/helper";
 
 const setResultsInStore = action((store: ListingStore, result: any) => {});
 
@@ -30,6 +29,7 @@ export class ListingPresenter {
     onError: () => void
   ) {
     try {
+      // Publish Listing
       const response = await fetch(`/listings/`, {
         method: "post",
         body: JSON.stringify({
@@ -47,8 +47,8 @@ export class ListingPresenter {
           num_bedrooms: store.nBedrooms,
           num_bathrooms: store.nBathrooms,
           num_car_spaces: store.nGarages,
-          auction_start: store.auctionStart?.toISOString(), // Not null
-          auction_end: store.auctionEnd?.toISOString(), // Not null
+          auction_start: store.auctionStart?.toISOString(),
+          auction_end: store.auctionEnd?.toISOString(),
           features: store.features,
           reserve_price: store.reservePrice,
           account_name: store.accName,
@@ -65,23 +65,26 @@ export class ListingPresenter {
       runInAction(() => {
         store.id = result.id;
       });
+
+      // Upload Images
+      let form = new FormData();
+      for (let i = 0; i < store.images.length; ++i) {
+        form.append("listing-img-" + { i }, store.images[i].file as File);
+      }
+      const img_response = await fetch(`/listings/${result.id}/images`, {
+        method: "post",
+        body: form,
+      });
+      const img_result = await img_response.json();
+      if ("detail" in img_result) {
+        console.log(result);
+        onError();
+        return;
+      }
+      // Success
       onSuccess();
     } catch {
       onError();
     }
   }
-
-  // Need function to upload images (Annisa said we could do multiple at a time)
-  // Uploading Images, I'm not sure waht type she used...
-  //
-  // Currently it's stored as "ImageListType"
-  //   export interface ImageType {
-  //   dataURL?: string;
-  //   file?: File;
-  //   [key: string]: any;
-  // }
-  // export type ImageListType = Array<ImageType>;
-  //
-  // Later on, need a function for updating listing (not for the first time)
-  // Later on, need a function for fetchListingData (by ID) i suppose.. which will be passed in as a prop
 }
