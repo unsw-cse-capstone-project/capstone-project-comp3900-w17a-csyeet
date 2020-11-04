@@ -59,7 +59,7 @@ def get_user_avatar(id: int, session: Session = Depends(get_session)):
     return StreamingResponse(io.BytesIO(user.avatar_data), media_type=user.avatar_image_type)
 
 
-@router.post('/profile/aboutme', response_model=UpdateUserResponse)
+@router.post('/profile/update', response_model=UpdateUserResponse)
 def update_user_details(req: UpdateUserRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Update user details for signed-in user '''
     data = req.dict()
