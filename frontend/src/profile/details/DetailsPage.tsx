@@ -14,12 +14,12 @@ export const DetailsPage = () => {
     const {
       id,
       name,
-      phone_number,
-      street,
-      suburb,
-      postcode,
-      state,
-      country,
+      // phone_number,
+      // street,
+      // suburb,
+      // postcode,
+      // state,
+      // country,
     } = userStore.user;
     store.id = id as number;
     store.name = name as string;
@@ -49,12 +49,14 @@ export const DetailsPage = () => {
   fillDetailStore();
 
   return (
-    <Details
-      store={store}
-      onUpdate={onUpdate}
-      onChangePassword={onChangePassword}
-    />
-    // Snack for error on update here.
-    // Snack for success update here.
+    <div style={{ width: "80%", margin: "auto" }}>
+      <Details
+        store={store}
+        onUpdate={onUpdate}
+        onChangePassword={onChangePassword}
+      />
+    </div>
   );
+  // Snack for error on update here.
+  // Snack for success update here.
 };

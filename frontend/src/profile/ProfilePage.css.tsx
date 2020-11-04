@@ -6,7 +6,7 @@ export const ProfilePageStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up("xs")]: {
         display: "flex",
       },
-      position: "sticky",
+      position: "relative",
       backgroundColor: "#F3F4F5",
       padding: theme.spacing(2, "5%", 2, "15%"),
       zIndex: 5,

@@ -1,5 +1,5 @@
 import { action, observable, runInAction } from "mobx";
-import { ListingActual } from "../ui/util/types/listing";
+import { ListingActual } from '../ui/util/types/listing';
 import { getListingFromResult } from "../ui/util/helper";
 
 export class ProfileStore {
@@ -33,20 +33,11 @@ export class ProfilePresenter {
       }
       // Sort out the listings/starred/bids
       const ListingResults: ListingActual[] = result["listings"].map(
-        (listing: any) => {
-          getListingFromResult(listing);
-        }
-      );
+        (listing: ListingActual) => getListingFromResult(listing));
       const BidsResults: ListingActual[] = result["registrations"].map(
-        (listing: any) => {
-          getListingFromResult(listing);
-        }
-      );
+        (listing: ListingActual) => getListingFromResult(listing));
       const StarredResults: ListingActual[] = result["starred_listings"].map(
-        (listing: any) => {
-          getListingFromResult(listing);
-        }
-      );
+        (listing: ListingActual) => getListingFromResult(listing));
 
       if (result["blurb"] === "") {
         result["blurb"] = "Update your bio";

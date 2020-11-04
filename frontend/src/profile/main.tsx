@@ -98,7 +98,7 @@ function ProfileTabs({ store }: { store: ProfileStore }) {
   };
 
   return (
-    <div>
+    <div style={{ paddingBottom: "200px" }}>
       <div className={classes.tabBar}>
         <Tabs
           value={value}
@@ -109,23 +109,23 @@ function ProfileTabs({ store }: { store: ProfileStore }) {
           scrollButtons="auto"
           aria-label="scrollable auto tabs example"
         >
-          <Tab label="My Bids" {...a11yProps(1)} />
-          <Tab label="My Listings" {...a11yProps(2)} />
-          <Tab label="Starred Properties" {...a11yProps(3)} />
-          <Tab label="My Details" {...a11yProps(4)} />
+          <Tab label="My Bids" {...a11yProps(0)} />
+          <Tab label="My Listings" {...a11yProps(1)} />
+          <Tab label="Starred Properties" {...a11yProps(2)} />
+          <Tab label="My Details" {...a11yProps(3)} />
         </Tabs>
       </div>
 
-      <TabPanel value={value} index={1}>
+      <TabPanel value={value} index={0}>
         <MyBids store={store} />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={1}>
         <MyListings store={store} />
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={value} index={2}>
         <StarredProperties store={store} />
       </TabPanel>
-      <TabPanel value={value} index={4}>
+      <TabPanel value={value} index={3}>
         <MyDetails />
       </TabPanel>
     </div>
