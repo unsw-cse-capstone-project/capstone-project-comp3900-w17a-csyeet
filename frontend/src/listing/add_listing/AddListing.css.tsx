@@ -4,10 +4,10 @@ export const AddListingStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
-      height: "100%",
+      height: "1000px",
       padding: theme.spacing(0, "15%", "200px", "15%"),
       boxSizing: "border-box",
-      overflow: "scroll",
+      overflow: "auto",
       marginTop: "0px",
     },
     main: {

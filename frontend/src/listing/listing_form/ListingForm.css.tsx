@@ -19,10 +19,12 @@ export const ListingFormStyles = makeStyles((theme: Theme) =>
       flexDirection: "column",
     },
     body: {
-      flexGrow: 1,
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
+      width: "100%",
+      height: "1000px",
+      padding: theme.spacing(0, "15%", "200px", "15%"),
+      boxSizing: "border-box",
+      overflow: "auto",
+      marginTop: "0px",
     },
     backButton: {
       marginRight: theme.spacing(1),
@@ -37,8 +39,8 @@ export const ListingFormStyles = makeStyles((theme: Theme) =>
     },
     footer: {
       marginTop: "30px",
-      display: 'flex',
+      display: "flex",
       justifyContent: "center",
-    }
+    },
   })
 );

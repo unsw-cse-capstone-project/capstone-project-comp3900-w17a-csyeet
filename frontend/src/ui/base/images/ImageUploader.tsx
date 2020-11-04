@@ -78,8 +78,11 @@ export const ImageUploader: React.FC<{
                     <img
                       src={image.data_url}
                       alt="uploaded-img"
-                      height={imageHeight}
-                      width="auto"
+                      style={{
+                        objectFit: "cover",
+                        height: "300px",
+                        width: "auto",
+                      }}
                     />
                   </div>
                 ))}
