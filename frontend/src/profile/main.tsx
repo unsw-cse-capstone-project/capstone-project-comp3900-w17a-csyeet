@@ -41,13 +41,13 @@ export const ProfilePageWrapper = observer(
     if (!userStore || !userStore.user) {
       return null;
     }
-
+    console.log(store.blurb);
     return (
       <div>
         <div className={classes.userInfo}>
           <ProfileAvatar onUpload={onEditAvatar} avatar={store.avatar} />
           <Typography variant="h4">{userStore.user.name}</Typography>
-          <Typography variant="body1">{userStore.user.email}</Typography>
+          <Typography variant="body1" color="textSecondary">{userStore.user.email}</Typography>
           <Blurb
             className={classes.blurbStyle}
             blurb={store.blurb}

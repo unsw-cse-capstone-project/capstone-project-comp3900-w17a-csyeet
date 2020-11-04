@@ -3,7 +3,7 @@ import { ListingActual } from "../ui/util/types/listing";
 import { getListingFromResult } from "../ui/util/helper";
 
 export class ProfileStore {
-  @observable blurb: string = "Tell other users something about yourself!"; // Tempporary
+  @observable blurb: string = "Update your bio"; // Tempporary
   @observable avatar: string =
     "https://avatarfiles.alphacoders.com/791/79102.png";
 
@@ -48,12 +48,9 @@ export class ProfilePresenter {
           (result: any) => getListingFromResult(result)
         );
 
-        if (content["blurb"] === "") {
-          content["blurb"] = "Update your bio";
-        }
         runInAction(() => {
           store.loadingState = "loaded";
-          store.blurb = content["blurb"];
+          store.blurb = !!content["blurb"]? content["blurb"]: "Update your bio";
           store.myBidsResults = BidsResults;
           store.myListingsResults = ListingResults;
           store.starredResults = StarredResults;

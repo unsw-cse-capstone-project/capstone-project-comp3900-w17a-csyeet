@@ -33,13 +33,9 @@ export const MinimisedSearch = () => {
   const [open, setOpen] = React.useState(false);
   const classes = MinimisedSearchStyle();
   const history = useHistory();
-  const inputEl = React.useRef<HTMLInputElement>(null);
 
   const onClick = () => {
     setOpen((isOpen) => !isOpen);
-    if (!!inputEl.current) {
-      inputEl.current.focus();
-    }
   };
 
   const onSubmit = (event: any) => {

@@ -17,21 +17,27 @@ export const BlurbStyle = makeStyles((theme: Theme) =>
     blurbView: {
       display: "flex",
       flexDirection: "row",
-      alignItems: "flexStart",
+      alignItems: "center",
+      justifyContent: "center",
       verticalAlign: "center",
     },
   })
 );
 
-export const Blurb: React.FC<{
+export const Blurb = ({
+  blurb,
+  onEdit,
+  className,
+}: {
   blurb: string;
   onEdit: (blurb: string) => void;
   className?: string;
-}> = ({ blurb, onEdit, className }) => {
+}) => {
   const [edit, setEdit] = React.useState<boolean>(false);
   const classes = BlurbStyle();
+  const inputEl = React.useRef<HTMLInputElement>(null);
   return (
-    <div className={classNames(className, classes.root)}>
+    <div className={classNames(classes.root, className)}>
       {edit ? (
         <EditBlurb
           blurb={blurb}
@@ -40,15 +46,20 @@ export const Blurb: React.FC<{
         />
       ) : (
         <div className={classes.blurbView}>
-          <Typography variant="body2">{blurb}</Typography>
-          <div style={{ marginBottom: "10px" }}>
-            <IconButton onClick={() => setEdit(true)}>
-              <EditIcon
-                style={{
-                  color: "#a9a9a9",
-                }}
-                fontSize={"small"}
-              />
+          <div style={{ position: "relative" }}>
+            <Typography variant="body2">{blurb}</Typography>
+            <IconButton
+              onClick={() => {
+                setEdit(true);
+              }}
+              style={{
+                position: "absolute",
+                right: "-40px",
+                top: "-20px",
+                color: "#a9a9a9",
+              }}
+            >
+              <EditIcon fontSize={"small"} />
             </IconButton>
           </div>
         </div>
@@ -57,12 +68,17 @@ export const Blurb: React.FC<{
   );
 };
 
-const EditBlurb: React.FC<{
+const EditBlurb = ({
+  blurb,
+  onEdit,
+  onBack,
+  className,
+}: {
   blurb: string;
   onEdit: (blurb: string) => void;
   onBack: () => void;
   className?: string;
-}> = ({ blurb, onEdit, onBack, className }) => {
+}) => {
   const [value, setValue] = React.useState<string>(blurb);
   return (
     <div className={className}>
@@ -70,6 +86,7 @@ const EditBlurb: React.FC<{
         size="small"
         style={{ display: "flex" }}
         variant={"outlined"}
+        autoFocus={true}
         InputProps={{
           endAdornment: (
             <Button
