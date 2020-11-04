@@ -2,7 +2,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
 export const ProfilePageStyles = makeStyles((theme: Theme) =>
   createStyles({
-    userInfoContainer: {
+    userInfo: {
       [theme.breakpoints.up("xs")]: {
         display: "flex",
       },

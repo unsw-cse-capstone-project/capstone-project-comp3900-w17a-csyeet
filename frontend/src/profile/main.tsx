@@ -44,7 +44,7 @@ export const ProfilePageWrapper = observer(
 
     return (
       <div>
-        <div className={classes.userInfoContainer}>
+        <div className={classes.userInfo}>
           <ProfileAvatar onUpload={onEditAvatar} avatar={store.avatar} />
           <Typography variant="h4">{userStore.user.name}</Typography>
           <Typography variant="body1">{userStore.user.email}</Typography>
@@ -58,9 +58,10 @@ export const ProfilePageWrapper = observer(
           <ProfileTabs store={store} />
         </div>
       </div>
-    );
-  }
-);
+      <ProfileTabs store={store} />
+    </div>
+  );
+};
 
 function TabPanel(props: {
   children?: React.ReactNode;
@@ -89,12 +90,16 @@ function a11yProps(index: any) {
   };
 }
 
-function ProfileTabs({ store }: { store: ProfileStore }) {
+const ProfileTabs = ({ store }: { store: ProfileStore }) => {
   const classes = ProfilePageStyles();
   const [value, setValue] = React.useState(0);
+  // const [localStore, setStore] = React.useState(store);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    // presenter.getProfileInfo(localStore);
     setValue(newValue);
+    console.log("setting Store");
+    // setStore(localStore);
   };
 
   return (
@@ -130,4 +135,4 @@ function ProfileTabs({ store }: { store: ProfileStore }) {
       </TabPanel>
     </div>
   );
-}
+};

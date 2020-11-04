@@ -51,6 +51,11 @@ export const SignIn: React.FC<{
           value={store.passwd}
           onChange={onChange}
         />
+        {error && (
+          <FormHelperText style={{ color: "red", margin: "5px" }}>
+            Email or Password is invalid
+          </FormHelperText>
+        )}
         <Button
           variant="outlined"
           color="primary"
@@ -58,14 +63,9 @@ export const SignIn: React.FC<{
           style={{ marginTop: "10px" }}
           onClick={() => {
             onSubmit(store.email, store.passwd, handleError);
-            closeModal();
+            if (!error) closeModal();
           }}
         >
-          {error && (
-            <FormHelperText style={{ color: "red" }}>
-              Email or Password is invalid
-            </FormHelperText>
-          )}
           Sign In
         </Button>
       </div>

@@ -7,5 +7,10 @@ export const infoStyles = makeStyles((theme: Theme) =>
     paper: {
       padding: theme.spacing(1),
     },
+    popupContent: {
+      padding: theme.spacing(1, "10%", 1, "10%"),
+      display: "flex",
+      flexDirection: "column",
+    },
   })
 );

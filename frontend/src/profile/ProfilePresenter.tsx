@@ -1,5 +1,5 @@
-import { action, observable, runInAction } from "mobx";
-import { ListingActual } from '../ui/util/types/listing';
+import { action, observable, runInAction, makeObservable } from "mobx";
+import { ListingActual } from "../ui/util/types/listing";
 import { getListingFromResult } from "../ui/util/helper";
 
 export class ProfileStore {
@@ -18,39 +18,49 @@ export class ProfileStore {
 
   @observable
   loadingState?: "loading" | "loaded" | "error" | "updating" | "success";
+
+  constructor() {
+    makeObservable(this);
+  }
 }
 
 export class ProfilePresenter {
   @action
   async getProfileInfo(store: ProfileStore) {
-    runInAction(() => (store.loadingState = "loading"));
+    store.loadingState = "loading";
     try {
       const response = await fetch(`/users/profile`);
-      const result = await response.json();
-      if ("detail" in result) {
-        runInAction(() => (store.loadingState = "error"));
-        return;
+      const content = await response.json();
+      if ("detail" in content) {
+        runInAction(() => {
+          store.loadingState = "error";
+        });
+      } else {
+        console.log("profile presenter", content);
+        const ListingResults: ListingActual[] = content.listings.map(
+          (result: any) => getListingFromResult(result)
+        );
+        console.log(ListingResults);
+        const BidsResults: ListingActual[] = content.registrations.map(
+          (result: any) => getListingFromResult(result)
+        );
+        const StarredResults: ListingActual[] = content.starred_listings.map(
+          (result: any) => getListingFromResult(result)
+        );
+        
+        if (result["blurb"] === "") {
+          result["blurb"] = "Update your bio";
+        }
+        runInAction(() => {
+          store.loadingState = "loaded";
+          store.blurb = result["blurb"];
+          store.myBidsResults = BidsResults;
+          store.myListingsResults = ListingResults;
+          store.starredResults = StarredResults;
+        });
       }
-      // Sort out the listings/starred/bids
-      const ListingResults: ListingActual[] = result["listings"].map(
-        (listing: ListingActual) => getListingFromResult(listing));
-      const BidsResults: ListingActual[] = result["registrations"].map(
-        (listing: ListingActual) => getListingFromResult(listing));
-      const StarredResults: ListingActual[] = result["starred_listings"].map(
-        (listing: ListingActual) => getListingFromResult(listing));
-
-      if (result["blurb"] === "") {
-        result["blurb"] = "Update your bio";
-      }
-      runInAction(() => {
-        store.blurb = result["blurb"];
-        store.myListingsResults = ListingResults;
-        store.myBidsResults = BidsResults;
-        store.starredResults = StarredResults;
-      });
     } catch {
-      console.log("error :(");
-      runInAction(() => (store.loadingState = "error"));
+      console.log("Error :( ");
     }
   }
 
@@ -95,10 +105,4 @@ export class ProfilePresenter {
         runInAction(() => {
           store.loadingState = "success";
           store.avatar = img_url;
-        });
-      }
-    } catch {
-      console.log("Error :( ");
-    }
   }
-}

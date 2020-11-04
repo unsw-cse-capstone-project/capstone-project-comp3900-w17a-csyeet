@@ -91,12 +91,11 @@ export const AddressForm: React.FC<{
         {/* Defaults to NSW */}
         <Grid item xs>
           <SelectWrapper
-            readOnly={readOnly}
+            onChange={onChange}
             field="state"
             label="State"
             data={states}
             value={state}
-            onChange={onChange}
           />
         </Grid>
 
