@@ -54,7 +54,9 @@ export const InfoPopup: React.FC<{
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography>{data}</Typography>
+        <div className={classes.popupContent}>
+          <Typography>{data}</Typography>
+        </div>
       </Popover>
     </div>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Typography, Card, Link, CardContent } from "@material-ui/core";
 import Slider from "react-slick";
-import { ListingActual, ListingSummary } from '../../util/types/listing';
+import { ListingActual, ListingSummary } from "../../util/types/listing";
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
 import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
@@ -15,9 +15,13 @@ import ReactPlaceholder from "react-placeholder/lib";
 
 export const ListingCardSmall = ({
   listing,
+  onStar,
+  onUnstar,
   style,
 }: {
   listing: ListingSummary | ListingActual;
+  onStar?: () => void;
+  onUnstar?: () => void;
   style?: React.CSSProperties;
 }) => {
   const {
@@ -69,7 +73,12 @@ export const ListingCardSmall = ({
       <div className={classes.cardContent}>
         {userStore?.user && (
           <div className={classes.starContainer}>
-            <Star id={id} starred={starred} />
+            <Star
+              id={id}
+              starred={starred}
+              onStar={onStar}
+              onUnstar={onUnstar}
+            />
           </div>
         )}
         <Link
@@ -119,14 +128,14 @@ export const ListingCardSmallPlaceholder = () => {
         {null}
       </ReactPlaceholder>
       <CardContent>
-      <ReactPlaceholder
-        showLoadingAnimation={true}
-        type="text"
-        ready={false}
-        style={{ width: "100%"}}
-      >
-        {null}
-      </ReactPlaceholder>
+        <ReactPlaceholder
+          showLoadingAnimation={true}
+          type="text"
+          ready={false}
+          style={{ width: "100%" }}
+        >
+          {null}
+        </ReactPlaceholder>
       </CardContent>
     </Card>
   );

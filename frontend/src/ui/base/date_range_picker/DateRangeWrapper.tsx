@@ -5,8 +5,9 @@ import {
   DateRange,
   LocalizationProvider,
 } from "@material-ui/pickers";
-import { TextField } from "@material-ui/core";
+import { TextField, InputAdornment } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
+import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 
 export const DateRangeWrapper: React.FC<{
   onDateChange: (value: DateRange<Date>) => void;
@@ -34,9 +35,27 @@ export const DateRangeWrapper: React.FC<{
                   {...startProps}
                   size="small"
                   helperText={undefined}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarTodayIcon />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <DateRangeDelimiter> to </DateRangeDelimiter>
-                <TextField {...endProps} size="small" helperText={undefined} />
+                <TextField
+                  {...endProps}
+                  size="small"
+                  helperText={undefined}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarTodayIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
               </React.Fragment>
             )}
           />
