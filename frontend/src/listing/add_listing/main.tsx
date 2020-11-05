@@ -9,10 +9,6 @@ import { AddListingStyles } from "./AddListing.css";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import { observer } from "mobx-react";
 
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
 export const AddListingPage = () => {
   const presenter = new ListingPresenter();
   const store = new ListingStore();
@@ -20,7 +16,13 @@ export const AddListingPage = () => {
 };
 
 export const AddListingPageBase = observer(
-  ({ store, presenter }: { store: ListingStore; presenter: ListingPresenter }) => {
+  ({
+    store,
+    presenter,
+  }: {
+    store: ListingStore;
+    presenter: ListingPresenter;
+  }) => {
     const history = useHistory();
     const [status, setStatus] = React.useState<string | null>(null);
     const [openSnack, setOpen] = React.useState<boolean>(false);
@@ -28,14 +30,18 @@ export const AddListingPageBase = observer(
     const classes = AddListingStyles();
     const onSuccess = () => {
       setStatus("publishing");
-      presenter.publishListing(store, () => {
-        setOpen(true);
-        setStatus('success');
-        history.push("/listing/" + store.id);
-      }, () => {
-        setOpen(true);
-        setStatus('error');
-      })
+      presenter.publishListing(
+        store,
+        () => {
+          setOpen(true);
+          setStatus("success");
+          history.push("/listing/" + store.id);
+        },
+        () => {
+          setOpen(true);
+          setStatus("error");
+        }
+      );
     };
 
     const snackContent = (status: string) => {
@@ -43,9 +49,13 @@ export const AddListingPageBase = observer(
         case "success":
           return <MuiAlert severity="success">Successfully published</MuiAlert>;
         case "publishing":
-          return <MuiAlert severity="info">Publishing your listing...</MuiAlert>;
+          return (
+            <MuiAlert severity="info">Publishing your listing...</MuiAlert>
+          );
         case "error":
-          return <MuiAlert severity="error">There was an error publishing</MuiAlert>;
+          return (
+            <MuiAlert severity="error">There was an error publishing</MuiAlert>
+          );
         default:
           return <></>;
       }
@@ -62,12 +72,12 @@ export const AddListingPageBase = observer(
                 onPreview={() => setIsEditing(false)}
               />
             ) : (
-                <PreviewListing
-                  store={store}
-                  onBack={() => setIsEditing(true)}
-                  onPublish={onSuccess}
-                />
-              )}
+              <PreviewListing
+                store={store}
+                onBack={() => setIsEditing(true)}
+                onPublish={onSuccess}
+              />
+            )}
           </div>
         </div>
         {status !== null && (
