@@ -119,7 +119,7 @@ export const AddressForm = observer(
               variant="outlined"
               style={{
                 minWidth: "120px",
-                marginTop: "20px",
+                marginTop: "10px",
               }}
             >
               <InputLabel id="select-outlined-label">Country</InputLabel>

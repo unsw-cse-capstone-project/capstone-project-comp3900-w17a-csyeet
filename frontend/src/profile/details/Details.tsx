@@ -98,7 +98,7 @@ export const Details: React.FC<{
             fullWidth
             variant="outlined"
             error={phoneError}
-            style={{ marginTop: "20px" }}
+            style={{ marginTop: "10px" }}
           >
             <InputLabel
               htmlFor="outlined-adornment-card"
@@ -166,49 +166,44 @@ export const Details: React.FC<{
             Password incorrect, could not change password
           </FormHelperText>
         )}
-        <Grid container spacing={2}>
-          <Grid item xs>
-            <Password
-              field="newPasswd"
-              label="New Password"
-              onChange={onChange}
-              onBlur={() => {
-                if (store.newPasswd.length <= 5) setPassTooShort(true);
-                else setPassTooShort(false);
-              }}
-              error={passTooShort}
-            />
-            {passTooShort && (
-              <FormHelperText style={{ color: "red" }}>
-                Password has to be at least 5 characters
-              </FormHelperText>
-            )}
-          </Grid>
-          <Grid item xs>
-            <Password
-              field="newPasswdConfirm"
-              label="Confirm Password"
-              onChange={onChange}
-              onBlur={() => {
-                if (store.newPasswd !== store.newPasswdConfirm)
-                  setPassMatchError(true);
-                else setPassMatchError(false);
-              }}
-              error={passMatchError}
-            />
-            {passMatchError && (
-              <FormHelperText style={{ color: "red" }}>
-                Passwords do not match
-              </FormHelperText>
-            )}
-          </Grid>
-        </Grid>
+        <Password
+          field="newPasswd"
+          label="New Password"
+          onChange={onChange}
+          onBlur={() => {
+            if (store.newPasswd.length <= 5) setPassTooShort(true);
+            else setPassTooShort(false);
+          }}
+          error={passTooShort}
+        />
+        {passTooShort && (
+          <FormHelperText style={{ color: "red" }}>
+            Password has to be at least 5 characters
+          </FormHelperText>
+        )}
+        <Password
+          field="newPasswdConfirm"
+          label="Confirm Password"
+          onChange={onChange}
+          onBlur={() => {
+            if (store.newPasswd !== store.newPasswdConfirm)
+              setPassMatchError(true);
+            else setPassMatchError(false);
+          }}
+          error={passMatchError}
+        />
+        {passMatchError && (
+          <FormHelperText style={{ color: "red" }}>
+            Passwords do not match
+          </FormHelperText>
+        )}
+
         <Button
-          style={{ marginTop: "15px" }}
+          style={{ marginTop: "15px", display: "flex", flex: 1 }}
+          color="primary"
           variant="contained"
           onClick={() => {
             setPassIncorrect(false);
-
             onChangePassword(() => setPassIncorrect(true));
           }}
           disabled={passTooShort || passMatchError}
