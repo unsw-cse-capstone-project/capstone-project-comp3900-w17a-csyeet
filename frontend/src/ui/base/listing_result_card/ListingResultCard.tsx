@@ -101,11 +101,12 @@ export const ListingResultCard = observer(
           <Link
             onClick={() => history.push(`/listing/${id}`)}
             style={{ textDecoration: "none" }}
+            className={classes.link}
           >
-            <Typography variant="h4" style={{ textTransform: "capitalize" }}>
+            <Typography variant="h4" style={{ textTransform: "capitalize" }} color="textPrimary">
               {street}
             </Typography>
-            <Typography variant="h6" style={{ textTransform: "capitalize" }}>
+            <Typography variant="h6" style={{ textTransform: "capitalize" }} color="textSecondary">
               {suburb}
               {", "}
               <span style={{ textTransform: "uppercase" }}>{state}</span>{" "}

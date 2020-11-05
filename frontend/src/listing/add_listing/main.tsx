@@ -62,12 +62,12 @@ export const AddListingPageBase = observer(
                 onPreview={() => setIsEditing(false)}
               />
             ) : (
-              <PreviewListing
-                store={store}
-                onBack={() => setIsEditing(true)}
-                onPublish={onSuccess}
-              />
-            )}
+                <PreviewListing
+                  store={store}
+                  onBack={() => setIsEditing(true)}
+                  onPublish={onSuccess}
+                />
+              )}
           </div>
         </div>
         {status !== null && (

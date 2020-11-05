@@ -8,10 +8,12 @@ export default {
   argTypes: {
     suburb: {
       control: {
-        type: "text"
-      }
-    }
-  }
+        type: "text",
+      },
+    },
+  },
 } as Meta;
 
-export const Overview = () => <SellerProfile id={1} name="Jeremy" email="Jeremy@example.com" />;
+export const Overview = () => (
+  <SellerProfile id={1} name="Jeremy" email="Jeremy@example.com" avatar="" />
+);

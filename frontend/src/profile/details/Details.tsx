@@ -1,7 +1,6 @@
 import React from "react";
 import { action } from "mobx";
 import { observer } from "mobx-react";
-import { useStore } from "../../AuthContext";
 import {
   Grid,
   Button,
@@ -57,7 +56,7 @@ export const Details: React.FC<{
           onChange(values.value, "phone_number");
         }}
         onBlur={() => {
-          store.phone_number.length != 10
+          store.phone_number.length !== 10
             ? setPhoneError(true)
             : setPhoneError(false);
         }}

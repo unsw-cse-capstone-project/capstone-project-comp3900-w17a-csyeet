@@ -14,7 +14,7 @@ export const SearchBarStyles = makeStyles((theme: Theme) =>
       position: "relative",
     },
     formButton: {
-      borderRadius: "1000px",
+      borderRadius: "1000px !important",
       padding: "0 30px",
       marginLeft: theme.spacing(1),
       textTransform: "capitalize",
