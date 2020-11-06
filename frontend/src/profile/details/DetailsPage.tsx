@@ -1,7 +1,7 @@
 import React from "react";
 import { action } from "mobx";
 import { useStore } from "../../AuthContext";
-import { DetailStore } from "./DetailStore";
+import { DetailStore } from "./DetailPresenter";
 import { Details } from "./Details";
 
 export const DetailsPage = () => {
