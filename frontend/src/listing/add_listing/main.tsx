@@ -8,10 +8,6 @@ import { AddListingStyles } from "./AddListing.css";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import { observer } from "mobx-react";
 
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
 export const AddListingPage = () => {
   const presenter = new ListingPresenter();
   const store = new ListingStore();

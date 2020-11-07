@@ -113,6 +113,7 @@ export const ListingCardAuction = ({
           </Link>
           <div className={classes.bidPriceContent}>
             <BidPrice
+              info={true}
               className={classes.bidPriceStyle}
               bid={highest_bid as number}
               state={getState()}

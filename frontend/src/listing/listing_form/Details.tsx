@@ -52,7 +52,12 @@ export const Details: React.FC<{
   const propertyTypes = ["Apartment", "Duplex", "House", "Studio", "Townhouse"];
 
   const onChange = (value: string, field: string) => {
+<<<<<<< HEAD
     runInAction(() => ((store as any).listing[field] = value));
+=======
+    console.log("OnChange ", field, "new", value);
+    runInAction(() => ((store as any)[field] = value));
+>>>>>>> master
   };
 
   const getAddressData = computed(() => {
