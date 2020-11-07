@@ -42,7 +42,7 @@ export const SelectWrapper = ({
         variant="outlined"
         style={{
           minWidth: "120px",
-          marginTop: "20px",
+          marginTop: "10px",
         }}
       >
         <InputLabel id="select-outlined-label">{label}</InputLabel>

@@ -20,7 +20,13 @@ export const AddListingPage = () => {
 };
 
 export const AddListingPageBase = observer(
-  ({ store, presenter }: { store: ListingStore; presenter: ListingPresenter }) => {
+  ({
+    store,
+    presenter,
+  }: {
+    store: ListingStore;
+    presenter: ListingPresenter;
+  }) => {
     const history = useHistory();
     const [status, setStatus] = React.useState<string | null>(null);
     const [openSnack, setOpen] = React.useState<boolean>(false);
@@ -28,14 +34,18 @@ export const AddListingPageBase = observer(
     const classes = AddListingStyles();
     const onSuccess = () => {
       setStatus("publishing");
-      presenter.publishListing(store, () => {
-        setOpen(true);
-        setStatus('success');
-        history.push("/listing/" + store.id);
-      }, () => {
-        setOpen(true);
-        setStatus('error');
-      })
+      presenter.publishListing(
+        store,
+        () => {
+          setOpen(true);
+          setStatus("success");
+          history.push("/listing/" + store.id);
+        },
+        () => {
+          setOpen(true);
+          setStatus("error");
+        }
+      );
     };
 
     const snackContent = (status: string) => {
@@ -62,12 +72,12 @@ export const AddListingPageBase = observer(
                 onPreview={() => setIsEditing(false)}
               />
             ) : (
-                <PreviewListing
-                  store={store}
-                  onBack={() => setIsEditing(true)}
-                  onPublish={onSuccess}
-                />
-              )}
+              <PreviewListing
+                store={store}
+                onBack={() => setIsEditing(true)}
+                onPublish={onSuccess}
+              />
+            )}
           </div>
         </div>
         {status !== null && (

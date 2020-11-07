@@ -55,12 +55,14 @@ const useStyles = makeStyles((theme: Theme) =>
 export const BidPrice = ({
   bid,
   state,
+  info = false,
   className,
   style,
   textType = "h4",
 }: {
   bid?: number;
   state: BidPriceState;
+  info?: boolean;
   className?: string;
   style?: React.CSSProperties;
   textType?: "h4" | "h1" | "h2" | "h3" | "h5" | "h6";
@@ -89,7 +91,13 @@ export const BidPrice = ({
       >
         <Typography variant={textType}>{formattedPrice}</Typography>
       </Paper>
-      <InfoPopup size="small" data={getInfo()} className={classes.infoStyle} />
+      {info && (
+        <InfoPopup
+          size="small"
+          data={getInfo()}
+          className={classes.infoStyle}
+        />
+      )}
     </div>
   );
 };

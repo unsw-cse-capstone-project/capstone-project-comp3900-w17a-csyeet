@@ -41,7 +41,7 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
     if (onBlur) onBlur();
   };
   return (
-    <div style={{ marginTop: "20px" }}>
+    <div style={{ marginTop: "10px" }}>
       <TextField
         error={e || error ? true : false}
         fullWidth

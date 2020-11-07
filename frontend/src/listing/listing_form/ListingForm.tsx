@@ -185,7 +185,7 @@ export const ListingForm = observer(
         <Snackbar
           open={openSnack}
           autoHideDuration={6000}
-          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
           onClose={() => setSnack(false)}
         >
           <Alert onClose={() => setSnack(false)} severity="error">
