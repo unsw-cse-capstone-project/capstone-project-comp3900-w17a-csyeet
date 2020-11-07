@@ -13,7 +13,8 @@ export const DateRangeWrapper: React.FC<{
   onDateChange: (value: DateRange<Date>) => void;
   dateRange?: DateRange<Date>;
   style?: React.CSSProperties;
-}> = ({ onDateChange, dateRange = [null, null] }, style) => {
+  className?: string;
+}> = ({ onDateChange, dateRange = [null, null], style, className }) => {
   const [value, setValue] = React.useState<DateRange<Date>>(dateRange);
 
   const onChange = (range: DateRange<Date>) => {
@@ -22,7 +23,7 @@ export const DateRangeWrapper: React.FC<{
   };
 
   return (
-    <div style={style}>
+    <div style={style} className={className}>
       <div style={{ marginTop: "10px" }}>
         <LocalizationProvider dateAdapter={DateFnsUtils}>
           <DateRangePicker
@@ -38,7 +39,7 @@ export const DateRangeWrapper: React.FC<{
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <CalendarTodayIcon />
+                        <CalendarTodayIcon style={{ color: "#7b7b7b" }} />
                       </InputAdornment>
                     ),
                   }}
@@ -51,7 +52,7 @@ export const DateRangeWrapper: React.FC<{
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <CalendarTodayIcon />
+                        <CalendarTodayIcon style={{ color: "#7b7b7b" }} />
                       </InputAdornment>
                     ),
                   }}
