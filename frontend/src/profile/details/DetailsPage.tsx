@@ -1,14 +1,15 @@
 import React from "react";
 import { action } from "mobx";
 import { useStore } from "../../AuthContext";
-import { DetailStore } from "./DetailPresenter";
+import { DetailStore, DetailPresenter } from "./DetailPresenter";
 import { Details } from "./Details";
+import MuiAlert from "@material-ui/lab/Alert";
+import { Snackbar } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 export const DetailsPage = () => {
   const userStore = useStore();
   if (!userStore) throw Error("User Store cannot be null");
-
-  const store = new DetailStore();
   const fillDetailStore = action(() => {
     if (!userStore.user) throw Error("User does not exit");
     const {
@@ -37,26 +38,86 @@ export const DetailsPage = () => {
     // store.country = country;
   });
 
+  const snackContent = (status: string) => {
+    switch (status) {
+      case "success":
+        return <MuiAlert severity="success">Successfully updated!</MuiAlert>;
+      case "updating":
+        return <MuiAlert severity="info">Updating your details...</MuiAlert>;
+      case "error":
+        return (
+          <MuiAlert severity="error">
+            There was an error updating your details
+          </MuiAlert>
+        );
+      case "incorrect password":
+        return (
+          <MuiAlert severity="error">
+            Incorrect password, your password was not changed
+          </MuiAlert>
+        );
+      default:
+        return <></>;
+    }
+  };
+
+  const onError = () => {
+    setStatus("error");
+    setOpen(true);
+  };
+
+  const onSuccess = () => {
+    setStatus("success");
+    setOpen(true);
+  };
+
   const onUpdate = () => {
-    // (Jenn) TODO: Update
-    console.log("Updating");
+    setStatus("updating");
+    setOpen(true);
   };
 
-  const onChangePassword = (onError: () => void) => {
-    // (Jenn) TODO: Update
-    console.log("Changing password");
+  const onIncorrectPassword = () => {
+    setStatus("incorrect password");
+    setOpen(true);
   };
+
+  const store = new DetailStore();
+  const presenter = new DetailPresenter();
+  const [openSnack, setOpen] = React.useState<boolean>(false);
+  const [status, setStatus] = React.useState<string | null>(null);
   fillDetailStore();
-
   return (
     <div style={{ width: "80%", margin: "auto" }}>
       <Details
         store={store}
-        onUpdate={onUpdate}
-        onChangePassword={onChangePassword}
+        onUpdate={(store: DetailStore) => {
+          onUpdate();
+          presenter.updateUserDetails(store.id, store, onError, onSuccess);
+        }}
+        onChangePassword={(store: DetailStore) => {
+          onUpdate();
+          presenter.updateUserPassword(
+            store.id,
+            store,
+            onError,
+            onSuccess,
+            onIncorrectPassword
+          );
+        }}
       />
+      {status !== null && (
+        <Snackbar
+          open={openSnack}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          autoHideDuration={1500}
+          onClose={() => {
+            setOpen(false);
+            setStatus(null);
+          }}
+        >
+          {snackContent(status)}
+        </Snackbar>
+      )}
     </div>
   );
-  // Snack for error on update here.
-  // Snack for success update here.
 };

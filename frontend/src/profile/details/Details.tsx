@@ -14,7 +14,7 @@ import {
 import { Password } from "../../ui/base/input/Password";
 import NumberFormat from "react-number-format";
 import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
-import { DetailStore } from "./DetailStore";
+import { DetailStore } from "./DetailPresenter";
 import { ModalWrapper } from "../../ui/base/modal_wrapper/ModalWrapper";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
 import {
@@ -30,8 +30,8 @@ type NumberFormatCustomProps = {
 
 export const Details: React.FC<{
   store: DetailStore;
-  onUpdate: () => void;
-  onChangePassword: (onError: () => void) => void;
+  onUpdate: (store: DetailStore) => void;
+  onChangePassword: (store: DetailStore) => void;
 }> = observer(({ store, onUpdate, onChangePassword }) => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [readOnly, setReadOnly] = React.useState<boolean>(true);
@@ -140,7 +140,14 @@ export const Details: React.FC<{
             Edit
           </Button>
         ) : (
-          <Button variant="contained" onClick={onUpdate} color="primary">
+          <Button
+            variant="contained"
+            onClick={() => {
+              onUpdate(store);
+              setReadOnly(true);
+            }}
+            color="primary"
+          >
             Save
           </Button>
         )}
@@ -204,7 +211,7 @@ export const Details: React.FC<{
           variant="contained"
           onClick={() => {
             setPassIncorrect(false);
-            onChangePassword(() => setPassIncorrect(true));
+            setOpen(false);
           }}
           disabled={passTooShort || passMatchError}
         >
