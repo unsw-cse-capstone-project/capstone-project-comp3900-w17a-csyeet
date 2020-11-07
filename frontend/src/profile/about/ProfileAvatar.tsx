@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Fab, IconButton } from "@material-ui/core";
+import { Button, Fab } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import PublishIcon from "@material-ui/icons/Publish";
 import AddAPhotoOutlinedIcon from "@material-ui/icons/AddAPhotoOutlined";
@@ -63,18 +63,6 @@ export const ProfileAvatar: React.FC<{
           >
             <EditIcon fontSize={"small"} />
           </Fab>
-          {/* <Button
-            size={"small"}
-            
-            onClick={() => setEdit(true)}
-            
-          >
-            Edit{" "}
-            <EditIcon
-              style={{ color: "#a9a9a9", marginLeft: "8px" }}
-              fontSize="small"
-            />
-          </Button> */}
         </div>
       )}
     </div>

@@ -43,9 +43,8 @@ export const SellerProfile = ({
 
   React.useEffect(() => {
     getInfoFromProfile(id).then((r) => {
-      // console.log("r.listings", r.listings);
-      // setBlurb(r.blurb);
-      // setListings(r.listings);
+      setBlurb(r.blurb);
+      setListings(r.listings);
     });
   }, [id]);
 

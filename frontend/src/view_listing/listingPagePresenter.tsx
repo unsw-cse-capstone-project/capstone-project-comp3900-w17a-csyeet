@@ -1,6 +1,6 @@
 import { observable, makeObservable, action, runInAction } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
-import { delay, getListingFromResult } from "../ui/util/helper";
+import { getListingFromResult } from "../ui/util/helper";
 
 export class ListingPageStore {
   @observable

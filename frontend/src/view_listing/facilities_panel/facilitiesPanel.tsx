@@ -67,7 +67,7 @@ export const FacilitiesPanel = ({
         id="panel2a-header"
         style={{ paddingLeft: "0px" }}
       >
-        <Typography variant="h5">Nearby Facilities</Typography>
+        <Typography variant="h5">Nearby Landmarks</Typography>
       </AccordionSummary>
       <AccordionDetails
         style={{

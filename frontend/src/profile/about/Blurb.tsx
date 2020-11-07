@@ -35,7 +35,6 @@ export const Blurb = ({
 }) => {
   const [edit, setEdit] = React.useState<boolean>(false);
   const classes = BlurbStyle();
-  const inputEl = React.useRef<HTMLInputElement>(null);
   return (
     <div className={classNames(classes.root, className)}>
       {edit ? (
