@@ -9,7 +9,7 @@ import { SignUpStore } from "./sign_up/SignUpStore";
 import { SignIn } from "./sign_in/SignIn";
 import { SignUp } from "./sign_up/SignUp";
 import { useStore } from "../../../AuthContext";
-import { useTheme, Hidden } from "@material-ui/core";
+import { Hidden } from "@material-ui/core";
 import { UserMenu } from "./user_menu/UserMenu";
 import { MinimisedSearch } from "./minimised_search/MinimisedSearch";
 import classNames from "classnames";

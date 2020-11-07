@@ -26,6 +26,7 @@ export const UpcomingAuctionsBase = observer(
   }) => {
     React.useEffect(() => {
       presenter.loadUpcomingAuctions(store, getNumCards(width));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (store.state === "loading") {
