@@ -2,9 +2,9 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Avatar, ListItemIcon, ListItemText } from "@material-ui/core";
+import { Avatar, Hidden, ListItemIcon, ListItemText } from "@material-ui/core";
 import { useStore } from "../../../../AuthContext";
-import { AccountCircle, ExitToApp, Message } from "@material-ui/icons";
+import { AccountCircle, ExitToApp, House, Message } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 
 export const UserMenu = () => {
@@ -54,6 +54,19 @@ export const UserMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        <Hidden smUp>
+          <MenuItem
+            onClick={() => {
+              history.push("/add");
+              handleClose();
+            }}
+          >
+            <ListItemIcon>
+              <House fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Add Listing" />
+          </MenuItem>
+        </Hidden>
         <MenuItem
           onClick={() => {
             history.push("/messages");

@@ -106,3 +106,18 @@ export const formatAddress = ({
       postcode,
   };
 };
+
+export const getNumCards = (width: string) => {
+  switch (width) {
+    case "xs":
+      return 1;
+    case "sm":
+      return 2;
+    case "md":
+      return 3;
+    case "lg":
+      return 4;
+    default:
+      return 3;
+  }
+};

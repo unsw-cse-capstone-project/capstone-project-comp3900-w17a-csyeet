@@ -1,8 +1,8 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
 import { Details } from "./Details";
-import { DetailStore } from "./DetailStore";
 import { action } from "@storybook/addon-actions";
+import { DetailStore } from "./DetailPresenter";
 export default {
   title: "profile/Details",
   component: Details,

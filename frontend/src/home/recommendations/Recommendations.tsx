@@ -1,52 +1,38 @@
 import * as React from "react";
 import { RecommendationsStore } from "./RecommendationsPresenter";
-import {
-  ListingCardSmall,
-  ListingCardSmallPlaceholder,
-} from "../../ui/base/listing_card_sm/ListingCardSmall";
+import { ListingCardSmall } from "../../ui/base/listing_card_sm/ListingCardSmall";
 import { observer } from "mobx-react";
-import { Grid, IconButton, withWidth } from "@material-ui/core";
+import { Grid, IconButton, withWidth, Snackbar } from "@material-ui/core";
 import { ArrowBackIos, ArrowForwardIos } from "@material-ui/icons";
 import SwipeableViews from "react-swipeable-views";
 import { RecommendationsStyles } from "./Recommendations.css";
+import { getNumCards } from "../../ui/util/helper";
+import { ListingCardSmallLoadingRow } from "../../ui/base/loading_state/ListingCardSmallLoadingRow";
+import MuiAlert from "@material-ui/lab/Alert";
 
 export const RecommendationNoWidth = observer(
   ({ store, width }: { store: RecommendationsStore; width: string }) => {
     const [page, setPage] = React.useState(0);
     const classes = RecommendationsStyles();
     if (store.state === "loading") {
-      return (
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-            <ListingCardSmallPlaceholder />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-            <ListingCardSmallPlaceholder />
-          </Grid>
-        </Grid>
-      );
+      return <ListingCardSmallLoadingRow />;
     }
 
     if (store.state === "error") {
-      return <div>Error</div>;
+      return (
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={true}
+          autoHideDuration={2000}
+        >
+          <MuiAlert elevation={6} severity="error">
+            Error occurred while fetching your recommendations.
+          </MuiAlert>
+        </Snackbar>
+      );
     }
 
-    const getNumOnPage = () => {
-      switch (width) {
-        case "xs":
-          return 1;
-        case "sm":
-          return 2;
-        case "md":
-          return 3;
-        case "lg":
-          return 4;
-        default:
-          return 3;
-      }
-    };
-
-    const numOnPage = getNumOnPage();
+    const numOnPage = getNumCards(width);
 
     if (page % numOnPage !== 0) {
       setPage((page) => page - (page % numOnPage));
@@ -59,14 +45,14 @@ export const RecommendationNoWidth = observer(
           onClick={() => setPage((page) => page - numOnPage)}
           disabled={page - numOnPage < 0}
         >
-          <ArrowBackIos></ArrowBackIos>
+          <ArrowBackIos />
         </IconButton>
         <IconButton
           className={classes.rightIcon}
           disabled={page + numOnPage > store.recommendations.length - 1}
           onClick={() => setPage((page) => page + numOnPage)}
         >
-          <ArrowForwardIos></ArrowForwardIos>
+          <ArrowForwardIos />
         </IconButton>
         <SwipeableViews
           index={page / numOnPage}

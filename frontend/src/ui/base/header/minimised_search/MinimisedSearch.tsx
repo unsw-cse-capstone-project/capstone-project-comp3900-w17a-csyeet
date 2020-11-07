@@ -18,13 +18,19 @@ const MinimisedSearchStyle = makeStyles((theme: Theme) =>
       "& *": {
         borderRadius: "1000px",
       },
+      [theme.breakpoints.down('sm')]: {
+        width: "170px",
+      }
     },
     searchButton: {
       width: "42px",
       height: "42px",
       padding: 0,
-      marginRight: "12px",
+      marginRight: theme.spacing(1.5),
     },
+    form : {
+      marginRight: theme.spacing(1.5),
+    }
   })
 );
 
@@ -47,7 +53,7 @@ export const MinimisedSearch = () => {
   };
 
   return open ? (
-    <form onSubmit={onSubmit} style={{marginRight: "12px"}}>
+    <form onSubmit={onSubmit} className={classes.form}>
       <TextField
         id="Search"
         value={query}

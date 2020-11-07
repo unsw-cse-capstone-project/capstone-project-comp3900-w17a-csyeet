@@ -15,6 +15,11 @@ export class RecommendationsStore {
 }
 
 export class RecommendationsPresenter {
+  /**
+   * 
+   * @param store 
+   * Load recommendations from the backend
+   */
   @action
   async loadRecommendations(store: RecommendationsStore) {
     try {
@@ -32,7 +37,6 @@ export class RecommendationsPresenter {
           ...store.recommendations,
           ...store.recommendations,
         ];
-        console.log(store.recommendations);
         store.state = "loaded";
       });
     } catch {
