@@ -1,6 +1,5 @@
 import { action, runInAction } from "mobx";
 import { ListingStore } from "./ListingStore";
-import { delay } from "../ui/util/helper";
 
 const setResultsInStore = action((store: ListingStore, result: any) => {});
 

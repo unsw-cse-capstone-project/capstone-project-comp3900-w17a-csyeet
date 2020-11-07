@@ -31,7 +31,7 @@ export const UserMenu = () => {
         style={{ borderRadius: "10000px" }}
         startIcon={
           <Avatar
-            src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
+            src={userStore.avatar}
             style={{ width: "30px", height: "30px" }}
           />
         }
