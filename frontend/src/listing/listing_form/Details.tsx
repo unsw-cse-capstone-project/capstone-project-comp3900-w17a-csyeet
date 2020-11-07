@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Paper, Typography, Grid } from "@material-ui/core";
 import { AddressForm } from "../../ui/base/address_form/AddressForm";
-import { ListingStore } from "../ListingStore";
+import { ListingStore } from "../ListingPresenter";
 import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
 import { SelectWrapper } from "../../ui/base/select_wrapper/SelectWrapper";
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
@@ -10,7 +10,7 @@ import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
 
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { computed, runInAction } from 'mobx';
+import { computed, runInAction } from "mobx";
 
 export const DetailStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,22 +37,34 @@ export const DetailStyles = makeStyles((theme: Theme) =>
 export const Details: React.FC<{
   store: ListingStore;
 }> = observer(({ store }) => {
+  const {
+    type,
+    street,
+    suburb,
+    postcode,
+    state,
+    country,
+    num_bedrooms,
+    num_bathrooms,
+    num_car_spaces,
+  } = store.listing;
   const classes = DetailStyles();
   const propertyTypes = ["Apartment", "Duplex", "House", "Studio", "Townhouse"];
+
   const onChange = (value: string, field: string) => {
-    console.log("OnChange ", field, "new", value);
-    runInAction(() => (store as any)[field] = value);
+    runInAction(() => ((store as any).listing[field] = value));
   };
 
   const getAddressData = computed(() => {
     return {
-      street: store.street,
-      suburb: store.suburb,
-      postcode: store.postcode,
-      state: store.state,
-      country: store.country,
+      street: street,
+      suburb: suburb,
+      postcode: postcode,
+      state: state,
+      country: country,
     };
   });
+
   return (
     <div className={classes.container}>
       <Typography variant={"subtitle1"}> Property Address</Typography>
@@ -64,7 +76,7 @@ export const Details: React.FC<{
         data={propertyTypes}
         label="Property Type"
         field="type"
-        value={store.type}
+        value={type}
         onChange={onChange}
         required={true}
       />
@@ -76,11 +88,11 @@ export const Details: React.FC<{
               <Typography>Bedroom(s)</Typography>
             </div>
             <TextFieldWrapper
-              field="nBedrooms"
+              field="num_bedrooms"
               label="Bedroom(s)"
               type="number"
               onChange={onChange}
-              value={store.nBedrooms}
+              value={num_bedrooms.toString()}
             />
           </Paper>
         </Grid>
@@ -91,11 +103,11 @@ export const Details: React.FC<{
               <Typography>Bathrooms(s)</Typography>
             </div>
             <TextFieldWrapper
-              field="nBathrooms"
+              field="num_bathrooms"
               label="Bathroom(s)"
               type="number"
               onChange={onChange}
-              value={store.nBathrooms}
+              value={num_bathrooms.toString()}
             />
           </Paper>
         </Grid>
@@ -103,14 +115,14 @@ export const Details: React.FC<{
           <Paper className={classes.cardContainer}>
             <div className={classes.cardLabel}>
               <DriveEtaOutlinedIcon style={{ marginRight: "10px" }} />
-              <Typography>Garages(s)</Typography>
+              <Typography>Car Spaces(s)</Typography>
             </div>
             <TextFieldWrapper
-              field="nGarages"
-              label="Garages(s)"
+              field="num_car_spaces"
+              label="Car Spaces(s)"
               type="number"
               onChange={onChange}
-              value={store.nGarages}
+              value={num_car_spaces.toString()}
             />
           </Paper>
         </Grid>

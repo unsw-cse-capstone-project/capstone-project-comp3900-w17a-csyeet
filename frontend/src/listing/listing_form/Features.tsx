@@ -8,8 +8,8 @@ import {
   FormGroup,
   Typography,
 } from "@material-ui/core";
-import { ListingStore, Feature } from "../ListingStore";
-import {action} from 'mobx';
+import { ListingStore } from "../ListingPresenter";
+import { action } from "mobx";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { CheckboxWrapper } from "../../ui/base/checkbox_wrapper/CheckboxWrapper";
 
@@ -32,17 +32,18 @@ const FeatureStyles = makeStyles((theme: Theme) =>
 
 export const Features: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
-    const removeFeature = (array: Feature[], feature: Feature) => {
+    const { features } = store.listing;
+    const removeFeature = (array: string[], feature: string) => {
       return array.filter(function (e) {
         return e !== feature;
       });
     };
 
     const onChecked = action((checked: boolean, field: string) => {
-      if (checked && !store.features.includes(field as Feature)) {
-        store.features.push(field as Feature);
-      } else if (!checked && store.features.includes(field as Feature)) {
-        store.features = removeFeature(store.features, field as Feature);
+      if (checked && !features.includes(field)) {
+        store.listing.features.push(field);
+      } else if (!checked && features.includes(field)) {
+        store.listing.features = removeFeature(features, field);
       }
     });
 
@@ -72,25 +73,25 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
           <AccordionDetails>
             <FormGroup>
               <CheckboxWrapper
-                checked={store.features.includes("ensuite")}
+                checked={features.includes("ensuite")}
                 field="ensuite"
                 label="Ensuite"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("builtInWardrobe")}
+                checked={features.includes("builtInWardrobe")}
                 field="builtInWardrobe"
                 label="Built-in Wardrobe"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("bathtub")}
+                checked={features.includes("bathtub")}
                 field="bathtub"
                 label="Bathtub"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("furnished")}
+                checked={features.includes("furnished")}
                 field="furnished"
                 label="Newly Furnished"
                 onChange={onChecked}
@@ -107,42 +108,44 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
             aria-controls="panel2bh-content"
             id="panel2bh-header"
           >
-            <Typography className={classes.heading}>Kitchen Features</Typography>
+            <Typography className={classes.heading}>
+              Kitchen Features
+            </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <FormGroup>
               <CheckboxWrapper
-                checked={store.features.includes("openKitchen")}
+                checked={features.includes("openKitchen")}
                 field="openKitchen"
                 label="Open Kitchen"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("separateKitchen")}
+                checked={features.includes("separateKitchen")}
                 field="separateKitchen"
                 label="Separate Kitchen"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("islandKitchen")}
+                checked={features.includes("islandKitchen")}
                 field="islandKitchen"
                 label="Island Kitchen"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("gasStove")}
+                checked={features.includes("gasStove")}
                 field="gasStove"
                 label="Gas Stove"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("electricStove")}
+                checked={features.includes("electricStove")}
                 field="electricStove"
                 label="Electric Stove"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("inductionStove")}
+                checked={features.includes("inductionStove")}
                 field="inductionStove"
                 label="Induction Stove"
                 onChange={onChecked}
@@ -166,37 +169,37 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
           <AccordionDetails>
             <FormGroup>
               <CheckboxWrapper
-                checked={store.features.includes("balcony")}
+                checked={features.includes("balcony")}
                 field="balcony"
                 label="Balcony"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("oceanView")}
+                checked={features.includes("oceanView")}
                 field="oceanView"
                 label="Ocean View"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("bbq")}
+                checked={features.includes("bbq")}
                 field="bbq"
                 label="BBQ Area"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("porch")}
+                checked={features.includes("porch")}
                 field="porch"
                 label="Porch"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("pool")}
+                checked={features.includes("pool")}
                 field="pool"
                 label="Pool"
                 onChange={onChecked}
               />
               <CheckboxWrapper
-                checked={store.features.includes("gym")}
+                checked={features.includes("gym")}
                 field="gym"
                 label="Gym"
                 onChange={onChecked}

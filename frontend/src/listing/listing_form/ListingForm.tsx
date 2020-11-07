@@ -9,7 +9,7 @@ import {
   Snackbar,
   Typography,
 } from "@material-ui/core";
-import { ListingStore } from "../ListingStore";
+import { ListingStore } from "../ListingPresenter";
 import { Details } from "./Details";
 import { Images } from "./Images";
 import { Description } from "./Description";
@@ -72,34 +72,31 @@ export const ListingForm = observer(
 
     const completedStep0 = computed(
       () =>
-        store.street !== "" &&
-        store.suburb !== "" &&
-        store.state !== "" &&
-        store.country !== "" &&
-        store.type !== "" &&
-        store.nBedrooms !== "" &&
-        store.nBathrooms !== "" &&
-        store.nGarages !== ""
+        store.listing.street !== "" &&
+        store.listing.suburb !== "" &&
+        store.listing.state !== "" &&
+        store.listing.country !== "" &&
+        store.listing.type !== ""
     );
 
     const completedStep1 = computed(() => store.images.length > 0);
 
     const completedStep2 = computed(
-      () => store.descTitle !== "" && store.desc !== ""
+      () => store.listing.title !== "" && store.listing.description !== ""
     );
 
     const completedStep3 = computed(
       () =>
-        store.auctionStart !== null &&
-        store.auctionEnd !== null &&
-        store.reservePrice !== 0
+        store.auction.auction_start !== null &&
+        store.auction.auction_end !== null &&
+        store.auction.reserve_price !== 0
     );
 
     const completedStep4 = computed(
       () =>
-        store.accName !== "" &&
-        store.bsb.length === 6 &&
-        store.accNumber.length === 8
+        store.payment.account_name !== "" &&
+        store.payment.bsb.length === 6 &&
+        store.payment.account_number.length === 8
     );
 
     const canPreview =

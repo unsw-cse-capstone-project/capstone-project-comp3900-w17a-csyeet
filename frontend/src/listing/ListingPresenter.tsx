@@ -1,8 +1,84 @@
 import { action, runInAction } from "mobx";
-import { ListingStore } from "./ListingStore";
-import { delay } from "../ui/util/helper";
+import { observable, makeObservable } from "mobx";
+import { getListingFromResult } from "../ui/util/helper";
+import { ListingActual } from "../ui/util/types/listing";
 
-const setResultsInStore = action((store: ListingStore, result: any) => {});
+export type AuctionDetails = {
+  auction_start: Date | null;
+  auction_end: Date | null;
+  reserve_price: string | null;
+};
+
+export type PaymentDetails = {
+  account_name: string;
+  bsb: string;
+  account_number: string;
+};
+
+const getAuctionFromResult = (result: any) => ({
+  auction_start: result.auction_start,
+  auction_end: result.auction_end,
+  reserve_price: result.reserve_price.toString(),
+});
+
+const getPaymentFromResult = (result: any) => ({
+  account_name: result.account_name,
+  bsb: result.bsb,
+  account_number: result.account_number,
+});
+
+export class ListingStore {
+  @observable listing: ListingActual = {
+    id: null,
+    owner: {
+      id: 0,
+      email: "",
+      name: "",
+    },
+    title: "",
+    description: "",
+    street: "",
+    suburb: "",
+    postcode: "",
+    state: "",
+    country: "",
+    type: "",
+    num_bedrooms: 0,
+    num_bathrooms: 0,
+    num_car_spaces: 0,
+    auction_start: null,
+    auction_end: null,
+    images: [],
+    features: [],
+
+    // Don't need below, @Teresa how to make it partial (?if possible)
+    // reserve_price: number;
+    starred: null,
+    registered_bidder: false,
+    landmarks: [],
+    highest_bid: null,
+    reserve_met: false,
+  };
+
+  @observable payment: PaymentDetails = {
+    account_name: "",
+    bsb: "",
+    account_number: "",
+  };
+
+  @observable auction: AuctionDetails = {
+    auction_start: null,
+    auction_end: null,
+    reserve_price: null,
+  };
+
+  // Note: To delete this
+  @observable images: string[] = [];
+
+  constructor() {
+    makeObservable(this);
+  }
+}
 
 export class ListingPresenter {
   @action
@@ -17,7 +93,16 @@ export class ListingPresenter {
 
       // Error Handling
       if ("detail" in result) onError();
-      else setResultsInStore(store, result);
+      else {
+        const listing: ListingActual = getListingFromResult(result);
+        const auction: AuctionDetails = getAuctionFromResult(result);
+        const payment: PaymentDetails = getPaymentFromResult(result);
+        runInAction(() => {
+          store.listing = listing;
+          store.auction = auction;
+          store.payment = payment;
+        });
+      }
     } catch {
       onError();
     }
@@ -33,27 +118,27 @@ export class ListingPresenter {
       const response = await fetch(`/listings/`, {
         method: "post",
         body: JSON.stringify({
-          type: store.type.toLowerCase(),
-          title: store.descTitle,
-          description: store.desc,
-          street: store.street,
-          suburb: store.suburb,
-          postcode: store.postcode,
-          state: store.state
+          type: store.listing.type.toLowerCase(),
+          title: store.listing.title,
+          description: store.listing.description,
+          street: store.listing.street,
+          suburb: store.listing.suburb,
+          postcode: store.listing.postcode,
+          state: store.listing.state
             .split(" ")
             .map((word) => word[0])
             .join(""),
-          country: store.country,
-          num_bedrooms: store.nBedrooms,
-          num_bathrooms: store.nBathrooms,
-          num_car_spaces: store.nGarages,
-          auction_start: store.auctionStart?.toISOString(), // Not null
-          auction_end: store.auctionEnd?.toISOString(), // Not null
-          features: store.features,
-          reserve_price: store.reservePrice,
-          account_name: store.accName,
-          bsb: store.bsb,
-          account_number: store.accNumber,
+          country: store.listing.country,
+          features: store.listing.features,
+          num_bedrooms: store.listing.num_bedrooms,
+          num_bathrooms: store.listing.num_bathrooms,
+          num_car_spaces: store.listing.num_car_spaces,
+          auction_start: store.auction.auction_start?.toString(),
+          auction_end: store.auction.auction_end?.toString(),
+          reserve_price: parseInt(store.auction.reserve_price as string),
+          account_name: store.payment.account_name,
+          bsb: store.payment.bsb,
+          account_number: store.payment.account_number,
         }),
       });
       const result = await response.json();
@@ -63,7 +148,7 @@ export class ListingPresenter {
         return;
       }
       runInAction(() => {
-        store.id = result.id;
+        store.listing.id = result.id;
       });
       onSuccess();
     } catch {
@@ -71,17 +156,52 @@ export class ListingPresenter {
     }
   }
 
-  // Need function to upload images (Annisa said we could do multiple at a time)
-  // Uploading Images, I'm not sure waht type she used...
-  //
-  // Currently it's stored as "ImageListType"
-  //   export interface ImageType {
-  //   dataURL?: string;
-  //   file?: File;
-  //   [key: string]: any;
-  // }
-  // export type ImageListType = Array<ImageType>;
-  //
-  // Later on, need a function for updating listing (not for the first time)
-  // Later on, need a function for fetchListingData (by ID) i suppose.. which will be passed in as a prop
+  @action
+  async updateListing(
+    store: ListingStore,
+    onSuccess: () => void,
+    onError: () => void
+  ) {
+    try {
+      // TODO: Update this path (if different)
+      const response = await fetch(`/listings/`, {
+        method: "post",
+        body: JSON.stringify({
+          type: store.listing.type.toLowerCase(),
+          title: store.listing.title,
+          description: store.listing.description,
+          street: store.listing.street,
+          suburb: store.listing.suburb,
+          postcode: store.listing.postcode,
+          state: store.listing.state
+            .split(" ")
+            .map((word) => word[0])
+            .join(""),
+          country: store.listing.country,
+          features: store.listing.features,
+          num_bedrooms: store.listing.num_bedrooms,
+          num_bathrooms: store.listing.num_bathrooms,
+          num_car_spaces: store.listing.num_car_spaces,
+          auction_start: store.auction.auction_start?.toISOString(),
+          auction_end: store.auction.auction_end?.toISOString(),
+          reserve_price: store.auction.reserve_price,
+          account_name: store.payment.account_name,
+          bsb: store.payment.bsb,
+          account_number: store.payment.account_number,
+        }),
+      });
+      const result = await response.json();
+      if ("detail" in result) {
+        console.log(result);
+        onError();
+        return;
+      }
+      runInAction(() => {
+        store.listing.id = result.id;
+      });
+      onSuccess();
+    } catch {
+      onError();
+    }
+  }
 }
