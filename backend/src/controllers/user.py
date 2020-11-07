@@ -3,7 +3,7 @@ from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from starlette.responses import StreamingResponse
-from ..schemas import OwnProfileResponse, UserProfileResponse, UserResponse, UpdateUserRequest, UpdateUserResponse, ChangePasswordRequest
+from ..schemas import OwnProfileResponse, UserProfileResponse, UserResponse, UpdateUserRequest, UpdateUserResponse
 from ..helpers import get_signed_in_user, get_session, map_listing_response, password_matches, hash_password
 from ..models import User
 
@@ -59,23 +59,19 @@ def get_user_avatar(id: int, session: Session = Depends(get_session)):
     return StreamingResponse(io.BytesIO(user.avatar_data), media_type=user.avatar_image_type)
 
 
-@router.post('/profile', response_model=UpdateUserResponse)
+@router.post('/profile', response_model=UpdateUserResponse, responses={401: {'description': 'Invalid credentials'}})
 def update_user_details(req: UpdateUserRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Update user details for signed-in user '''
     data = req.dict()
     update_user(signed_in_user, data)
+
+    if req.old_password is not None and req.new_password is not None:
+        if not password_matches(signed_in_user.hashed_password, req.old_password):
+            raise HTTPException(401, detail='Old password does not match')
+        signed_in_user.hashed_password = hash_password(req.new_password)
+
     session.commit()
     return asdict(signed_in_user)
-
-
-@router.post('/profile/changepassword', responses={401: {'description': 'Invalid credentials'}})
-def change_password(req: ChangePasswordRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
-    ''' Change password for signed-in user'''
-    if not password_matches(signed_in_user.hashed_password, req.old_password):
-        raise HTTPException(401, detail='Old password does not match')
-
-    signed_in_user.hashed_password = hash_password(req.new_password)
-    session.commit()
 
     
 @router.get('/{id}', response_model=UserResponse, responses={404: {"description": "Resource not found"}})

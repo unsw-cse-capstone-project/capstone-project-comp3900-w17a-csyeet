@@ -53,13 +53,9 @@ class UpdateUserBase(BaseModel):
 
 
 class UpdateUserRequest(UpdateUserBase):
-    pass
+    old_password: Optional[str]
+    new_password: Optional[str]
 
 
 class UpdateUserResponse(UpdateUserBase):
     pass
-
-
-class ChangePasswordRequest(BaseModel):
-    old_password: str
-    new_password: str
