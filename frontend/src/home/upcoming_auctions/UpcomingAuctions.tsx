@@ -3,75 +3,84 @@ import {
   UpcomingAuctionsStore,
   UpcomingAuctionPresenter,
 } from "./UpcomingAuctionsPresenter";
-import { Grid } from "@material-ui/core";
-import {
-  ListingCardSmall,
-  ListingCardSmallPlaceholder,
-} from "../../ui/base/listing_card_sm/ListingCardSmall";
+import { Grid, Snackbar, Typography, withWidth } from '@material-ui/core';
+import { ListingCardSmall } from "../../ui/base/listing_card_sm/ListingCardSmall";
 import { observer } from "mobx-react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { ListingCardSmallLoadingRow } from "../../ui/base/loading_state/ListingCardSmallLoadingRow";
+import MuiAlert from "@material-ui/lab/Alert";
+import { getNumCards } from '../../ui/util/helper';
 
-export const UpcomingAuctions = observer(
+/**
+ * List of upcoming auctions with loading states
+ */
+export const UpcomingAuctionsBase = observer(
   ({
     store,
     presenter,
+    width,
   }: {
     store: UpcomingAuctionsStore;
     presenter: UpcomingAuctionPresenter;
+    width: string;
   }) => {
+    React.useEffect(() => {
+      presenter.loadUpcomingAuctions(store, getNumCards(width));
+    }, []);
+
     if (store.state === "loading") {
+      return <ListingCardSmallLoadingRow />;
+    }
+
+    /**
+     * Display toast notification if an error occurred
+     */
+    if (store.state === "error") {
       return (
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-            <ListingCardSmallPlaceholder />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-            <ListingCardSmallPlaceholder />
-          </Grid>
-        </Grid>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={true}
+          autoHideDuration={2000}
+        >
+          <MuiAlert elevation={6} severity="error">
+            Error occurred while fetching upcoming auctions.
+          </MuiAlert>
+        </Snackbar>
       );
     }
 
-    if (store.state === "error") {
-      return <div>error</div>;
+    if (store.listings.length === 0) {
+      return (
+        <Typography align="center" variant="body1">
+          No upcoming auctions found
+        </Typography>
+      );
     }
+
     return (
-      <div>
-        {store.listings.length === 0 ? (
-          <div style={{ textAlign: "center" }}>No upcoming auctions found</div>
-        ) : (
-          <InfiniteScroll
-            dataLength={store.listings.length}
-            next={() => presenter.loadUpcomingAuctions(store)}
-            hasMore={!!store.continuation}
-            loader={
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                  <ListingCardSmallPlaceholder />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                  <ListingCardSmallPlaceholder />
-                </Grid>
-              </Grid>
-            }
-            endMessage={
-              <p style={{ textAlign: "center" }}>
-                <b>No more listings to show</b>
-              </p>
-            }
-            style={{ overflow: "visible" }}
-            scrollableTarget={"content"}
-          >
-            <Grid container spacing={3}>
-              {store.listings.map((listing, i) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={i}>
-                  <ListingCardSmall listing={listing} />
-                </Grid>
-              ))}
+      <InfiniteScroll
+        dataLength={store.listings.length}
+        next={() => presenter.loadUpcomingAuctions(store, getNumCards(width))}
+        hasMore={!!store.continuation}
+        loader={<ListingCardSmallLoadingRow />}
+        endMessage={
+          <Typography align="center" variant="body1">
+            No more listings to show
+          </Typography>
+        }
+        style={{ overflow: "visible" }}
+        scrollableTarget={"content"}
+      >
+        <Grid container spacing={3}>
+          {store.listings.map((listing, i) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={i}>
+              <ListingCardSmall listing={listing} />
             </Grid>
-          </InfiniteScroll>
-        )}
-      </div>
+          ))}
+        </Grid>
+      </InfiniteScroll>
     );
   }
 );
+
+export const UpcomingAuctions = withWidth()(UpcomingAuctionsBase);
