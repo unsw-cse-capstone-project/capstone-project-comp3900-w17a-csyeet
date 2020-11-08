@@ -1,4 +1,4 @@
-import { action, runInAction } from "mobx";
+import { action } from "mobx";
 import { ListingStore } from "./ListingStore";
 
 const setResultsInStore = action((store: ListingStore, result: any) => {});
@@ -57,30 +57,39 @@ export class ListingPresenter {
       });
       const result = await response.json();
       if ("detail" in result) {
-        console.log(result);
         onError();
         return;
       }
-      runInAction(() => {
-        store.id = result.id;
+      store.id = result.id;
+
+      let form = new FormData();
+      const data = await Promise.all(
+        store.images.map((image) =>
+          (image.file as any).arrayBuffer().then((buffer: any) => ({
+            data: buffer,
+            type: (image.file as any).type,
+          }))
+        )
+      );
+      data.forEach((image) => {
+        form.append("files", new Blob([image.data], { type: image.type }));
       });
-      onSuccess();
-    } catch {
+      try {
+        const response = await fetch(`/listings/${store.id}/images`, {
+          method: "post",
+          body: form,
+        });
+        if (response.status !== 200) {
+          onError();
+          return;
+        }
+        onSuccess();
+      } catch (e) {
+        onError();
+        return;
+      }
+    } catch (e) {
       onError();
     }
   }
-
-  // Need function to upload images (Annisa said we could do multiple at a time)
-  // Uploading Images, I'm not sure waht type she used...
-  //
-  // Currently it's stored as "ImageListType"
-  //   export interface ImageType {
-  //   dataURL?: string;
-  //   file?: File;
-  //   [key: string]: any;
-  // }
-  // export type ImageListType = Array<ImageType>;
-  //
-  // Later on, need a function for updating listing (not for the first time)
-  // Later on, need a function for fetchListingData (by ID) i suppose.. which will be passed in as a prop
 }

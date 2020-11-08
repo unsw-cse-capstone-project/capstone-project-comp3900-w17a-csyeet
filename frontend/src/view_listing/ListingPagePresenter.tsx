@@ -52,8 +52,7 @@ export class ListingPagePresenter {
       const response = await fetch(`/listings/${id}`, {
         method: "delete",
       });
-      const result = await response.json();
-      if ("detail" in result) {
+      if (response.status !== 200) {
         return false;
       }
       return true;
