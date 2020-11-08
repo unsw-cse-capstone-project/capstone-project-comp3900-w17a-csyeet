@@ -1,7 +1,7 @@
 import os
 from distutils.util import strtobool
 from decimal import Decimal
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 import googlemaps
 from googlemaps.places import places_nearby
 from geopy.geocoders import Nominatim
@@ -20,11 +20,12 @@ def find_nearby_landmarks(listing: Listing) -> List[Landmark]:
     # TODO: remove me - only use real APIs if the environment variable is set, otherwise return dummy results
     if search_places:
         listing_coordinates = get_coordinates(listing)
-        for landmark_type in LandmarkType:
-            response = places_nearby(gmaps_client, location=listing_coordinates,
-                                     radius=3000, type=landmark_type.name)
-            landmarks += [create_landmark(place, landmark_type, listing, listing_coordinates)
-                          for place in filter_places_response(response, landmark_type)]
+        if listing_coordinates is not None:
+            for landmark_type in LandmarkType:
+                response = places_nearby(gmaps_client, location=listing_coordinates,
+                                         radius=3000, type=landmark_type.name)
+                landmarks += [create_landmark(place, landmark_type, listing, listing_coordinates)
+                              for place in filter_places_response(response, landmark_type)]
     else:
         landmarks += [
             Landmark(listing_id=listing.id, name="Primary School",
@@ -39,11 +40,11 @@ def find_nearby_landmarks(listing: Listing) -> List[Landmark]:
     return landmarks
 
 
-def get_coordinates(listing: Listing) -> Tuple[float, float]:
+def get_coordinates(listing: Listing) -> Optional[Tuple[float, float]]:
     address_details = {'street': listing.street, 'state': listing.state,
                        'country': listing.country, 'postalcode': listing.postcode}
     location: Location = geolocator.geocode(address_details)
-    return location.latitude, location.longitude
+    return (location.latitude, location.longitude) if location is not None else None
 
 
 max_landmarks_per_type = 10
