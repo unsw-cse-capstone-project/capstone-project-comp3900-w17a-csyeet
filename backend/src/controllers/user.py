@@ -1,9 +1,10 @@
 import io
+from dataclasses import asdict
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from starlette.responses import StreamingResponse
-from ..schemas import OwnProfileResponse, UserProfileResponse, UserResponse
-from ..helpers import get_signed_in_user, get_session, map_listing_response
+from ..schemas import OwnProfileResponse, UserProfileResponse, UserResponse, UpdateUserRequest, UpdateUserResponse
+from ..helpers import get_signed_in_user, get_session, map_listing_response, password_matches, hash_password
 from ..models import User
 
 router = APIRouter()
@@ -58,6 +59,26 @@ def get_user_avatar(id: int, session: Session = Depends(get_session)):
     return StreamingResponse(io.BytesIO(user.avatar_data), media_type=user.avatar_image_type)
 
 
+@router.post('/profile', response_model=UpdateUserResponse, responses={400: {'description': 'Bad Request'}, 401: {'description': 'Invalid credentials'}})
+def update_user_details(req: UpdateUserRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Update user details for signed-in user '''
+    data = req.dict()
+    old_password_provided = data.pop('old_password') is not None
+    new_password_provided = data.pop('new_password') is not None
+    update_user(signed_in_user, data)
+
+    if (old_password_provided and not new_password_provided) or (not old_password_provided and new_password_provided):
+        raise HTTPException(400, detail="Old password and new password must be provided together")
+        
+    if old_password_provided:
+        if not password_matches(signed_in_user.hashed_password, req.old_password):
+            raise HTTPException(401, detail='Old password does not match')
+        signed_in_user.hashed_password = hash_password(req.new_password)
+
+    session.commit()
+    return asdict(signed_in_user)
+
+    
 @router.get('/{id}', response_model=UserResponse, responses={404: {"description": "Resource not found"}})
 def get_user_info(id: int, session: Session = Depends(get_session)):
     ''' Get a user's basic info '''
@@ -69,10 +90,7 @@ def get_user_info(id: int, session: Session = Depends(get_session)):
 
 
 def map_user_to_own_profile_response(user: User, session: Session) -> OwnProfileResponse:
-    response = {}
-    response['email'] = user.email
-    response['name'] = user.name
-    response['blurb'] = user.blurb
+    response = asdict(user)
     response['listings'] = [map_listing_response(listing, user, session) for listing in user.listings]
     response['registrations'] = [map_listing_response(registration.listing, user, session) for registration in user.registrations]
     response['starred_listings'] = [map_listing_response(starred.listing, user, session) for starred in user.starred_listings]
@@ -80,9 +98,11 @@ def map_user_to_own_profile_response(user: User, session: Session) -> OwnProfile
 
 
 def map_user_to_user_profile_response(user: User, session: Session) -> UserProfileResponse:
-    response = {}
-    response['email'] = user.email
-    response['name'] = user.name
-    response['blurb'] = user.blurb
+    response = asdict(user)
     response['listings'] = [map_listing_response(listing, user, session) for listing in user.listings]
     return response #type: ignore
+
+
+def update_user(user: User, data: dict):
+    for key, value in data.items():
+        setattr(user, key, value)
