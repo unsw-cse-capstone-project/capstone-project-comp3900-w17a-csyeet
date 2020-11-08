@@ -95,7 +95,6 @@ export default class Store {
             country: "Australia",
           })
       );
-      window.localStorage.setItem('id', content.id);
     } catch {
       console.log("error T-T");
     }
@@ -132,7 +131,7 @@ export default class Store {
 
 const checkSession = async (store: Store) => {
   let session = document.cookie.split(' ').find(cookie => cookie.startsWith('session='));
-  if (session && window.localStorage.getItem('id') !== null) {
+  if (session) {
     try {
       const response = await fetch("/users/profile", {
         headers: {
@@ -141,7 +140,7 @@ const checkSession = async (store: Store) => {
       });
       const result = await response.json();
       runInAction(() => store.user = {
-        id: parseInt(window.localStorage.getItem('id') as string),
+        id: result.id,
         name: result.name,
         email: result.email,
         phone_number: "0412345678",
