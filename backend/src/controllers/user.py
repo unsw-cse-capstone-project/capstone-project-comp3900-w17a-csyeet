@@ -59,13 +59,18 @@ def get_user_avatar(id: int, session: Session = Depends(get_session)):
     return StreamingResponse(io.BytesIO(user.avatar_data), media_type=user.avatar_image_type)
 
 
-@router.post('/profile', response_model=UpdateUserResponse, responses={401: {'description': 'Invalid credentials'}})
+@router.post('/profile', response_model=UpdateUserResponse, responses={400: {'description': 'Bad Request'}, 401: {'description': 'Invalid credentials'}})
 def update_user_details(req: UpdateUserRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Update user details for signed-in user '''
     data = req.dict()
+    old_password_provided = data.pop('old_password') is not None
+    new_password_provided = data.pop('new_password') is not None
     update_user(signed_in_user, data)
 
-    if req.old_password is not None and req.new_password is not None:
+    if (old_password_provided and not new_password_provided) or (not old_password_provided and new_password_provided):
+        raise HTTPException(400, detail="Old password and new password must be provided together")
+        
+    if old_password_provided:
         if not password_matches(signed_in_user.hashed_password, req.old_password):
             raise HTTPException(401, detail='Old password does not match')
         signed_in_user.hashed_password = hash_password(req.new_password)
