@@ -11,12 +11,14 @@ export const AuctionDetails = ({
   id,
   isUser,
   registered_bidder,
+  disableAction = false,
 }: {
   auction_start: Date;
   auction_end: Date;
   id: number;
   registered_bidder: boolean;
   isUser: boolean;
+  disableAction?: boolean;
 }) => {
   const classes = auctionDetailsStyle();
   return (
@@ -43,7 +45,7 @@ export const AuctionDetails = ({
             <AuctionTag start={auction_start} end={auction_end} />
           </div>
         )}
-      <AuctionActionButton id={id} auction_start={auction_start} registered_bidder={registered_bidder} isUser={isUser} />
+      {!disableAction && <AuctionActionButton id={id} auction_start={auction_start} registered_bidder={registered_bidder} isUser={isUser} />}
     </div>
   );
 };

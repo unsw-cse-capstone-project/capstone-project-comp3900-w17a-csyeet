@@ -10,11 +10,19 @@ import { ListingCardAuctionStyles } from "./ListingCardAuction.css";
 import { BidPrice } from "../bid_price/BidPrice";
 import { priceFormatter } from "../../util/helper";
 import { formatAddress } from "../../util/helper";
+import { Bid } from "../../util/types/bid";
 
-export const ListingCardAuction: React.FC<{
+export const ListingCardAuction = ({
+  listing,
+  onStar,
+  onUnstar,
+  style,
+}: {
   listing: ListingActual;
   style?: React.CSSProperties;
-}> = ({ listing, style }) => {
+  onStar?: () => void;
+  onUnstar?: () => void;
+}) => {
   const {
     id,
     street,
@@ -27,7 +35,6 @@ export const ListingCardAuction: React.FC<{
     auction_end,
     reserve_met,
     highest_bid,
-    user_bid,
   } = listing;
   const history = useHistory();
   const userStore = useStore();
@@ -52,7 +59,15 @@ export const ListingCardAuction: React.FC<{
     postcode,
   });
 
-  const formattedBid = priceFormatter.format(user_bid as number);
+  const [userBid, setUserBid] = React.useState<number | undefined>(undefined);
+
+  // Get user bid
+  React.useEffect(() => {
+    const user_id = userStore?.user?.id || 0;
+    getBidFromAuction(id, user_id).then((r) => {
+      setUserBid(r);
+    });
+  }, [id, userStore]);
   const classes = ListingCardAuctionStyles();
   return (
     <Card className={classes.card} style={style}>
@@ -69,11 +84,6 @@ export const ListingCardAuction: React.FC<{
             ))}
           </Slider>
         </div>
-        {userStore?.user && (
-          <div className={classes.starContainer}>
-            <Star id={id} starred={starred} />
-          </div>
-        )}
         <AuctionTag
           className={classes.auctionTagStyle}
           start={auction_start as Date}
@@ -81,6 +91,16 @@ export const ListingCardAuction: React.FC<{
           style={{ marginTop: "2px", marginBottom: "2px" }}
         />
         <div className={classes.cardContent}>
+          {userStore?.user && (
+            <div className={classes.starContainer}>
+              <Star
+                id={id}
+                starred={starred}
+                onStar={onStar}
+                onUnstar={onUnstar}
+              />
+            </div>
+          )}
           <Link
             onClick={() => history.push(`/listing/${id}`)}
             className={classes.link}
@@ -93,6 +113,7 @@ export const ListingCardAuction: React.FC<{
           </Link>
           <div className={classes.bidPriceContent}>
             <BidPrice
+              info={true}
               className={classes.bidPriceStyle}
               bid={highest_bid as number}
               state={getState()}
@@ -106,7 +127,9 @@ export const ListingCardAuction: React.FC<{
                   marginTop: "5px",
                 }}
               >
-                Your bid: {formattedBid}
+                {!userBid
+                  ? "Loading..."
+                  : `Your Bid: ${priceFormatter.format(userBid)}`}
               </Typography>
             )}
           </div>
@@ -115,3 +138,22 @@ export const ListingCardAuction: React.FC<{
     </Card>
   );
 };
+
+async function getBidFromAuction(auction_id: Number, user_id: Number) {
+  const response = await fetch(`/listings/${auction_id}/auction`);
+  const content = await response.json();
+
+  if ("detail" in content) {
+    return -1;
+  } else {
+    let bids = content.bids;
+    let return_bid = -1;
+    bids.forEach((bid: Bid) => {
+      if (bid.bidder_id === user_id) {
+        console.log("returning bid:", bid.bid);
+        return_bid = bid.bid;
+      }
+    });
+    return return_bid;
+  }
+}

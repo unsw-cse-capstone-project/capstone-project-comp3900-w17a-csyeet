@@ -5,14 +5,16 @@ import {
   DateRange,
   LocalizationProvider,
 } from "@material-ui/pickers";
-import { TextField } from "@material-ui/core";
+import { TextField, InputAdornment } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
+import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 
 export const DateRangeWrapper: React.FC<{
   onDateChange: (value: DateRange<Date>) => void;
   dateRange?: DateRange<Date>;
   style?: React.CSSProperties;
-}> = ({ onDateChange, dateRange = [null, null] }, style) => {
+  className?: string;
+}> = ({ onDateChange, dateRange = [null, null], style, className }) => {
   const [value, setValue] = React.useState<DateRange<Date>>(dateRange);
 
   const onChange = (range: DateRange<Date>) => {
@@ -21,7 +23,7 @@ export const DateRangeWrapper: React.FC<{
   };
 
   return (
-    <div style={style}>
+    <div style={style} className={className}>
       <div style={{ marginTop: "10px" }}>
         <LocalizationProvider dateAdapter={DateFnsUtils}>
           <DateRangePicker
@@ -34,9 +36,27 @@ export const DateRangeWrapper: React.FC<{
                   {...startProps}
                   size="small"
                   helperText={undefined}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarTodayIcon style={{ color: "#7b7b7b" }} />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <DateRangeDelimiter> to </DateRangeDelimiter>
-                <TextField {...endProps} size="small" helperText={undefined} />
+                <TextField
+                  {...endProps}
+                  size="small"
+                  helperText={undefined}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarTodayIcon style={{ color: "#7b7b7b" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
               </React.Fragment>
             )}
           />

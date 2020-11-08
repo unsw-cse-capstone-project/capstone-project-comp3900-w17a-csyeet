@@ -14,12 +14,17 @@ export const SearchBarStyles = makeStyles((theme: Theme) =>
       position: "relative",
     },
     formButton: {
-      borderRadius: "1000px",
+      borderRadius: "1000px !important",
       padding: "0 30px",
       marginLeft: theme.spacing(1),
       textTransform: "capitalize",
     },
     formControl: {
+      margin: theme.spacing(1, 1),
+      minWidth: 120,
+      backgroundColor: theme.palette.background.paper,
+    },
+    dateInput: {
       margin: theme.spacing(1, 1),
       minWidth: 120,
     },

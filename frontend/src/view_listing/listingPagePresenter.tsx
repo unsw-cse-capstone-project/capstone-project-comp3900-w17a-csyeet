@@ -1,6 +1,6 @@
 import { observable, makeObservable, action, runInAction } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
-import { delay, getListingFromResult } from '../ui/util/helper';
+import { delay, getListingFromResult } from "../ui/util/helper";
 
 export class ListingPageStore {
   @observable
@@ -23,11 +23,9 @@ export class ListingPagePresenter {
       const result = await response.json();
 
       if ("detail" in result) {
-        // handle error
-        console.log("error " + result.detail);
+        runInAction(() => (store.loadingState = "error"));
       } else {
         const results: ListingActual = getListingFromResult(result);
-
         runInAction(() => {
           store.listing = results;
           store.loadingState = "loaded";
@@ -38,9 +36,18 @@ export class ListingPagePresenter {
     }
   }
 
-  async deleteListing() {
-    console.log('Deleting...');
-    await delay(300);
-    console.log('Deleting complete');
+  async deleteListing(id: number) {
+    try {
+      const response = await fetch(`/listings/${id}`, {
+        method: "delete",
+      });
+      const result = await response.json();
+      if ("detail" in result) {
+        return false;
+      }
+      return true;
+    } catch {
+      return false;
+    }
   }
 }

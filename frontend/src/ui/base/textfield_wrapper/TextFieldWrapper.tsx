@@ -11,6 +11,10 @@ export interface TextFieldWrapperProps {
   onBlur?: () => void;
   onChange?: (value: string, field: string) => void;
   readOnly?: boolean;
+<<<<<<< HEAD
+=======
+  style?: React.CSSProperties;
+>>>>>>> e8a0cdb3829b0178905bd02ae9ca718d3779e5dc
 }
 
 export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
@@ -20,12 +24,17 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
   adornment = null,
   value = "",
   error,
+  style,
   onBlur,
   onChange,
   readOnly,
 }) => {
   const [v, setValue] = React.useState(value);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+<<<<<<< HEAD
+=======
+    if (type === "number" && e.target.value === "-1") return; // Disable Negative
+>>>>>>> e8a0cdb3829b0178905bd02ae9ca718d3779e5dc
     if (onChange) onChange(e.target.value, field as string);
     setValue(e.target.value);
     if (!error) setError(false);
@@ -38,10 +47,11 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
     if (onBlur) onBlur();
   };
   return (
-    <div style={{ marginTop: "20px" }}>
+    <div style={{ marginTop: "10px" }}>
       <TextField
         error={e || error ? true : false}
         fullWidth
+        style={style}
         variant="outlined"
         value={v}
         label={label}

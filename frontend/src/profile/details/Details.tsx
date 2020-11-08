@@ -1,7 +1,10 @@
 import React from "react";
 import { action } from "mobx";
 import { observer } from "mobx-react";
+<<<<<<< HEAD
 import { useStore } from "../../AuthContext";
+=======
+>>>>>>> e8a0cdb3829b0178905bd02ae9ca718d3779e5dc
 import {
   Grid,
   Button,
@@ -15,7 +18,11 @@ import {
 import { Password } from "../../ui/base/input/Password";
 import NumberFormat from "react-number-format";
 import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
+<<<<<<< HEAD
 import { DetailStore } from "./DetailStore";
+=======
+import { DetailStore } from "./DetailPresenter";
+>>>>>>> e8a0cdb3829b0178905bd02ae9ca718d3779e5dc
 import { ModalWrapper } from "../../ui/base/modal_wrapper/ModalWrapper";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
 import {
@@ -24,6 +31,7 @@ import {
 } from "../../ui/base/address_form/AddressForm";
 import { DetailStyles } from "./Detail.css";
 
+<<<<<<< HEAD
 export const DetailWrapper = () => {
   const userStore = useStore();
   if (!userStore) throw Error("User Store cannot be null");
@@ -73,6 +81,8 @@ export const DetailWrapper = () => {
   );
 };
 
+=======
+>>>>>>> e8a0cdb3829b0178905bd02ae9ca718d3779e5dc
 type NumberFormatCustomProps = {
   inputRef: (instance: NumberFormat | null) => void;
   name: string;
@@ -80,8 +90,13 @@ type NumberFormatCustomProps = {
 
 export const Details: React.FC<{
   store: DetailStore;
+<<<<<<< HEAD
   onUpdate: () => void;
   onChangePassword: (onError: () => void) => void;
+=======
+  onUpdate: (store: DetailStore) => void;
+  onChangePassword: (store: DetailStore) => void;
+>>>>>>> e8a0cdb3829b0178905bd02ae9ca718d3779e5dc
 }> = observer(({ store, onUpdate, onChangePassword }) => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [readOnly, setReadOnly] = React.useState<boolean>(true);
@@ -107,7 +122,11 @@ export const Details: React.FC<{
           onChange(values.value, "phone_number");
         }}
         onBlur={() => {
+<<<<<<< HEAD
           store.phone_number.length != 10
+=======
+          store.phone_number.length !== 10
+>>>>>>> e8a0cdb3829b0178905bd02ae9ca718d3779e5dc
             ? setPhoneError(true)
             : setPhoneError(false);
         }}
@@ -148,7 +167,11 @@ export const Details: React.FC<{
             fullWidth
             variant="outlined"
             error={phoneError}
+<<<<<<< HEAD
             style={{ marginTop: "20px" }}
+=======
+            style={{ marginTop: "10px" }}
+>>>>>>> e8a0cdb3829b0178905bd02ae9ca718d3779e5dc
           >
             <InputLabel
               htmlFor="outlined-adornment-card"
@@ -190,7 +213,18 @@ export const Details: React.FC<{
             Edit
           </Button>
         ) : (
+<<<<<<< HEAD
           <Button variant="contained" onClick={onUpdate} color="primary">
+=======
+          <Button
+            variant="contained"
+            onClick={() => {
+              onUpdate(store);
+              setReadOnly(true);
+            }}
+            color="primary"
+          >
+>>>>>>> e8a0cdb3829b0178905bd02ae9ca718d3779e5dc
             Save
           </Button>
         )}
@@ -216,6 +250,7 @@ export const Details: React.FC<{
             Password incorrect, could not change password
           </FormHelperText>
         )}
+<<<<<<< HEAD
         <Grid container spacing={2}>
           <Grid item xs>
             <Password
@@ -260,6 +295,47 @@ export const Details: React.FC<{
             setPassIncorrect(false);
 
             onChangePassword(() => setPassIncorrect(true));
+=======
+        <Password
+          field="newPasswd"
+          label="New Password"
+          onChange={onChange}
+          onBlur={() => {
+            if (store.newPasswd.length <= 5) setPassTooShort(true);
+            else setPassTooShort(false);
+          }}
+          error={passTooShort}
+        />
+        {passTooShort && (
+          <FormHelperText style={{ color: "red" }}>
+            Password has to be at least 5 characters
+          </FormHelperText>
+        )}
+        <Password
+          field="newPasswdConfirm"
+          label="Confirm Password"
+          onChange={onChange}
+          onBlur={() => {
+            if (store.newPasswd !== store.newPasswdConfirm)
+              setPassMatchError(true);
+            else setPassMatchError(false);
+          }}
+          error={passMatchError}
+        />
+        {passMatchError && (
+          <FormHelperText style={{ color: "red" }}>
+            Passwords do not match
+          </FormHelperText>
+        )}
+
+        <Button
+          style={{ marginTop: "15px", display: "flex", flex: 1 }}
+          color="primary"
+          variant="contained"
+          onClick={() => {
+            setPassIncorrect(false);
+            setOpen(false);
+>>>>>>> e8a0cdb3829b0178905bd02ae9ca718d3779e5dc
           }}
           disabled={passTooShort || passMatchError}
         >

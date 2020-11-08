@@ -25,7 +25,7 @@ export class UpcomingAuctionPresenter {
       : "";
     try {
       const response = await fetch(
-        `/listings/?auction_start=${auctionStart}&limit=1&include_closed_auctions=true${continuation}`
+        `/listings/?auction_start=${auctionStart}&limit=6&include_closed_auctions=true${continuation}`
       );
       const results = await response.json();
       runInAction(() => {

@@ -2,7 +2,7 @@ import io
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from starlette.responses import StreamingResponse
-from ..schemas import OwnProfileResponse, UserProfileResponse
+from ..schemas import OwnProfileResponse, UserProfileResponse, UserResponse
 from ..helpers import get_signed_in_user, get_session, map_listing_response
 from ..models import User
 
@@ -58,14 +58,24 @@ def get_user_avatar(id: int, session: Session = Depends(get_session)):
     return StreamingResponse(io.BytesIO(user.avatar_data), media_type=user.avatar_image_type)
 
 
+@router.get('/{id}', response_model=UserResponse, responses={404: {"description": "Resource not found"}})
+def get_user_info(id: int, session: Session = Depends(get_session)):
+    ''' Get a user's basic info '''
+    user = session.query(User).get(id)
+    if user is None:
+        raise HTTPException(
+            status_code=404, detail="Requested user could not be found")
+    return user
+
+
 def map_user_to_own_profile_response(user: User, session: Session) -> OwnProfileResponse:
     response = {}
     response['email'] = user.email
     response['name'] = user.name
     response['blurb'] = user.blurb
     response['listings'] = [map_listing_response(listing, user, session) for listing in user.listings]
-    response['registrations'] = [map_listing_response(listing, user, session) for listing in user.registrations]
-    response['starred_listings'] = [map_listing_response(listing, user, session) for listing in user.starred_listings]
+    response['registrations'] = [map_listing_response(registration.listing, user, session) for registration in user.registrations]
+    response['starred_listings'] = [map_listing_response(starred.listing, user, session) for starred in user.starred_listings]
     return response #type: ignore
 
 

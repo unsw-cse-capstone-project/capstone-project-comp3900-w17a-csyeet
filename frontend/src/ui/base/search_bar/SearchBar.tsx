@@ -33,10 +33,19 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
   const onSubmit = () => {
     const {
       input,
-      filters: { type, beds, baths, cars, start_date, end_date, features, landmarks },
+      filters: {
+        type,
+        beds,
+        baths,
+        cars,
+        start_date,
+        end_date,
+        features,
+        landmarks,
+      },
     } = store;
     let featuresString = features ? features.join("_") : "";
-    let landmarkssString = landmarks ? landmarks.join("_") : "";
+    let landmarksString = landmarks ? landmarks.join("_") : "";
 
     let searchQuery = input ? `query=${input}` : "";
     searchQuery += type ? `&type=${type}` : "";
@@ -46,7 +55,8 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
     searchQuery += start_date ? `&start=${start_date.toISOString()}` : "";
     searchQuery += end_date ? `&end=${end_date.toISOString()}` : "";
     searchQuery += featuresString !== "" ? "&features=" + featuresString : "";
-    searchQuery += landmarkssString !== "" ? "&landmarks=" + landmarkssString : "";
+    searchQuery +=
+      landmarksString !== "" ? "&landmarks=" + landmarksString : "";
 
     history.push("/search?" + searchQuery);
   };
@@ -146,10 +156,25 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
           style={{ display: showing ? "flex" : "none" }}
         >
           <TypePicker store={store} />
-          <NumberPicker store={store} value={bedsFilter} onChange={onBedChange} label="Beds" />
-          <NumberPicker store={store} value={bathsFilter} onChange={onBathChange} label="Baths" />
-          <NumberPicker store={store} value={carFilter} onChange={onCarChange} label="Cars" />
-          <div className={classes.formControl} style={{ flex: 4 }}>
+          <NumberPicker
+            store={store}
+            value={bedsFilter}
+            onChange={onBedChange}
+            label="Beds"
+          />
+          <NumberPicker
+            store={store}
+            value={bathsFilter}
+            onChange={onBathChange}
+            label="Baths"
+          />
+          <NumberPicker
+            store={store}
+            value={carFilter}
+            onChange={onCarChange}
+            label="Cars"
+          />
+          <div className={classes.dateInput} style={{ flex: 4 }}>
             <LocalizationProvider dateAdapter={DateFnsUtils}>
               <MinMaxDateRangePicker store={store} />
             </LocalizationProvider>
@@ -166,11 +191,14 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-
-
 // Component functions
 
-export function NumberPicker(props: { store: SearchStore, value: any, onChange: any, label: String }) {
+export function NumberPicker(props: {
+  store: SearchStore;
+  value: any;
+  onChange: any;
+  label: String;
+}) {
   const classes = SearchBarStyles();
 
   return (
@@ -185,7 +213,7 @@ export function NumberPicker(props: { store: SearchStore, value: any, onChange: 
       InputProps={{ inputProps: { min: 1 } }}
       label={props.label}
     />
-  )
+  );
 }
 
 export function TypePicker(props: { store: SearchStore }) {
@@ -221,7 +249,7 @@ export function TypePicker(props: { store: SearchStore }) {
         <option value={"duplex"}>Duplex</option>
       </Select>
     </FormControl>
-  )
+  );
 }
 
 export function FeaturePicker(props: { store: SearchStore }) {
@@ -252,14 +280,12 @@ export function FeaturePicker(props: { store: SearchStore }) {
       return toSentenceCase(f);
     })
   );
-  const onChange = action(
-    (event: React.ChangeEvent<{}>, values: string[]) => {
-      props.store.filters.features = values.map((feature) =>
-        toCamelCase(feature.toLowerCase())
-      );
-      setFeatureFilter(props.store.filters.features);
-    }
-  );
+  const onChange = action((event: React.ChangeEvent<{}>, values: string[]) => {
+    props.store.filters.features = values.map((feature) =>
+      toCamelCase(feature.toLowerCase())
+    );
+    setFeatureFilter(props.store.filters.features);
+  });
 
   return (
     <Autocomplete
@@ -289,7 +315,6 @@ export function FeaturePicker(props: { store: SearchStore }) {
       )}
     />
   );
-
 }
 
 export function LandmarkPicker(props: { store: SearchStore }) {
@@ -309,15 +334,12 @@ export function LandmarkPicker(props: { store: SearchStore }) {
     })
   );
 
-
-  const onChange = action(
-    (event: React.ChangeEvent<{}>, values: string[]) => {
-      props.store.filters.landmarks = values.map((landmark) =>
-        toCamelCase(landmark.toLowerCase())
-      );
-      setLandmarkFilter(props.store.filters.landmarks);
-    }
-  );
+  const onChange = action((event: React.ChangeEvent<{}>, values: string[]) => {
+    props.store.filters.landmarks = values.map((landmark) =>
+      toCamelCase(landmark.toLowerCase())
+    );
+    setLandmarkFilter(props.store.filters.landmarks);
+  });
 
   return (
     <Autocomplete
@@ -347,7 +369,6 @@ export function LandmarkPicker(props: { store: SearchStore }) {
       )}
     />
   );
-
 }
 
 export function MinMaxDateRangePicker(props: { store: SearchStore }) {
@@ -369,9 +390,19 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
       onChange={onChange}
       renderInput={(startProps: any, endProps: any) => (
         <React.Fragment>
-          <TextField {...startProps} size="small" helperText={undefined} />
+          <TextField
+            {...startProps}
+            size="small"
+            style={{ backgroundColor: "white" }}
+            helperText={undefined}
+          />
           <DateRangeDelimiter> to </DateRangeDelimiter>
-          <TextField {...endProps} size="small" helperText={undefined} />
+          <TextField
+            {...endProps}
+            size="small"
+            style={{ backgroundColor: "white" }}
+            helperText={undefined}
+          />
         </React.Fragment>
       )}
     />
