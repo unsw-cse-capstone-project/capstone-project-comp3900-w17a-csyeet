@@ -36,11 +36,9 @@ export class ProfilePresenter {
           store.loadingState = "error";
         });
       } else {
-        console.log("profile presenter", content);
         const ListingResults: ListingActual[] = content.listings.map(
           (result: any) => getListingFromResult(result)
         );
-        console.log(ListingResults);
         const BidsResults: ListingActual[] = content.registrations.map(
           (result: any) => getListingFromResult(result)
         );
@@ -50,7 +48,9 @@ export class ProfilePresenter {
 
         runInAction(() => {
           store.loadingState = "loaded";
-          store.blurb = !!content["blurb"]? content["blurb"]: "Update your bio";
+          store.blurb = !!content["blurb"]
+            ? content["blurb"]
+            : "Update your bio";
           store.myBidsResults = BidsResults;
           store.myListingsResults = ListingResults;
           store.starredResults = StarredResults;
@@ -88,24 +88,25 @@ export class ProfilePresenter {
 
   @action
   async updateAvatar(image: File, img_url: string, store: ProfileStore) {
-    store.loadingState = "updating";
+    runInAction(() => (store.loadingState = "updating"));
     let form = new FormData();
-    form.append("avatar", image);
+    let data = await image.arrayBuffer();
+    form.append("file", new Blob([data], { type: image.type }));
     try {
       const response = await fetch(`/users/avatar`, {
         method: "post",
         body: form,
       });
-      const result = await response.json();
-      if ("detail" in result) runInAction(() => (store.loadingState = "error"));
-      else {
-        runInAction(() => {
-          store.loadingState = "success";
-          store.avatar = img_url;
-        })
+      if (response.status !== 200) {
+        runInAction(() => (store.loadingState = "error"));
+        return;
       }
-    } catch {
-      console.log("Error updating avatar");
+      runInAction(() => {
+        store.loadingState = "success";
+        store.avatar = "/users/avatar";
+        window.location.reload();
+      });
+    } catch (e) {
       runInAction(() => (store.loadingState = "error"));
     }
   }
