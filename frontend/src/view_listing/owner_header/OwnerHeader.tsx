@@ -25,6 +25,9 @@ const OwnerStyle = makeStyles((theme: Theme) =>
       display: "flex",
       justifyContent: "flex-end",
     },
+    messageButton: {
+        marginRight: theme.spacing(1.5),
+    }
   })
 );
 
@@ -59,8 +62,9 @@ export const OwnerHeader = ({
         onClick={onMessageClick}
         variant="contained"
         color="primary"
+        size="small"
         startIcon={<MessageIcon />}
-        style={{ marginRight: "10px" }}
+        className={classes.messageButton}
       >
         Messages
       </Button>
@@ -68,6 +72,7 @@ export const OwnerHeader = ({
         onClick={onDeleteClick}
         variant="contained"
         color="secondary"
+        size="small"
         startIcon={<DeleteIcon />}
       >
         Delete

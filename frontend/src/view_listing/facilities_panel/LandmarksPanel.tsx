@@ -6,9 +6,6 @@ import {
   Tab,
   Tabs,
   Typography,
-  makeStyles,
-  Theme,
-  createStyles,
   Table,
   TableBody,
   TableCell,
@@ -17,23 +14,9 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Landmark } from "../../ui/util/types/listing";
 import classNames from "classnames";
+import { LandmarksPanelStyles } from "./LandmarksPanel.css";
 
-export const FacilitiesPanelStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    tabs: {
-      borderBottom: `1px solid ${theme.palette.divider}`,
-      width: "100%",
-    },
-    lastRow: {
-      borderBottom: "none",
-    },
-    firstCell: {
-      fontWeight: "bold",
-    },
-  })
-);
-
-export const FacilitiesPanel = ({
+export const LandmarksPanel = ({
   facilities,
   isPreview = false,
 }: {
@@ -42,7 +25,7 @@ export const FacilitiesPanel = ({
 }) => {
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
   const [value, setValue] = React.useState(0);
-  const classes = FacilitiesPanelStyles();
+  const classes = LandmarksPanelStyles();
 
   const handleTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -63,21 +46,11 @@ export const FacilitiesPanel = ({
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel2a-content"
-        id="panel2a-header"
-        style={{ paddingLeft: "0px" }}
+        className={classes.summary}
       >
         <Typography variant="h5">Nearby Landmarks</Typography>
       </AccordionSummary>
-      <AccordionDetails
-        style={{
-          paddingLeft: 0,
-          paddingRight: 0,
-          display: "flex",
-          flexDirection: "column",
-          borderTop: "solid 1px #eee",
-        }}
-      >
+      <AccordionDetails className={classes.details}>
         {isPreview ? (
           <Typography variant="body1">
             Nearby landmarks will be generated after the listing is created
@@ -89,7 +62,6 @@ export const FacilitiesPanel = ({
               indicatorColor="secondary"
               onChange={handleTabChange}
               variant="scrollable"
-              aria-label="disabled tabs example"
               className={classes.tabs}
             >
               {["primarySchool", "secondarySchool", "park", "trainStation"].map(

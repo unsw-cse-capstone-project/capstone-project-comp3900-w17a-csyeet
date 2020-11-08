@@ -1,5 +1,4 @@
-import { Button, Snackbar, Typography } from "@material-ui/core";
-import { ArrowBackIos } from "@material-ui/icons";
+import { Snackbar, Typography } from "@material-ui/core";
 import * as React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { ListingMessagesPageStyles } from "./ListingMessagesPage.css";
@@ -7,6 +6,7 @@ import { MessagePlaceholder } from "../messages/main";
 import { useStore } from "../AuthContext";
 import Talk from "talkjs";
 import MuiAlert from "@material-ui/lab/Alert";
+import { BackButton } from "../ui/base/back_button/BackButton";
 
 export const ListingMessagesPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,22 +22,21 @@ export const ListingMessagesPage = () => {
       }
 
       try {
-          const response = await fetch(`/listings/${id}`);
-          const listing = await response.json();
-          if ("details" in listing) {
-            setError(listing.details);
-            return;
-          }
-    
-          if (listing.owner.id !== userStore.user.id) {
-            setError("You are not the owner for this property");
-            return;
-          }
+        const response = await fetch(`/listings/${id}`);
+        const listing = await response.json();
+        if ("details" in listing) {
+          setError(listing.details);
+          return;
+        }
+
+        if (listing.owner.id !== userStore.user.id) {
+          setError("You are not the owner for this property");
+          return;
+        }
       } catch {
-        setError('Listing not found please try a different listing.');
+        setError("Listing not found please try a different listing.");
         return;
       }
-
 
       const me = new Talk.User({
         id: userStore.user.id,
@@ -60,13 +59,10 @@ export const ListingMessagesPage = () => {
   return (
     <div className={classes.page}>
       <div className={classes.buttonContainer}>
-        <Button
-          className={classes.backButton}
+        <BackButton
           onClick={() => history.push(`/listing/${id}`)}
-        >
-          <ArrowBackIos />
-          Back to Listing
-        </Button>
+          text="Back to Listing"
+        />
       </div>
       <Typography variant="h3" className={classes.title}>
         Your Messages
@@ -79,7 +75,7 @@ export const ListingMessagesPage = () => {
       <Snackbar
         open={error !== undefined}
         autoHideDuration={2000}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <MuiAlert elevation={6} severity="error">
           {error}

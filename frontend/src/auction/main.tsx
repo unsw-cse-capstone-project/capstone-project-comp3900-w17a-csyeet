@@ -4,8 +4,7 @@ import { AuctionPageStore, AuctionPagePresenter } from "./AuctionPagePresenter";
 import { AuctionPage as AuctionPageBase } from "./AuctionPage";
 import { observer } from "mobx-react";
 import { auctionPageStyle } from "./AuctionPage.css";
-import { Button, Snackbar, Typography, useTheme } from "@material-ui/core";
-import { ArrowBackIos } from "@material-ui/icons";
+import { Snackbar, Typography, useTheme } from "@material-ui/core";
 import { BiddingBox, BiddingBoxStore } from "./bidding_box/BiddingBox";
 import { BidderTag } from "../ui/base/bidder_tag/BidderTag";
 import { useStore } from "../AuthContext";
@@ -13,6 +12,7 @@ import { BiddersList } from "./bidders_list/BiddersList";
 import { BidsList } from "./bids_list/BidsList";
 import { computed, action } from "mobx";
 import MuiAlert from "@material-ui/lab/Alert";
+import { BackButton } from '../ui/base/back_button/BackButton';
 
 export const AuctionPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -52,13 +52,10 @@ export const AuctionPageWrapper = observer(
         const history = useHistory();
         return (
           <div className={classes.page} style={{ paddingBottom: "200px" }}>
-            <Button
-              className={classes.backButton}
+            <BackButton
               onClick={() => history.push(`/listing/${id}`)}
-            >
-              <ArrowBackIos />
-              Back to Listing
-            </Button>
+              text="Back to Listing"
+            />
             <Content />
             <Snackbar
               anchorOrigin={{ vertical: "top", horizontal: "center" }}

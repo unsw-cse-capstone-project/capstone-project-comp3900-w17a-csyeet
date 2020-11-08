@@ -12,19 +12,18 @@ export const sellerProfileStyle = makeStyles((theme: Theme) =>
     },
     about: {
       display: "flex",
-      alignItems: "flexStart",
-      margin: theme.spacing(0, 0, 0, 4),
+      flexDirection: "column",
+      alignItems: "center",
+      margin: theme.spacing(0, 0, 2, 0),
     },
     name: {
-      padding: theme.spacing(2, 0, 3, 0),
+      padding: theme.spacing(2, 0, 1, 0),
     },
     listings: {
-      width: "95%",
-      margin: theme.spacing(4, "auto", 0, "auto"),
+      margin: theme.spacing(4, 2, 0, 2),
     },
     listingTitle: {
-      padding: theme.spacing(4, 0, 0, 0),
-      margin: theme.spacing(0, 0, 0, 4),
+      margin: theme.spacing(0, 0, 0, 2),
     },
     meta: {
       display: "flex",
@@ -33,7 +32,7 @@ export const sellerProfileStyle = makeStyles((theme: Theme) =>
     modalImage: {
       width: "200px",
       height: "200px",
-      margin: theme.spacing(0, 5, 0, 0),
+      margin: 0,
     },
   })
 );

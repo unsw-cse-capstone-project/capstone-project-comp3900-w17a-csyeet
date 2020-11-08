@@ -7,7 +7,7 @@ import { action, computed } from "mobx";
 import { observer } from "mobx-react";
 import { InitialBidStep } from "./InitialBidStep";
 import { PaymentStep } from "./PaymentStep";
-import { bidderRegistrationStyle } from "./BidderRegistration.css";
+import { BidderRegistrationStyle } from "./BidderRegistration.css";
 import { ConfirmationStep } from "./ConfirmationStep";
 import MuiAlert from "@material-ui/lab/Alert";
 import {
@@ -44,7 +44,7 @@ export const BidderRegistration = observer(
     listingId: number;
     onSubmit: (afterSubmit: () => void) => void;
   }) => {
-    const classes = bidderRegistrationStyle();
+    const classes = BidderRegistrationStyle();
     const [activeStep, setActiveStep] = React.useState(0);
     const [openModal, setOpenModal] = React.useState(false);
     const canProceedStep0 = computed(() => store.agreeToTerms);

@@ -14,7 +14,7 @@ import { DriveEta, LocalHotel, Bathtub } from "@material-ui/icons";
 import ReactPlaceholder from "react-placeholder/lib/ReactPlaceholder";
 import "react-placeholder/lib/reactPlaceholder.css";
 import classNames from "classnames";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { Star } from "../star/Star";
 import { useStore } from "../../../AuthContext";
 import { observer } from "mobx-react";
@@ -54,9 +54,14 @@ export const ListingResultCard = observer(
     } = props.listing;
     const history = useHistory();
     const userStore = useStore();
+    const location = useLocation();
+    console.log(location);
 
     const BidStatus = () => {
-      if (new Date().getTime() < auction_start.getTime() || highest_bid === null) {
+      if (
+        new Date().getTime() < auction_start.getTime() ||
+        highest_bid === null
+      ) {
         return null;
       }
       return (
@@ -93,20 +98,33 @@ export const ListingResultCard = observer(
           </Slider>
         </div>
         <CardContent className={classes.cardContent}>
-          {userStore ?.user && (
+          {userStore?.user && (
             <div className={classes.starContainer}>
               <Star id={id} starred={starred} />
             </div>
           )}
           <Link
-            onClick={() => history.push(`/listing/${id}`)}
+            onClick={() =>
+              history.push({
+                pathname: `/listing/${id}`,
+                state: { from: location.pathname + location.search },
+              })
+            }
             style={{ textDecoration: "none" }}
             className={classes.link}
           >
-            <Typography variant="h4" style={{ textTransform: "capitalize" }} color="textPrimary">
+            <Typography
+              variant="h4"
+              style={{ textTransform: "capitalize" }}
+              color="textPrimary"
+            >
               {street}
             </Typography>
-            <Typography variant="h6" style={{ textTransform: "capitalize" }} color="textSecondary">
+            <Typography
+              variant="h6"
+              style={{ textTransform: "capitalize" }}
+              color="textSecondary"
+            >
               {suburb}
               {", "}
               <span style={{ textTransform: "uppercase" }}>{state}</span>{" "}
@@ -133,7 +151,7 @@ export const ListingResultCard = observer(
               id={id}
               auction_start={auction_start}
               registered_bidder={registered_bidder}
-              isUser={userStore ?.user !== undefined}
+              isUser={userStore?.user !== undefined}
             />
             <BidStatus />
             {registered_bidder && userStore && userStore.user && (

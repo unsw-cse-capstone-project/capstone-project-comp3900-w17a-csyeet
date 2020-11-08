@@ -15,6 +15,12 @@ export class ListingPageStore {
 }
 
 export class ListingPagePresenter {
+  /**
+   * 
+   * @param store 
+   * @param id 
+   * Load the listing information from backend
+   */
   @action
   async loadInformation(store: ListingPageStore, id: number) {
     store.loadingState = "loading";
@@ -36,6 +42,11 @@ export class ListingPagePresenter {
     }
   }
 
+  /**
+   * 
+   * @param id 
+   * Delete a listing 
+   */
   async deleteListing(id: number) {
     try {
       const response = await fetch(`/listings/${id}`, {

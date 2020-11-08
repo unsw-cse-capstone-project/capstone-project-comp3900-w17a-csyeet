@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
-import { SellerProfile } from "./sellerProfile";
+import { SellerProfile } from "./SellerProfile";
 
 export default {
   title: "view_listing/sellerProfile",

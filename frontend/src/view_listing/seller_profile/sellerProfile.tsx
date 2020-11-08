@@ -9,15 +9,15 @@ import {
   Link,
   Grid,
 } from "@material-ui/core";
-import { sellerProfileStyle } from "./sellerProfile.css";
+import { sellerProfileStyle } from "./SellerProfile.css";
 import { ListingActual } from "../../ui/util/types/listing";
 import { getListingFromResult, toCapitaliseCase } from "../../ui/util/helper";
-import { ListingCardSmall, ListingCardSmallPlaceholder } from '../../ui/base/listing_card_sm/ListingCardSmall';
+import { ListingCardSmall } from "../../ui/base/listing_card_sm/ListingCardSmall";
+import { ListingCardSmallLoadingRow } from "../../ui/base/loading_state/ListingCardSmallLoadingRow";
 
 export const SellerProfile = ({
   id,
   name,
-  email,
   children,
   avatar,
 }: {
@@ -42,11 +42,13 @@ export const SellerProfile = ({
   );
 
   React.useEffect(() => {
-    getInfoFromProfile(id).then((r) => {
-      setBlurb(r.blurb);
-      setListings(r.listings);
-    });
-  }, [id]);
+    if (open !== false) {
+      getInfoFromProfile(id).then((r) => {
+        setBlurb(r.blurb);
+        setListings(r.listings);
+      });
+    }
+  }, [id, open]);
 
   return (
     <div>
@@ -73,96 +75,75 @@ export const SellerProfile = ({
   );
 };
 
-function ProfileDialog(props: {
+const ProfileDialog = (props: {
   listings: ListingActual[] | undefined;
   name: string;
   blurb: string | undefined;
   open: boolean;
   onClose: () => void;
   avatar: string;
-}) {
+}) => {
   const classes = sellerProfileStyle();
   const capitalName = toCapitaliseCase(props.name);
   return (
-    <Dialog
-      fullWidth={true}
-      maxWidth={"lg"}
-      onClose={props.onClose}
-      aria-labelledby="profile-dialog-title"
-      open={props.open}
-    >
-      <DialogTitle id="profoile-dialog-title">Seller Profile</DialogTitle>
+    <Dialog fullWidth maxWidth={"lg"} onClose={props.onClose} open={props.open}>
+      <DialogTitle>Seller Profile</DialogTitle>
       <DialogContent dividers>
         <div className={classes.about}>
           <Avatar src={props.avatar} className={classes.modalImage} />
           <div className={classes.meta}>
-            <Typography className={classes.name} variant="h3">
+            <Typography className={classes.name} variant="h4" align="center">
               {capitalName}
             </Typography>
-            <Typography variant="body1">
-              {!props.blurb ? "I love houses!" : props.blurb}
+            <Typography variant="body1" color="textSecondary" align="center">
+              {"Hello this is my blurb"}
             </Typography>
           </div>
         </div>
-        <div className={classes.listingTitle}>
-          <Typography variant="h5">{capitalName}{"'s"} Listings:</Typography>
-        </div>
+        <Typography variant="h6" className={classes.listingTitle}>
+          {capitalName}
+          {"'s"} Listings:
+        </Typography>
         <div className={classes.listings}>
           {!props.listings ? (
-            <div style={{ textAlign: "center" }}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                  <ListingCardSmallPlaceholder />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                  <ListingCardSmallPlaceholder />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                  <ListingCardSmallPlaceholder />
-                </Grid>
-              </Grid>
-            </div>
+            <ListingCardSmallLoadingRow />
           ) : (
-              <div>
-                <Grid container spacing={3}>
-                  {props.listings.map((listing, i) => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={i}>
-                      <ListingCardSmall listing={listing} />
-                    </Grid>
-                  ))}
+            <Grid container spacing={3}>
+              {props.listings.map((listing, i) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={i}>
+                  <ListingCardSmall listing={listing} />
                 </Grid>
-              </div>
-            )}
+              ))}
+            </Grid>
+          )}
         </div>
       </DialogContent>
     </Dialog>
   );
-}
+};
 
 const getInfoFromProfile = async (user_id: number) => {
-  const response = await fetch(`/users/${user_id}/profile`);
-  const result = await response.json();
+  try {
+    const response = await fetch(`/users/${user_id}/profile`);
+    const result = await response.json();
 
-  type Info = {
-    blurb: string;
-    listings: ListingActual[];
-  };
+    if ("detail" in result) {
+      return {
+        blurb: "",
+        listings: [],
+      };
+    }
 
-  const obj: Info = {
-    blurb: "",
-    listings: [],
-  };
-
-  if ("detail" in result) {
-    return obj;
+    return {
+      blurb: result.blurb,
+      listings: result.listings.map((result: any) =>
+        getListingFromResult(result)
+      ),
+    };
+  } catch {
+    return {
+      blurb: "",
+      listings: [],
+    };
   }
-
-  const profileInfo: Info = {
-    blurb: result.blurb,
-    listings: result.listings.map((result: any) =>
-      getListingFromResult(result)
-    ),
-  };
-
-  return profileInfo;
 };

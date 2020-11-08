@@ -1,6 +1,6 @@
 import { makeStyles, Theme, createStyles } from "@material-ui/core";
 
-export const bidderRegistrationStyle = makeStyles((theme: Theme) =>
+export const BidderRegistrationStyle = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
@@ -33,7 +33,6 @@ export const bidderRegistrationStyle = makeStyles((theme: Theme) =>
       margin: theme.spacing(2, 0, 3, 0),
     },
     backToListingButton: {
-      width: "fit-content",
       marginBottom: theme.spacing(2),
     },
   })
