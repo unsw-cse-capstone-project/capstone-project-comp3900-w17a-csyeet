@@ -39,10 +39,9 @@ export const toCamelCase = (str: string) => {
     .replace(/\s+/g, "");
 };
 
-export const toSentenceCase = (str: string) => {
-  let temp = str.replace(/([A-Z]+)*([A-Z][a-z])/g, "$1 $2").toLowerCase();
-  return temp[0].toUpperCase() + temp.slice(1);
-};
+export const toSentenceCase = (str: string) =>
+  str.replace(/([A-Z])/g, " $1")[0].toUpperCase() +
+  str.replace(/([A-Z])/g, " $1").slice(1);
 
 export const toCapitaliseCase = (str: string) => {
   return str

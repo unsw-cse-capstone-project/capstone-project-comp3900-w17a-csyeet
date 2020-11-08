@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react/types-6-0";
-import { ListingPage } from "./listingPage";
+import { ListingPage } from "./ListingPage";
 import { createFakeActualListing } from "../ui/util/fakes/listing";
 import { makeStyles, Theme, createStyles } from "@material-ui/core";
 import { ListingActual } from '../ui/util/types/listing';

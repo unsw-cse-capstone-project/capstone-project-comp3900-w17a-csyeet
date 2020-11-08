@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
-import ReactPlaceholder from 'react-placeholder/lib';
+import ReactPlaceholder from "react-placeholder/lib";
 
 const ListingPagePlaceholderStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,18 +26,21 @@ const ListingPagePlaceholderStyle = makeStyles((theme: Theme) =>
         },
       },
     },
+    root: { display: "flex !important", flexDirection: "column" },
+    titleLoader: { height: "100px !important" },
+    largeImageLoader: { width: "100% !important", height: "400px !important" },
   })
 );
 
 export const ListingPagePlaceholder = () => {
   const classes = ListingPagePlaceholderStyle();
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div className={classes.root}>
       <ReactPlaceholder
         type="text"
         showLoadingAnimation={true}
         ready={false}
-        style={{ height: "100px" }}
+        className={classes.titleLoader}
         rows={2}
         color="#E0E0E0"
       >
@@ -49,7 +52,7 @@ export const ListingPagePlaceholder = () => {
             type="rect"
             showLoadingAnimation={true}
             ready={false}
-            style={{ width: "100%", height: "400px" }}
+            className={classes.largeImageLoader}
             color="#E0E0E0"
           >
             {null}

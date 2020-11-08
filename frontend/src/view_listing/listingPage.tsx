@@ -1,5 +1,5 @@
 import * as React from "react";
-import { listingPageStyle } from "./listingPage.css";
+import { listingPageStyle } from "./ListingPage.css";
 import {
   Grid,
   Typography,
@@ -12,10 +12,9 @@ import { ListingActual } from "../ui/util/types/listing";
 import { ListingFeatureIcon } from "../ui/base/listing_result_card/ListingResultCard";
 import { DriveEta, KingBed, Bathtub } from "@material-ui/icons";
 import Slider from "react-slick";
-import { FacilitiesPanel } from "./facilities_panel/facilitiesPanel";
-import { FeaturesPanel } from "./features_panel/featuresPanel";
-import { SuburbPanel } from "./suburb_panel/suburbPanel";
-import { SellerProfile } from "./seller_profile/sellerProfile";
+import { LandmarksPanel } from "./facilities_panel/LandmarksPanel";
+import { SuburbPanel } from "./suburb_panel/SuburbPanel";
+import { SellerProfile } from "./seller_profile/SellerProfile";
 import { Map } from "./map/map";
 import { AuctionDetails } from "./auction_details/auctionDetails";
 import { AddressHeading } from "../ui/base/address_heading/AddressHeading";
@@ -23,6 +22,7 @@ import { Star } from "../ui/base/star/Star";
 import { useStore } from "../AuthContext";
 import { observer } from "mobx-react";
 import { useHistory } from "react-router-dom";
+import { FeaturesPanel } from "./features_panel/FeaturesPanel";
 
 export const ListingPage = observer(
   ({
@@ -63,7 +63,6 @@ export const ListingPage = observer(
 
     const classes = listingPageStyle();
     const [open, setOpen] = React.useState(false);
-    const [avatar, setAvatar] = React.useState("");
     const userStore = useStore();
     const history = useHistory();
 
@@ -74,15 +73,6 @@ export const ListingPage = observer(
     const handleClose = () => {
       setOpen(false);
     };
-
-    // Get user bid
-    React.useEffect(() => {
-      const userId = owner.id;
-      getAvatarFromUser(userId).then((r) => {
-        console.log("r", r);
-        setAvatar(r);
-      });
-    }, [owner.id]);
 
     return (
       <div style={{ paddingBottom: "200px" }}>
@@ -145,8 +135,6 @@ export const ListingPage = observer(
             alignItems: "center",
             justifyContent: "center",
           }}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
         >
           <div className={classes.sliderContainer}>
             <Slider {...settings}>
@@ -183,15 +171,14 @@ export const ListingPage = observer(
         <Grid container spacing={2}>
           {/* left column */}
           <Grid item xs={12} md={8}>
-            <Typography variant="h5" className={classes.title}>
+            <Typography variant="h4" className={classes.title}>
               {title}
             </Typography>
-            <Typography variant="body2" className={classes.description}>
+            <Typography variant="body1" className={classes.description}>
               {description}
             </Typography>
-
             <FeaturesPanel features={features} />
-            <FacilitiesPanel
+            <LandmarksPanel
               facilities={landmarks}
               isPreview={disableActions}
             />
@@ -207,12 +194,12 @@ export const ListingPage = observer(
               registered_bidder={registered_bidder}
               isUser={userStore?.user !== undefined}
             />
-            <Map listing={listing}></Map>
+            <Map listing={listing} />
             <SellerProfile
               id={owner.id}
               name={owner.name}
               email={owner.email}
-              avatar={avatar}
+              avatar={`/users/${owner.id}/avatar`}
             >
               {userStore?.user?.id !== owner.id ? (
                 <Button
@@ -235,14 +222,3 @@ export const ListingPage = observer(
     );
   }
 );
-
-const getAvatarFromUser = async (user_id: number) => {
-  const response = await fetch(`/users/${user_id}/avatar`);
-  const result = await response.json();
-
-  if ("detail" in result) {
-    return result.detail;
-  }
-
-  return result;
-};

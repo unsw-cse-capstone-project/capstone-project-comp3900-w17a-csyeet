@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
-import { FeaturesPanel } from "./featuresPanel";
+import { FeaturesPanel } from "./FeaturesPanel";
 
 export default {
   title: "view_listing/featuresPanel",

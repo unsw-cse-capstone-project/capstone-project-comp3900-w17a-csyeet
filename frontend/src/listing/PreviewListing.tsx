@@ -8,7 +8,7 @@ import {
   Theme,
   CircularProgress,
 } from "@material-ui/core";
-import { ListingPage } from "../view_listing/listingPage";
+import { ListingPage } from "../view_listing/ListingPage";
 import { ListingActual } from "../ui/util/types/listing";
 import { useStore } from "../AuthContext";
 import { observer } from "mobx-react";

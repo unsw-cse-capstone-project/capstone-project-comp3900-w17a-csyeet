@@ -2,12 +2,17 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Avatar, Hidden, ListItemIcon, ListItemText } from "@material-ui/core";
+import {
+  Avatar,
+  ListItemIcon,
+  ListItemText,
+  withWidth,
+} from "@material-ui/core";
 import { useStore } from "../../../../AuthContext";
 import { AccountCircle, ExitToApp, House, Message } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 
-export const UserMenu = () => {
+export const UserMenu = withWidth()(({ width }: { width: string }) => {
   const userStore = useStore();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const history = useHistory();
@@ -31,7 +36,7 @@ export const UserMenu = () => {
         style={{ borderRadius: "10000px" }}
         startIcon={
           <Avatar
-            src={userStore.avatar}
+            src={`/users/${userStore.user.id}/avatar`}
             style={{ width: "30px", height: "30px" }}
           />
         }
@@ -54,7 +59,7 @@ export const UserMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <Hidden smUp>
+        {width === "xs" && (
           <MenuItem
             onClick={() => {
               history.push("/add");
@@ -66,7 +71,7 @@ export const UserMenu = () => {
             </ListItemIcon>
             <ListItemText primary="Add Listing" />
           </MenuItem>
-        </Hidden>
+        )}
         <MenuItem
           onClick={() => {
             history.push("/messages");
@@ -103,4 +108,4 @@ export const UserMenu = () => {
       </Menu>
     </div>
   );
-};
+});

@@ -4,8 +4,7 @@ import { getListingFromResult } from "../ui/util/helper";
 
 export class ProfileStore {
   @observable blurb: string = "Update your bio"; // Tempporary
-  @observable avatar: string =
-    "https://avatarfiles.alphacoders.com/791/79102.png";
+  @observable avatar: string;
 
   @observable
   myBidsResults: ListingActual[] = [];
@@ -19,7 +18,8 @@ export class ProfileStore {
   @observable
   loadingState?: "loading" | "loaded" | "error" | "updating" | "success";
 
-  constructor() {
+  constructor(id: number) {
+    this.avatar = `/users/${id}/avatar`;
     makeObservable(this);
   }
 }

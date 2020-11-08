@@ -10,7 +10,6 @@ export const AddressHeadingStyle = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(3),
     },
     secondaryAddress: {
-      color: theme.palette.grey[500],
       paddingBottom: theme.spacing(2),
     },
   })
@@ -31,10 +30,10 @@ export const AddressHeading = ({
   const {streetAddress, remainingAddress} = formatAddress({street, suburb, state, postcode});
   return (
     <div>
-      <Typography variant="h2" className={classes.streetAddress}>
+      <Typography variant="h1" className={classes.streetAddress}>
         {streetAddress}
       </Typography>
-      <Typography variant="h4" className={classes.secondaryAddress}>
+      <Typography variant="h3" color="textSecondary" className={classes.secondaryAddress}>
         {remainingAddress}
       </Typography>
     </div>
