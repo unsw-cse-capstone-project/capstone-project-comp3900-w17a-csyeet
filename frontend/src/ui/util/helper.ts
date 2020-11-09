@@ -3,11 +3,10 @@ import { createFakeListing } from "./fakes/listing";
 
 export const dateFormatter = new Intl.DateTimeFormat("en-GB", {
   year: "numeric",
-  month: "long",
+  month: "short",
   day: "2-digit",
   hour: "numeric",
   minute: "numeric",
-  second: "numeric",
   timeZone: "Australia/Sydney",
   hour12: true,
 });

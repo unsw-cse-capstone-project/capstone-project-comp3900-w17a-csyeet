@@ -1,4 +1,4 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
 export const LandmarksPanelStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -13,15 +13,14 @@ export const LandmarksPanelStyles = makeStyles((theme: Theme) =>
       fontWeight: "bold",
     },
     summary: {
-        paddingLeft: "0px",
+      paddingLeft: "0px",
     },
     details: {
-        paddingLeft: 0,
-        paddingRight: 0,
-        display: "flex",
-        flexDirection: "column",
-        borderTop: "solid 1px #eee",
-      },
-      
+      paddingLeft: 0,
+      paddingRight: 0,
+      display: "flex",
+      flexDirection: "column",
+      borderTop: "solid 1px #eee",
+    },
   })
 );

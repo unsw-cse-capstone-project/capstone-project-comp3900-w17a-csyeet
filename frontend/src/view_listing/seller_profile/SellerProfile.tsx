@@ -15,6 +15,10 @@ import { getListingFromResult, toCapitaliseCase } from "../../ui/util/helper";
 import { ListingCardSmall } from "../../ui/base/listing_card_sm/ListingCardSmall";
 import { ListingCardSmallLoadingRow } from "../../ui/base/loading_state/ListingCardSmallLoadingRow";
 
+/**
+ * Seller profile details information about a specific seller including
+ * their name, blurb and list of their listings
+ */
 export const SellerProfile = ({
   id,
   name,
@@ -29,13 +33,6 @@ export const SellerProfile = ({
 }) => {
   const classes = sellerProfileStyle();
   const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const [blurb, setBlurb] = React.useState<string | undefined>(undefined);
   const [listings, setListings] = React.useState<ListingActual[] | undefined>(
     undefined
@@ -56,19 +53,21 @@ export const SellerProfile = ({
         Seller
       </Typography>
       <Divider className={classes.divider} />
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <Avatar src={avatar} />
-        <Typography variant="body1" style={{ paddingLeft: "10px" }}>
-          <Link onClick={handleClickOpen}>{name}</Link>
+      <div className={classes.summaryInfo}>
+        <div className={classes.avatarContainer}>
+        <Avatar className={classes.largeAvatar} src={avatar} />
+        </div>
+        <Typography variant="h6" className={classes.displayname}>
+          <Link onClick={() => setOpen(true)}>{name}</Link>
         </Typography>
+        {children}
       </div>
-      {children}
       <ProfileDialog
         blurb={blurb}
         listings={listings}
         name={name}
         open={open}
-        onClose={handleClose}
+        onClose={() => setOpen(false)}
         avatar={avatar}
       />
     </div>
@@ -91,14 +90,14 @@ const ProfileDialog = (props: {
       <DialogContent dividers>
         <div className={classes.about}>
           <Avatar src={props.avatar} className={classes.modalImage} />
-          <div className={classes.meta}>
-            <Typography className={classes.name} variant="h4" align="center">
-              {capitalName}
-            </Typography>
+          <Typography className={classes.name} variant="h4" align="center">
+            {capitalName}
+          </Typography>
+          {!!props.blurb && (
             <Typography variant="body1" color="textSecondary" align="center">
-              {"Hello this is my blurb"}
+              {props.blurb}
             </Typography>
-          </div>
+          )}
         </div>
         <Typography variant="h6" className={classes.listingTitle}>
           {capitalName}

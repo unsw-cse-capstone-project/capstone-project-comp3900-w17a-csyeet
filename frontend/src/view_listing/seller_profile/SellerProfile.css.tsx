@@ -25,14 +25,33 @@ export const sellerProfileStyle = makeStyles((theme: Theme) =>
     listingTitle: {
       margin: theme.spacing(0, 0, 0, 2),
     },
-    meta: {
-      display: "flex",
-      flexDirection: "column",
-    },
     modalImage: {
       width: "200px",
       height: "200px",
       margin: 0,
+    },
+    summaryInfo: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      margin: theme.spacing(2, 0, 0, 0),
+    },
+    displayname: { paddingTop: "10px" },
+    largeAvatar: {
+      height: "100%",
+      width: "100%",
+      position: "absolute",
+      top: 0,
+    },
+    avatarContainer: {
+      width: "50%",
+      paddingTop: "50%",
+      position: "relative",
+      [theme.breakpoints.only("sm")]: {
+        width: "20%",
+        paddingTop: "20%",
+      },
     },
   })
 );
