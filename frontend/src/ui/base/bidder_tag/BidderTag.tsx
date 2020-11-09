@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Bidder tag with the bidder number
+ */
 export const BidderTag = observer(({ bidderNumber }: { bidderNumber: number }) => {
   const classes = useStyles();
   const userStore = useStore();
