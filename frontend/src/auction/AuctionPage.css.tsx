@@ -7,6 +7,11 @@ export const auctionPageStyle = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
     },
+    greyBackground: {
+      margin: "20px -15vw",
+      padding: "20px 15vw",
+      backgroundColor: "#f3f4f5",
+    },
     backButton: {
       width: "fit-content",
     },
@@ -31,7 +36,11 @@ export const auctionPageStyle = makeStyles((theme: Theme) =>
     },
     mainImage: {
       width: "100%",
-      height: "100%",
+      height: "auto",
+      paddingTop: "75%",
+      [theme.breakpoints.down("md")]: {
+        paddingTop: "67%",
+      },
       backgroundPosition: "center",
       backgroundSize: "cover",
     },

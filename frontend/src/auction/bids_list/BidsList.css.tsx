@@ -6,6 +6,10 @@ export const bidsListStyle = makeStyles((theme: Theme) =>
       display: "flex",
       justifyContent: "space-between",
       margin: theme.spacing(2, 0),
+      [theme.breakpoints.only("xs")]: {
+        flexDirection: "column",
+        alignItems: "center",
+      },
     },
     bidTime: {
       display: "flex",
@@ -14,6 +18,13 @@ export const bidsListStyle = makeStyles((theme: Theme) =>
       alignItems: "flex-end",
       maxWidth: "40%",
       textAlign: "right",
+      [theme.breakpoints.only("xs")]: {
+        flexDirection: "column",
+        maxWidth: "100%",
+        marginTop: theme.spacing(1),
+        textAlign: "center",
+        alignItems: "center",
+      },
     },
     reserveLabel: {
       color: theme.palette.success.main,

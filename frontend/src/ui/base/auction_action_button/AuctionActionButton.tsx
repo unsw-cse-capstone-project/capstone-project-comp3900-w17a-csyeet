@@ -2,6 +2,10 @@ import Button from "@material-ui/core/Button/Button";
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 
+/**
+ * Component that determines what action can be done
+ * given auction_start and registered_bidder
+ */
 export const AuctionActionButton = ({
   id,
   auction_start,

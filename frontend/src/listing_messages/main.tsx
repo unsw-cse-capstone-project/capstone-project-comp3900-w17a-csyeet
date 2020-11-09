@@ -42,6 +42,7 @@ export const ListingMessagesPage = () => {
         id: userStore.user.id,
         name: userStore.user.name,
         email: userStore.user.email,
+        photoUrl: `/users/${userStore.user.id}/avatar`,
         role: "user",
       });
 
