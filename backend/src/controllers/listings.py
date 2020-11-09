@@ -40,8 +40,12 @@ def create(req: CreateListingRequest, signed_in_user: User = Depends(get_signed_
 def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Finds listings which match all of the specified criteria '''
     if current_user is not None:
+        req_dict = asdict(req)
+        # datetime values require special serialisation handling
+        req_dict['auction_start'] = req.auction_start and req.auction_start.isoformat()
+        req_dict['auction_end'] = req.auction_end and req.auction_end.isoformat()
         session.add(Interaction(user_id=current_user.id, type=InteractionType.search,
-                                search_query=asdict(req), timestamp=datetime.now()))
+                                search_query=req_dict, timestamp=datetime.now()))
         session.commit()
 
     query: Query = session.query(Listing)
@@ -58,11 +62,11 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
         ))
     if req.type:
         conditions.append(Listing.type == req.type)
-    if req.num_bedrooms:
+    if req.num_bedrooms is not None:
         conditions.append(Listing.num_bedrooms == req.num_bedrooms)
-    if req.num_bathrooms:
+    if req.num_bathrooms is not None:
         conditions.append(Listing.num_bathrooms == req.num_bathrooms)
-    if req.num_car_spaces:
+    if req.num_car_spaces is not None:
         conditions.append(Listing.num_car_spaces == req.num_car_spaces)
     if req.auction_start:
         conditions.append(Listing.auction_start >= req.auction_start)
