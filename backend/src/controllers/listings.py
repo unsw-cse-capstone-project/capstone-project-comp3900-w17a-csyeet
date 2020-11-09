@@ -1,13 +1,14 @@
-from datetime import datetime, timedelta
-from typing import Optional, List
 import io
+from datetime import datetime, timedelta
+from dataclasses import asdict
+from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy import or_
 from sqlalchemy.orm import Session, Query
 from starlette.responses import StreamingResponse
 from ..schemas import CreateListingRequest, ListingResponse, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse
-from ..models import Listing, User, Starred, Bid, Registration, Landmark, Image
-from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining
+from ..models import Listing, User, Starred, Bid, Registration, Landmark, Image, Interaction, InteractionType
+from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, remove_listing_from_ML_model
 
 router = APIRouter()
 
@@ -30,6 +31,7 @@ def create(req: CreateListingRequest, signed_in_user: User = Depends(get_signed_
     session.add_all(landmarks)
 
     session.commit()
+    add_listing_to_ML_model(listing)
     return map_listing_to_response(listing, None, False, False)
 
 
@@ -37,6 +39,11 @@ def create(req: CreateListingRequest, signed_in_user: User = Depends(get_signed_
 # using a class dependency instead of method params because there's too many query params
 def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Finds listings which match all of the specified criteria '''
+    if current_user is not None:
+        session.add(Interaction(user_id=current_user.id, type=InteractionType.search,
+                                search_query=asdict(req), timestamp=datetime.now()))
+        session.commit()
+
     query: Query = session.query(Listing)
     # TODO: maybe extract this helper code
     conditions = []
@@ -155,6 +162,8 @@ def star(id: int, signed_in_user: User = Depends(get_signed_in_user), session: S
 
     starred = Starred(listing_id=id, user_id=signed_in_user.id)
     session.add(starred)
+    session.add(Interaction(user_id=signed_in_user.id, type=InteractionType.star,
+                            listing_id=id, timestamp=datetime.now()))
     session.commit()
 
 
@@ -172,6 +181,13 @@ def unstar(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
             status_code=403, detail="User has not starred this listing")
 
     session.delete(starred)
+
+    star_interaction = session.query(Interaction) \
+        .filter_by(user_id=signed_in_user.id, type=InteractionType.star, listing_id=id) \
+        .one_or_none()
+    if star_interaction is not None:
+        session.delete(star_interaction)
+
     session.commit()
 
 
@@ -223,3 +239,4 @@ def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 
     session.delete(listing)
     session.commit()
+    remove_listing_from_ML_model(listing)
