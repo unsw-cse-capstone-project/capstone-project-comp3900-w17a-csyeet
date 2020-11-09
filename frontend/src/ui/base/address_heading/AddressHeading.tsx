@@ -15,6 +15,9 @@ export const AddressHeadingStyle = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Formats the address into a heading component
+ */
 export const AddressHeading = ({
   street,
   suburb,

@@ -30,13 +30,6 @@ export class RecommendationsPresenter {
         store.recommendations = results.recommendations.map((result: any) =>
           getListingFromResult(result)
         );
-        store.recommendations = [
-          ...store.recommendations,
-          ...store.recommendations,
-          ...store.recommendations,
-          ...store.recommendations,
-          ...store.recommendations,
-        ];
         store.state = "loaded";
       });
     } catch {

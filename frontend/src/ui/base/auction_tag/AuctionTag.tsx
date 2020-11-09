@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Tag that labels a property to show the state of the auction
+ */
 export const AuctionTag = ({
   start,
   end,
