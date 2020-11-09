@@ -3,9 +3,10 @@ from datetime import datetime, timedelta
 from dataclasses import asdict
 from typing import List, Optional, Tuple
 from sqlalchemy.orm import Session
-from ..schemas import ListingResponse, Feature, field_to_feature_map
+from ..schemas import ListingResponse, Feature, field_to_feature_map, UpdateListingRequest
 from ..models import Listing, User, Starred, Registration
 from .bid import get_highest_bid
+from .landmark import find_nearby_landmarks
 
 
 def encode_continuation(results: List[Listing], limit: int) -> Optional[str]:
@@ -63,13 +64,17 @@ def is_user_registered_bidder(listing: Listing, user: Optional[User], session: S
     return session.query(Registration).get((listing.id, user.id)) is not None
 
 
-def update_listing(listing: Listing, data: dict):
+def update_listing(listing: Listing, req: UpdateListingRequest):
+    data = req.dict()
+    for key, value in field_to_feature_map.items():
+        data[key] = value in data['features']
+    data.pop('features')
+
     for key, value in data.items():
         setattr(listing, key, value)
 
 
-def update_listing_features(data: dict):
-    for key, value in field_to_feature_map.items():
-        data[key] = value in data['features']
-    data.pop('features')
-    
+def update_landmarks(listing: Listing, session: Session):
+    session.delete(listing.landmarks)
+    landmarks = find_nearby_landmarks(listing)
+    session.add_all(landmarks)

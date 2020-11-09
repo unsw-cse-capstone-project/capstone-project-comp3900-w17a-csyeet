@@ -119,5 +119,19 @@ class AuctionResponse(BaseModel):
     bids: List[BidResponse]
 
 
-class UpdateListingRequest(ListingBase):
-    pass
+class UpdateListingRequest(BaseModel):
+    type: Optional[ListingType]
+    title: Optional[str]
+    description: Optional[str]
+    street: Optional[str]
+    suburb: Optional[str]
+    postcode: Optional[str]
+    state: Optional[str]
+    country: Optional[str]
+    num_bedrooms: Optional[int] = Field(..., ge=1)
+    num_bathrooms: Optional[int] = Field(..., ge=1)
+    num_car_spaces: Optional[int] = Field(..., ge=0)
+    auction_start: Optional[datetime]
+    auction_end: Optional[datetime]
+    features: Optional[List[Feature]]
+    

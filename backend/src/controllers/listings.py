@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session, Query
 from starlette.responses import StreamingResponse
 from ..schemas import CreateListingRequest, ListingResponse, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse, UpdateListingRequest
 from ..models import Listing, User, Starred, Bid, Registration, Landmark, Image, Interaction, InteractionType
-from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing_features, update_listing, remove_listing_from_ML_model
+from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing, remove_listing_from_ML_model, update_landmarks
 
 router = APIRouter()
 
@@ -254,9 +254,9 @@ def update(id: int, req: UpdateListingRequest, signed_in_user: User = Depends(ge
         raise HTTPException(
             status_code=403, detail="User cannot edit this listing") 
     
-    listing_data = req.dict()
-    update_listing_features(listing_data)
-    update_listing(listing, listing_data)
-    session.commit()
-    return map_listing_to_response(listing, None, False, False)
+    update_listing(listing, req)
 
+    if req.street is not None or req.suburb is not None or req.postcode is not None or req.state is not None or req.country is not None:
+        update_landmarks(listing, session)
+    session.commit()
+    return map_listing_response(listing, signed_in_user, session)
