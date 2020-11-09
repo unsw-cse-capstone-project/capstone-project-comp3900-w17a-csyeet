@@ -39,7 +39,7 @@ def create(req: CreateListingRequest, signed_in_user: User = Depends(get_signed_
 # using a class dependency instead of method params because there's too many query params
 def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Finds listings which match all of the specified criteria '''
-    if current_user is not None:
+    if req.is_user_query and current_user is not None:
         req_dict = asdict(req)
         # datetime values require special serialisation handling
         req_dict['auction_start'] = req.auction_start and req.auction_start.isoformat()
