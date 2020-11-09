@@ -18,6 +18,7 @@ export const AuctionActionButton = ({
     <Button
       variant="outlined"
       color="primary"
+      style={{ marginTop: "8px" }}
       onClick={() => history.push(`/listing/${id}/auction`)}
     >
       View Auction
@@ -27,7 +28,7 @@ export const AuctionActionButton = ({
     <Button
       variant="outlined"
       color="primary"
-      style={{ marginTop: "15px" }}
+      style={{ marginTop: "8px" }}
       onClick={() => history.push(`/listing/${id}/register`)}
     >
       Register to Bid

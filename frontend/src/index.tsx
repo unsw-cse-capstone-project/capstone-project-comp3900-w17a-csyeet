@@ -20,6 +20,7 @@ import { runInAction } from "mobx";
 import { MessagesPage } from "./messages/main";
 import { ListingMessagesPage } from "./listing_messages/main";
 import { createMuiTheme, responsiveFontSizes, ThemeProvider } from "@material-ui/core/styles";
+import { ErrorPage } from './error/main';
 
 let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);
@@ -50,7 +51,6 @@ const ProtectedComponent = observer(
   }
 );
 
-const ErrorPage = () => <div>404 Page not found</div>;
 const signInStore = new SignInStore();
 const signUpStore = new SignUpStore();
 ReactDOM.render(

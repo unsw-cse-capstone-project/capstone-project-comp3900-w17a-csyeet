@@ -13,6 +13,10 @@ import { toSentenceCase } from "../../ui/util/helper";
 import { FeaturePanelStyles } from './FeaturePanel.css';
 import * as Icon from "@material-ui/icons";
 
+/**
+ * Component to show the list of features included in the house
+ * Each features will have a corresponding icon
+ */
 export const FeaturesPanel = ({ features }: { features: string[] }) => {
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
 
@@ -54,6 +58,10 @@ export const FeaturesPanel = ({ features }: { features: string[] }) => {
   );
 };
 
+/**
+ * Maps a feature name to an icon
+ * @param feature 
+ */
 const getFeatureIcon = (feature: string) => {
   switch (feature) {
     case "ensuite":

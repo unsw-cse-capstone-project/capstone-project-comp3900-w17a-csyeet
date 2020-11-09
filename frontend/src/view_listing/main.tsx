@@ -4,13 +4,12 @@ import { ListingPageStore, ListingPagePresenter } from "./ListingPagePresenter";
 import { ListingPage as ListingPageBase } from "./ListingPage";
 import { observer } from "mobx-react";
 import { listingPageStyle } from "./ListingPage.css";
-import { Snackbar } from "@material-ui/core";
 import { createSuburbPanelContent } from "./suburb_panel/create";
 import { useStore } from "../AuthContext";
 import { OwnerHeader } from "./owner_header/OwnerHeader";
-import MuiAlert from "@material-ui/lab/Alert";
 import { ListingPagePlaceholder } from "./ListingPagePlaceholder";
 import { BackButton } from "../ui/base/back_button/BackButton";
+import { ErrorPage } from "../error/main";
 
 export const ViewListingPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,11 +17,12 @@ export const ViewListingPage = () => {
   const presenter = new ListingPagePresenter();
   presenter.loadInformation(store, parseInt(id));
 
-  return (
-    <ListingPageWrapper store={store} presenter={presenter} />
-  );
+  return <ListingPageWrapper store={store} presenter={presenter} />;
 };
 
+/**
+ * Page Component to show the details for a listing
+ */
 export const ListingPageWrapper = observer(
   ({
     store,
@@ -66,46 +66,32 @@ export const ListingPageWrapper = observer(
     }
 
     if (store.loadingState === "error" || !store.listing) {
-      const Content = () => (
-        <Snackbar
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          open={true}
-        >
-          <MuiAlert elevation={6} severity="error">
-            Error occurred while loading the page, please try again
-          </MuiAlert>
-        </Snackbar>
-      );
-      return <Container Content={Content} />;
+      return <ErrorPage />;
     }
 
     const listing = store.listing;
 
-    const SuburbPanelContentWrapper = createSuburbPanelContent(listing);
-    const Content = () => {
-      return (
-        <ListingPageBase
-          listing={listing}
-          SuburbPanelContent={SuburbPanelContentWrapper}
-        />
-      );
-    };
+    const Content = () => (
+      <ListingPageBase
+        listing={listing}
+        SuburbPanelContent={createSuburbPanelContent(listing)}
+      />
+    );
 
     let Header: React.ComponentType | undefined;
 
     /**
      * Show the owner header is the current user is the same as the owner
      */
-    if (
-      userStore &&
-      userStore.user &&
-      userStore.user.id === listing.owner.id
-    ) {
+    if (userStore && userStore.user && userStore.user.id === listing.owner.id) {
       // eslint-disable-next-line react/display-name
       Header = () => (
         <OwnerHeader
           onDelete={() => presenter.deleteListing(listing.id)}
           id={listing.id}
+          isAuctionClosed={
+            new Date().getTime() >= listing.auction_end.getTime()
+          }
         />
       );
     }
