@@ -35,7 +35,7 @@ export class UpcomingAuctionPresenter {
       const response = await fetch(
         `/listings/?auction_start=${auctionStart}&limit=${
           numCardsPerRow * 2
-        }&include_closed_auctions=true${continuation}`
+        }${continuation}`
       );
       const results = await response.json();
       runInAction(() => {

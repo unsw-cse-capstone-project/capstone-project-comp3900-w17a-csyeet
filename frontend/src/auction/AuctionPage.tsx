@@ -1,10 +1,11 @@
 import * as React from "react";
 import { BidPriceState } from "../ui/base/bid_price/BidPrice";
-import { Typography, Grid, Hidden, Paper } from "@material-ui/core";
+import { Typography, Grid, Paper } from "@material-ui/core";
 import { Countdown } from "../ui/base/countdown/Countdown";
 import classNames from "classnames";
 import { auctionPageStyle } from "./AuctionPage.css";
 import { dateFormatter } from "../ui/util/helper";
+import { AddressHeading } from "../ui/base/address_heading/AddressHeading";
 
 export type Address = {
   street: string;
@@ -19,6 +20,10 @@ export type AuctionBid = {
   state: BidPriceState;
 };
 
+/**
+ * Auction Page Component that shows the details of the auction including
+ * time, current bid, bidders and bids
+ */
 export const AuctionPage = ({
   address,
   auction_start,
@@ -73,85 +78,36 @@ export const AuctionPage = ({
 
   return (
     <div>
-      <Typography variant="h2" className={classes.streetAddress}>
-        {street}
-      </Typography>
-      <Typography variant="h4" className={classes.secondaryAddress}>
-        {suburb}
-        {", "}
-        <span style={{ textTransform: "uppercase" }}>{state}</span> {postcode}
-      </Typography>
-      <Paper elevation={0} style={{ margin: "20px -15vw", padding: "20px 15vw", backgroundColor: "#f3f4f5" }}>
+      <AddressHeading
+        street={street}
+        state={state}
+        suburb={suburb}
+        postcode={postcode}
+      />
+      <Paper elevation={0} className={classes.greyBackground}>
         <AuctionTime />
-        <Hidden lgDown>
-          <Grid container spacing={3}>
-            <Grid item xs={4}>
-              <div
-                className={classes.mainImage}
-                style={{ backgroundImage: `url(${mainImage})` }}
-              />
-            </Grid>
-            <Grid item xs={8}>
-              <BiddingBox />
-            </Grid>
+        <Grid container spacing={3}>
+          <Grid item xs={12} lg={5} xl={4}>
+            <div
+              className={classes.mainImage}
+              style={{ backgroundImage: `url(${mainImage})` }}
+            />
           </Grid>
-        </Hidden>
-        <Hidden only={["xs", "sm", "xl"]}>
-          <Grid container spacing={3}>
-            <Grid item xs={5}>
-              <div
-                className={classes.mainImage}
-                style={{ backgroundImage: `url(${mainImage})` }}
-              />
-            </Grid>
-            <Grid item xs={7}>
-              <BiddingBox />
-            </Grid>
+          <Grid item xs={12} lg={7} xl={8}>
+            <BiddingBox />
           </Grid>
-        </Hidden>
-        <Hidden mdUp>
-          {/* xs sm */}
-          <Grid container>
-            <Grid item xs={12}>
-              <div
-                className={classes.mainImage}
-                style={{
-                  backgroundImage: `url(${mainImage})`,
-                  height: "auto",
-                  paddingTop: "67%",
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <BiddingBox />
-            </Grid>
-          </Grid>
-        </Hidden>
+        </Grid>
       </Paper>
 
       {/* bids list */}
-      <div className={classes.biddingInfo}>
-        <Hidden smDown>
-          <Grid container spacing={3}>
-            <Grid item xs={9}>
-              <BidsList />
-            </Grid>
-            <Grid item xs={3}>
-              <BiddersList />
-            </Grid>
-          </Grid>
-        </Hidden>
-        <Hidden mdUp>
-          <Grid container>
-            <Grid item xs={12}>
-              <BidsList />
-            </Grid>
-            <Grid item xs={12}>
-              <BiddersList />
-            </Grid>
-          </Grid>
-        </Hidden>
-      </div>
+      <Grid container spacing={3} className={classes.biddingInfo}>
+        <Grid item xs={12} md={9}>
+          <BidsList />
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <BiddersList />
+        </Grid>
+      </Grid>
     </div>
   );
 };

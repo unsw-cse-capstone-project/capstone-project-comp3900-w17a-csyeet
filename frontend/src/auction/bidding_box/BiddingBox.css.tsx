@@ -5,14 +5,13 @@ export const BiddingBoxStyle = makeStyles((theme: Theme) =>
     bidderBox: {
       display: "flex",
       width: "100%",
+      height: "100%",
+      boxSizing: "border-box",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
       padding: theme.spacing(6, 0),
       minHeight: theme.spacing(20),
-    },
-    tagContainer: {
-      width: "50%",
     },
     inputContainer: {
       display: "flex",
@@ -22,7 +21,7 @@ export const BiddingBoxStyle = makeStyles((theme: Theme) =>
     placeBidButton: {
       minWidth: "min-content",
       whiteSpace: "nowrap",
-      marginLeft: theme.spacing(2),
+      height: "100%",
     },
   })
 );

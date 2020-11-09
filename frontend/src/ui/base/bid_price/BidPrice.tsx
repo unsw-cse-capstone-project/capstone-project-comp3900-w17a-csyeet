@@ -2,7 +2,7 @@ import * as React from "react";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import classNames from "classnames";
-import { Typography } from "@material-ui/core";
+import { Hidden, Typography } from "@material-ui/core";
 import { priceFormatter } from "../../util/helper";
 import { InfoPopup } from "../info_popup/InfoPopup";
 
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     bidderTagContainer: {
       position: "absolute",
-      right: theme.spacing(-3.5),
+      right: theme.spacing(-2.5),
       height: "100%",
       display: "flex",
       alignItems: "center",
@@ -52,6 +52,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Bid price component that will render with the right color
+ */
 export const BidPrice = ({
   bid,
   state,
@@ -89,7 +92,8 @@ export const BidPrice = ({
         className={classNames(classes.bidPrice, classes[state], className)}
         style={style}
       >
-        <Typography variant={textType}>{formattedPrice}</Typography>
+        <Hidden smDown><Typography variant={textType}>{formattedPrice}</Typography></Hidden>
+        <Hidden mdUp><Typography variant="h6">{formattedPrice}</Typography></Hidden>
       </Paper>
       {info && (
         <InfoPopup
@@ -111,7 +115,7 @@ export const BidPriceWithBidderTag = ({
 }) => {
   const classes = useStyles();
   return (
-    <div style={{ position: "relative", minWidth: "min-content" }}>
+    <div style={{ position: "relative", width: "min-content" }}>
       <BidPrice />
       <div className={classes.bidderTagContainer}>
         <BidderTag />

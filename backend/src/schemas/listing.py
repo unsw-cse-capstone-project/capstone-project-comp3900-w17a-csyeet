@@ -105,6 +105,7 @@ class SearchListingsRequest:
     features: Optional[List[Feature]] = Query(None)
     landmarks: Optional[List[LandmarkType]] = Query(None)
     include_closed_auctions: bool = Query(False)
+    is_user_query: bool = Query(True)
     limit: int = Query(10, ge=1)
     continuation: Optional[str] = Query(None)
 

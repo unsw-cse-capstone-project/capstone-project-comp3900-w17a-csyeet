@@ -8,28 +8,46 @@ import classNames from "classnames";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    countDownContainer: { display: "flex", alignItems: "center" },
     countBox: {
-      padding: theme.spacing(2) + "px " + theme.spacing(3) + "px",
+      padding: theme.spacing(2, 3),
+      [theme.breakpoints.only("xs")]: {
+        padding: theme.spacing(1, 2),
+      },
       borderRadius: theme.spacing(2),
       marginBottom: theme.spacing(1),
     },
     countBoxContainer: {
-      margin: "0 " + theme.spacing(2) + "px",
+      margin: theme.spacing(0, 2),
+      [theme.breakpoints.only("xs")]: {
+        margin: theme.spacing(0, 1),
+      },
       textAlign: "center",
+      position: "relative",
     },
     countBoxContainerWithSeparator: {
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
+
       textAlign: "center",
       display: "flex",
     },
     separatorBox: {
-      padding: theme.spacing(1) + "px 0",
+      padding: theme.spacing(1, 0),
       background: "none",
+    },
+    labelText: {
+      position: "absolute",
+      bottom: "-20px",
+      width: "100%",
+      textAlign: "center",
     },
   })
 );
 
+/** 
+ * Countdown Component that will countdown by itself
+ */
 export const Countdown = observer((props: { date: Date }) => {
   let store: { currentTime: number } = observable({
     currentTime: new Date().getTime(),
@@ -61,7 +79,7 @@ export const Countdown = observer((props: { date: Date }) => {
   const timeStuff = getTimeStuff(timeLeftMs);
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div className={classes.countDownContainer}>
       <CountdownBox num={timeStuff.days} label="days" />
       <CountdownBox num={maybePrependZero(timeStuff.hours)} label="hours" />
       <Paper
@@ -91,19 +109,11 @@ const CountdownBox = ({
 }) => {
   const classes = useStyles();
   return (
-    <div className={classes.countBoxContainer} style={{ position: "relative" }}>
+    <div className={classes.countBoxContainer}>
       <Paper className={classes.countBox}>
         <Typography variant="body1">{num}</Typography>
       </Paper>
-      <Typography
-        style={{
-          position: "absolute",
-          bottom: "-20px",
-          width: "100%",
-          textAlign: "center",
-        }}
-        variant="body2"
-      >
+      <Typography className={classes.labelText} variant="body2">
         {label}
       </Typography>
     </div>

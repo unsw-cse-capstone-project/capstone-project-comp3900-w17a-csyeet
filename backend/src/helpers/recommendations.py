@@ -23,12 +23,14 @@ def column_name(key: str, value: str) -> str:
 
 ammenities_similarity_fields = [
     'num_bedrooms', 'num_bathrooms', 'num_car_spaces']
-similarity_fields = ammenities_similarity_fields + \
-    ['type', 'postcode', *field_to_feature_map.keys()]
+base_similarity_fields = ammenities_similarity_fields + ['type', 'postcode']
+request_similarity_fields = base_similarity_fields + ['features']
+listing_similarity_fields = base_similarity_fields + \
+    list(field_to_feature_map.keys())
 
 
 def filter_similarity_fields(listing_dict: dict) -> dict:
-    return {key: listing_dict[key] for key in similarity_fields}
+    return {key: listing_dict[key] for key in listing_similarity_fields}
 
 
 db_data = []

@@ -10,7 +10,10 @@ import { getNumCards } from "../../ui/util/helper";
 import { ListingCardSmallLoadingRow } from "../../ui/base/loading_state/ListingCardSmallLoadingRow";
 import MuiAlert from "@material-ui/lab/Alert";
 
-export const RecommendationNoWidth = observer(
+/**
+ * Recommendations slider
+ */
+export const Recommendations = withWidth()(observer(
   ({ store, width }: { store: RecommendationsStore; width: string }) => {
     const [page, setPage] = React.useState(0);
     const classes = RecommendationsStyles();
@@ -79,6 +82,5 @@ export const RecommendationNoWidth = observer(
       </Grid>
     );
   }
-);
+));
 
-export const Recommendations = withWidth()(RecommendationNoWidth);

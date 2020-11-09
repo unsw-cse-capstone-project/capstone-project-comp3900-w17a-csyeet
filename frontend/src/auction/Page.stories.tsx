@@ -1,6 +1,9 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
-import { createFakeListing, createFakeActualListing } from '../ui/util/fakes/listing';
+import {
+  createFakeListing,
+  createFakeActualListing,
+} from "../ui/util/fakes/listing";
 import { AuctionPageWrapper } from "./main";
 import { AuctionPageStore } from "./AuctionPagePresenter";
 import { createFakeBidsList } from "../ui/util/fakes/bid";
@@ -51,7 +54,6 @@ export const Overview = (props: {
   store.listing = createFakeActualListing({
     auction_start: new Date(props.auction_start),
     auction_end: new Date(props.auction_end),
-    // reserve_price: props.reserve_price,
   });
   store.loadingState = props.loadingState;
   return (

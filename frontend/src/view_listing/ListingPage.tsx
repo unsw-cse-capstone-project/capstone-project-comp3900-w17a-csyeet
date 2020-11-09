@@ -150,15 +150,14 @@ export const ListingPage = observer(
               email={owner.email}
               avatar={`/users/${owner.id}/avatar`}
             >
-              {userStore?.user?.id !== owner.id ? (
+              {userStore?.user?.id !== owner.id &&
+              new Date().getTime() < auction_end.getTime() ? (
                 <Button
                   variant="contained"
                   color="primary"
                   style={{ marginTop: "10px" }}
                   onClick={() =>
-                    history.push(
-                      `/messages?to=${owner.id}&name=${owner.name}&email=${owner.email}&listing=${id}`
-                    )
+                    history.push(`/messages?to=${id}`)
                   }
                 >
                   Send Message
@@ -223,7 +222,7 @@ const ImageSection = ({
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={images.length > 2? 8: 12}>
+      <Grid item xs={12} md={images.length > 2 ? 8 : 12}>
         <Badge
           anchorOrigin={{
             vertical: "top",

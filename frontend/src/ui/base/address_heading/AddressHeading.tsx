@@ -15,6 +15,9 @@ export const AddressHeadingStyle = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Formats the address into a heading component
+ */
 export const AddressHeading = ({
   street,
   suburb,
@@ -30,10 +33,10 @@ export const AddressHeading = ({
   const {streetAddress, remainingAddress} = formatAddress({street, suburb, state, postcode});
   return (
     <div>
-      <Typography variant="h1" className={classes.streetAddress}>
+      <Typography variant="h2" className={classes.streetAddress}>
         {streetAddress}
       </Typography>
-      <Typography variant="h3" color="textSecondary" className={classes.secondaryAddress}>
+      <Typography variant="h4" color="textSecondary" className={classes.secondaryAddress}>
         {remainingAddress}
       </Typography>
     </div>

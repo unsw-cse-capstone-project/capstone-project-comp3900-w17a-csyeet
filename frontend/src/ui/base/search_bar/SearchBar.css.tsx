@@ -11,12 +11,22 @@ export const SearchBarStyles = makeStyles((theme: Theme) =>
     },
     form: {
       display: "flex",
+      [theme.breakpoints.only('xs')]: {
+        flexDirection: 'column',
+        alignItems: "center",
+      },
       position: "relative",
     },
     formButton: {
       borderRadius: "1000px !important",
       padding: "0 30px",
       marginLeft: theme.spacing(1),
+      [theme.breakpoints.only('xs')]: {
+        height: theme.spacing(6),
+        width: 'fit-content',
+        marginLeft: theme.spacing(0),
+        marginTop: theme.spacing(1),
+      },
       textTransform: "capitalize",
     },
     formControl: {
