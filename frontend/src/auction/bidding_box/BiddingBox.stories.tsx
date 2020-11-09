@@ -3,8 +3,6 @@ import { Meta, Story } from "@storybook/react/types-6-0";
 import { BidderTag } from "../../ui/base/bidder_tag/BidderTag";
 import { BiddingBox, BiddingBoxStore } from "./BiddingBox";
 import { action } from "@storybook/addon-actions";
-import { Typography } from "@material-ui/core";
-import { createFakeListing } from "../../ui/util/fakes/listing";
 import { computed } from 'mobx';
 
 export default {
@@ -65,19 +63,3 @@ const Template: Story<{
   );
 };
 export const Stateful = Template.bind({});
-// export const Overview = () => {
-//   const store = new BiddingBoxStore();
-//   return (
-//     <div>
-//       <Typography variant="h5">Pre Auction (Unknown current bid)</Typography>
-//       <BiddingBox
-//         store={store}
-//         enableBidding={false}
-//         isAuctionClosed={false}
-//         bidState={"current"}
-//         BidderTag={() => <BidderTag bidderNumber={1234} />}
-//         onPlaceBid={action("Place bid button clicked")}
-//       />
-//     </div>
-//   );
-// };

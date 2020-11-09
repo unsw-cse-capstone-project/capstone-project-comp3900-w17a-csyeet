@@ -79,7 +79,7 @@ const Template: Story<{
       auction_end={new Date(props.auction_end)}
       mainImage={mainImage}
       BiddingBox={BiddingBoxWrapper}
-      BidsList={() => <BidsList bids={bids} reserve_price={490000} />}
+      BidsList={() => <BidsList bids={bids} />}
       BiddersList={() => (
         <BiddersList bidders={[1234, 1233, 1232, 1231]} currentUser={1234} />
       )}

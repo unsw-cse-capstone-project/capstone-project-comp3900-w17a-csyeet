@@ -21,8 +21,8 @@ export const HomePage = observer(() => {
   return (
     <div className={classes.page}>
       <div className={classes.top}>
-      <img width="250px" src={logo} alt="Adobe logo"></img>
-      <Typography variant="h5" style={{ margin: "15px 0" }}>
+      <img width="250px" src={logo} alt="Adobe logo" className={classes.logo}></img>
+      <Typography variant="h5" color="textSecondary" style={{ margin: "15px 0" }}>
         Find your next Abode
       </Typography>
       <div className={classes.searchBar}>
