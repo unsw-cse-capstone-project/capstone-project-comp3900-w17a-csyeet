@@ -1,5 +1,5 @@
 import { observable, makeObservable, action, runInAction } from "mobx";
-import { getListingFromResult } from '../ui/util/helper';
+import { getListingFromResult } from "../ui/util/helper";
 import { Bid } from "../ui/util/types/bid";
 import { ListingActual } from "../ui/util/types/listing";
 
@@ -22,6 +22,11 @@ export class AuctionPageStore {
 }
 
 export class AuctionPagePresenter {
+  /**
+   * Loads the information necessary for the auction page
+   * @param store
+   * @param listing_id
+   */
   @action
   async loadInformation(store: AuctionPageStore, listing_id: number) {
     store.loadingState = "loading";
@@ -45,6 +50,10 @@ export class AuctionPagePresenter {
     }
   }
 
+  /**
+   * Fetches the listing details for a listing
+   * @param listingId
+   */
   private async fetchListing(
     listingId: number
   ): Promise<ListingActual | undefined> {
@@ -57,6 +66,10 @@ export class AuctionPagePresenter {
     return listing;
   }
 
+  /**
+   * Fetches the bids for a particular listing
+   * @param listingId
+   */
   private async fetchBids(listingId: number): Promise<Bid[] | undefined> {
     const response = await fetch(`/listings/${listingId}/auction`);
     const result = await response.json();
@@ -72,12 +85,18 @@ export class AuctionPagePresenter {
     return bids;
   }
 
+  /**
+   * Places a bid and sets the state of the store after placing the bid
+   * @param store
+   * @param bid
+   * @param onSuccess
+   */
   @action
   async placeBid(store: AuctionPageStore, bid: number, onSuccess: () => void) {
     store.bidMakingStatus = "submitting";
     try {
       const response = await fetch(
-        `/listings/${store.listing ?.id}/auction/bid`,
+        `/listings/${store.listing?.id}/auction/bid`,
         {
           method: "post",
           body: JSON.stringify({ bid: bid }),

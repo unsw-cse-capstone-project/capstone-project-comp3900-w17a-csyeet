@@ -9,13 +9,10 @@ import { dateFormatter } from "../../ui/util/helper";
 import { bidsListStyle } from "./BidsList.css";
 import { Bid } from "../../ui/util/types/bid";
 
-export const BidsList = ({
-  bids,
-  reserve_price,
-}: {
-  bids: Bid[];
-  reserve_price: number;
-}) => {
+/**
+ * List of bids, the time they were placed and whether they met the reserve
+ */
+export const BidsList = ({ bids }: { bids: Bid[] }) => {
   const classes = bidsListStyle();
   return (
     <div>
