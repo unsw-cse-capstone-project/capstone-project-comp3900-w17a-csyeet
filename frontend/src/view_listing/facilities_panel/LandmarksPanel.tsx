@@ -16,6 +16,10 @@ import { Landmark } from "../../ui/util/types/listing";
 import classNames from "classnames";
 import { LandmarksPanelStyles } from "./LandmarksPanel.css";
 
+/**
+ * Landmarks fetched from Google Places Api
+ * The landmarks are listing in ascending order of distance in kms
+ */
 export const LandmarksPanel = ({
   facilities,
   isPreview = false,
@@ -26,6 +30,8 @@ export const LandmarksPanel = ({
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
   const [value, setValue] = React.useState(0);
   const classes = LandmarksPanelStyles();
+
+  facilities = facilities.sort((a, b) => a.distance - b.distance);
 
   const handleTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);

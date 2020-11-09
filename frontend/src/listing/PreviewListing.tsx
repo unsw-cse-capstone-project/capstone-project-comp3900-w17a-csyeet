@@ -12,8 +12,8 @@ import { ListingPage } from "../view_listing/ListingPage";
 import { ListingActual } from "../ui/util/types/listing";
 import { useStore } from "../AuthContext";
 import { observer } from "mobx-react";
-import { toSentenceCase, toCapitaliseCase } from "../ui/util/helper";
-import { ArrowBackIos } from "@material-ui/icons";
+import { toCapitaliseCase } from "../ui/util/helper";
+import { BackButton } from "../ui/base/back_button/BackButton";
 
 export const PreviewListingStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,7 +23,6 @@ export const PreviewListingStyle = makeStyles((theme: Theme) =>
       justifyContent: "space-between",
     },
     backToEditingButton: {
-      width: "fit-content",
       marginBottom: theme.spacing(2),
     },
   })
@@ -71,9 +70,6 @@ export const PreviewListing = observer(
       landmarks: [],
       highest_bid: null,
     };
-    listing.features = listing.features.map((feature) =>
-      toSentenceCase(feature)
-    );
 
     const onClick = () => {
       setSubmitting(true);
@@ -84,12 +80,9 @@ export const PreviewListing = observer(
     return (
       <div>
         <div className={classes.header}>
-          <Button className={classes.backToEditingButton} onClick={onBack}>
-            <ArrowBackIos />
-            Back
-          </Button>
+          <BackButton className={classes.backToEditingButton} onClick={onBack} text="Back" />
           <Button variant={"contained"} disabled={isSubmitting} color={"primary"} onClick={onClick}>
-            {isSubmitting? <CircularProgress />: "Publish"}
+            {isSubmitting? <CircularProgress size="small" />: "Publish"}
           </Button>
         </div>
         <ListingPage

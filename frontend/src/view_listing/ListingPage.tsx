@@ -7,23 +7,29 @@ import {
   Paper,
   Badge,
   Button,
+  createStyles,
+  makeStyles,
+  Theme,
 } from "@material-ui/core";
 import { ListingActual } from "../ui/util/types/listing";
 import { ListingFeatureIcon } from "../ui/base/listing_result_card/ListingResultCard";
 import { DriveEta, KingBed, Bathtub } from "@material-ui/icons";
-import Slider from "react-slick";
 import { LandmarksPanel } from "./facilities_panel/LandmarksPanel";
 import { SuburbPanel } from "./suburb_panel/SuburbPanel";
 import { SellerProfile } from "./seller_profile/SellerProfile";
 import { Map } from "./map/map";
-import { AuctionDetails } from "./auction_details/auctionDetails";
+import { AuctionDetails } from "./auction_details/AuctionDetails";
 import { AddressHeading } from "../ui/base/address_heading/AddressHeading";
 import { Star } from "../ui/base/star/Star";
 import { useStore } from "../AuthContext";
 import { observer } from "mobx-react";
 import { useHistory } from "react-router-dom";
 import { FeaturesPanel } from "./features_panel/FeaturesPanel";
+import { Carousel } from "../ui/base/carousel/Carousel";
 
+/**
+ * Listing Page Content
+ */
 export const ListingPage = observer(
   ({
     disableActions = false,
@@ -34,12 +40,6 @@ export const ListingPage = observer(
     listing: ListingActual;
     SuburbPanelContent: React.ComponentType;
   }) => {
-    const settings = {
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-    };
     const {
       id,
       street,
@@ -56,6 +56,7 @@ export const ListingPage = observer(
       description,
       features,
       starred,
+      images,
       registered_bidder,
       landmarks,
       owner,
@@ -66,16 +67,8 @@ export const ListingPage = observer(
     const userStore = useStore();
     const history = useHistory();
 
-    const handleOpen = () => {
-      setOpen(true);
-    };
-
-    const handleClose = () => {
-      setOpen(false);
-    };
-
     return (
-      <div style={{ paddingBottom: "200px" }}>
+      <div className={classes.content}>
         <AddressHeading
           street={street}
           suburb={suburb}
@@ -89,68 +82,27 @@ export const ListingPage = observer(
               <Star id={id} starred={starred} />
             </div>
           )}
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={8}>
-              <Badge
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                className={classes.badge}
-                badgeContent={
-                  <Typography variant="body1">
-                    {type[0].toUpperCase() + type.slice(1)}
-                  </Typography>
-                }
-                color="secondary"
-              >
-                <img
-                  src={listing.images[0]}
-                  onClick={handleOpen}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  alt={`Property view 1`}
-                />
-              </Badge>
-            </Grid>
-            <Grid item xs={12} md={4} className={classes.photoGrid}>
-              <img
-                src={listing.images[1]}
-                onClick={handleOpen}
-                alt={`Property view 2`}
-              />
-              <img
-                src={listing.images[2]}
-                onClick={handleOpen}
-                alt={`Property view 3`}
-              />
-            </Grid>
-          </Grid>
+          <ImageSection
+            images={images}
+            onClick={() => setOpen(true)}
+            type={type}
+          />
         </Paper>
         {/* image slideshow */}
         <Modal
           open={open}
-          onClose={handleClose}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          onClose={() => setOpen(false)}
+          className={classes.modal}
         >
           <div className={classes.sliderContainer}>
-            <Slider {...settings}>
-              {listing.images.map((image, i) => (
-                <img
-                  className={classes.imageContainer}
-                  src={image}
-                  key={i}
-                  alt={`Property view ${i}`}
-                />
-              ))}
-            </Slider>
+            <Carousel
+              images={listing.images}
+              imageClass={classes.imageContainer}
+            />
           </div>
         </Modal>
 
-        {/* image slideshow*/}
+        {/* image slideshow */}
         <div className={classes.detailBar}>
           <ListingFeatureIcon
             size="large"
@@ -178,10 +130,7 @@ export const ListingPage = observer(
               {description}
             </Typography>
             <FeaturesPanel features={features} />
-            <LandmarksPanel
-              facilities={landmarks}
-              isPreview={disableActions}
-            />
+            <LandmarksPanel facilities={landmarks} isPreview={disableActions} />
             <SuburbPanel listing={listing} Content={SuburbPanelContent} />
           </Grid>
           {/* right column */}
@@ -222,3 +171,86 @@ export const ListingPage = observer(
     );
   }
 );
+
+/**
+ * Image grid
+ */
+const ImageSection = ({
+  images,
+  type,
+  onClick,
+}: {
+  images: string[];
+  type: string;
+  onClick: () => void;
+}) => {
+  const classes = makeStyles((theme: Theme) =>
+    createStyles({
+      badge: {
+        "& span": {
+          padding: theme.spacing(2),
+          borderRadius: "10000px",
+          transform: "translate(10%, 40%)",
+          boxShadow: theme.shadows[1],
+        },
+        width: "100%",
+        height: "100%",
+      },
+      photoGrid: {
+        [theme.breakpoints.up("md")]: {
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        },
+        [theme.breakpoints.down("sm")]: {
+          display: "flex",
+          justifyContent: "space-between",
+        },
+        "& img": {
+          objectFit: "cover",
+          [theme.breakpoints.up("md")]: {
+            width: "100%",
+            height: "49%",
+          },
+          [theme.breakpoints.down("sm")]: {
+            width: "49%",
+          },
+        },
+      },
+      bigImage: { width: "100%", height: "100%", objectFit: "cover" },
+    })
+  )();
+
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={12} md={images.length > 2? 8: 12}>
+        <Badge
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          className={classes.badge}
+          badgeContent={
+            <Typography variant="body1">
+              {type[0].toUpperCase() + type.slice(1)}
+            </Typography>
+          }
+          color="secondary"
+        >
+          <img
+            src={images[0]}
+            onClick={onClick}
+            className={classes.bigImage}
+            alt={`Property view 1`}
+          />
+        </Badge>
+      </Grid>
+      {images.length > 2 && (
+        <Grid item xs={12} md={4} className={classes.photoGrid}>
+          <img src={images[1]} onClick={onClick} alt={`Property view 2`} />
+          <img src={images[2]} onClick={onClick} alt={`Property view 3`} />
+        </Grid>
+      )}
+    </Grid>
+  );
+};
