@@ -1,0 +1,22 @@
+{
+  "name": "testdata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cross-blob": "^2.0.0",
+    "download": "^8.0.0",
+    "form-data": "^3.0.0",
+    "got": "^10.6.0",
+    "image-size": "^0.9.3",
+    "moment": "^2.29.1",
+    "probe-image-size": "^6.0.0",
+    "request": "^2.81.0",
+    "resize-img": "^2.0.0"
+  }
+}
