@@ -70,9 +70,6 @@ def update_listing(listing: Listing, data: dict):
 
 def update_listing_features(data: dict):
     for key, value in field_to_feature_map.items():
-        if value in data['features']:
-            data.update({key : True})
-        else:
-            data.update({key : False})
+        data[key] = value in data['features']
     data.pop('features')
     
