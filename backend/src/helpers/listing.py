@@ -61,3 +61,18 @@ def is_user_registered_bidder(listing: Listing, user: Optional[User], session: S
     if user is None:
         return False
     return session.query(Registration).get((listing.id, user.id)) is not None
+
+
+def update_listing(listing: Listing, data: dict):
+    for key, value in data.items():
+        setattr(listing, key, value)
+
+
+def update_listing_features(data: dict):
+    for key, value in field_to_feature_map.items():
+        if value in data['features']:
+            data.update({key : True})
+        else:
+            data.update({key : False})
+    data.pop('features')
+    

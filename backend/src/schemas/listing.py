@@ -117,3 +117,7 @@ class SearchListingsResponse(BaseModel):
 class AuctionResponse(BaseModel):
     bidders: List[int]
     bids: List[BidResponse]
+
+
+class UpdateListingRequest(ListingBase):
+    pass

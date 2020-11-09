@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy import or_
 from sqlalchemy.orm import Session, Query
 from starlette.responses import StreamingResponse
-from ..schemas import CreateListingRequest, ListingResponse, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse
+from ..schemas import CreateListingRequest, ListingResponse, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse, UpdateListingRequest
 from ..models import Listing, User, Starred, Bid, Registration, Landmark, Image
-from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining
+from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing_features, update_listing
 
 router = APIRouter()
 
@@ -223,3 +223,22 @@ def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 
     session.delete(listing)
     session.commit()
+
+
+@router.post('/{id}', response_model=ListingResponse)
+def update(id: int, req: UpdateListingRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Updates an existing listing '''
+    listing = session.query(Listing).get(id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+
+    if listing.owner_id != signed_in_user.id:
+        raise HTTPException(
+            status_code=403, detail="User cannot edit this listing") 
+    
+    listing_data = req.dict()
+    update_listing_features(listing_data)
+    update_listing(listing, listing_data)
+    session.commit()
+    return map_listing_to_response(listing, None, False, False)
