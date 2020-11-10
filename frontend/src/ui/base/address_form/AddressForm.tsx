@@ -10,6 +10,14 @@ import {
   FormControl,
 } from "@material-ui/core";
 
+export type AddressDetails = {
+  street: string;
+  suburb: string;
+  postcode: string;
+  state: string;
+  country: string;
+};
+
 // Countries and states sourced from
 // https://github.com/stefanbinder/countries-states
 export const AddressForm = observer(
@@ -21,7 +29,7 @@ export const AddressForm = observer(
     readOnly = false,
   }: {
     onChange: (value: string, field: string) => void;
-    addressData?: AddressDetails;
+    addressData: AddressDetails;
     style?: React.CSSProperties;
     className?: string;
     readOnly?: boolean;
@@ -47,7 +55,6 @@ export const AddressForm = observer(
     };
 
     const { street, suburb, postcode, state, country } = addressData;
-    console.log(addressData);
     const [states, setStates] = React.useState<Array<string>>(
       getStates(country)
     );

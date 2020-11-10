@@ -14,6 +14,7 @@ import { UserMenu } from "./user_menu/UserMenu";
 import { MinimisedSearch } from "./minimised_search/MinimisedSearch";
 import classNames from "classnames";
 import { HeaderStyles } from "./Header.css";
+import { AddressDetails } from "../address_form/AddressForm";
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -88,23 +89,9 @@ const Header: React.FC<HeaderProps> = observer(
             email: string,
             password: string,
             phone_number: string,
-            street: string,
-            suburb: string,
-            postcode: string,
-            state: string,
-            country: string
+            address: AddressDetails
           ) => {
-            store.signUp(
-              name,
-              email,
-              password,
-              phone_number,
-              street,
-              suburb,
-              postcode,
-              state,
-              country
-            );
+            store.signUp(name, email, password, phone_number, address);
           }}
         />
       </div>

@@ -8,10 +8,11 @@ import { observer } from "mobx-react";
 import { SearchPage } from "./search/main";
 import { ProfilePage } from "./profile/main";
 import { AddListingPage } from "./listing/add_listing/main";
+import { EditListingPage } from "./listing/edit_listing/main";
+import { ViewListingPage } from "./view_listing/main";
 import { BidderRegistrationPage } from "./bidder_registration/main";
 import { AuctionPage } from "./auction/main";
 import { HomePage } from "./home/main";
-import { ViewListingPage } from "./view_listing/main";
 import Header from "./ui/base/header/Header";
 import { SignInStore } from "./ui/base/header/sign_in/SignInStore";
 import { SignUpStore } from "./ui/base/header/sign_up/SignUpStore";
@@ -19,8 +20,12 @@ import { SignIn } from "./ui/base/header/sign_in/SignIn";
 import { runInAction } from "mobx";
 import { MessagesPage } from "./messages/main";
 import { ListingMessagesPage } from "./listing_messages/main";
-import { createMuiTheme, responsiveFontSizes, ThemeProvider } from "@material-ui/core/styles";
-import { ErrorPage } from './error/main';
+import {
+  createMuiTheme,
+  responsiveFontSizes,
+  ThemeProvider,
+} from "@material-ui/core/styles";
+import { ErrorPage } from "./error/main";
 
 let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);
@@ -85,6 +90,7 @@ ReactDOM.render(
                 />
                 <Route path="/listing/:id/auction" component={AuctionPage} />
                 <Route path="/listing/:id" component={ViewListingPage} />
+                <Route path="/edit/:id" component={EditListingPage} />
                 <Route
                   path="/add"
                   render={(props) => (

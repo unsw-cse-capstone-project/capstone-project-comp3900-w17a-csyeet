@@ -1,7 +1,7 @@
 import { action, runInAction } from "mobx";
 import { observable, makeObservable } from "mobx";
 import { ImageListType } from "react-images-uploading";
-import { AddressDetails } from "./listing_form/ListingForm";
+import { AddressDetails } from "../ui/base/address_form/AddressForm";
 
 export type ListingDetails = {
   id: number | null;

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ListingStore, ListingPresenter } from "../ListingPresenter";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Snackbar, Typography } from "@material-ui/core";
 import { ListingForm } from "../listing_form/ListingForm";
 import { PreviewListing } from "../PreviewListing";
@@ -8,15 +8,13 @@ import { EditListingStyles } from "./EditListing.css";
 import MuiAlert from "@material-ui/lab/Alert";
 import { observer } from "mobx-react";
 
-export const EditListingPage: React.FC<{ listing_id: number }> = ({
-  listing_id,
-}) => {
+export const EditListingPage = () => {
   const presenter = new ListingPresenter();
   const store = new ListingStore();
+  const { id } = useParams<{ id: string }>();
   const [error, setError] = React.useState<boolean>(false);
-  presenter.fetchListing(store, listing_id, () => setError(true));
+  presenter.fetchListing(store, parseInt(id), () => setError(true));
   if (error) return <div>Error Fetching Listing</div>;
-
   const updateListing = (
     store: ListingStore,
     onSuccess: () => void,

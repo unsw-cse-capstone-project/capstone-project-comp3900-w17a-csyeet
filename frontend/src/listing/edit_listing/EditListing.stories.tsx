@@ -7,8 +7,8 @@ import {
   PaymentDetails,
   AuctionDetails,
   ListingDetails,
-  AddressDetails,
 } from "../ListingPresenter";
+import { AddressDetails } from "../../ui/base/address_form/AddressForm";
 
 export default {
   title: "Listing/Edit Listing",
@@ -40,7 +40,7 @@ const populateStore = action(() => {
     street: "8 Holland Street",
     suburb: "Chatswood",
     postcode: "2067",
-    state: "New South Wales",
+    state: "NSW",
     country: "Australia",
   };
   const fake_payment: PaymentDetails = {

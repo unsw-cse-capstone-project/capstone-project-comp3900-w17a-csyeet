@@ -80,7 +80,8 @@ export const OwnerHeader = ({
     history.push(`/listing/${id}/messages`);
   };
   const onEditClick = () => {
-    console.log("edit");
+    // (jenn) Can update path
+    history.push(`/edit/${id}`);
   };
   return (
     <div className={classes.listingHeader}>

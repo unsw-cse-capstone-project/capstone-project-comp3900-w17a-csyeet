@@ -17,7 +17,10 @@ import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapp
 import { DetailStore } from "./DetailPresenter";
 import { ModalWrapper } from "../../ui/base/modal_wrapper/ModalWrapper";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
-import { AddressForm } from "../../ui/base/address_form/AddressForm";
+import {
+  AddressForm,
+  AddressDetails,
+} from "../../ui/base/address_form/AddressForm";
 import { DetailStyles } from "./Detail.css";
 
 type NumberFormatCustomProps = {
@@ -63,7 +66,7 @@ export const Details: React.FC<{
     );
   });
 
-  const addressData: AddressData = {
+  const addressData: AddressDetails = {
     street: store.street,
     suburb: store.suburb,
     postcode: store.postcode,
