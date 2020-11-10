@@ -4,7 +4,7 @@ import { ProfileAvatar } from "./ProfileAvatar";
 import { action } from "@storybook/addon-actions/dist/preview";
 
 export default {
-  title: "ProfileAvatar",
+  title: "Profile/Avatar",
   component: ProfileAvatar,
 } as Meta;
 

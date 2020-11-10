@@ -1,35 +1,38 @@
 import React from "react";
 import { action } from "mobx";
-import { useStore } from "../../AuthContext";
+// import { use Store } from "../../AuthContext";
 import { DetailStore, DetailPresenter } from "./DetailPresenter";
 import { Details } from "./Details";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Snackbar } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 
 export const DetailsPage = () => {
-  const userStore = useStore();
-  if (!userStore) throw Error("User Store cannot be null");
+  // const userStore = useStore();
+  // if (!userStore) throw Error("User Store cannot be null");
   const fillDetailStore = action(() => {
-    if (!userStore.user) throw Error("User does not exit");
-    const {
-      id,
-      name,
-      // phone_number,
-      // street,
-      // suburb,
-      // postcode,
-      // state,
-      // country,
-    } = userStore.user;
-    store.id = id as number;
-    store.name = name as string;
-    store.phone_number = "0000 000 000";
+    store.id = 5;
+    store.name = "Jenn";
+    store.email = "jenn@example.com";
+    store.phone_number = "0000000000";
     store.street = "23 Holland Avenue";
     store.suburb = "CrossVill";
     store.postcode = "1234";
     store.state = "NSW";
     store.country = "Australia";
+    // if (!userStore.user) throw Error("User does not exit");
+    // const {
+    //   id,
+    //   name,
+    // email,
+    //   phone_number,
+    //   street,
+    //   suburb,
+    //   postcode,
+    //   state,
+    //   country,
+    // } = userStore.user;
+    // store.id = id as number;
+    // store.name = name as string;
     // store.phone_number = phone_number;
     // store.street = street;
     // store.suburb = suburb;
@@ -86,6 +89,7 @@ export const DetailsPage = () => {
   const [openSnack, setOpen] = React.useState<boolean>(false);
   const [status, setStatus] = React.useState<string | null>(null);
   fillDetailStore();
+  console.log(store);
   return (
     <div style={{ width: "80%", margin: "auto" }}>
       <Details

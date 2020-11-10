@@ -3,6 +3,7 @@ import { observable, action } from "mobx";
 export class DetailStore {
   id: number = 0;
   @observable name: string = "";
+  @observable email: string = "";
   @observable phone_number: string = "";
   @observable street: string = "";
   @observable suburb: string = "";
@@ -54,9 +55,16 @@ export class DetailPresenter {
   ) {
     try {
       // CHeck path when merged into master
-      const response = await fetch(`/user/${user_id}`, {
+      const response = await fetch(`/user/profile`, {
         method: "post",
         body: JSON.stringify({
+          name: store.name,
+          phone_number: store.phone_number,
+          street: store.street,
+          suburb: store.suburb,
+          postcode: store.postcode,
+          state: store.state,
+          country: store.country,
           password: store.currPasswd,
           new_password: store.newPasswd,
         }),

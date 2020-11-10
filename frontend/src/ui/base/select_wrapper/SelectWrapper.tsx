@@ -39,7 +39,7 @@ export const SelectWrapper = ({
     <div>
       <FormControl
         fullWidth
-        variant="outlined"
+        variant={readOnly ? "standard" : "outlined"}
         style={{
           minWidth: "120px",
           marginTop: "10px",

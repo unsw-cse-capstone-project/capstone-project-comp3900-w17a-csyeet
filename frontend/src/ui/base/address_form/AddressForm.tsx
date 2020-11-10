@@ -41,7 +41,7 @@ export const AddressForm = observer(
         street: "",
         suburb: "",
         postcode: "",
-        state: "",
+        state: "NSW",
         country: "Australia",
       };
     }
@@ -58,7 +58,7 @@ export const AddressForm = observer(
       for (var i = 0; i < countryStateData.length; ++i) {
         if (countryStateData[i].name === state) {
           for (var j = 0; j < countryStateData[i].states.length; ++j) {
-            newStates.push(countryStateData[i].states[j].name);
+            newStates.push(countryStateData[i].states[j].code);
           }
         }
       }
@@ -67,6 +67,7 @@ export const AddressForm = observer(
     };
 
     const { street, suburb, postcode, state, country } = addressData;
+    console.log(addressData);
     const [states, setStates] = React.useState<Array<string>>(
       getStates(country)
     );
@@ -104,6 +105,7 @@ export const AddressForm = observer(
           {/* Defaults to NSW */}
           <Grid item xs>
             <SelectWrapper
+              readOnly={readOnly}
               onChange={onChange}
               field="state"
               label="State"
@@ -116,7 +118,7 @@ export const AddressForm = observer(
           <Grid item xs={6}>
             <FormControl
               fullWidth
-              variant="outlined"
+              variant={readOnly ? "standard" : "outlined"}
               style={{
                 minWidth: "120px",
                 marginTop: "10px",

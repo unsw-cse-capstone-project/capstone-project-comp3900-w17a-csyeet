@@ -4,7 +4,7 @@ import { Blurb } from "./Blurb";
 import { action } from "@storybook/addon-actions/dist/preview";
 
 export default {
-  title: "Blurb",
+  title: "Profile/Blurb",
   component: Blurb,
 } as Meta;
 
