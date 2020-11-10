@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session, Query
 from starlette.responses import StreamingResponse
 from ..schemas import CreateListingRequest, ListingResponse, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse, UpdateListingRequest
 from ..models import Listing, User, Starred, Bid, Registration, Landmark, Image, Interaction, InteractionType
-from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing, remove_listing_from_ML_model, update_landmarks
+from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing, remove_listing_from_ML_model, update_landmarks, update_listing_in_ML_model
 
 router = APIRouter()
 
@@ -262,5 +262,8 @@ def update(id: int, req: UpdateListingRequest, signed_in_user: User = Depends(ge
 
     if req.street is not None or req.suburb is not None or req.postcode is not None or req.state is not None or req.country is not None:
         update_landmarks(listing, session)
+    if req.num_bathrooms is not None or req.num_bedrooms is not None or req.num_car_spaces is not None or req.type is not None or req.postcode is not None or req.features is not None:
+        update_listing_in_ML_model(listing)
+        
     session.commit()
     return map_listing_response(listing, signed_in_user, session)
