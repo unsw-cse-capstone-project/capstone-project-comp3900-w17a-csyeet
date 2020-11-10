@@ -260,7 +260,7 @@ def update(id: int, req: UpdateListingRequest = Depends(), signed_in_user: User 
     
     if any(x is not None for x in [req.auction_start, req.auction_end, req.reserve_price, req.account_name, req.bsb, req.account_number]) and listing.auction_start < datetime.now():
         raise HTTPException(
-            status_code=403, detail="Cannot update auction dates once auction has started")
+            status_code=403, detail="Cannot update auction details once auction has started")
     
     update_listing(listing, req)
 
