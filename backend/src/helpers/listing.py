@@ -65,13 +65,15 @@ def is_user_registered_bidder(listing: Listing, user: Optional[User], session: S
 
 
 def update_listing(listing: Listing, req: UpdateListingRequest):
-    data = req.dict()
-    for key, value in field_to_feature_map.items():
-        data[key] = value in data['features']
+    data = asdict(req)
+    if data['features'] is not None:
+        for key, value in field_to_feature_map.items():
+            data[key] = value in data['features']
     data.pop('features')
 
     for key, value in data.items():
-        setattr(listing, key, value)
+        if value is not None:
+            setattr(listing, key, value)
 
 
 def update_landmarks(listing: Listing, session: Session):

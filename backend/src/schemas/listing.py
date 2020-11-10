@@ -120,19 +120,20 @@ class AuctionResponse(BaseModel):
     bids: List[BidResponse]
 
 
-class UpdateListingRequest(BaseModel):
-    type: Optional[ListingType]
-    title: Optional[str]
-    description: Optional[str]
-    street: Optional[str]
-    suburb: Optional[str]
-    postcode: Optional[str]
-    state: Optional[str]
-    country: Optional[str]
-    num_bedrooms: Optional[int] = Field(..., ge=1)
-    num_bathrooms: Optional[int] = Field(..., ge=1)
-    num_car_spaces: Optional[int] = Field(..., ge=0)
-    auction_start: Optional[datetime]
-    auction_end: Optional[datetime]
-    features: Optional[List[Feature]]
+@dataclass
+class UpdateListingRequest:
+    type: Optional[ListingType] = Query(None)
+    title: Optional[str] = Query(None)
+    description: Optional[str] = Query(None)
+    street: Optional[str] = Query(None)
+    suburb: Optional[str] = Query(None)
+    postcode: Optional[str] = Query(None)
+    state: Optional[str] = Query(None)
+    country: Optional[str] = Query(None)
+    num_bedrooms: Optional[int] = Query(None, ge=1)
+    num_bathrooms: Optional[int] = Query(None, ge=1)
+    num_car_spaces: Optional[int] = Query(None, ge=0)
+    auction_start: Optional[datetime] = Query(None)
+    auction_end: Optional[datetime] = Query(None)
+    features: Optional[List[Feature]] = Query(None)
     
