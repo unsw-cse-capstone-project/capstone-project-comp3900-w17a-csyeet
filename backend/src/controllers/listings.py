@@ -31,7 +31,7 @@ def create(req: CreateListingRequest, signed_in_user: User = Depends(get_signed_
     session.add_all(landmarks)
 
     session.commit()
-    add_listing_to_ML_model(listing)
+    add_listing_to_ML_model(listing, session)
     return map_listing_to_response(listing, None, False, False)
 
 
@@ -243,4 +243,4 @@ def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 
     session.delete(listing)
     session.commit()
-    remove_listing_from_ML_model(listing)
+    remove_listing_from_ML_model(listing, session)
