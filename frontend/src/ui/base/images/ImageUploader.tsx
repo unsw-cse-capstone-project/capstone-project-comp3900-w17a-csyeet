@@ -49,7 +49,7 @@ export const ImageUploader: React.FC<{
           {({
             imageList,
             onImageUpload,
-            onImageRemoveAll,
+            onImageRemove,
             isDragging,
             dragProps,
           }) => (

@@ -31,7 +31,7 @@ export type Landmark = {
 };
 
 export type ListingActual = {
-  id: number | null;
+  id: number;
   owner: Owner;
   title: string;
   description: string;
@@ -44,12 +44,12 @@ export type ListingActual = {
   num_bedrooms: number;
   num_bathrooms: number;
   num_car_spaces: number;
-  auction_start: Date | null;
-  auction_end: Date | null;
+  auction_start: Date;
+  auction_end: Date;
   // reserve_price: number;
   images: string[];
   features: string[];
-  starred: boolean | null;
+  starred: boolean;
   registered_bidder: boolean;
   landmarks: Landmark[];
   highest_bid: number | null;
