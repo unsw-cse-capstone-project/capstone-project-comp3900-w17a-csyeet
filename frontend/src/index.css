@@ -17,6 +17,7 @@ code {
   overflow: hidden;
 }
 .content {
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
   height: -webkit-fill-available;
 }

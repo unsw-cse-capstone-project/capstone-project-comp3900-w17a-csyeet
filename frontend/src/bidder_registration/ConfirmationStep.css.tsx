@@ -8,7 +8,6 @@ export const confirmationStepStyle = makeStyles((theme: Theme) =>
       alignItems: "center",
       height: "100%",
       justifyContent: "center",
-      minHeight: theme.spacing(50),
     },
     text: {
       marginBottom: theme.spacing(3),

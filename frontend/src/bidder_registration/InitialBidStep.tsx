@@ -12,6 +12,10 @@ import { createPriceInput } from "../ui/base/input/PriceFormat";
 import { initialBidStepStyle } from "./InitialBidStep.css";
 import { Checkbox } from "../ui/base/input/Checkbox";
 
+/**
+ * Initial bidding step to get the initial bid and confirm
+ * terms and conditions
+ */
 export const InitialBidStep = ({
   store,
 }: {
@@ -31,7 +35,7 @@ export const InitialBidStep = ({
   const classes = initialBidStepStyle();
   return (
     <div className={classes.container}>
-      <Typography variant="body1" style={{ marginBottom: "20px" }}>
+      <Typography variant="body1" align="center" style={{ marginBottom: "20px" }}>
         Submit the initial amount you want to bid for this property
       </Typography>
       <FormControl fullWidth variant="outlined">
@@ -41,7 +45,6 @@ export const InitialBidStep = ({
           startAdornment={<InputAdornment position="start">$</InputAdornment>}
           labelWidth={60}
           inputComponent={InputComponent as any}
-          aria-describedby="helper-text"
         />
       </FormControl>
       <Checkbox

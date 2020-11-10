@@ -1,6 +1,6 @@
 from datetime import datetime
 from dataclasses import asdict
-from typing import Optional, List, Set
+from typing import Optional, List, Set, Dict
 from functools import reduce
 from itertools import count
 import numpy as np
@@ -8,9 +8,9 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.neighbors import NearestNeighbors
 from sqlalchemy.orm import Session
-from fastapi_sqlalchemy import db
 from ..schemas import field_to_feature_map, ListingType, Feature, SearchListingsRequest
 from ..models import Interaction, InteractionType, Listing, User
+from .common import session_maker
 from .listing import get_field_for_feature
 from .geolocation import convert_address_to_postcode
 
@@ -34,7 +34,7 @@ def filter_similarity_fields(listing_dict: dict) -> dict:
 
 
 db_data = []
-data_index_by_id = {}
+data_index_by_id: Dict[int, int] = {}
 data_frame: pd.DataFrame = None
 one_hot_encoded_types: pd.DataFrame = None
 # scales all values down to the range [-1, 1]
@@ -43,52 +43,54 @@ nn = NearestNeighbors()
 
 
 def initialise_ML_model():
-    with db():
+    with session_maker.context_session() as session:
+        session: Session
         # don't recommend closed listings
         global db_data
-        db_data = db.session.query(Listing) \
+        db_data = session.query(Listing) \
             .filter(Listing.auction_end > datetime.now()) \
             .all()
-    train_model()
+        train_model(session)
 
 
-def add_listing_to_ML_model(listing: Listing):
+def add_listing_to_ML_model(listing: Listing, session: Session):
     global db_data
     db_data.append(listing)
-    train_model()
+    train_model(session)
 
 
 def get_listing_index_in_data(listing: Listing) -> Optional[int]:
-    return next((i for i, el in enumerate(db_data) if el.id == listing.id), None)
+    return data_index_by_id.get(listing.id)
 
 
-def update_listing_in_ML_model(listing: Listing):
+def update_listing_in_ML_model(listing: Listing, session: Session):
     global db_data
     index = get_listing_index_in_data(listing)
     if index is not None:
         db_data[index] = listing
-        train_model()
+        train_model(session)
 
 
-def remove_listing_from_ML_model(listing: Listing):
+def remove_listing_from_ML_model(listing: Listing, session: Session):
     global db_data
     # listing may have changed so remove it by id
     index = get_listing_index_in_data(listing)
     if index is not None:
         del db_data[index]
-        train_model()
+        train_model(session)
 
 
-def train_model():
+def train_model(session: Session):
     if len(db_data) == 0:
         return  # no listings to suggest
 
     global data_index_by_id, data_frame, one_hot_encoded_types
     filtered_data = []
-    for index, row in enumerate(db_data):
-        row_dict = asdict(row)
-        data_index_by_id[row_dict['id']] = index
-        filtered_data.append(filter_similarity_fields(row_dict))
+    for index, listing in enumerate(db_data):
+        # listings from a previous session need to be refreshed before serialisation
+        listing_dict = asdict(session.merge(listing))
+        data_index_by_id[listing_dict['id']] = index
+        filtered_data.append(filter_similarity_fields(listing_dict))
     data_frame = pd.DataFrame.from_dict(filtered_data)
 
     # add rows to data where enum value not present - set all other fields to 0
@@ -137,13 +139,12 @@ def convert_interactions(interactions: List[Interaction], users_country: str):
             postcode_value = data_frame['postcode'].median()
             queried_location: str = interaction.search_query["location"]
             if queried_location:
-                postcode_value = queried_location
                 # if the user didn't query a postcode, try convert it to one
                 if not queried_location.isdigit():
                     # assist the geocoding by adding the user's country
                     restricted_location = f'{queried_location}, {users_country}'
                     potential_postcode = convert_address_to_postcode(restricted_location)  # nopep8
-                    if potential_postcode.isdigit():
+                    if potential_postcode and potential_postcode.isdigit():
                         postcode_value = potential_postcode
             column_mapping['postcode'] = postcode_value
 
