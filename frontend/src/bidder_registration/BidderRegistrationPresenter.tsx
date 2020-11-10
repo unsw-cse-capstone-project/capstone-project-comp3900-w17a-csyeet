@@ -1,6 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
-import { getListingFromResult } from '../ui/util/helper';
+import { getListingFromResult } from "../ui/util/helper";
 export class BidderRegistrationStore {
   @observable
   initialBid: number = 0;
@@ -32,6 +32,11 @@ export class BidderRegistrationStore {
 }
 
 export class BidderRegistrationPresenter {
+  /**
+   * Load listing information for the bidding page
+   * @param store 
+   * @param listing_id 
+   */
   @action
   async loadInformation(store: BidderRegistrationStore, listing_id: number) {
     store.loadingState = "loading";
@@ -41,7 +46,6 @@ export class BidderRegistrationPresenter {
       if ("detail" in result) {
         // handle error
         runInAction(() => (store.loadingState = "error"));
-        console.log("error " + result.detail);
       } else {
         const results: ListingActual = getListingFromResult(result);
 
@@ -55,6 +59,11 @@ export class BidderRegistrationPresenter {
     }
   }
 
+  /**
+   * Submit bidder registration
+   * @param store 
+   * @param afterSubmit 
+   */
   @action
   async submit(store: BidderRegistrationStore, afterSubmit: () => void) {
     store.submitState = "submitting";

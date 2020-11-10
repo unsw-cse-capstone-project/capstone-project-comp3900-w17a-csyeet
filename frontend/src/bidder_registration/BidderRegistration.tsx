@@ -99,7 +99,7 @@ export const BidderRegistration = observer(
     const history = useHistory();
     return (
       <div>
-        <Stepper activeStep={activeStep} alternativeLabel>
+        <Stepper activeStep={activeStep} alternativeLabel className={classes.stepper}>
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
@@ -110,7 +110,6 @@ export const BidderRegistration = observer(
           <div className={classes.body}>
             {getStepContent(activeStep)}
             <div>
-              <div>
                 <Button
                   disabled={activeStep === 0}
                   onClick={handleBack}
@@ -128,7 +127,6 @@ export const BidderRegistration = observer(
                 >
                   {activeStep === steps.length - 1 ? "Confirm" : "Next"}
                 </Button>
-              </div>
             </div>
           </div>
         )}
@@ -136,20 +134,14 @@ export const BidderRegistration = observer(
           TransitionComponent={Transition}
           keepMounted
           open={openModal}
-          onClose={() => setOpenModal(false)}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle id="alert-dialog-slide-title">Registration</DialogTitle>
+          <DialogTitle>Registration</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
+            <DialogContentText>
               You have successfully registered as a bidder
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpenModal(false)} color="primary">
-              Cancel
-            </Button>
             <Button
               onClick={() => history.push(`/listing/${listingId}`)}
               color="primary"
