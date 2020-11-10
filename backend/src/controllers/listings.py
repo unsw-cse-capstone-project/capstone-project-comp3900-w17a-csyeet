@@ -258,11 +258,13 @@ def update(id: int, req: UpdateListingRequest = Depends(), signed_in_user: User 
         raise HTTPException(
             status_code=403, detail="User cannot edit this listing") 
     
+    if any(x is not None for x in [req.auction_start, req.auction_end, req.reserve_price, req.account_name, req.bsb, req.account_number]) and listing.auction_start < datetime.now():
+        raise HTTPException(
+            status_code=403, detail="Cannot update auction dates once auction has started")
+    
     update_listing(listing, req)
 
-    if req.street is not None or req.suburb is not None or req.postcode is not None or req.state is not None or req.country is not None:
-        update_landmarks(listing, session)
-    if req.num_bathrooms is not None or req.num_bedrooms is not None or req.num_car_spaces is not None or req.type is not None or req.postcode is not None or req.features is not None:
+    if any(x is not None for x in [req.num_bathrooms, req.num_bedrooms, req.num_car_spaces, req.type, req.features]):
         update_listing_in_ML_model(listing)
         
     session.commit()
