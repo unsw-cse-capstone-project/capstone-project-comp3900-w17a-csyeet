@@ -1,5 +1,7 @@
 alembic==1.4.3
 astroid==2.4.2
+async-exit-stack==1.0.1
+async-generator==1.10
 autopep8==1.5.4
 certifi==2020.6.20
 chardet==3.0.4
@@ -10,7 +12,6 @@ dataclasses==0.7
 dnspython==2.0.0
 email-validator==1.1.1
 fastapi==0.61.1
-FastAPI-SQLAlchemy==0.1.0
 fastapi-utils==0.2.1
 geographiclib==1.50
 geopy==2.0.0
