@@ -80,6 +80,9 @@ def remove_listing_from_ML_model(listing: Listing):
 
 
 def train_model():
+    if len(db_data) == 0:
+        return  # no listings to suggest
+
     global data_index_by_id, data_frame, one_hot_encoded_types
     filtered_data = []
     for index, row in enumerate(db_data):
@@ -139,7 +142,9 @@ def convert_interactions(interactions: List[Interaction], users_country: str):
                 if not queried_location.isdigit():
                     # assist the geocoding by adding the user's country
                     restricted_location = f'{queried_location}, {users_country}'
-                    postcode_value = convert_address_to_postcode(restricted_location)  # nopep8
+                    potential_postcode = convert_address_to_postcode(restricted_location)  # nopep8
+                    if potential_postcode.isdigit():
+                        postcode_value = potential_postcode
             column_mapping['postcode'] = postcode_value
 
             requested_features = interaction.search_query['features'] or []
@@ -165,6 +170,9 @@ def convert_interactions(interactions: List[Interaction], users_country: str):
 
 
 def recommend_from_interactions(user: User, session: Session) -> List[Listing]:
+    if len(db_data) == 0:
+        return []  # no listings to suggest
+
     # fetch the user's most recent interactions
     interactions = session.query(Interaction) \
         .filter_by(user_id=user.id) \
