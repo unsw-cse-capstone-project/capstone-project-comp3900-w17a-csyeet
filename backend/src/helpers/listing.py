@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session
 from ..schemas import ListingResponse, Feature, field_to_feature_map, UpdateListingRequest
 from ..models import Listing, User, Starred, Registration
 from .bid import get_highest_bid
-from .landmark import find_nearby_landmarks
 
 
 def encode_continuation(results: List[Listing], limit: int) -> Optional[str]:
@@ -74,9 +73,3 @@ def update_listing(listing: Listing, req: UpdateListingRequest):
     for key, value in data.items():
         if value is not None:
             setattr(listing, key, value)
-
-
-def update_landmarks(listing: Listing, session: Session):
-    session.delete(listing.landmarks)
-    landmarks = find_nearby_landmarks(listing)
-    session.add_all(landmarks)
