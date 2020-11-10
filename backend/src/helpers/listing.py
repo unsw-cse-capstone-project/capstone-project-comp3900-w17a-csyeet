@@ -65,7 +65,7 @@ def is_user_registered_bidder(listing: Listing, user: Optional[User], session: S
 
 
 def update_listing(listing: Listing, req: UpdateListingRequest):
-    data = asdict(req)
+    data = req.dict()
     if data['features'] is not None:
         for key, value in field_to_feature_map.items():
             data[key] = value in data['features']

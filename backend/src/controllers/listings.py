@@ -247,7 +247,7 @@ def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 
 
 @router.post('/{id}', response_model=ListingResponse)
-def update(id: int, req: UpdateListingRequest = Depends(), signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+def update(id: int, req: UpdateListingRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Updates an existing listing '''
     listing = session.query(Listing).get(id)
     if listing is None:
