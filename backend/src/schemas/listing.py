@@ -118,3 +118,8 @@ class SearchListingsResponse(BaseModel):
 class AuctionResponse(BaseModel):
     bidders: List[int]
     bids: List[BidResponse]
+
+
+class UploadImageResponse(BaseModel):
+    ids: List[int]
+    
