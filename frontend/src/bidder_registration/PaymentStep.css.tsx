@@ -8,7 +8,6 @@ export const paymentStepStyle = makeStyles((theme: Theme) =>
       alignItems: "center",
       height: "100%",
       justifyContent: "center",
-      minHeight: theme.spacing(50),
     },
     currentBid: {
       margin: theme.spacing(4, 0),

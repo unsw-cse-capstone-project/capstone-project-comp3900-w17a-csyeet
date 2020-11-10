@@ -4,6 +4,9 @@ import { Typography } from "@material-ui/core";
 import { BidPrice } from "../ui/base/bid_price/BidPrice";
 import { confirmationStepStyle } from "./ConfirmationStep.css";
 
+/**
+ * Confirmation step with the bidding price
+ */
 export const ConfirmationStep = ({
   store,
 }: {

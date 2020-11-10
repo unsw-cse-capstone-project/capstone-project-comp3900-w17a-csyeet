@@ -14,7 +14,11 @@ import ReactPlaceholder from "react-placeholder/lib";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useStore } from "../AuthContext";
 import { BackButton } from "../ui/base/back_button/BackButton";
+import { ErrorPage } from "../error/main";
 
+/**
+ * Bidder registration page component
+ */
 export const BidderRegistrationPage = () => {
   const { id } = useParams<{ id: string }>();
   const store = new BidderRegistrationStore();
@@ -47,11 +51,7 @@ export const BidderRegistrationWrapper = observer(
       return null;
     }
 
-    const HeaderOnlyContainer = ({
-      Content,
-    }: {
-      Content: React.ComponentType;
-    }) => {
+    const LoadingState = () => {
       const classes = BidderRegistrationStyle();
       return (
         <div className={classes.root}>
@@ -61,31 +61,21 @@ export const BidderRegistrationWrapper = observer(
               onClick={() => history.push(`/listing/${id}`)}
               text="Back to Listing"
             />
-            <Content />
+            <ReactPlaceholder
+              showLoadingAnimation={true}
+              type="text"
+              ready={false}
+            >
+              {null}
+            </ReactPlaceholder>
           </div>
         </div>
       );
     };
 
     if (store.loadingState === "loading") {
-      const Content = () => (
-        <ReactPlaceholder showLoadingAnimation={true} type="text" ready={false}>
-          {null}
-        </ReactPlaceholder>
-      );
-      return <HeaderOnlyContainer Content={Content} />;
+      return <LoadingState />;
     }
-
-    const Content = ({ message }: { message: string }) => (
-      <Snackbar
-        open={true}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <MuiAlert elevation={6} severity="error">
-          {message}
-        </MuiAlert>
-      </Snackbar>
-    );
 
     if (
       store.loadingState === "error" ||
@@ -93,13 +83,7 @@ export const BidderRegistrationWrapper = observer(
       !userStore ||
       !userStore.user
     ) {
-      return (
-        <HeaderOnlyContainer
-          Content={() => (
-            <Content message="Error while loading the page, please try again" />
-          )}
-        />
-      );
+      return <ErrorPage />;
     }
 
     const BidderRego = () => (
@@ -146,6 +130,17 @@ export const BidderRegistrationWrapper = observer(
         </div>
       );
     };
+
+    const Content = ({ message }: { message: string }) => (
+      <Snackbar
+        open={true}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <MuiAlert elevation={6} severity="error">
+          {message}
+        </MuiAlert>
+      </Snackbar>
+    );
 
     if (owner.id === userStore.user.id) {
       return (

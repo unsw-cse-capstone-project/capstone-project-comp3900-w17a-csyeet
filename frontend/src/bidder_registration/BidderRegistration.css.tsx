@@ -10,6 +10,7 @@ export const BidderRegistrationStyle = makeStyles((theme: Theme) =>
     },
     main: {
       display: "flex",
+      height: "100%",
       flexDirection: "column",
       boxSizing: "border-box",
     },
@@ -23,6 +24,9 @@ export const BidderRegistrationStyle = makeStyles((theme: Theme) =>
     body: {
       flexGrow: 1,
       display: "flex",
+      height: "100%",
+      boxSizing: "border-box",
+      paddingBottom: theme.spacing(15),
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "space-between",
@@ -34,6 +38,12 @@ export const BidderRegistrationStyle = makeStyles((theme: Theme) =>
     },
     backToListingButton: {
       marginBottom: theme.spacing(2),
+    },
+    stepper: {
+      [theme.breakpoints.only("xs")]: {
+        paddingLeft: 0,
+        paddingRight: 0,
+      },
     },
   })
 );
