@@ -137,13 +137,12 @@ def convert_interactions(interactions: List[Interaction], users_country: str):
             postcode_value = data_frame['postcode'].median()
             queried_location: str = interaction.search_query["location"]
             if queried_location:
-                postcode_value = queried_location
                 # if the user didn't query a postcode, try convert it to one
                 if not queried_location.isdigit():
                     # assist the geocoding by adding the user's country
                     restricted_location = f'{queried_location}, {users_country}'
                     potential_postcode = convert_address_to_postcode(restricted_location)  # nopep8
-                    if potential_postcode.isdigit():
+                    if potential_postcode and potential_postcode.isdigit():
                         postcode_value = potential_postcode
             column_mapping['postcode'] = postcode_value
 
