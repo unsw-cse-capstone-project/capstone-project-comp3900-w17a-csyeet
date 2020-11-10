@@ -59,7 +59,6 @@ export const AuctionDetails: React.FC<{
     const strippedPrice: string = e.target.value.split(",").join("");
     setReservePrice(strippedPrice);
     (store as any).auction.reserve_price = parseInt(strippedPrice);
-    console.log(store.auction.reserve_price);
   });
 
   const handleDateChange = action((value: DateRange<Date>) => {
@@ -83,7 +82,7 @@ export const AuctionDetails: React.FC<{
         <>
           <Paper className={classes.dateContainer}>
             <Typography variant="body1" align="center">
-              {auction_start.toDateString()} 9:00AM -
+              {auction_start.toDateString()} 9:00AM{" - "}
               {auction_end.toDateString()} 5:00PM
             </Typography>
           </Paper>

@@ -1,5 +1,5 @@
 import React from "react";
-import { ListingStore } from "./ListingStore";
+import { ListingStore } from "./ListingPresenter";
 import {
   Typography,
   Button,
@@ -46,24 +46,24 @@ export const PreviewListing = observer(
     const listing: ListingActual = {
       id: -1,
       owner: userStore.user,
-      title: store.descTitle,
-      description: store.desc,
-      num_bathrooms: parseInt(store.nBathrooms),
-      num_bedrooms: parseInt(store.nBedrooms),
-      num_car_spaces: parseInt(store.nGarages),
-      type: store.type,
-      street: toCapitaliseCase(store.street),
-      suburb: toCapitaliseCase(store.suburb),
-      state: store.state
+      title: store.listing.title,
+      description: store.listing.description,
+      num_bathrooms: store.listing.num_bathrooms,
+      num_bedrooms: store.listing.num_bedrooms,
+      num_car_spaces: store.listing.num_car_spaces,
+      type: store.listing.type,
+      street: toCapitaliseCase(store.listing.street),
+      suburb: toCapitaliseCase(store.listing.suburb),
+      state: store.listing.state
         .split(" ")
         .map((word) => word[0])
         .join(""),
-      country: store.country,
-      postcode: store.postcode,
-      auction_start: store.auctionStart as Date,
-      auction_end: store.auctionEnd as Date,
-      images: store.images.map((image) => image.data_url || ""),
-      features: store.features,
+      country: store.listing.country,
+      postcode: store.listing.postcode,
+      auction_start: store.listing.auction_start as Date,
+      auction_end: store.listing.auction_end as Date,
+      images: store.imageList.map((image) => image.data_url || ""),
+      features: store.listing.features,
       starred: false,
       registered_bidder: false,
       reserve_met: false,
@@ -74,15 +74,24 @@ export const PreviewListing = observer(
     const onClick = () => {
       setSubmitting(true);
       onPublish();
-    }
+    };
 
     const classes = PreviewListingStyle();
     return (
       <div>
         <div className={classes.header}>
-          <BackButton className={classes.backToEditingButton} onClick={onBack} text="Back" />
-          <Button variant={"contained"} disabled={isSubmitting} color={"primary"} onClick={onClick}>
-            {isSubmitting? <CircularProgress size="small" />: "Publish"}
+          <BackButton
+            className={classes.backToEditingButton}
+            onClick={onBack}
+            text="Back"
+          />
+          <Button
+            variant={"contained"}
+            disabled={isSubmitting}
+            color={"primary"}
+            onClick={onClick}
+          >
+            {isSubmitting ? <CircularProgress size="small" /> : "Publish"}
           </Button>
         </div>
         <ListingPage
@@ -98,4 +107,3 @@ export const PreviewListing = observer(
     );
   }
 );
-

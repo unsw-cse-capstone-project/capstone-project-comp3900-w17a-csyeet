@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ListingStore, ListingPresenter } from "../ListingPresenter";
 import { useHistory } from "react-router-dom";
-import { Snackbar } from "@material-ui/core";
+import { Snackbar, Typography } from "@material-ui/core";
 import { ListingForm } from "../listing_form/ListingForm";
 import { PreviewListing } from "../PreviewListing";
 import { EditListingStyles } from "./EditListing.css";
@@ -87,11 +87,14 @@ export const EditListingPageBase = observer(
       <div className={classes.root}>
         <div className={classes.main}>
           {isEditing ? (
-            <ListingForm
-              store={store}
-              onBack={() => history.push("/")}
-              onPreview={() => setIsEditing(false)}
-            />
+            <>
+              <Typography variant="h3">Edit Listing</Typography>
+              <ListingForm
+                store={store}
+                onBack={() => history.push("/")}
+                onPreview={() => setIsEditing(false)}
+              />
+            </>
           ) : (
             <PreviewListing
               store={store}

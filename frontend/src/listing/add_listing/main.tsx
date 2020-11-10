@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ListingStore, ListingPresenter } from "../ListingPresenter";
 import { useHistory } from "react-router-dom";
-import { Snackbar } from "@material-ui/core";
+import { Snackbar, Typography } from "@material-ui/core";
 import { ListingForm } from "../listing_form/ListingForm";
 import { PreviewListing } from "../PreviewListing";
 import { AddListingStyles } from "./AddListing.css";
@@ -9,7 +9,7 @@ import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import { observer } from "mobx-react";
 
 function Alert(props: AlertProps) {
-  return <MuiAlert  variant="filled" {...props} />;
+  return <MuiAlert variant="filled" {...props} />;
 }
 
 export const AddListingPage = () => {
@@ -38,7 +38,7 @@ export const AddListingPageBase = observer(
         () => {
           setOpen(true);
           setStatus("success");
-          history.push("/listing/" + store.id);
+          history.push("/listing/" + store.listing.id);
         },
         () => {
           setOpen(true);
@@ -65,11 +65,14 @@ export const AddListingPageBase = observer(
         <div className={classes.root}>
           <div className={classes.main}>
             {isEditing ? (
-              <ListingForm
-                store={store}
-                onBack={() => history.push("/")}
-                onPreview={() => setIsEditing(false)}
-              />
+              <>
+                <Typography variant="h3">Add Listing</Typography>
+                <ListingForm
+                  store={store}
+                  onBack={() => history.push("/")}
+                  onPreview={() => setIsEditing(false)}
+                />
+              </>
             ) : (
               <PreviewListing
                 store={store}

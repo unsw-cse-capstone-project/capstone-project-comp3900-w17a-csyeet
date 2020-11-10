@@ -52,12 +52,8 @@ export const Details: React.FC<{
   const propertyTypes = ["Apartment", "Duplex", "House", "Studio", "Townhouse"];
 
   const onChange = (value: string, field: string) => {
-<<<<<<< HEAD
-    runInAction(() => ((store as any).listing[field] = value));
-=======
     console.log("OnChange ", field, "new", value);
-    runInAction(() => ((store as any)[field] = value));
->>>>>>> master
+    runInAction(() => ((store as any).listing[field] = value));
   };
 
   const getAddressData = computed(() => {
@@ -124,7 +120,7 @@ export const Details: React.FC<{
             </div>
             <TextFieldWrapper
               field="num_car_spaces"
-              label="Car Spaces(s)"
+              label="Garages(s)"
               type="number"
               onChange={onChange}
               value={num_car_spaces.toString()}

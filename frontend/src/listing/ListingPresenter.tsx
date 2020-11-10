@@ -2,7 +2,7 @@ import { action, runInAction } from "mobx";
 import { observable, makeObservable } from "mobx";
 import { ImageListType } from "react-images-uploading";
 
-export type ListingDetails = { 
+export type ListingDetails = {
   id: number | null;
   title: string;
   description: string;
@@ -35,7 +35,7 @@ export type PaymentDetails = {
 
 const getListingFromResult = (result: any) => ({
   id: parseInt(result.id),
-  type: result.type, 
+  type: result.type,
   title: result.title,
   description: result.description,
   street: result.street,
@@ -48,7 +48,9 @@ const getListingFromResult = (result: any) => ({
   num_car_spaces: parseInt(result.num_car_spaces),
   auction_start: new Date(result.auction_start),
   auction_end: new Date(result.auction_end),
-  images: result["image_ids"].map((id: any) => `/listings/${result.id}/images/${id}`);
+  images: result["image_ids"].map(
+    (id: any) => `/listings/${result.id}/images/${id}`
+  ),
   features: result.features,
 });
 
@@ -96,6 +98,8 @@ export class ListingStore {
     reserve_price: null,
   };
 
+  @observable imageList: ImageListType = [];
+
   constructor() {
     makeObservable(this);
   }
@@ -132,7 +136,6 @@ export class ListingPresenter {
   @action
   async publishListing(
     store: ListingStore,
-    imageList: ImageListType, 
     onSuccess: () => void,
     onError: () => void
   ) {
@@ -172,7 +175,7 @@ export class ListingPresenter {
 
       let form = new FormData();
       const data = await Promise.all(
-        imageList.map((image) =>
+        store.imageList.map((image) =>
           (image.file as any).arrayBuffer().then((buffer: any) => ({
             data: buffer,
             type: (image.file as any).type,

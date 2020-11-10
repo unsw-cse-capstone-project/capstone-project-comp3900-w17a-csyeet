@@ -37,7 +37,7 @@ export const PaymentDetails: React.FC<{ store: ListingStore }> = observer(
         />
         {BSBError && (
           <FormHelperText style={{ color: "red" }}>
-            BSB must be in the format 123456
+            BSB must be 6 numbers
           </FormHelperText>
         )}
         <TextFieldWrapper
@@ -54,7 +54,7 @@ export const PaymentDetails: React.FC<{ store: ListingStore }> = observer(
         />
         {AccNoError && (
           <FormHelperText style={{ color: "red" }}>
-            Account Number must be in the format 12345678
+            Account Number must be 8 numbers
           </FormHelperText>
         )}
       </>

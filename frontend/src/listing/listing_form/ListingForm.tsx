@@ -79,7 +79,7 @@ export const ListingForm = observer(
         store.listing.type !== ""
     );
 
-    const completedStep1 = computed(() => store.images.length > 0);
+    const completedStep1 = computed(() => store.listing.images.length > 0);
 
     const completedStep2 = computed(
       () => store.listing.title !== "" && store.listing.description !== ""
@@ -89,7 +89,7 @@ export const ListingForm = observer(
       () =>
         store.auction.auction_start !== null &&
         store.auction.auction_end !== null &&
-        store.auction.reserve_price !== 0
+        store.auction.reserve_price !== ""
     );
 
     const completedStep4 = computed(
@@ -144,7 +144,6 @@ export const ListingForm = observer(
                 Preview
               </Button>
             </div>
-            <Typography variant="h3">Add Listing</Typography>
           </div>
           <Stepper alternativeLabel nonLinear activeStep={activeStep}>
             {steps.map((label, index) => {
