@@ -21,7 +21,6 @@ export const Details: React.FC<{
   const [open, setOpen] = React.useState<boolean>(false);
   const [readOnly, setReadOnly] = React.useState<boolean>(true);
   const [passTooShort, setPassTooShort] = React.useState<boolean>(false);
-  const [passIncorrect, setPassIncorrect] = React.useState<boolean>(false);
   const [passMatchError, setPassMatchError] = React.useState<boolean>(false);
   const [phoneError, setPhoneError] = React.useState<boolean>(false);
 
@@ -120,11 +119,6 @@ export const Details: React.FC<{
           label="Current Password"
           onChange={onChange}
         />
-        {passIncorrect && (
-          <FormHelperText style={{ color: "red" }}>
-            Password incorrect, could not change password
-          </FormHelperText>
-        )}
         <Password
           field="newPasswd"
           label="New Password"
