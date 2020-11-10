@@ -1,8 +1,8 @@
 import * as React from "react";
 import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
-import ReactPlaceholder from 'react-placeholder/lib';
+import ReactPlaceholder from "react-placeholder/lib";
 
-const ListingPagePlaceholderStyle = makeStyles((theme: Theme) =>
+const AuctionPagePlaceholderStyle = makeStyles((theme: Theme) =>
   createStyles({
     photoGrid: {
       [theme.breakpoints.up("md")]: {
@@ -26,48 +26,45 @@ const ListingPagePlaceholderStyle = makeStyles((theme: Theme) =>
         },
       },
     },
+    root: { display: "flex !important", flexDirection: "column" },
+    titleLoader: { height: "100px !important" },
+    leftLoader: { width: "100% !important", height: "400px !important" },
+    rightLoader: { width: "100% !important", height: "400px !important" },
   })
 );
 
-export const ListingPagePlaceholder = () => {
-  const classes = ListingPagePlaceholderStyle();
+export const AuctionPagePlaceholder = () => {
+  const classes = AuctionPagePlaceholderStyle();
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div className={classes.root}>
       <ReactPlaceholder
         type="text"
         showLoadingAnimation={true}
         ready={false}
-        style={{ height: "100px" }}
+        className={classes.titleLoader}
         rows={2}
         color="#E0E0E0"
       >
         {null}
       </ReactPlaceholder>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} lg={5} xl={4}>
           <ReactPlaceholder
             type="rect"
             showLoadingAnimation={true}
             ready={false}
-            style={{ width: "100%", height: "400px" }}
+            className={classes.leftLoader}
             color="#E0E0E0"
           >
             {null}
           </ReactPlaceholder>
         </Grid>
-        <Grid item xs={12} md={4} className={classes.photoGrid}>
+        <Grid item xs={12} lg={7} xl={8}>
           <ReactPlaceholder
             type="rect"
             showLoadingAnimation={true}
             ready={false}
-            color="#E0E0E0"
-          >
-            {null}
-          </ReactPlaceholder>
-          <ReactPlaceholder
-            type="rect"
-            showLoadingAnimation={true}
-            ready={false}
+            className={classes.rightLoader}
             color="#E0E0E0"
           >
             {null}

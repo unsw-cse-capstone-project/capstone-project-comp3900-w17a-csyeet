@@ -19,6 +19,11 @@ import { SignIn } from "./ui/base/header/sign_in/SignIn";
 import { runInAction } from "mobx";
 import { MessagesPage } from "./messages/main";
 import { ListingMessagesPage } from "./listing_messages/main";
+import { createMuiTheme, responsiveFontSizes, ThemeProvider } from "@material-ui/core/styles";
+import { ErrorPage } from './error/main';
+
+let theme = createMuiTheme();
+theme = responsiveFontSizes(theme);
 
 const ProtectedComponent = observer(
   ({
@@ -46,76 +51,77 @@ const ProtectedComponent = observer(
   }
 );
 
-const ErrorPage = () => <div>404 Page not found</div>;
 const signInStore = new SignInStore();
 const signUpStore = new SignUpStore();
 ReactDOM.render(
   <React.StrictMode>
     <div className="page">
       <BrowserRouter>
-        <AuthProvider>
-          <Header signInStore={signInStore} signUpStore={signUpStore} />
-          <div className="content" id="content">
-            <Switch>
-              <Route path="/search" component={SearchPage} />
-              <Route
-                path="/listing/:id/register"
-                render={(props) => (
-                  <ProtectedComponent
-                    {...props}
-                    signInStore={signInStore}
-                    Component={BidderRegistrationPage}
-                  />
-                )}
-              />
-              <Route
-                path="/listing/:id/messages"
-                render={(props) => (
-                  <ProtectedComponent
-                    {...props}
-                    signInStore={signInStore}
-                    Component={ListingMessagesPage}
-                  />
-                )}
-              />
-              <Route path="/listing/:id/auction" component={AuctionPage} />
-              <Route path="/listing/:id" component={ViewListingPage} />
-              <Route
-                path="/add"
-                render={(props) => (
-                  <ProtectedComponent
-                    {...props}
-                    signInStore={signInStore}
-                    Component={AddListingPage}
-                  />
-                )}
-              />
-              {/* Profile Pages */}
-              <Route
-                path="/profile"
-                render={(props) => (
-                  <ProtectedComponent
-                    {...props}
-                    signInStore={signInStore}
-                    Component={ProfilePage}
-                  />
-                )}
-              />
-              <Route
-                path="/messages"
-                render={(props) => (
-                  <ProtectedComponent
-                    {...props}
-                    signInStore={signInStore}
-                    Component={MessagesPage}
-                  />
-                )}
-              />
-              <Route exact path="/" component={HomePage} />
-              <Route component={ErrorPage} />
-            </Switch>
-          </div>
-        </AuthProvider>
+        <ThemeProvider theme={theme}>
+          <AuthProvider>
+            <Header signInStore={signInStore} signUpStore={signUpStore} />
+            <div className="content" id="content">
+              <Switch>
+                <Route path="/search" component={SearchPage} />
+                <Route
+                  path="/listing/:id/register"
+                  render={(props) => (
+                    <ProtectedComponent
+                      {...props}
+                      signInStore={signInStore}
+                      Component={BidderRegistrationPage}
+                    />
+                  )}
+                />
+                <Route
+                  path="/listing/:id/messages"
+                  render={(props) => (
+                    <ProtectedComponent
+                      {...props}
+                      signInStore={signInStore}
+                      Component={ListingMessagesPage}
+                    />
+                  )}
+                />
+                <Route path="/listing/:id/auction" component={AuctionPage} />
+                <Route path="/listing/:id" component={ViewListingPage} />
+                <Route
+                  path="/add"
+                  render={(props) => (
+                    <ProtectedComponent
+                      {...props}
+                      signInStore={signInStore}
+                      Component={AddListingPage}
+                    />
+                  )}
+                />
+                {/* Profile Pages */}
+                <Route
+                  path="/profile"
+                  render={(props) => (
+                    <ProtectedComponent
+                      {...props}
+                      signInStore={signInStore}
+                      Component={ProfilePage}
+                    />
+                  )}
+                />
+                <Route
+                  path="/messages"
+                  render={(props) => (
+                    <ProtectedComponent
+                      {...props}
+                      signInStore={signInStore}
+                      Component={MessagesPage}
+                    />
+                  )}
+                />
+                <Route exact path="/" component={HomePage} />
+                <Route component={ErrorPage} />
+              </Switch>
+            </div>
+          </AuthProvider>
+        </ThemeProvider>
       </BrowserRouter>
     </div>
   </React.StrictMode>,

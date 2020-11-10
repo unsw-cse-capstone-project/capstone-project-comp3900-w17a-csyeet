@@ -5,3 +5,4 @@ from .starred import Starred
 from .bid import Bid
 from .landmark import Landmark
 from .image import Image
+from .interaction import Interaction, InteractionType

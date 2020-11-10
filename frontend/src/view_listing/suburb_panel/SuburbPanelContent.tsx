@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SuburbPanelStore } from "./suburbPanelPresenter";
+import { SuburbPanelStore } from "./SuburbPanelPresenter";
 import { observer } from "mobx-react";
 import Tab from "@material-ui/core/Tab/Tab";
 import Tabs from "@material-ui/core/Tabs/Tabs";
@@ -12,14 +12,14 @@ import {
   Typography,
   useMediaQuery,
 } from "@material-ui/core";
-import { priceFormatter } from "../../ui/util/helper";
+import { priceFormatter, toSentenceCase } from "../../ui/util/helper";
 import ReactPlaceholder from "react-placeholder/lib/ReactPlaceholder";
 import classNames from "classnames";
 import { useTheme } from "@material-ui/core";
 import {
   SuburbPanelContentStyle,
   TabPanelStyle,
-} from "./suburbPanelContent.css";
+} from "./SuburbPanelContent.css";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -32,10 +32,8 @@ function TabPanel(props: TabPanelProps) {
   const classes = TabPanelStyle();
   return (
     <div
-      role="tabpanel"
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
       {...other}
       style={{ width: "100%" }}
     >
@@ -48,6 +46,9 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
+/**
+ * Component that populates the suburb statistics into a tabbed form
+ */
 export const SuburbPanelContent = observer(
   ({ store }: { store: SuburbPanelStore }) => {
     const classes = SuburbPanelContentStyle();
@@ -60,15 +61,9 @@ export const SuburbPanelContent = observer(
     }
     if (store.loadingState === "loading") {
       return (
-        <div>
-          <ReactPlaceholder
-            showLoadingAnimation={true}
-            type="text"
-            ready={false}
-          >
-            {null}
-          </ReactPlaceholder>
-        </div>
+        <ReactPlaceholder showLoadingAnimation={true} type="text" ready={false}>
+          {null}
+        </ReactPlaceholder>
       );
     }
     if (store.loadingState === "error") {
@@ -82,10 +77,6 @@ export const SuburbPanelContent = observer(
     const handleChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
       setValue(newValue);
     };
-
-    const convertToCapitalisedForm = (label: string) =>
-      label.replace(/([A-Z])/g, " $1")[0].toUpperCase() +
-      label.replace(/([A-Z])/g, " $1").slice(1);
 
     return (
       <div className={classes.root}>
@@ -116,7 +107,7 @@ export const SuburbPanelContent = observer(
                             k === "numberOfAuctionWithdrawn",
                         })}
                       >
-                        <b>{convertToCapitalisedForm(k)}</b>
+                        <b>{toSentenceCase(k)}</b>
                       </TableCell>
                       <TableCell
                         align="right"

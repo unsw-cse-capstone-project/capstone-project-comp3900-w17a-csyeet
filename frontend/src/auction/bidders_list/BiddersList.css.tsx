@@ -7,14 +7,11 @@ export const biddersListStyle = makeStyles((theme: Theme) =>
       justifyContent: "space-between",
       margin: theme.spacing(2, 0),
     },
-    bidTime: {
+    you: {
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "flex-end",
-    },
-    youLabel: {
-      color: theme.palette.info.main,
     },
     divider: {
       border: theme.palette.grey[700] + " solid 1px ",

@@ -2,6 +2,10 @@ import Button from "@material-ui/core/Button/Button";
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 
+/**
+ * Component that determines what action can be done
+ * given auction_start and registered_bidder
+ */
 export const AuctionActionButton = ({
   id,
   auction_start,
@@ -18,6 +22,7 @@ export const AuctionActionButton = ({
     <Button
       variant="outlined"
       color="primary"
+      style={{ marginTop: "8px" }}
       onClick={() => history.push(`/listing/${id}/auction`)}
     >
       View Auction
@@ -27,7 +32,7 @@ export const AuctionActionButton = ({
     <Button
       variant="outlined"
       color="primary"
-      style={{ marginTop: "15px" }}
+      style={{ marginTop: "8px" }}
       onClick={() => history.push(`/listing/${id}/register`)}
     >
       Register to Bid

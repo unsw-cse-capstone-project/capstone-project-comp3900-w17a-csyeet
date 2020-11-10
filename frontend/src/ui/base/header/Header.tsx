@@ -9,9 +9,11 @@ import { SignUpStore } from "./sign_up/SignUpStore";
 import { SignIn } from "./sign_in/SignIn";
 import { SignUp } from "./sign_up/SignUp";
 import { useStore } from "../../../AuthContext";
-import { useTheme } from "@material-ui/core";
+import { Hidden } from "@material-ui/core";
 import { UserMenu } from "./user_menu/UserMenu";
 import { MinimisedSearch } from "./minimised_search/MinimisedSearch";
+import classNames from "classnames";
+import { HeaderStyles } from "./Header.css";
 
 export interface HeaderProps {
   signInStore: SignInStore;
@@ -22,7 +24,7 @@ const Header: React.FC<HeaderProps> = observer(
   ({ signInStore, signUpStore }) => {
     const history = useHistory();
     const store = useStore();
-    const theme = useTheme();
+    const classes = HeaderStyles();
     if (!store) throw Error("Store should never be null");
     const openSignUpModal = action(() => {
       signUpStore.open = true;
@@ -34,16 +36,7 @@ const Header: React.FC<HeaderProps> = observer(
     const isHome = location.pathname === "/";
     const isSearch = location.pathname.startsWith("/search");
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: isHome ? "flex-end" : "space-between",
-          verticalAlign: "center",
-          alignItems: "center",
-          paddingBottom: theme.spacing(0.5),
-          backgroundColor: isHome ? "#f3f4f5" : "white",
-        }}
-      >
+      <div className={classNames(classes.root, { [classes["home"]]: isHome })}>
         {!isHome && <Logo size="small" onClick={() => history.push("/")} />}
         {!store.user ? (
           <div>
@@ -59,31 +52,26 @@ const Header: React.FC<HeaderProps> = observer(
               size="small"
               variant="contained"
               color="primary"
-              style={{ margin: "15px" }}
+              className={classes.signUpButton}
               onClick={openSignUpModal}
             >
               Sign Up
             </Button>
           </div>
         ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "10px",
-            }}
-          >
-            {!isSearch && <MinimisedSearch />}
-            <Button
-              variant={"contained"}
-              color={"secondary"}
-              size="medium"
-              style={{ marginRight: "12px" }}
-              onClick={() => history.push("/add")}
-            >
-              Add Listing
-            </Button>
+          <div className={classes.loggedInHeader}>
+            <Hidden only="xs">{!isSearch && <MinimisedSearch />}</Hidden>
+            <Hidden only="xs">
+              <Button
+                variant={"contained"}
+                color={"secondary"}
+                size="medium"
+                className={classes.addListingButton}
+                onClick={() => history.push("/add")}
+              >
+                Add Listing
+              </Button>
+            </Hidden>
             <UserMenu />
           </div>
         )}

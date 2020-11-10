@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Fab, IconButton } from "@material-ui/core";
+import { Button, Fab } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import PublishIcon from "@material-ui/icons/Publish";
 import AddAPhotoOutlinedIcon from "@material-ui/icons/AddAPhotoOutlined";
@@ -25,11 +25,15 @@ export const AvatarStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const ProfileAvatar: React.FC<{
+export const ProfileAvatar = ({
+  avatar = "",
+  onUpload,
+  className,
+}: {
   onUpload: (image: File, img_url: string) => void;
   avatar?: string;
   className?: string;
-}> = ({ avatar = "", onUpload, className }) => {
+}) => {
   const mode: boolean = avatar === "" ? true : false;
   const [edit, setEdit] = React.useState<boolean>(mode);
   const classes = AvatarStyles();
@@ -53,7 +57,10 @@ export const ProfileAvatar: React.FC<{
             }}
             alt="uploaded-profile-img"
           />
-          <Fab size="small" color="secondary" aria-label="Edit"
+          <Fab
+            size="small"
+            color="secondary"
+            aria-label="Edit"
             onClick={() => setEdit(true)}
             style={{
               position: "absolute",
@@ -63,29 +70,21 @@ export const ProfileAvatar: React.FC<{
           >
             <EditIcon fontSize={"small"} />
           </Fab>
-          {/* <Button
-            size={"small"}
-            
-            onClick={() => setEdit(true)}
-            
-          >
-            Edit{" "}
-            <EditIcon
-              style={{ color: "#a9a9a9", marginLeft: "8px" }}
-              fontSize="small"
-            />
-          </Button> */}
         </div>
       )}
     </div>
   );
 };
 
-const ImageEditor: React.FC<{
+const ImageEditor = ({
+  onUpload,
+  onBack,
+  avatarClassName,
+}: {
   onUpload: (image: File, img_url: string) => void;
   onBack: () => void;
   avatarClassName: string;
-}> = ({ onUpload, onBack, avatarClassName }) => {
+}) => {
   const [images, setImages] = React.useState<ImageListType>([]);
   const onChange = (
     imageList: ImageListType,

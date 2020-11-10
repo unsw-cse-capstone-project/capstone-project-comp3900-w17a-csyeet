@@ -2,6 +2,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core";
 
 export const listingPageStyle = makeStyles((theme: Theme) =>
   createStyles({
+    content: { paddingBottom: "200px" },
     page: {
       padding: theme.spacing(2, "15%", 0, "15%"),
       display: "flex",
@@ -42,38 +43,7 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
       justifyContent: "flex-end",
       alignItems: "center",
     },
-    badge: {
-      "& span": {
-        padding: theme.spacing(2),
-        borderRadius: "10000px",
-        // transform: "translate(50%, -20%)"
-        transform: "translate(10%, 40%)",
-        boxShadow: theme.shadows[1],
-      },
-      width: "100%",
-      height: "100%",
-    },
-    photoGrid: {
-      [theme.breakpoints.up("md")]: {
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-      },
-      [theme.breakpoints.down("sm")]: {
-        display: "flex",
-        justifyContent: "space-between",
-      },
-      "& img": {
-        objectFit: "cover",
-        [theme.breakpoints.up("md")]: {
-          width: "100%",
-          height: "49%",
-        },
-        [theme.breakpoints.down("sm")]: {
-          width: "49%",
-        },
-      },
-    },
+    
     starContainer: {
       position: "absolute",
       top: "40px",
@@ -86,6 +56,11 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
       padding: "30px 15vw",
       backgroundColor: "#f3f4f5",
       position: "relative",
-    }
+    },
+    modal: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
   })
 );

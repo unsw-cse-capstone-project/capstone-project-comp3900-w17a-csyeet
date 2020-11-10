@@ -13,11 +13,7 @@ export const SuburbPanelStyle = makeStyles((theme: Theme) => ({
     paddingTop: theme.spacing(2),
     borderTop: "solid 1px #eee",
   },
-  textContainer: {
-    backgroundColor: theme.palette.secondary.light,
-    opacity: 0.7,
-    padding: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    color: theme.palette.background.paper
+  description: {
+    marginBottom: theme.spacing(1.5)
   }
 }));

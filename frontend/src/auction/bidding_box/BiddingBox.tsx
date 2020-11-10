@@ -9,6 +9,7 @@ import {
   OutlinedInput,
   Button,
   FormHelperText,
+  Grid,
 } from "@material-ui/core";
 import {
   BidPriceWithBidderTag,
@@ -24,6 +25,9 @@ export class BiddingBoxStore {
   biddingPrice: number = 0;
 }
 
+/**
+ * Bidder box that allows a registered bidder to bid
+ */
 export const BiddingBox = observer(
   ({
     store,
@@ -76,41 +80,46 @@ export const BiddingBox = observer(
           <Typography variant="body1">
             {isAuctionClosed ? "Final Bid" : "Current Bid"}
           </Typography>
-          <div className={classes.tagContainer}>
-            {!currentBid || !BidderTag ? (
-              <BidPrice state="current" />
-            ) : (
-              <BidPriceWithBidderTag
-                BidPrice={BidPriceWrapper}
-                BidderTag={BidderTag}
-              />
-            )}
-          </div>
+          {!currentBid || !BidderTag ? (
+            <BidPrice state="current" />
+          ) : (
+            <BidPriceWithBidderTag
+              BidPrice={BidPriceWrapper}
+              BidderTag={BidderTag}
+            />
+          )}
           {enableBidding && !isAuctionClosed && currentBid && (
             <div className={classes.inputContainer}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-amount">
-                  Amount
-                </InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-amount"
-                  type=""
-                  startAdornment={
-                    <InputAdornment position="start">$</InputAdornment>
-                  }
-                  labelWidth={60}
-                  inputComponent={InputComponent as any}
-                />
-              </FormControl>
-              <Button
-                size="large"
-                variant="outlined"
-                className={classes.placeBidButton}
-                onClick={onClick}
-                disabled={shouldDisableBiddingButton.get()}
-              >
-                Place Bid
-              </Button>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6} md={7} lg={8}>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-amount">
+                      Amount
+                    </InputLabel>
+                    <OutlinedInput
+                      id="outlined-adornment-amount"
+                      type=""
+                      startAdornment={
+                        <InputAdornment position="start">$</InputAdornment>
+                      }
+                      labelWidth={60}
+                      inputComponent={InputComponent as any}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={5} lg={4}>
+                  <Button
+                    size="large"
+                    fullWidth
+                    variant="outlined"
+                    className={classes.placeBidButton}
+                    onClick={onClick}
+                    disabled={shouldDisableBiddingButton.get()}
+                  >
+                    Place Bid
+                  </Button>
+                </Grid>
+              </Grid>
             </div>
           )}
           {error !== "" && <FormHelperText>{error}</FormHelperText>}

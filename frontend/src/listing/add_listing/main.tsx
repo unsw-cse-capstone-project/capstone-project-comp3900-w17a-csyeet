@@ -9,6 +9,10 @@ import { AddListingStyles } from "./AddListing.css";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import { observer } from "mobx-react";
 
+function Alert(props: AlertProps) {
+  return <MuiAlert  variant="filled" {...props} />;
+}
+
 export const AddListingPage = () => {
   const presenter = new ListingPresenter();
   const store = new ListingStore();
@@ -47,15 +51,11 @@ export const AddListingPageBase = observer(
     const snackContent = (status: string) => {
       switch (status) {
         case "success":
-          return <MuiAlert severity="success">Successfully published</MuiAlert>;
+          return <Alert severity="success">Successfully published</Alert>;
         case "publishing":
-          return (
-            <MuiAlert severity="info">Publishing your listing...</MuiAlert>
-          );
+          return <Alert severity="info">Publishing your listing...</Alert>;
         case "error":
-          return (
-            <MuiAlert severity="error">There was an error publishing</MuiAlert>
-          );
+          return <Alert severity="error">There was an error publishing</Alert>;
         default:
           return <></>;
       }

@@ -94,7 +94,10 @@ export default class Store {
             country: "Australia",
           })
       );
+<<<<<<< HEAD
       window.localStorage.setItem("id", content.id);
+=======
+>>>>>>> master
     } catch {
       console.log("error T-T");
     }
@@ -115,6 +118,7 @@ export default class Store {
   constructor() {
     makeObservable(this);
   }
+<<<<<<< HEAD
 }
 
 const checkSession = async (store: Store) => {
@@ -122,6 +126,25 @@ const checkSession = async (store: Store) => {
     .split(" ")
     .find((cookie) => cookie.startsWith("session="));
   if (session && window.localStorage.getItem("id") !== null) {
+=======
+
+  convertBlobToBase64(blob: Blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    });
+  }
+
+}
+
+const checkSession = async (store: Store) => {
+  let session = document.cookie.split(' ').find(cookie => cookie.startsWith('session='));
+  if (session) {
+>>>>>>> master
     try {
       const response = await fetch("/users/profile", {
         headers: {
@@ -129,6 +152,7 @@ const checkSession = async (store: Store) => {
         },
       });
       const result = await response.json();
+<<<<<<< HEAD
       runInAction(
         () =>
           (store.user = {
@@ -143,6 +167,19 @@ const checkSession = async (store: Store) => {
             country: "Australia",
           })
       );
+=======
+      runInAction(() => store.user = {
+        id: result.id,
+        name: result.name,
+        email: result.email,
+        phone_number: "0412345678",
+        street: "12 Street St",
+        suburb: "Fairfield",
+        postcode: "2194",
+        state: "NSW",
+        country: "Australia",
+      })
+>>>>>>> master
     } catch {
       console.log("error T-T");
     }

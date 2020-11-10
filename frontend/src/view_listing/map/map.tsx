@@ -5,6 +5,9 @@ import { ListingActual } from "../../ui/util/types/listing";
 
 const googleAPIKey = "AIzaSyDS3k251uCtXDMWqcyD2wA9vkIg40sd9Lg";
 
+/**
+ * Map generated from Google using the listing's address
+ */
 export const Map = ({ listing }: { listing: ListingActual }) => {
   const classes = mapStyle();
   return (
@@ -18,7 +21,10 @@ export const Map = ({ listing }: { listing: ListingActual }) => {
           title="map"
           frameBorder="0"
           className={classes.map}
-          src={`https://www.google.com/maps/embed/v1/place?key=${googleAPIKey}&q=${listing.street.replace(/[ ]/g,"+")},+${listing.suburb}+${listing.state}`}
+          src={`https://www.google.com/maps/embed/v1/place?key=${googleAPIKey}&q=${listing.street.replace(
+            /[ ]/g,
+            "+"
+          )},+${listing.suburb}+${listing.state}`}
         />
       </div>
     </div>
