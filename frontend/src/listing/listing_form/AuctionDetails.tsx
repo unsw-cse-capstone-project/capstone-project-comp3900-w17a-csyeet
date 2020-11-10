@@ -65,6 +65,7 @@ export const AuctionDetails: React.FC<{
     const [start, end] = value;
     store.auction.auction_start = start;
     store.auction.auction_end = end;
+    console.log(store.auction.auction_start);
   });
 
   const reservePriceInfo =

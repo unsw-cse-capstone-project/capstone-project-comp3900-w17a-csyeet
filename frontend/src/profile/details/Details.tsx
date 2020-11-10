@@ -17,10 +17,7 @@ import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapp
 import { DetailStore } from "./DetailPresenter";
 import { ModalWrapper } from "../../ui/base/modal_wrapper/ModalWrapper";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
-import {
-  AddressForm,
-  AddressData,
-} from "../../ui/base/address_form/AddressForm";
+import { AddressForm } from "../../ui/base/address_form/AddressForm";
 import { DetailStyles } from "./Detail.css";
 
 type NumberFormatCustomProps = {

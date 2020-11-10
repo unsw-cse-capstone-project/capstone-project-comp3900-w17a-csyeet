@@ -52,16 +52,16 @@ export const PreviewListing = observer(
       num_bedrooms: store.listing.num_bedrooms,
       num_car_spaces: store.listing.num_car_spaces,
       type: store.listing.type,
-      street: toCapitaliseCase(store.listing.street),
-      suburb: toCapitaliseCase(store.listing.suburb),
-      state: store.listing.state
+      street: toCapitaliseCase(store.address.street),
+      suburb: toCapitaliseCase(store.address.suburb),
+      state: store.address.state
         .split(" ")
         .map((word) => word[0])
         .join(""),
-      country: store.listing.country,
-      postcode: store.listing.postcode,
-      auction_start: store.listing.auction_start as Date,
-      auction_end: store.listing.auction_end as Date,
+      country: store.address.country,
+      postcode: store.address.postcode,
+      auction_start: store.auction.auction_start as Date,
+      auction_end: store.auction.auction_end as Date,
       images: store.imageList.map((image) => image.data_url || ""),
       features: store.listing.features,
       starred: false,
@@ -76,6 +76,7 @@ export const PreviewListing = observer(
       onPublish();
     };
 
+    console.log(listing.auction_start);
     const classes = PreviewListingStyle();
     return (
       <div>

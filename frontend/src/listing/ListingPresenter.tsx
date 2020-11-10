@@ -1,16 +1,12 @@
 import { action, runInAction } from "mobx";
 import { observable, makeObservable } from "mobx";
 import { ImageListType } from "react-images-uploading";
+import { AddressDetails } from "./listing_form/ListingForm";
 
 export type ListingDetails = {
   id: number | null;
   title: string;
   description: string;
-  street: string;
-  suburb: string;
-  postcode: string;
-  state: string;
-  country: string;
   type: string;
   num_bedrooms: number;
   num_bathrooms: number;
@@ -32,17 +28,19 @@ export type PaymentDetails = {
   bsb: string;
   account_number: string;
 };
-
-const getListingFromResult = (result: any) => ({
-  id: parseInt(result.id),
-  type: result.type,
-  title: result.title,
-  description: result.description,
+const getAddressFromResult = (result: any) => ({
   street: result.street,
   suburb: result.suburb,
   postcode: result.postcode,
   state: result.state,
   country: result.country,
+});
+const getListingFromResult = (result: any) => ({
+  id: parseInt(result.id),
+  type: result.type,
+  title: result.title,
+  description: result.description,
+
   num_bedrooms: parseInt(result.num_bedrooms),
   num_bathrooms: parseInt(result.num_bathrooms),
   num_car_spaces: parseInt(result.num_car_spaces),
@@ -67,15 +65,18 @@ const getPaymentFromResult = (result: any) => ({
 });
 
 export class ListingStore {
+  // Initiate with Australia and NSW
+  @observable address: AddressDetails = {
+    street: "",
+    suburb: "",
+    postcode: "",
+    state: "NSW",
+    country: "Australia",
+  };
   @observable listing: ListingDetails = {
     id: null,
     title: "",
     description: "",
-    street: "",
-    suburb: "",
-    postcode: "",
-    state: "",
-    country: "",
     type: "",
     num_bedrooms: 0,
     num_bathrooms: 0,
@@ -120,10 +121,12 @@ export class ListingPresenter {
       if ("detail" in result) onError();
       else {
         const listing: ListingDetails = getListingFromResult(result);
+        const address: AddressDetails = getAddressFromResult(result);
         const auction: AuctionDetails = getAuctionFromResult(result);
         const payment: PaymentDetails = getPaymentFromResult(result);
         runInAction(() => {
           store.listing = listing;
+          store.address = address;
           store.auction = auction;
           store.payment = payment;
         });
@@ -146,14 +149,14 @@ export class ListingPresenter {
           type: store.listing.type.toLowerCase(),
           title: store.listing.title,
           description: store.listing.description,
-          street: store.listing.street,
-          suburb: store.listing.suburb,
-          postcode: store.listing.postcode,
-          state: store.listing.state
+          street: store.address.street,
+          suburb: store.address.suburb,
+          postcode: store.address.postcode,
+          state: store.address.state
             .split(" ")
             .map((word) => word[0])
             .join(""),
-          country: store.listing.country,
+          country: store.address.country,
           features: store.listing.features,
           num_bedrooms: store.listing.num_bedrooms,
           num_bathrooms: store.listing.num_bathrooms,
@@ -218,14 +221,14 @@ export class ListingPresenter {
           type: store.listing.type.toLowerCase(),
           title: store.listing.title,
           description: store.listing.description,
-          street: store.listing.street,
-          suburb: store.listing.suburb,
-          postcode: store.listing.postcode,
-          state: store.listing.state
+          street: store.address.street,
+          suburb: store.address.suburb,
+          postcode: store.address.postcode,
+          state: store.address.state
             .split(" ")
             .map((word) => word[0])
             .join(""),
-          country: store.listing.country,
+          country: store.address.country,
           features: store.listing.features,
           num_bedrooms: store.listing.num_bedrooms,
           num_bathrooms: store.listing.num_bathrooms,

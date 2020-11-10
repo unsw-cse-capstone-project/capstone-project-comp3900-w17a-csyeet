@@ -7,6 +7,7 @@ import {
   PaymentDetails,
   AuctionDetails,
   ListingDetails,
+  AddressDetails,
 } from "../ListingPresenter";
 
 export default {
@@ -21,11 +22,6 @@ const populateStore = action(() => {
     title: "Immaculately presented family home",
     description: `This charming Federation style family home ensures a blissful family lifestyle of modern comfort and flexibility. Spacious interiors reveal a beautiful array of period features, complemented by a stylish renovation throughout, it is ready for you to move in and enjoy. The property is set in one of the best streets with a sun-drenched level block of 663.9sqm (approx).
   Within walking distance of Chatswood station, express buses, shopping, restaurants and schools this is an ideal location allowing you to enjoy the tranquillity of the suburb while still being close to all amenities.`,
-    street: "8 Holland Street",
-    suburb: "Chatswood",
-    postcode: "2067",
-    state: "New South Wales",
-    country: "Australia",
     type: "House",
     num_bedrooms: 5,
     num_bathrooms: 3,
@@ -40,6 +36,13 @@ const populateStore = action(() => {
 
     features: ["ensuite", "bathtub"],
   };
+  const fake_address: AddressDetails = {
+    street: "8 Holland Street",
+    suburb: "Chatswood",
+    postcode: "2067",
+    state: "New South Wales",
+    country: "Australia",
+  };
   const fake_payment: PaymentDetails = {
     account_name: "Miss Jane Stuart",
     bsb: "153748",
@@ -51,6 +54,7 @@ const populateStore = action(() => {
     reserve_price: "2400000",
   };
   store.listing = fake_listing;
+  store.address = fake_address;
   store.payment = fake_payment;
   store.auction = fake_auction;
 });

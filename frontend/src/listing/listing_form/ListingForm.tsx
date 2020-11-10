@@ -1,14 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { computed } from "mobx";
-import {
-  Button,
-  Stepper,
-  Step,
-  StepButton,
-  Snackbar,
-  Typography,
-} from "@material-ui/core";
+import { Button, Stepper, Step, StepButton, Snackbar } from "@material-ui/core";
 import { ListingStore } from "../ListingPresenter";
 import { Details } from "./Details";
 import { Images } from "./Images";
@@ -18,6 +11,15 @@ import { PaymentDetails } from "./Payment";
 import { ListingFormStyles } from "./ListingForm.css";
 import Alert from "@material-ui/lab/Alert";
 import { ArrowBackIos } from "@material-ui/icons";
+
+export type AddressDetails = {
+  street: string;
+  suburb: string;
+  postcode: string;
+  state: string;
+  country: string;
+};
+
 export const ListingForm = observer(
   ({
     store,
@@ -72,14 +74,16 @@ export const ListingForm = observer(
 
     const completedStep0 = computed(
       () =>
-        store.listing.street !== "" &&
-        store.listing.suburb !== "" &&
-        store.listing.state !== "" &&
-        store.listing.country !== "" &&
+        store.address.street !== "" &&
+        store.address.suburb !== "" &&
+        store.address.state !== "" &&
+        store.address.country !== "" &&
         store.listing.type !== ""
     );
 
-    const completedStep1 = computed(() => store.listing.images.length > 0);
+    const completedStep1 = computed(
+      () => store.imageList.length > 0 || store.listing.images.length > 0
+    );
 
     const completedStep2 = computed(
       () => store.listing.title !== "" && store.listing.description !== ""

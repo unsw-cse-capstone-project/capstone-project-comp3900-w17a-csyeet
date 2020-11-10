@@ -10,7 +10,7 @@ import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
 
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { computed, runInAction } from "mobx";
+import { action } from "mobx";
 
 export const DetailStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,39 +37,22 @@ export const DetailStyles = makeStyles((theme: Theme) =>
 export const Details: React.FC<{
   store: ListingStore;
 }> = observer(({ store }) => {
-  const {
-    type,
-    street,
-    suburb,
-    postcode,
-    state,
-    country,
-    num_bedrooms,
-    num_bathrooms,
-    num_car_spaces,
-  } = store.listing;
-  const classes = DetailStyles();
+  const { type, num_bedrooms, num_bathrooms, num_car_spaces } = store.listing;
   const propertyTypes = ["Apartment", "Duplex", "House", "Studio", "Townhouse"];
 
-  const onChange = (value: string, field: string) => {
-    console.log("OnChange ", field, "new", value);
-    runInAction(() => ((store as any).listing[field] = value));
-  };
-
-  const getAddressData = computed(() => {
-    return {
-      street: street,
-      suburb: suburb,
-      postcode: postcode,
-      state: state,
-      country: country,
-    };
+  const onChange = action((value: string, field: string) => {
+    (store as any).listing[field] = value;
   });
 
+  const onChangeAddress = action((value: string, field: string) => {
+    (store as any).address[field] = value;
+  });
+
+  const classes = DetailStyles();
   return (
     <div className={classes.container}>
       <Typography variant={"subtitle1"}> Property Address</Typography>
-      <AddressForm onChange={onChange} addressData={getAddressData.get()} />
+      <AddressForm onChange={onChangeAddress} addressData={store.address} />
       <Typography variant={"subtitle1"} style={{ marginTop: "30px" }}>
         Property Details
       </Typography>
