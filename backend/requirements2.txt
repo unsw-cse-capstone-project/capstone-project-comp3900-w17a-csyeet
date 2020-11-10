@@ -32,7 +32,7 @@ numpy==1.19.3
 pandas==1.1.4
 passlib==1.7.4
 pipdeptree==1.0.0
-psycopg2==2.8.6
+psycopg2-binary==2.8.6
 pycodestyle==2.6.0
 pydantic==1.6.1
 pyflakes==2.2.0

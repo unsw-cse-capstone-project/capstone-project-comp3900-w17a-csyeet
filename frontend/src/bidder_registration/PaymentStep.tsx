@@ -22,6 +22,9 @@ type PaymentStepProps = {
   store: BidderRegistrationStore;
 };
 
+/**
+ * Payment Step for bidder registration
+ */
 export const PaymentStep = ({ store }: PaymentStepProps) => {
   const onChangeCard = action((value: string) => {
     store.cardNumber = value;

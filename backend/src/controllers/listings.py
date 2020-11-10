@@ -31,7 +31,7 @@ def create(req: CreateListingRequest, signed_in_user: User = Depends(get_signed_
     session.add_all(landmarks)
 
     session.commit()
-    add_listing_to_ML_model(listing)
+    add_listing_to_ML_model(listing, session)
     return map_listing_to_response(listing, None, False, False)
 
 
@@ -243,7 +243,7 @@ def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 
     session.delete(listing)
     session.commit()
-    remove_listing_from_ML_model(listing)
+    remove_listing_from_ML_model(listing, session)
 
 
 @router.post('/{id}', response_model=ListingResponse)
@@ -258,7 +258,7 @@ def update(id: int, req: UpdateListingRequest, signed_in_user: User = Depends(ge
         raise HTTPException(
             status_code=403, detail="User cannot edit this listing") 
     
-    if any(x is not None for x in [req.auction_start, req.auction_end, req.reserve_price, req.account_name, req.bsb, req.account_number]) and listing.auction_start < datetime.now():
+    if listing.auction_start < datetime.now() and any([req.auction_start, req.auction_end, req.reserve_price, req.account_name, req.bsb, req.account_number]):
         raise HTTPException(
             status_code=403, detail="Cannot update auction details once auction has started")
     
