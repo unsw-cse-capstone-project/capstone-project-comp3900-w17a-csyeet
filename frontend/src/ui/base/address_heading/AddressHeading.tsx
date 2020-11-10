@@ -10,12 +10,14 @@ export const AddressHeadingStyle = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(3),
     },
     secondaryAddress: {
-      color: theme.palette.grey[500],
       paddingBottom: theme.spacing(2),
     },
   })
 );
 
+/**
+ * Formats the address into a heading component
+ */
 export const AddressHeading = ({
   street,
   suburb,
@@ -34,7 +36,7 @@ export const AddressHeading = ({
       <Typography variant="h2" className={classes.streetAddress}>
         {streetAddress}
       </Typography>
-      <Typography variant="h4" className={classes.secondaryAddress}>
+      <Typography variant="h4" color="textSecondary" className={classes.secondaryAddress}>
         {remainingAddress}
       </Typography>
     </div>

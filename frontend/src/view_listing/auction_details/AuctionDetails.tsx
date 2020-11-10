@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Typography, Divider } from "@material-ui/core";
-import { auctionDetailsStyle } from "./auctionDetails.css";
+import { auctionDetailsStyle } from "./AuctionDetails.css";
 import { AuctionTag } from "../../ui/base/auction_tag/AuctionTag";
 import { dateFormatter } from "../../ui/util/helper";
 import { AuctionActionButton } from "../../ui/base/auction_action_button/AuctionActionButton";
@@ -27,25 +27,29 @@ export const AuctionDetails = ({
         Auction Details
       </Typography>
       <Divider className={classes.divider} />
+      <AuctionTag start={auction_start} end={auction_end} className={classes.auctionTag}/>
       {new Date().getTime() < auction_start.getTime() ? (
         <div>
           <Typography variant="body2">
-            Start Time: {dateFormatter.format(auction_start)}
+            <b>Start Time:</b> {dateFormatter.format(auction_start)}
           </Typography>
           <Typography variant="body2">
-            End Time: {dateFormatter.format(auction_end)}
+            <b>End Time:</b> {dateFormatter.format(auction_end)}
           </Typography>
-          <AuctionTag start={auction_start} end={auction_end} />
         </div>
       ) : (
-          <div>
-            <Typography variant="body2">
-              End Time: {dateFormatter.format(auction_end)}
-            </Typography>
-            <AuctionTag start={auction_start} end={auction_end} />
-          </div>
-        )}
-      {!disableAction && <AuctionActionButton id={id} auction_start={auction_start} registered_bidder={registered_bidder} isUser={isUser} />}
+          <Typography variant="body2">
+            <b>End Time:</b> {dateFormatter.format(auction_end)}
+          </Typography>
+      )}
+      {!disableAction && (
+        <AuctionActionButton
+          id={id}
+          auction_start={auction_start}
+          registered_bidder={registered_bidder}
+          isUser={isUser}
+        />
+      )}
     </div>
   );
 };

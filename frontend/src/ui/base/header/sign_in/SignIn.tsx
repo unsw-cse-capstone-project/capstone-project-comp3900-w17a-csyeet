@@ -9,7 +9,6 @@ import { ModalWrapper } from "../../modal_wrapper/ModalWrapper";
 import logo from "../../../../images/logo.png";
 import { Password } from "../../input/Password";
 import { SignInStyles } from "./SignIn.css";
-import classNames from "classnames";
 
 export interface SignInProps {}
 

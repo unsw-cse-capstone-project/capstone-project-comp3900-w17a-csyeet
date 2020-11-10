@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react/types-6-0";
-import { AuctionDetails } from "./auctionDetails";
+import { AuctionDetails } from "./AuctionDetails";
 
 export default {
   title: "view_listing/auctionDetails",

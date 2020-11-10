@@ -4,8 +4,7 @@ import { AuctionPageStore, AuctionPagePresenter } from "./AuctionPagePresenter";
 import { AuctionPage as AuctionPageBase } from "./AuctionPage";
 import { observer } from "mobx-react";
 import { auctionPageStyle } from "./AuctionPage.css";
-import { Button, Snackbar, Typography, useTheme } from "@material-ui/core";
-import { ArrowBackIos } from "@material-ui/icons";
+import { Snackbar } from "@material-ui/core";
 import { BiddingBox, BiddingBoxStore } from "./bidding_box/BiddingBox";
 import { BidderTag } from "../ui/base/bidder_tag/BidderTag";
 import { useStore } from "../AuthContext";
@@ -13,6 +12,9 @@ import { BiddersList } from "./bidders_list/BiddersList";
 import { BidsList } from "./bids_list/BidsList";
 import { computed, action } from "mobx";
 import MuiAlert from "@material-ui/lab/Alert";
+import { BackButton } from "../ui/base/back_button/BackButton";
+import { ErrorPage } from "../error/main";
+import { AuctionPagePlaceholder } from "./AuctionPagePlaceholder";
 
 export const AuctionPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -43,8 +45,6 @@ export const AuctionPageWrapper = observer(
     if (!store.loadingState) {
       return null;
     }
-    const theme = useTheme();
-
     const userStore = useStore();
     const Container = observer(
       ({ Content }: { Content: React.ComponentType }) => {
@@ -52,13 +52,10 @@ export const AuctionPageWrapper = observer(
         const history = useHistory();
         return (
           <div className={classes.page} style={{ paddingBottom: "200px" }}>
-            <Button
-              className={classes.backButton}
+            <BackButton
               onClick={() => history.push(`/listing/${id}`)}
-            >
-              <ArrowBackIos />
-              Back to Listing
-            </Button>
+              text="Back to Listing"
+            />
             <Content />
             <Snackbar
               anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -76,19 +73,12 @@ export const AuctionPageWrapper = observer(
     );
 
     if (store.loadingState === "loading") {
-      const Content = () => <Typography>Loading...</Typography>;
+      const Content = () => <AuctionPagePlaceholder />;
       return <Container Content={Content} />;
     }
 
     if (store.loadingState === "error" || !store.listing) {
-      const Content = () => (
-        <Typography
-          style={{ textAlign: "center", color: theme.palette.error.main }}
-        >
-          Error loading the auction
-        </Typography>
-      );
-      return <Container Content={Content} />;
+      return <ErrorPage />;
     }
     const biddingBoxStore = new BiddingBoxStore();
     const { bids } = store;
@@ -97,7 +87,6 @@ export const AuctionPageWrapper = observer(
       if (!listing || !bids) {
         return null;
       }
-      console.log(listing);
       return (
         <BiddingBox
           store={biddingBoxStore}
@@ -126,6 +115,7 @@ export const AuctionPageWrapper = observer(
               : undefined
           }
           onPlaceBid={onPlaceBid}
+          style={{ height: "100%" }}
         />
       );
     });
@@ -156,7 +146,7 @@ export const AuctionPageWrapper = observer(
           auction_end={auction_end}
           mainImage={images[0]}
           BiddingBox={BiddingBoxWrapper}
-          BidsList={() => <BidsList bids={bids} reserve_price={5000000} />}
+          BidsList={() => <BidsList bids={bids} />}
           BiddersList={BiddersListWrapper}
         />
       );

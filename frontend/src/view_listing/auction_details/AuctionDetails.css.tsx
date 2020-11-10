@@ -9,6 +9,9 @@ export const auctionDetailsStyle = makeStyles((theme: Theme) =>
       border: theme.palette.grey[700] + " solid 1px ",
       backgroundColor: theme.palette.grey[700],
       marginBottom: theme.spacing(1)
+    },
+    auctionTag: {
+      margin: theme.spacing(1, 0)
     }
   })
 );

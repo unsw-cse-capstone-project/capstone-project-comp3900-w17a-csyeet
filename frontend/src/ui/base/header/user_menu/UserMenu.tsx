@@ -2,12 +2,17 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Avatar, ListItemIcon, ListItemText } from "@material-ui/core";
+import {
+  Avatar,
+  ListItemIcon,
+  ListItemText,
+  withWidth,
+} from "@material-ui/core";
 import { useStore } from "../../../../AuthContext";
-import { AccountCircle, ExitToApp, Message } from "@material-ui/icons";
+import { AccountCircle, ExitToApp, House, Message } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 
-export const UserMenu = () => {
+export const UserMenu = withWidth()(({ width }: { width: string }) => {
   const userStore = useStore();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const history = useHistory();
@@ -31,7 +36,7 @@ export const UserMenu = () => {
         style={{ borderRadius: "10000px" }}
         startIcon={
           <Avatar
-            src="https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg"
+            src={`/users/${userStore.user.id}/avatar`}
             style={{ width: "30px", height: "30px" }}
           />
         }
@@ -54,6 +59,19 @@ export const UserMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        {width === "xs" && (
+          <MenuItem
+            onClick={() => {
+              history.push("/add");
+              handleClose();
+            }}
+          >
+            <ListItemIcon>
+              <House fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Add Listing" />
+          </MenuItem>
+        )}
         <MenuItem
           onClick={() => {
             history.push("/messages");
@@ -90,4 +108,4 @@ export const UserMenu = () => {
       </Menu>
     </div>
   );
-};
+});

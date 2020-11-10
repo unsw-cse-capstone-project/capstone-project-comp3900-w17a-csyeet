@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
-import { SuburbPanel } from "./suburbPanel";
+import { SuburbPanel } from "./SuburbPanel";
 import { createFakeActualListing } from '../../ui/util/fakes/listing';
 
 export default {

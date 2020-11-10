@@ -3,6 +3,9 @@ import { StarBorderRounded, StarRounded } from "@material-ui/icons";
 import * as React from "react";
 import MuiAlert from "@material-ui/lab/Alert";
 
+/**
+ * Star component that handles its own starring and unstarring action
+ */
 export const Star = ({
   id,
   starred,

@@ -27,5 +27,5 @@ export const Overview = () => {
     });
   }
 
-  return <BidsList bids={bids} reserve_price={490000} />;
+  return <BidsList bids={bids} />;
 };

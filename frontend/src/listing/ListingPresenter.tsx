@@ -1,7 +1,25 @@
 import { action, runInAction } from "mobx";
 import { observable, makeObservable } from "mobx";
-import { getListingFromResult } from "../ui/util/helper";
-import { ListingActual } from "../ui/util/types/listing";
+import { ImageListType } from "react-images-uploading";
+
+export type ListingDetails = { 
+  id: number | null;
+  title: string;
+  description: string;
+  street: string;
+  suburb: string;
+  postcode: string;
+  state: string;
+  country: string;
+  type: string;
+  num_bedrooms: number;
+  num_bathrooms: number;
+  num_car_spaces: number;
+  auction_start: Date | null;
+  auction_end: Date | null;
+  images: string[];
+  features: string[];
+};
 
 export type AuctionDetails = {
   auction_start: Date | null;
@@ -14,6 +32,25 @@ export type PaymentDetails = {
   bsb: string;
   account_number: string;
 };
+
+const getListingFromResult = (result: any) => ({
+  id: parseInt(result.id),
+  type: result.type, 
+  title: result.title,
+  description: result.description,
+  street: result.street,
+  suburb: result.suburb,
+  postcode: result.postcode,
+  state: result.state,
+  country: result.country,
+  num_bedrooms: parseInt(result.num_bedrooms),
+  num_bathrooms: parseInt(result.num_bathrooms),
+  num_car_spaces: parseInt(result.num_car_spaces),
+  auction_start: new Date(result.auction_start),
+  auction_end: new Date(result.auction_end),
+  images: result["image_ids"].map((id: any) => `/listings/${result.id}/images/${id}`);
+  features: result.features,
+});
 
 const getAuctionFromResult = (result: any) => ({
   auction_start: result.auction_start,
@@ -28,13 +65,8 @@ const getPaymentFromResult = (result: any) => ({
 });
 
 export class ListingStore {
-  @observable listing: ListingActual = {
+  @observable listing: ListingDetails = {
     id: null,
-    owner: {
-      id: 0,
-      email: "",
-      name: "",
-    },
     title: "",
     description: "",
     street: "",
@@ -50,14 +82,6 @@ export class ListingStore {
     auction_end: null,
     images: [],
     features: [],
-
-    // Don't need below, @Teresa how to make it partial (?if possible)
-    // reserve_price: number;
-    starred: null,
-    registered_bidder: false,
-    landmarks: [],
-    highest_bid: null,
-    reserve_met: false,
   };
 
   @observable payment: PaymentDetails = {
@@ -71,9 +95,6 @@ export class ListingStore {
     auction_end: null,
     reserve_price: null,
   };
-
-  // Note: To delete this
-  @observable images: string[] = [];
 
   constructor() {
     makeObservable(this);
@@ -94,7 +115,7 @@ export class ListingPresenter {
       // Error Handling
       if ("detail" in result) onError();
       else {
-        const listing: ListingActual = getListingFromResult(result);
+        const listing: ListingDetails = getListingFromResult(result);
         const auction: AuctionDetails = getAuctionFromResult(result);
         const payment: PaymentDetails = getPaymentFromResult(result);
         runInAction(() => {
@@ -111,6 +132,7 @@ export class ListingPresenter {
   @action
   async publishListing(
     store: ListingStore,
+    imageList: ImageListType, 
     onSuccess: () => void,
     onError: () => void
   ) {
@@ -143,15 +165,38 @@ export class ListingPresenter {
       });
       const result = await response.json();
       if ("detail" in result) {
-        console.log(result);
         onError();
         return;
       }
-      runInAction(() => {
-        store.listing.id = result.id;
+      store.listing.id = result.id;
+
+      let form = new FormData();
+      const data = await Promise.all(
+        imageList.map((image) =>
+          (image.file as any).arrayBuffer().then((buffer: any) => ({
+            data: buffer,
+            type: (image.file as any).type,
+          }))
+        )
+      );
+      data.forEach((image) => {
+        form.append("files", new Blob([image.data], { type: image.type }));
       });
-      onSuccess();
-    } catch {
+      try {
+        const response = await fetch(`/listings/${store.listing.id}/images`, {
+          method: "post",
+          body: form,
+        });
+        if (response.status !== 200) {
+          onError();
+          return;
+        }
+        onSuccess();
+      } catch (e) {
+        onError();
+        return;
+      }
+    } catch (e) {
       onError();
     }
   }

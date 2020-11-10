@@ -1,4 +1,4 @@
-import { Button, Snackbar, Typography } from "@material-ui/core";
+import { Snackbar, Typography } from "@material-ui/core";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { useHistory, useParams } from "react-router-dom";
@@ -7,13 +7,13 @@ import {
   BidderRegistrationStore,
 } from "./BidderRegistrationPresenter";
 import { BidderRegistration } from "./BidderRegistration";
-import { bidderRegistrationStyle } from "./BidderRegistration.css";
-import { ArrowBackIos } from "@material-ui/icons";
+import { BidderRegistrationStyle } from "./BidderRegistration.css";
 import { ListingActual } from "../ui/util/types/listing";
 import { formatAddress } from "../ui/util/helper";
 import ReactPlaceholder from "react-placeholder/lib";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useStore } from "../AuthContext";
+import { BackButton } from "../ui/base/back_button/BackButton";
 
 export const BidderRegistrationPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -52,17 +52,15 @@ export const BidderRegistrationWrapper = observer(
     }: {
       Content: React.ComponentType;
     }) => {
-      const classes = bidderRegistrationStyle();
+      const classes = BidderRegistrationStyle();
       return (
         <div className={classes.root}>
           <div className={classes.main}>
-            <Button
+            <BackButton
               className={classes.backToListingButton}
-              onClick={() => history.push("/listing/" + id)}
-            >
-              <ArrowBackIos />
-              Back to Listing
-            </Button>
+              onClick={() => history.push(`/listing/${id}`)}
+              text="Back to Listing"
+            />
             <Content />
           </div>
         </div>
@@ -79,7 +77,10 @@ export const BidderRegistrationWrapper = observer(
     }
 
     const Content = ({ message }: { message: string }) => (
-      <Snackbar open={true} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+      <Snackbar
+        open={true}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
         <MuiAlert elevation={6} severity="error">
           {message}
         </MuiAlert>
@@ -125,17 +126,15 @@ export const BidderRegistrationWrapper = observer(
     });
 
     const Container = ({ Content }: { Content: React.ComponentType }) => {
-      const classes = bidderRegistrationStyle();
+      const classes = BidderRegistrationStyle();
       return (
         <div className={classes.root}>
           <div className={classes.main}>
-            <Button
+            <BackButton
               className={classes.backToListingButton}
-              onClick={() => history.push("/listing/" + id)}
-            >
-              <ArrowBackIos />
-              Back to Listing
-            </Button>
+              onClick={() => history.push(`/listing/${id}`)}
+              text="Back to Listing"
+            />
             <Typography variant="h3" align="center">
               Register as a Bidder
             </Typography>

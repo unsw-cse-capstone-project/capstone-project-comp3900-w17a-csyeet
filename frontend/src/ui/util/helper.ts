@@ -3,11 +3,10 @@ import { createFakeListing } from "./fakes/listing";
 
 export const dateFormatter = new Intl.DateTimeFormat("en-GB", {
   year: "numeric",
-  month: "long",
+  month: "short",
   day: "2-digit",
   hour: "numeric",
   minute: "numeric",
-  second: "numeric",
   timeZone: "Australia/Sydney",
   hour12: true,
 });
@@ -39,10 +38,9 @@ export const toCamelCase = (str: string) => {
     .replace(/\s+/g, "");
 };
 
-export const toSentenceCase = (str: string) => {
-  let temp = str.replace(/([A-Z]+)*([A-Z][a-z])/g, "$1 $2").toLowerCase();
-  return temp[0].toUpperCase() + temp.slice(1);
-};
+export const toSentenceCase = (str: string) =>
+  str.replace(/([A-Z])/g, " $1")[0].toUpperCase() +
+  str.replace(/([A-Z])/g, " $1").slice(1);
 
 export const toCapitaliseCase = (str: string) => {
   return str
@@ -105,4 +103,19 @@ export const formatAddress = ({
       " " +
       postcode,
   };
+};
+
+export const getNumCards = (width: string) => {
+  switch (width) {
+    case "xs":
+      return 1;
+    case "sm":
+      return 2;
+    case "md":
+      return 3;
+    case "lg":
+      return 4;
+    default:
+      return 3;
+  }
 };

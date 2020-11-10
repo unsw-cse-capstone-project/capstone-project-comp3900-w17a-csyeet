@@ -11,8 +11,12 @@ import { ProfileAvatar } from "./about/ProfileAvatar";
 import { ProfileStore, ProfilePresenter } from "./ProfilePresenter";
 import { useStore } from "../AuthContext";
 
-export const ProfilePage = () => {
-  const store = new ProfileStore();
+export const ProfilePage = observer(() => {
+  const userStore = useStore();
+  if (!userStore || !userStore.user) {
+    return null;
+  }
+  const store = new ProfileStore(userStore.user.id);
   const presenter = new ProfilePresenter();
   presenter.getProfileInfo(store);
   return (
@@ -24,7 +28,7 @@ export const ProfilePage = () => {
       }
     />
   );
-};
+});
 
 export const ProfilePageWrapper = observer(
   ({
@@ -41,7 +45,6 @@ export const ProfilePageWrapper = observer(
     if (!userStore || !userStore.user) {
       return null;
     }
-    console.log(store.blurb);
     return (
       <div>
         <div className={classes.userInfo}>

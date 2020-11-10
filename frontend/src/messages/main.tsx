@@ -6,15 +6,17 @@ import {
   MessagesPageStyles,
   MessagesPagePlaceholderStyles,
 } from "./MessagesPage.css";
-import { Typography } from "@material-ui/core";
+import { Typography, Snackbar } from "@material-ui/core";
 import ReactPlaceholder from "react-placeholder/lib/ReactPlaceholder";
 import { useQuery } from "../search/main";
+import MuiAlert from "@material-ui/lab/Alert";
 
 export const MessagesPage = observer(() => {
   const classes = MessagesPageStyles();
   const userStore = useStore();
   const talkJsContainer = React.createRef<HTMLDivElement>();
   const params = useQuery();
+  const [error, setError] = React.useState<string | undefined>(undefined);
   React.useEffect(() => {
     Talk.ready.then(async () => {
       if (!userStore || !userStore.user) {
@@ -25,6 +27,7 @@ export const MessagesPage = observer(() => {
         id: userStore.user.id,
         name: userStore.user.name,
         email: userStore.user.email,
+        photoUrl: `/users/${userStore.user.id}/avatar`,
         role: "user",
       });
 
@@ -33,32 +36,61 @@ export const MessagesPage = observer(() => {
         me: me,
       });
 
-      const to = params.get('to');
-      const name = params.get('name');
-      const email = params.get('email');
-      const listing = params.get('listing');
-      if (to && name && email && listing) {
-        const other= new Talk.User({
-          id: to,
-          name: name,
-          email: email,
-          role: "user",
-        });
-        const response = await fetch(`listings/${listing}`);
-        const listingObject = await response.json();
-        const address = `${listingObject.street}, ${listingObject.suburb}, ${listingObject.state} ${listingObject.postcode}`;
-        const conversation = (window as any).talkSession.getOrCreateConversation(`seller:${to}buyer:${userStore.user.id}listing:${listing}`);
-        conversation.setParticipant(me);
-        conversation.setParticipant(other);
-        conversation.setAttributes({subject: address, custom: {"listingId": listing}});
-        const inbox = (window as any).talkSession.createInbox({selected: conversation});
-        inbox.mount(talkJsContainer.current);
-        // inbox.setFeedFilter({ custom: { "listingId": ["==", listing] } })
+      const to = params.get("to");
+      if (to) {
+        try {
+          const response = await fetch(`listings/${to}`);
+          const listingObject = await response.json();
+          if ("detail" in listingObject) {
+            setError(listingObject.detail);
+            return;
+          }
+          if (
+            new Date().getTime() > new Date(listingObject.auction_end).getTime()
+          ) {
+            setError(
+              `Listing: ${listingObject.street} is closed and cannot send messages to the seller`
+            );
+            return;
+          }
+
+          if (listingObject.owner.id === userStore.user.id) {
+            setError(
+              `You are the owner of listing: ${listingObject.street}, cannot send mesages to yourself`
+            );
+            return;
+          }
+          const other = new Talk.User({
+            id: listingObject.owner.id,
+            name: listingObject.owner.name,
+            email: listingObject.owner.email,
+            photoUrl: `/users/${listingObject.owner.id}/avatar`,
+            role: "user",
+          });
+          const address = `${listingObject.street}, ${listingObject.suburb}, ${listingObject.state} ${listingObject.postcode}`;
+          const conversation = (window as any).talkSession.getOrCreateConversation(
+            `seller:${to}buyer:${userStore.user.id}listing:${to}`
+          );
+          conversation.setParticipant(me);
+          conversation.setParticipant(other);
+          conversation.setAttributes({
+            subject: address,
+            custom: { listingId: to },
+          });
+          const inbox = (window as any).talkSession.createInbox({
+            selected: conversation,
+          });
+          inbox.mount(talkJsContainer.current);
+          inbox.on("selectConversation", (event: any) => {
+            console.log(event);
+          });
+        } catch {
+          setError("Error occurred when finding the listing");
+        }
       } else {
         const inbox = (window as any).talkSession.createInbox();
         inbox.mount(talkJsContainer.current);
       }
-
     });
     // eslint-disable-next-line
   }, [userStore?.user]);
@@ -70,6 +102,14 @@ export const MessagesPage = observer(() => {
       <div ref={talkJsContainer} className={classes.messageBox}>
         <MessagePlaceholder />
       </div>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={!!error}
+      >
+        <MuiAlert elevation={6} severity="error">
+          {error}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 });

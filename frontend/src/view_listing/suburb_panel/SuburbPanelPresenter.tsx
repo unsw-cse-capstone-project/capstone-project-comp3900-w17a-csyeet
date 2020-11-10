@@ -1,6 +1,5 @@
 import { action, observable, runInAction, makeObservable } from "mobx";
 import { SuburbProfileInfo } from "../../ui/util/types/suburbProfileInfo";
-import { delay } from '../../ui/util/helper';
 export class SuburbPanelStore {
   @observable
   results: SuburbProfileInfo[] = [];
@@ -14,6 +13,14 @@ export class SuburbPanelStore {
 }
 
 export class SuburbPanelPresenter {
+  /**
+   * Fetch from domain API the suburb performance information
+   * @param store 
+   * @param suburb 
+   * @param state 
+   * @param postcode 
+   * @param num_bedrooms 
+   */
   @action
   async loadSuburbInformation(
     store: SuburbPanelStore,
@@ -33,7 +40,6 @@ export class SuburbPanelPresenter {
         }
       );
       const content = await response.json();
-      await delay(400);
       if ("message" in content) {
         runInAction(() => (store.loadingState = "error"));
       } else {

@@ -1,15 +1,15 @@
 import * as React from "react";
-import { useParams } from "react-router-dom";
-import { ListingPageStore, ListingPagePresenter } from "./listingPagePresenter";
-import { ListingPage as ListingPageBase } from "./listingPage";
+import { useParams, useHistory, useLocation } from "react-router-dom";
+import { ListingPageStore, ListingPagePresenter } from "./ListingPagePresenter";
+import { ListingPage as ListingPageBase } from "./ListingPage";
 import { observer } from "mobx-react";
-import { listingPageStyle } from "./listingPage.css";
-import { Snackbar } from "@material-ui/core";
+import { listingPageStyle } from "./ListingPage.css";
 import { createSuburbPanelContent } from "./suburb_panel/create";
 import { useStore } from "../AuthContext";
 import { OwnerHeader } from "./owner_header/OwnerHeader";
-import MuiAlert from "@material-ui/lab/Alert";
-import { ListingPagePlaceholder } from './listingPagePlaceholder';
+import { ListingPagePlaceholder } from "./ListingPagePlaceholder";
+import { BackButton } from "../ui/base/back_button/BackButton";
+import { ErrorPage } from "../error/main";
 
 export const ViewListingPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,24 +17,26 @@ export const ViewListingPage = () => {
   const presenter = new ListingPagePresenter();
   presenter.loadInformation(store, parseInt(id));
 
-  return (
-    <ListingPageWrapper store={store} id={parseInt(id)} presenter={presenter} />
-  );
+  return <ListingPageWrapper store={store} presenter={presenter} />;
 };
 
+/**
+ * Page Component to show the details for a listing
+ */
 export const ListingPageWrapper = observer(
   ({
     store,
     presenter,
   }: {
     store: ListingPageStore;
-    id: number;
     presenter: ListingPagePresenter;
   }) => {
     const userStore = useStore();
     if (!store.loadingState) {
       return null;
     }
+    const location = useLocation();
+    const history = useHistory();
 
     const Container = ({
       Header,
@@ -46,6 +48,13 @@ export const ListingPageWrapper = observer(
       const classes = listingPageStyle();
       return (
         <div className={classes.page}>
+          {/* If the previous location state is search, show a back to search button */}
+          {location.state && (
+            <BackButton
+              onClick={() => history.push((location as any).state.from)}
+              text="Back to Search"
+            />
+          )}
           {Header && <Header />}
           <Content />
         </div>
@@ -57,41 +66,32 @@ export const ListingPageWrapper = observer(
     }
 
     if (store.loadingState === "error" || !store.listing) {
-      const Content = () => (
-        <Snackbar
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          open={true}
-        >
-          <MuiAlert elevation={6} severity="error">
-            Error occurred while loading the page, please try again
-          </MuiAlert>
-        </Snackbar>
-      );
-      return <Container Content={Content} />;
+      return <ErrorPage />;
     }
 
     const listing = store.listing;
 
-    const SuburbPanelContentWrapper = createSuburbPanelContent(listing);
-    const Content = () => {
-      return (
-        <ListingPageBase
-          listing={listing}
-          SuburbPanelContent={SuburbPanelContentWrapper}
-        />
-      );
-    };
+    const Content = () => (
+      <ListingPageBase
+        listing={listing}
+        SuburbPanelContent={createSuburbPanelContent(listing)}
+      />
+    );
+
     let Header: React.ComponentType | undefined;
-    if (
-      userStore &&
-      userStore.user &&
-      userStore.user.email === listing.owner.email
-    ) {
+
+    /**
+     * Show the owner header is the current user is the same as the owner
+     */
+    if (userStore && userStore.user && userStore.user.id === listing.owner.id) {
       // eslint-disable-next-line react/display-name
       Header = () => (
         <OwnerHeader
           onDelete={() => presenter.deleteListing(listing.id)}
           id={listing.id}
+          isAuctionClosed={
+            new Date().getTime() >= listing.auction_end.getTime()
+          }
         />
       );
     }

@@ -8,6 +8,9 @@ export const HomePageStyle = makeStyles((theme: Theme) =>
       alignItems: "center",
       padding: theme.spacing(0, 0, 12, 0),
     },
+    logo: {
+      width: "200px",
+    },
     top: {
       display: "flex",
       flexDirection: "column",

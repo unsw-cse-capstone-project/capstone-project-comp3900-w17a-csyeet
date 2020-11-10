@@ -16,16 +16,26 @@ export class UpcomingAuctionsStore {
 }
 
 export class UpcomingAuctionPresenter {
-  async loadUpcomingAuctions(store: UpcomingAuctionsStore) {
-    const auctionStart = new Date(
-      new Date().getTime() + 86400000
-    ).toISOString();
+  /**
+   * @param store 
+   * @param numCardsPerRow 
+   * 
+   * Loads the upcoming auctions and sets the listing in the store
+   * in ascending order of auction_start
+   */
+  async loadUpcomingAuctions(
+    store: UpcomingAuctionsStore,
+    numCardsPerRow: number
+  ) {
+    const auctionStart = new Date().toISOString();
     const continuation = store.continuation
       ? `&continuation=${store.continuation}`
       : "";
     try {
       const response = await fetch(
-        `/listings/?auction_start=${auctionStart}&limit=6&include_closed_auctions=true${continuation}`
+        `/listings/?auction_start=${auctionStart}&limit=${
+          numCardsPerRow * 2
+        }${continuation}`
       );
       const results = await response.json();
       runInAction(() => {
@@ -34,6 +44,7 @@ export class UpcomingAuctionPresenter {
           ...store.listings,
           ...results.results.map((result: any) => getListingFromResult(result)),
         ];
+        store.listings = store.listings.sort((a, b) => a.auction_start.getTime() - b.auction_start.getTime());
         store.continuation = results.continuation;
       });
     } catch {

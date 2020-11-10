@@ -16,8 +16,6 @@ export type User = {
 
 export default class Store {
   @observable user?: User;
-  @observable avatar: string =
-    "https://avatarfiles.alphacoders.com/791/79102.png";
   @observable openSignUp: boolean = false;
   @observable openSignIn: boolean = false;
 
@@ -54,35 +52,6 @@ export default class Store {
       console.log("error T-T");
     }
   }
-  // try {
-  //   const response = await fetch("/login", {
-  //     method: "post",
-  //     body: JSON.stringify({ email: email, password: password }),
-  //   });
-  //   const content = await response.json();
-  //   if ("detail" in content) {
-  //     console.log("error", content.detail);
-  //     onError();
-  //   } else {
-  //     runInAction(
-  //       () =>
-  //         (this.user = {
-  //           name: content.name,
-  //           id: content.id,
-  //           email: content.email,
-  //           phone_number: "0412345678",
-  //           street: "12 Street St",
-  //           suburb: "Fairfield",
-  //           postcode: "2194",
-  //           state: "NSW",
-  //           country: "Australia",
-  //         })
-  //     );
-  //   }
-  // } catch {
-  //   console.log("error T-T");
-  // }
-  // }
 
   @action
   async signUp(
@@ -126,7 +95,6 @@ export default class Store {
             country: "Australia",
           })
       );
-      window.localStorage.setItem('id', content.id);
     } catch {
       console.log("error T-T");
     }
@@ -159,22 +127,11 @@ export default class Store {
     });
   }
 
-  @action
-  async getAvatar() {
-    try {
-      const response = await fetch(`users/avatar`);
-      const result = await response.blob();
-      const avatar = await this.convertBlobToBase64(result);
-      runInAction(() => (this.avatar = avatar as string));
-    } catch {
-      console.log("error :(");
-    }
-  }
 }
 
 const checkSession = async (store: Store) => {
   let session = document.cookie.split(' ').find(cookie => cookie.startsWith('session='));
-  if (session && window.localStorage.getItem('id') !== null) {
+  if (session) {
     try {
       const response = await fetch("/users/profile", {
         headers: {
@@ -183,7 +140,7 @@ const checkSession = async (store: Store) => {
       });
       const result = await response.json();
       runInAction(() => store.user = {
-        id: parseInt(window.localStorage.getItem('id') as string),
+        id: result.id,
         name: result.name,
         email: result.email,
         phone_number: "0412345678",

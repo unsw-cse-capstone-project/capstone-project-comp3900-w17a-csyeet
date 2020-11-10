@@ -2,11 +2,16 @@ import * as React from "react";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import { Paper, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { ListingActual } from "../../ui/util/types/listing";
-import { SuburbPanelStyle } from "./suburbPanel.css";
+import { SuburbPanelStyle } from "./SuburbPanel.css";
+import { toCapitaliseCase } from "../../ui/util/helper";
 
+/**
+ * Suburb Panel
+ * Suburb sales statistics for a given suburb fetched from Domain API
+ */
 export const SuburbPanel = ({
   listing,
   Content,
@@ -32,19 +37,17 @@ export const SuburbPanel = ({
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel3a-content"
-        id="panel3a-header"
         className={classes.accordianSummary}
       >
-        <Typography variant="h5">{listing.suburb[0].toUpperCase() + listing.suburb.slice(1)} Suburb Profile</Typography>
+        <Typography variant="h5">
+          {toCapitaliseCase(listing.suburb)} Suburb Profile
+        </Typography>
       </AccordionSummary>
       <AccordionDetails className={classes.accordianDetails}>
-        <Paper className={classes.textContainer}>
-          <Typography variant="body1">
-            For a {listing.num_bedrooms} bedroom {listing.type} in{" "}
-            {listing.suburb}
-          </Typography>
-        </Paper>
+        <Typography variant="body1" className={classes.description}>
+          For a {listing.num_bedrooms} bedroom {listing.type} in{" "}
+          {listing.suburb}
+        </Typography>
         <Content />
       </AccordionDetails>
     </Accordion>
