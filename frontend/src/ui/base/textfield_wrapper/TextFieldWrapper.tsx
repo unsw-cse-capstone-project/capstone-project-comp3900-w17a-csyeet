@@ -30,7 +30,7 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (
       type === "number" &&
-      (e.target.value === "-1" || /^\d+$/.test(e.target.value)) // Disable Negative & Non-number inputs
+      (e.target.value === "-1") // Disable Negative 
     )
       return;
     if (onChange) onChange(e.target.value, field as string);
