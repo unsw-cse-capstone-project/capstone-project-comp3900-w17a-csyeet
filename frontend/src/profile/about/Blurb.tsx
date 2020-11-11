@@ -21,6 +21,15 @@ export const BlurbStyle = makeStyles((theme: Theme) =>
       justifyContent: "center",
       verticalAlign: "center",
     },
+    blurbContainer: {
+      position: "relative",
+    },
+    editIcon: {
+      position: "absolute",
+      right: "-40px",
+      top: "-20px",
+      color: "#a9a9a9",
+    },
   })
 );
 
@@ -45,18 +54,11 @@ export const Blurb = ({
         />
       ) : (
         <div className={classes.blurbView}>
-          <div style={{ position: "relative" }}>
+          <div className={classes.blurbContainer}>
             <Typography variant="body2">{blurb}</Typography>
             <IconButton
-              onClick={() => {
-                setEdit(true);
-              }}
-              style={{
-                position: "absolute",
-                right: "-40px",
-                top: "-20px",
-                color: "#a9a9a9",
-              }}
+              onClick={() => setEdit(true)}
+              className={classes.editIcon}
             >
               <EditIcon fontSize={"small"} />
             </IconButton>
@@ -80,36 +82,35 @@ const EditBlurb = ({
 }) => {
   const [value, setValue] = React.useState<string>(blurb);
   return (
-    <div className={className}>
-      <TextField
-        size="small"
-        style={{ display: "flex" }}
-        variant={"outlined"}
-        autoFocus={true}
-        InputProps={{
-          endAdornment: (
-            <Button
-              size={"small"}
-              onClick={onBack}
-              variant="contained"
-              color="secondary"
-            >
-              Save
-            </Button>
-          ),
-        }}
-        value={value}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setValue(e.target.value)
+    <TextField
+      size="small"
+      className={className}
+      style={{ display: "flex" }}
+      variant={"outlined"}
+      autoFocus={true}
+      InputProps={{
+        endAdornment: (
+          <Button
+            size={"small"}
+            onClick={onBack}
+            variant="contained"
+            color="secondary"
+          >
+            Save
+          </Button>
+        ),
+      }}
+      value={value}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+        setValue(e.target.value)
+      }
+      onBlur={onBack}
+      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          onEdit(value);
         }
-        onBlur={onBack}
-        onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            onEdit(value);
-          }
-        }}
-      />
-    </div>
+      }}
+    />
   );
 };
