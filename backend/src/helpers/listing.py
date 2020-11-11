@@ -20,6 +20,9 @@ def map_listing_to_response(listing: Listing, highest_bid: Optional[int], starre
     response = asdict(listing)
     if not is_owner:
         response.pop('reserve_price')
+        response.pop('account_name')
+        response.pop('bsb')
+        response.pop('account_number')
     response['owner'] = listing.owner
     response['highest_bid'] = highest_bid
     response['reserve_met'] = highest_bid is not None and highest_bid >= listing.reserve_price
