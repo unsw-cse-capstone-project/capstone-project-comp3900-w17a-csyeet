@@ -88,6 +88,7 @@ class ListingResponse(ListingBase):
     registered_bidder: bool
     highest_bid: Optional[int]
     reserve_met: bool
+    reserve_price: Optional[int]
     landmarks: List[LandmarkReponse]
     image_ids: List[int]
 
