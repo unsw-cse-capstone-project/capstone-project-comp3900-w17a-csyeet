@@ -81,7 +81,7 @@ export const OwnerHeader = ({
   };
   const onEditClick = () => {
     // (jenn) Can update path
-    history.push(`/edit/${id}`);
+    history.push(`/listing/${id}/edit`);
   };
   return (
     <div className={classes.listingHeader}>

@@ -69,6 +69,7 @@ ReactDOM.render(
               <Switch>
                 <Route path="/search" component={SearchPage} />
                 <Route
+                  exact
                   path="/listing/:id/register"
                   render={(props) => (
                     <ProtectedComponent
@@ -79,6 +80,7 @@ ReactDOM.render(
                   )}
                 />
                 <Route
+                  exact
                   path="/listing/:id/messages"
                   render={(props) => (
                     <ProtectedComponent
@@ -88,9 +90,17 @@ ReactDOM.render(
                     />
                   )}
                 />
-                <Route path="/listing/:id/auction" component={AuctionPage} />
-                <Route path="/listing/:id" component={ViewListingPage} />
-                <Route path="/edit/:id" component={EditListingPage} />
+                <Route
+                  exact
+                  path="/listing/:id/auction"
+                  component={AuctionPage}
+                />
+                <Route exact path="/listing/:id" component={ViewListingPage} />
+                <Route
+                  exact
+                  path="/listing/:id/edit"
+                  component={EditListingPage}
+                />
                 <Route
                   path="/add"
                   render={(props) => (

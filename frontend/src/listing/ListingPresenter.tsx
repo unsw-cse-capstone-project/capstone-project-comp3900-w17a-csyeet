@@ -118,7 +118,10 @@ export class ListingPresenter {
       const result = await response.json();
 
       // Error Handling
-      if ("detail" in result) onError();
+      if ("detail" in result){
+        console.log(result)
+        onError();
+      }
       else {
         const listing: ListingDetails = getListingFromResult(result);
         const address: AddressDetails = getAddressFromResult(result);
@@ -131,7 +134,8 @@ export class ListingPresenter {
           store.payment = payment;
         });
       }
-    } catch {
+    } catch(e) {
+      console.log(e)
       onError();
     }
   }
