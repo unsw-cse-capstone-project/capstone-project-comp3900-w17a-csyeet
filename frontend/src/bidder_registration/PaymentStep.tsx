@@ -3,143 +3,169 @@ import { BidderRegistrationStore } from "./BidderRegistrationPresenter";
 import { action } from "mobx";
 import NumberFormat from "react-number-format";
 import {
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
   Grid,
+  TextField,
 } from "@material-ui/core";
-import { CreditCard } from "@material-ui/icons";
-import { observer } from "mobx-react";
 import { paymentStepStyle } from "./PaymentStep.css";
+import { Checkbox } from "../ui/base/input/Checkbox";
+import { Typography } from '@material-ui/core';
 
-type NumberFormatCustomProps = {
+interface NumberFormatCustomProps {
   inputRef: (instance: NumberFormat | null) => void;
+  onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
-};
-
-type PaymentStepProps = {
-  store: BidderRegistrationStore;
-};
+}
 
 /**
  * Payment Step for bidder registration
  */
-export const PaymentStep = ({ store }: PaymentStepProps) => {
-  const onChangeCard = action((value: string) => {
-    store.cardNumber = value;
-  });
-  const onChangeDate = action((value: string) => {
-    store.expiryDate = value;
-  });
-  const onChangeCCV = action((value: string) => {
-    store.ccv = value;
-  });
-
-  const CreditCardInput = observer((props: NumberFormatCustomProps) => {
-    const { inputRef, ...other } = props;
+export const PaymentStep = ({ store }: {
+  store: BidderRegistrationStore;
+}) => {
+  const CardInputField = () => {
+    const [cardNumber, setCardNumber] = React.useState<string>(
+      store.cardNumber
+    );
     return (
-      <NumberFormat
-        {...other}
-        format="#### #### #### ####"
-        mask="#"
-        value={store.cardNumber}
-        onValueChange={(values) => {
-          onChangeCard(values.value);
+      <TextField
+        variant="outlined"
+        value={cardNumber}
+        label="Card Number"
+        onBlur={action(() => (store.cardNumber = cardNumber))}
+        fullWidth
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setCardNumber(event.target.value)
+        }
+        InputProps={{
+          inputComponent: CreditCardInput as any,
         }}
       />
     );
-  });
+  };
 
-  const ExpiryDateInput = observer((props: NumberFormatCustomProps) => {
-    const { inputRef, ...other } = props;
+  const ExpiryDateInputField = () => {
+    const [expiryDate, setExpiryDate] = React.useState<string>(
+      store.expiryDate
+    );
     return (
-      <NumberFormat
-        {...other}
-        format="##/##"
-        mask={["M", "M", "Y", "Y"]}
-        placeholder="MM/YY"
-        value={store.expiryDate}
-        onValueChange={(values) => {
-          onChangeDate(values.value);
+      <TextField
+        variant="outlined"
+        fullWidth
+        value={expiryDate}
+        label="Expiry Date"
+        onBlur={action(() => (store.expiryDate = expiryDate))}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setExpiryDate(event.target.value)
+        }
+        InputProps={{
+          inputComponent: ExpiryDateInput as any,
         }}
       />
     );
-  });
+  };
 
-  const CCVInput = observer((props: NumberFormatCustomProps) => {
-    const { inputRef, ...other } = props;
+  const CCVInputField = () => {
+    const [CCV, setCCV] = React.useState<string>(store.ccv);
     return (
-      <NumberFormat
-        {...other}
-        format="###"
-        mask="#"
-        value={store.ccv}
-        onValueChange={(values) => {
-          onChangeCCV(values.value);
+      <TextField
+        variant="outlined"
+        value={CCV}
+        label="CCV"
+        fullWidth
+        onBlur={action(() => (store.ccv = CCV))}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setCCV(event.target.value)
+        }
+        InputProps={{
+          inputComponent: CCVInput as any,
         }}
       />
     );
-  });
-
+  };
   const classes = paymentStepStyle();
   return (
     <div className={classes.container}>
-      <FormControl
-        fullWidth
-        variant="outlined"
-        style={{ marginBottom: "20px" }}
-      >
-        <InputLabel
-          htmlFor="outlined-adornment-card"
-          style={{ background: "white" }}
-          shrink
-        >
-          Card Number
-        </InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-card"
-          endAdornment={
-            <InputAdornment position="end">{<CreditCard />}</InputAdornment>
-          }
-          labelWidth={110}
-          inputComponent={CreditCardInput as any}
-        />
-      </FormControl>
-      <Grid container spacing={3}>
+      <CardInputField />
+      <Grid container spacing={3} style={{ marginTop: "20px" }}>
         <Grid item xs={6}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel
-              htmlFor="outlined-adornment-date"
-              style={{ background: "white" }}
-              shrink
-            >
-              Expiry Date
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-date"
-              labelWidth={80}
-              inputComponent={ExpiryDateInput as any}
-            />
-          </FormControl>
+          <ExpiryDateInputField />
         </Grid>
         <Grid item xs={6}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel
-              htmlFor="outlined-adornment-CCV"
-              shrink
-              style={{ background: "white" }}
-            >
-              CCV
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-CCV"
-              labelWidth={40}
-              inputComponent={CCVInput as any}
-            />
-          </FormControl>
+          <CCVInputField />
         </Grid>
       </Grid>
+      <Checkbox
+        store={store}
+        name="confirmPayment"
+        Label={<Typography variant="body1">Confirm these details are correct</Typography>}
+        style={{ marginTop: "40px" }}
+      />
     </div>
+  );
+};
+
+const CCVInput = (props: NumberFormatCustomProps) => {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={props.inputRef}
+      format="###"
+      mask="#"
+      placeholder="###"
+      onValueChange={(values) => {
+        props.onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+    />
+  );
+};
+
+const ExpiryDateInput = (props: NumberFormatCustomProps) => {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={props.inputRef}
+      format="##/##"
+      mask={["M", "M", "Y", "Y"]}
+      placeholder="MM/YY"
+      onValueChange={(values) => {
+        props.onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+    />
+  );
+};
+
+const CreditCardInput = (props: NumberFormatCustomProps) => {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={props.inputRef}
+      format="#### #### #### ####"
+      mask="#"
+      placeholder="#### #### #### ####"
+      onValueChange={(values) => {
+        props.onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+    />
   );
 };
