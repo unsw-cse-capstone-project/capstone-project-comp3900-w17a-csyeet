@@ -239,7 +239,7 @@ def delete_image(listing_id: int, image_id: int, signed_in_user: User = Depends(
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
     
-    if listing.owner_id != signed_in_user.id:
+    if signed_in_user.id != listing.owner_id:
         raise HTTPException(
             status_code=403, detail="User cannot delete images for this listing")
 
