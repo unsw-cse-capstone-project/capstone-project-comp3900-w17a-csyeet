@@ -20,36 +20,36 @@ export default class Store {
 
   @action
   async signIn(email: string, password: string, onError: () => void) {
-    // try {
-    //   const response = await fetch("/login", {
-    //     method: "post",
-    //     credentials: "include",
-    //     body: JSON.stringify({ email: email, password: password }),
-    //   });
-    //   const content = await response.json();
-    //   if ("detail" in content) {
-    //     console.log("error", content.detail);
-    //     onError();
-    //   } else {
-    //     runInAction(
-    //       () =>
-    //         (this.user = {
-    //           name: content.name,
-    //           id: content.id,
-    //           email: content.email,
-    //           phone_number: "0412345678",
-    //           street: "12 Street St",
-    //           suburb: "Fairfield",
-    //           postcode: "2194",
-    //           state: "NSW",
-    //           country: "Australia",
-    //         })
-    //     );
-    //     window.localStorage.setItem("id", content.id);
-    //   }
-    // } catch {
-    //   console.log("error T-T");
-    // }
+    try {
+      const response = await fetch("/login", {
+        method: "post",
+        credentials: "include",
+        body: JSON.stringify({ email: email, password: password }),
+      });
+      const content = await response.json();
+      if ("detail" in content) {
+        console.log("error", content.detail);
+        onError();
+      } else {
+        runInAction(
+          () =>
+            (this.user = {
+              name: content.name,
+              id: content.id,
+              email: content.email,
+              phone_number: "0412345678",
+              street: "12 Street St",
+              suburb: "Fairfield",
+              postcode: "2194",
+              state: "NSW",
+              country: "Australia",
+            })
+        );
+        window.localStorage.setItem("id", content.id);
+      }
+    } catch {
+      console.log("error T-T");
+    }
   }
 
   @action
