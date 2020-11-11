@@ -122,3 +122,8 @@ class SearchListingsResponse(BaseModel):
 class AuctionResponse(BaseModel):
     bidders: List[int]
     bids: List[BidResponse]
+
+
+class UploadImagesResponse(BaseModel):
+    ids: List[int]
+    
