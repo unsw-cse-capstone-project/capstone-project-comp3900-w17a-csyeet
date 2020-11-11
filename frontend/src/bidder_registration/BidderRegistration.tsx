@@ -55,7 +55,8 @@ export const BidderRegistration = observer(
         store.ccv &&
         store.cardNumber.length === 16 &&
         store.ccv.length === 3 &&
-        store.expiryDate.length === 4
+        store.expiryDate.length === 4 &&
+        store.confirmPayment
     );
     const canSubmit = computed(() => store.submitState !== "submitting");
     const steps = getSteps();
@@ -77,7 +78,7 @@ export const BidderRegistration = observer(
         case 0:
           return <InitialBidStep store={store} />;
         case 1:
-          return <PaymentStep store={store} />;
+          return <PaymentStep store={store}/>;
         case 2:
           return <ConfirmationStep store={store} />;
         default:
@@ -99,7 +100,11 @@ export const BidderRegistration = observer(
     const history = useHistory();
     return (
       <div>
-        <Stepper activeStep={activeStep} alternativeLabel className={classes.stepper}>
+        <Stepper
+          activeStep={activeStep}
+          alternativeLabel
+          className={classes.stepper}
+        >
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
@@ -110,31 +115,27 @@ export const BidderRegistration = observer(
           <div className={classes.body}>
             {getStepContent(activeStep)}
             <div>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  className={classes.backButton}
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={
-                    activeStep === steps.length - 1 ? handleConfirm : handleNext
-                  }
-                  disabled={disableNext()}
-                >
-                  {activeStep === steps.length - 1 ? "Confirm" : "Next"}
-                </Button>
+              <Button
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                className={classes.backButton}
+              >
+                Back
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={
+                  activeStep === steps.length - 1 ? handleConfirm : handleNext
+                }
+                disabled={disableNext()}
+              >
+                {activeStep === steps.length - 1 ? "Confirm" : "Next"}
+              </Button>
             </div>
           </div>
         )}
-        <Dialog
-          TransitionComponent={Transition}
-          keepMounted
-          open={openModal}
-        >
+        <Dialog TransitionComponent={Transition} keepMounted open={openModal}>
           <DialogTitle>Registration</DialogTitle>
           <DialogContent>
             <DialogContentText>

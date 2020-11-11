@@ -14,7 +14,7 @@ export const RegoOnly = () => {
   const store = new BidderRegistrationStore();
   return (
     <div style={{ height: "800px" }}>
-      <BidderRegistration store={store} listingId={createFakeListing().id} onSubmit={action("onSubmit")}/>
+      {/* <BidderRegistration store={store} listingId={createFakeListing().id} onSubmit={action("onSubmit")}/> */}
     </div>
   );
 };
