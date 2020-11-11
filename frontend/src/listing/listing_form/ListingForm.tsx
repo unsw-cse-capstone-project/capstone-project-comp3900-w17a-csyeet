@@ -23,10 +23,12 @@ export type AddressDetails = {
 export const ListingForm = observer(
   ({
     store,
+    edit = false,
     onPreview,
     onBack,
   }: {
     store: ListingStore;
+    edit?: boolean;
     onPreview: () => void;
     onBack: () => void;
   }) => {
@@ -41,15 +43,15 @@ export const ListingForm = observer(
     const getContent = (activeStep: number) => {
       switch (activeStep) {
         case 0:
-          return <Details store={store} />;
+          return <Details edit={edit} store={store} />;
         case 1:
           return <Images store={store} />;
         case 2:
           return <Description store={store} />;
         case 3:
-          return <AuctionDetails store={store} />;
+          return <AuctionDetails edit={edit} store={store} />;
         case 4:
-          return <PaymentDetails store={store} />;
+          return <PaymentDetails edit={edit} store={store} />;
         default:
           return "404 You've fallen into outer space!";
       }
@@ -93,7 +95,8 @@ export const ListingForm = observer(
       () =>
         store.auction.auction_start !== null &&
         store.auction.auction_end !== null &&
-        store.auction.reserve_price !== ""
+        store.auction.reserve_price !== null &&
+        store.auction.reserve_price > 0
     );
 
     const completedStep4 = computed(

@@ -24,15 +24,15 @@ export const AddressForm = observer(
   ({
     onChange,
     addressData,
+    readOnly = false,
     style,
     className,
-    readOnly = false,
   }: {
     onChange: (value: string, field: string) => void;
     addressData: AddressDetails;
+    readOnly?: boolean;
     style?: React.CSSProperties;
     className?: string;
-    readOnly?: boolean;
   }) => {
     // Get all the countries
     const countryStateData = require("./country-state.json");
@@ -93,6 +93,7 @@ export const AddressForm = observer(
           <Grid item xs>
             <SelectWrapper
               onChange={onChange}
+              readOnly={readOnly}
               field="state"
               label="State"
               data={states}
@@ -114,7 +115,7 @@ export const AddressForm = observer(
               <Select
                 labelId="select-outlined-label"
                 id="select-outlined"
-                readOnly={readOnly}
+                disabled={readOnly}
                 value={countryValue}
                 onChange={(e: React.ChangeEvent<{ value: unknown }>) => {
                   onChange(e.target.value as string, "country");

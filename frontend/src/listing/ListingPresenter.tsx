@@ -11,16 +11,15 @@ export type ListingDetails = {
   num_bedrooms: number;
   num_bathrooms: number;
   num_car_spaces: number;
-  auction_start: Date | null;
-  auction_end: Date | null;
   images: string[];
   features: string[];
 };
 
 export type AuctionDetails = {
+  confirmed_auction_start: Date | null;
   auction_start: Date | null;
   auction_end: Date | null;
-  reserve_price: string | null;
+  reserve_price: number | null;
 };
 
 export type PaymentDetails = {
@@ -53,9 +52,10 @@ const getListingFromResult = (result: any) => ({
 });
 
 const getAuctionFromResult = (result: any) => ({
+  confirmed_auction_start: result.auction_start,
   auction_start: result.auction_start,
   auction_end: result.auction_end,
-  reserve_price: result.reserve_price.toString(),
+  reserve_price: result.reserve_price,
 });
 
 const getPaymentFromResult = (result: any) => ({
@@ -81,8 +81,6 @@ export class ListingStore {
     num_bedrooms: 0,
     num_bathrooms: 0,
     num_car_spaces: 0,
-    auction_start: null,
-    auction_end: null,
     images: [],
     features: [],
   };
@@ -94,6 +92,7 @@ export class ListingStore {
   };
 
   @observable auction: AuctionDetails = {
+    confirmed_auction_start: null,
     auction_start: null,
     auction_end: null,
     reserve_price: null,
@@ -118,11 +117,9 @@ export class ListingPresenter {
       const result = await response.json();
 
       // Error Handling
-      if ("detail" in result){
-        console.log(result)
+      if ("detail" in result) {
         onError();
-      }
-      else {
+      } else {
         const listing: ListingDetails = getListingFromResult(result);
         const address: AddressDetails = getAddressFromResult(result);
         const auction: AuctionDetails = getAuctionFromResult(result);
@@ -134,8 +131,8 @@ export class ListingPresenter {
           store.payment = payment;
         });
       }
-    } catch(e) {
-      console.log(e)
+    } catch (e) {
+      console.log(e);
       onError();
     }
   }
@@ -167,7 +164,7 @@ export class ListingPresenter {
           num_car_spaces: store.listing.num_car_spaces,
           auction_start: store.auction.auction_start?.toISOString(),
           auction_end: store.auction.auction_end?.toISOString(),
-          reserve_price: parseInt(store.auction.reserve_price as string),
+          reserve_price: store.auction.reserve_price,
           account_name: store.payment.account_name,
           bsb: store.payment.bsb,
           account_number: store.payment.account_number,

@@ -1,7 +1,16 @@
 import * as React from "react";
 import { ListingStore, ListingPresenter } from "../ListingPresenter";
 import { useHistory, useParams } from "react-router-dom";
-import { Snackbar, Typography } from "@material-ui/core";
+import {
+  Snackbar,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+} from "@material-ui/core";
 import { ListingForm } from "../listing_form/ListingForm";
 import { PreviewListing } from "../PreviewListing";
 import { EditListingStyles } from "./EditListing.css";
@@ -49,6 +58,7 @@ export const EditListingPageBase = observer(
     const history = useHistory();
     const [status, setStatus] = React.useState<string | null>(null);
     const [openSnack, setOpen] = React.useState<boolean>(false);
+    const [openConfirmDialog, setDialog] = React.useState<boolean>(false);
     const [isEditing, setIsEditing] = React.useState<boolean>(true);
     const classes = EditListingStyles();
     const onLoad = () => {
@@ -88,6 +98,7 @@ export const EditListingPageBase = observer(
             <>
               <Typography variant="h3">Edit Listing</Typography>
               <ListingForm
+                edit={true}
                 store={store}
                 onBack={() => history.push("/")}
                 onPreview={() => setIsEditing(false)}
@@ -97,10 +108,7 @@ export const EditListingPageBase = observer(
             <PreviewListing
               store={store}
               onBack={() => setIsEditing(true)}
-              onPublish={() => {
-                onLoad();
-                onUpdateListing(store, onSuccess, onError);
-              }}
+              onPublish={() => setDialog(true)}
             />
           )}
         </div>
@@ -117,6 +125,33 @@ export const EditListingPageBase = observer(
             {snackContent(status)}
           </Snackbar>
         )}
+        <Dialog open={openConfirmDialog} onClose={() => setDialog(false)}>
+          <DialogTitle>{"Publish your listing"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <strong>Warning:</strong>Once the auction has begun, you can no
+              longer change your auction dates, reserve price or payment
+              details.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDialog(false)} color="primary">
+              Back
+            </Button>
+            <Button
+              onClick={() => {
+                setDialog(false);
+                onLoad();
+                onUpdateListing(store, onSuccess, onError);
+              }}
+              variant="contained"
+              color="primary"
+              autoFocus
+            >
+              Continue
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
