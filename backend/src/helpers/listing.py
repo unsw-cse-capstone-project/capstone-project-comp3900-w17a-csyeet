@@ -16,8 +16,10 @@ def decode_continuation(continuation: str) -> Tuple[int]:
     return int(base64.urlsafe_b64decode(continuation).decode()),
 
 
-def map_listing_to_response(listing: Listing, highest_bid: Optional[int], starred: bool, registered_bidder: bool) -> ListingResponse:
+def map_listing_to_response(listing: Listing, highest_bid: Optional[int], starred: bool, registered_bidder: bool, is_owner: bool = False) -> ListingResponse:
     response = asdict(listing)
+    if not is_owner:
+        response.pop('reserve_price')
     response['owner'] = listing.owner
     response['highest_bid'] = highest_bid
     response['reserve_met'] = highest_bid is not None and highest_bid >= listing.reserve_price
@@ -38,7 +40,8 @@ def map_listing_response(listing, current_user: Optional[User], session: Session
     starred = is_listing_starred(listing, current_user, session)
     registered_bidder = is_user_registered_bidder(
         listing, current_user, session)
-    return map_listing_to_response(listing, highest_bid, starred, registered_bidder)
+    is_owner = current_user is not None and current_user.id == listing.owner_id
+    return map_listing_to_response(listing, highest_bid, starred, registered_bidder, is_owner)
 
 
 def get_field_for_feature(feature: Feature) -> str:
