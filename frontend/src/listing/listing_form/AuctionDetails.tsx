@@ -19,6 +19,7 @@ import { createPriceInput } from "../../ui/base/input/PriceFormat";
 import { Alert } from "@material-ui/lab";
 import NumberFormat from "react-number-format";
 
+
 const AuctionStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
@@ -81,6 +82,7 @@ export const AuctionDetails: React.FC<{
       />
     );
   };
+
 
   const handleDateChange = action((value: DateRange<Date>) => {
     const [start, end] = value;

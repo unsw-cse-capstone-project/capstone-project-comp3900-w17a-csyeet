@@ -18,6 +18,9 @@ export class BidderRegistrationStore {
   agreeToTerms: boolean = false;
 
   @observable
+  confirmPayment: boolean = false;
+
+  @observable
   loadingState?: "loading" | "loaded" | "error";
 
   @observable
