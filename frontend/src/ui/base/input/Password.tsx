@@ -1,7 +1,7 @@
 import React from "react";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import { TextFieldWrapper } from "../textfield_wrapper/TextFieldWrapper";
+import { TextFieldWrapper } from "./TextFieldWrapper";
 
 export const Password = ({
   field,

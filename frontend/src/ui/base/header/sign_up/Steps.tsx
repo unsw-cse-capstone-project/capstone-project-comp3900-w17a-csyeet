@@ -13,7 +13,7 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import { Password } from "../../input/Password";
-import { TextFieldWrapper } from "../../textfield_wrapper/TextFieldWrapper";
+import { TextFieldWrapper } from "../../input/TextFieldWrapper";
 import { AddressForm } from "../../address_form/AddressForm";
 import { SignUpStore } from "./SignUpStore";
 

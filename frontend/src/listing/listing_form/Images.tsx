@@ -2,7 +2,7 @@ import React from "react";
 import { action } from "mobx";
 import { observer } from "mobx-react";
 import { ListingStore } from "../ListingPresenter";
-import { ImageUploader } from "../../ui/base/images/ImageUploader";
+import { ImageUploader } from "../../ui/base/input/ImageUploader";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import { IconButton } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";

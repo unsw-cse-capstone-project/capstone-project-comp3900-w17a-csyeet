@@ -1,7 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { SelectWrapper } from "../../../ui/base/select_wrapper/SelectWrapper";
-import { TextFieldWrapper } from "../../../ui/base/textfield_wrapper/TextFieldWrapper";
+import { SelectWrapper } from "../input/SelectWrapper";
+import { TextFieldWrapper } from "../input/TextFieldWrapper";
 import {
   Grid,
   MenuItem,
