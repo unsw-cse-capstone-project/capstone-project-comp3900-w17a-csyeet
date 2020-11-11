@@ -22,6 +22,17 @@ export const AvatarStyles = makeStyles((theme: Theme) =>
         background: "#a9a9a9",
       },
     },
+    avatarImage: {
+      objectFit: "cover",
+      height: "200px",
+      width: "200px",
+      borderRadius: "50%",
+    },
+    editIcon: {
+      position: "absolute",
+      bottom: "10px",
+      right: "0px",
+    },
   })
 );
 
@@ -49,24 +60,14 @@ export const ProfileAvatar = ({
         <div className={classes.avatarStyle}>
           <img
             src={avatar}
-            style={{
-              objectFit: "cover",
-              height: "200px",
-              width: "200px",
-              borderRadius: "50%",
-            }}
+            className={classes.avatarImage}
             alt="uploaded-profile-img"
           />
           <Fab
             size="small"
             color="secondary"
-            aria-label="Edit"
             onClick={() => setEdit(true)}
-            style={{
-              position: "absolute",
-              bottom: "10px",
-              right: "0px",
-            }}
+            className={classes.editIcon}
           >
             <EditIcon fontSize={"small"} />
           </Fab>
@@ -75,6 +76,27 @@ export const ProfileAvatar = ({
     </div>
   );
 };
+
+const ImageEditorStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    removeButton: {
+      position: "absolute",
+      bottom: "45px",
+      right: "0px",
+    },
+    uploadButton: {
+      position: "absolute",
+      bottom: "10px",
+      right: "0px",
+    },
+    image: {
+      objectFit: "cover",
+      height: "200px",
+      width: "200px",
+      borderRadius: "50%",
+    },
+  })
+);
 
 const ImageEditor = ({
   onUpload,
@@ -92,92 +114,78 @@ const ImageEditor = ({
   ) => {
     setImages(imageList as never[]);
   };
+  const classes = ImageEditorStyles();
   return (
-    <>
-      <ImageUploading value={images} onChange={onChange} dataURLKey="data_url">
-        {({ onImageUpload, onImageUpdate, onImageRemove }) => (
-          <div>
-            {images.length === 1 ? (
-              <div>
-                {images.map((image, index) => (
-                  <div key={index} className={avatarClassName}>
-                    <Button
-                      size={"small"}
-                      variant="contained"
-                      onClick={() => onImageRemove(index)}
-                      style={{
-                        position: "absolute",
-                        bottom: "45px",
-                        right: "0px",
-                      }}
-                    >
-                      Remove
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size={"small"}
-                      onClick={() => {
-                        onUpload(
-                          images[0].file as File,
-                          images[0].dataURL as string
-                        );
-                        onBack();
-                      }}
-                      style={{
-                        position: "absolute",
-                        bottom: "10px",
-                        right: "0px",
-                      }}
-                    >
-                      Upload
-                      <PublishIcon
-                        style={{ marginLeft: "3px" }}
-                        fontSize="small"
-                      />
-                    </Button>
-
-                    <img
-                      src={image.data_url}
-                      style={{
-                        objectFit: "cover",
-                        height: "200px",
-                        width: "200px",
-                        borderRadius: "50%",
-                      }}
-                      alt="uploaded-profile-img"
+    <ImageUploading value={images} onChange={onChange} dataURLKey="data_url">
+      {({ onImageUpload, onImageUpdate, onImageRemove }) => (
+        <div>
+          {images.length === 1 ? (
+            <div>
+              {images.map((image, index) => (
+                <div key={index} className={avatarClassName}>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    onClick={() => onImageRemove(index)}
+                    className={classes.removeButton}
+                  >
+                    Remove
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size={"small"}
+                    onClick={() => {
+                      onUpload(
+                        images[0].file as File,
+                        images[0].dataURL as string
+                      );
+                      onBack();
+                    }}
+                    className={classes.uploadButton}
+                  >
+                    Upload
+                    <PublishIcon
+                      style={{ marginLeft: "3px" }}
+                      fontSize="small"
                     />
-                  </div>
-                ))}
-              </div>
-            ) : (
+                  </Button>
+
+                  <img
+                    src={image.data_url}
+                    className={classes.image}
+                    alt="uploaded-profile-img"
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Button
+              variant="outlined"
+              onClick={onImageUpload}
+              className={avatarClassName}
+            >
+              <AddAPhotoOutlinedIcon
+                fontSize="small"
+                style={{ marginRight: "5px" }}
+              />
+              Drop/Upload
               <Button
-                variant="outlined"
-                onClick={onImageUpload}
-                className={avatarClassName}
+                size={"small"}
+                variant="contained"
+                onClick={() => onBack()}
+                style={{
+                  position: "absolute",
+                  bottom: "10px",
+                  right: "0px",
+                }}
               >
-                <AddAPhotoOutlinedIcon
-                  fontSize="small"
-                  style={{ marginRight: "5px" }}
-                />
-                Drop/Upload
-                <Button
-                  size={"small"}
-                  variant="contained"
-                  onClick={() => onBack()}
-                  style={{
-                    position: "absolute",
-                    bottom: "10px",
-                    right: "0px",
-                  }}
-                >
-                  Back
-                </Button>
+                Back
               </Button>
-            )}
-          </div>
-        )}
-      </ImageUploading>
-    </>
+            </Button>
+          )}
+        </div>
+      )}
+    </ImageUploading>
   );
 };
