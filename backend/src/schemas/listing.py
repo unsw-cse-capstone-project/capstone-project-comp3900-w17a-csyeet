@@ -120,6 +120,6 @@ class AuctionResponse(BaseModel):
     bids: List[BidResponse]
 
 
-class UploadImageResponse(BaseModel):
+class UploadImagesResponse(BaseModel):
     ids: List[int]
     
