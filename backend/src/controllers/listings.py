@@ -32,7 +32,7 @@ def create(req: CreateListingRequest, signed_in_user: User = Depends(get_signed_
 
     session.commit()
     add_listing_to_ML_model(listing, session)
-    return map_listing_to_response(listing, None, False, False)
+    return map_listing_to_response(listing, None, False, False, True)
 
 
 @router.get('/', response_model=SearchListingsResponse)

@@ -16,7 +16,7 @@ def decode_continuation(continuation: str) -> Tuple[int]:
     return int(base64.urlsafe_b64decode(continuation).decode()),
 
 
-def map_listing_to_response(listing: Listing, highest_bid: Optional[int], starred: bool, registered_bidder: bool, is_owner: bool = False) -> ListingResponse:
+def map_listing_to_response(listing: Listing, highest_bid: Optional[int], starred: bool, registered_bidder: bool, is_owner: bool) -> ListingResponse:
     response = asdict(listing)
     if not is_owner:
         response.pop('reserve_price')
