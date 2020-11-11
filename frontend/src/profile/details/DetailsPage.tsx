@@ -7,38 +7,38 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { Snackbar } from "@material-ui/core";
 
 export const DetailsPage = () => {
-  // const userStore = useStore();
-  // if (!userStore) throw Error("User Store cannot be null");
+  const userStore = useStore();
+  if (!userStore) throw Error("User Store cannot be null");
   const fillDetailStore = action(() => {
-    store.id = 5;
-    store.name = "Jenn";
-    store.email = "jenn@example.com";
-    store.phone_number = "0000000000";
-    store.street = "23 Holland Avenue";
-    store.suburb = "CrossVill";
-    store.postcode = "1234";
-    store.state = "NSW";
-    store.country = "Australia";
-    // if (!userStore.user) throw Error("User does not exit");
-    // const {
-    //   id,
-    //   name,
-    // email,
-    //   phone_number,
-    //   street,
-    //   suburb,
-    //   postcode,
-    //   state,
-    //   country,
-    // } = userStore.user;
-    // store.id = id as number;
-    // store.name = name as string;
-    // store.phone_number = phone_number;
-    // store.street = street;
-    // store.suburb = suburb;
-    // store.postcode = postcode;
-    // store.state = state;
-    // store.country = country;
+//     store.id = 5;
+//     store.name = "Jenn";
+//     store.email = "jenn@example.com";
+//     store.phone_number = "0000000000";
+//     store.street = "23 Holland Avenue";
+//     store.suburb = "CrossVill";
+//     store.postcode = "1234";
+//     store.state = "NSW";
+//     store.country = "Australia";
+    if (!userStore.user) throw Error("User does not exit");
+    const {
+      id,
+      name,
+    email,
+      phone_number,
+      street,
+      suburb,
+      postcode,
+      state,
+      country,
+    } = userStore.user;
+    store.id = id as number;
+    store.name = name as string;
+    store.phone_number = phone_number;
+    store.street = street;
+    store.suburb = suburb;
+    store.postcode = postcode;
+    store.state = state;
+    store.country = country;
   });
 
   const snackContent = (status: string) => {
