@@ -51,5 +51,5 @@ export const Overview = ({
   store.listing.auction_end = new Date(auction_end);
   store.loadingState = loadingState;
 
-  return <div />;
+  return <BidderRegistrationWrapper store={store} onSubmit={action("onSubmit")} id={1}/>;
 };
