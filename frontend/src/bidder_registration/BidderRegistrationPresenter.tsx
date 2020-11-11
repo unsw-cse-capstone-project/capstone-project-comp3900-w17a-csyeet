@@ -6,13 +6,13 @@ export class BidderRegistrationStore {
   initialBid: number = 0;
 
   @observable
-  cardNumber: string = "123123";
+  cardNumber: string = "";
 
   @observable
-  expiryDate: string = "1233";
+  expiryDate: string = "";
 
   @observable
-  ccv: string = "123";
+  ccv: string = "";
 
   @observable
   agreeToTerms: boolean = false;
