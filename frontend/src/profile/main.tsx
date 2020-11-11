@@ -23,9 +23,7 @@ export const ProfilePage = observer(() => {
     <ProfilePageWrapper
       store={store}
       onEditBlurb={(blurb: string) => presenter.updateBlurb(blurb, store)}
-      onEditAvatar={(image: File, img_url: string) =>
-        presenter.updateAvatar(image, img_url, store)
-      }
+      onEditAvatar={(image: File) => presenter.updateAvatar(image, store)}
     />
   );
 });
@@ -38,7 +36,7 @@ export const ProfilePageWrapper = observer(
   }: {
     store: ProfileStore;
     onEditBlurb: (blurb: string) => void;
-    onEditAvatar: (image: File, img_url: string) => void;
+    onEditAvatar: (image: File) => void;
   }) => {
     const classes = ProfilePageStyles();
     const userStore = useStore();
@@ -123,6 +121,7 @@ const ProfileTabs = ({ store }: { store: ProfileStore }) => {
         </Tabs>
       </div>
 
+<<<<<<< Updated upstream
       <TabPanel value={value} index={0}>
         <MyBids store={store} />
       </TabPanel>
@@ -135,6 +134,22 @@ const ProfileTabs = ({ store }: { store: ProfileStore }) => {
       <TabPanel value={value} index={3}>
         <MyDetails />
       </TabPanel>
+=======
+      <div className={classes.tabPanel}>
+        <div hidden={value !== 0}>
+          <MyBids store={store} />
+        </div>
+        <div hidden={value !== 1}>
+          <MyListings store={store} />
+        </div>
+        <div hidden={value !== 2}>
+          <StarredProperties store={store} />
+        </div>
+        <div hidden={value !== 3}>
+          <MyDetails />
+        </div>
+      </div>
+>>>>>>> Stashed changes
     </div>
   );
 };

@@ -2,9 +2,14 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Paper, Typography, Grid } from "@material-ui/core";
 import { AddressForm } from "../../ui/base/address_form/AddressForm";
+<<<<<<< Updated upstream
 import { ListingStore } from "../ListingStore";
 import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
 import { SelectWrapper } from "../../ui/base/select_wrapper/SelectWrapper";
+=======
+import { ListingStore } from "../ListingPresenter";
+import { SelectWrapper } from "../../ui/base/input/SelectWrapper";
+>>>>>>> Stashed changes
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
 import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";

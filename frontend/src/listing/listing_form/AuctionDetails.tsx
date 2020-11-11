@@ -111,6 +111,16 @@ export const AuctionDetails: React.FC<{ store: ListingStore }> = observer(
           />
         </FormControl>
       </div>
-    );
-  }
-);
+      <FormControl fullWidth variant="outlined">
+        <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
+        <OutlinedInput
+          id="outlined-adornment-amount"
+          startAdornment={<InputAdornment position="start">$</InputAdornment>}
+          labelWidth={110}
+          inputComponent={PriceInputComponent as any}
+          value={reserve_price}
+        />
+      </FormControl>
+    </div>
+  );
+});

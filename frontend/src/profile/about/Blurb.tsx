@@ -80,6 +80,7 @@ const EditBlurb = ({
 }) => {
   const [value, setValue] = React.useState<string>(blurb);
   return (
+<<<<<<< Updated upstream
     <div className={className}>
       <TextField
         size="small"
@@ -101,6 +102,36 @@ const EditBlurb = ({
         value={value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setValue(e.target.value)
+=======
+    <TextField
+      size="small"
+      className={className}
+      style={{ display: "flex" }}
+      variant={"outlined"}
+      autoFocus={true}
+      InputProps={{
+        endAdornment: (
+          <Button
+            size={"small"}
+            onClick={() => onEdit(value)}
+            variant="contained"
+            color="secondary"
+          >
+            Save
+          </Button>
+        ),
+      }}
+      value={value}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+        setValue(e.target.value)
+      }
+      onBlur={onBack}
+      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          onEdit(value);
+          onBack();
+>>>>>>> Stashed changes
         }
         onBlur={onBack}
         onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {

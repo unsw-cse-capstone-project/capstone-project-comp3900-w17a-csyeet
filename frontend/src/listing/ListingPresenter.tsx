@@ -15,9 +15,29 @@ export class ListingPresenter {
       const result = await response.json();
 
       // Error Handling
+<<<<<<< Updated upstream
       if ("detail" in result) onError();
       else setResultsInStore(store, result);
     } catch {
+=======
+      if ("detail" in result) {
+        console.log(result);
+        onError();
+      } else {
+        const listing: ListingDetails = getListingFromResult(result);
+        const address: AddressDetails = getAddressFromResult(result);
+        const auction: AuctionDetails = getAuctionFromResult(result);
+        const payment: PaymentDetails = getPaymentFromResult(result);
+        runInAction(() => {
+          store.listing = listing;
+          store.address = address;
+          store.auction = auction;
+          store.payment = payment;
+        });
+      }
+    } catch (e) {
+      console.log(e);
+>>>>>>> Stashed changes
       onError();
     }
   }
@@ -32,6 +52,7 @@ export class ListingPresenter {
       const response = await fetch(`/listings/`, {
         method: "post",
         body: JSON.stringify({
+<<<<<<< Updated upstream
           type: store.type.toLowerCase(),
           title: store.descTitle,
           description: store.desc,
@@ -53,6 +74,26 @@ export class ListingPresenter {
           account_name: store.accName,
           bsb: store.bsb,
           account_number: store.accNumber,
+=======
+          type: store.listing.type.toLowerCase(),
+          title: store.listing.title,
+          description: store.listing.description,
+          street: store.address.street,
+          suburb: store.address.suburb,
+          postcode: store.address.postcode,
+          state: store.address.state,
+          country: store.address.country,
+          features: store.listing.features,
+          num_bedrooms: store.listing.num_bedrooms,
+          num_bathrooms: store.listing.num_bathrooms,
+          num_car_spaces: store.listing.num_car_spaces,
+          auction_start: store.auction.auction_start?.toISOString(),
+          auction_end: store.auction.auction_end?.toISOString(),
+          reserve_price: parseInt(store.auction.reserve_price as string),
+          account_name: store.payment.account_name,
+          bsb: store.payment.bsb,
+          account_number: store.payment.account_number,
+>>>>>>> Stashed changes
         }),
       });
       const result = await response.json();

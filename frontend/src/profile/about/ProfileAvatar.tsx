@@ -30,7 +30,7 @@ export const ProfileAvatar = ({
   onUpload,
   className,
 }: {
-  onUpload: (image: File, img_url: string) => void;
+  onUpload: (image: File) => void;
   avatar?: string;
   className?: string;
 }) => {
@@ -81,7 +81,7 @@ const ImageEditor = ({
   onBack,
   avatarClassName,
 }: {
-  onUpload: (image: File, img_url: string) => void;
+  onUpload: (image: File) => void;
   onBack: () => void;
   avatarClassName: string;
 }) => {
@@ -93,6 +93,7 @@ const ImageEditor = ({
     setImages(imageList as never[]);
   };
   return (
+<<<<<<< Updated upstream
     <>
       <ImageUploading value={images} onChange={onChange} dataURLKey="data_url">
         {({ onImageUpload, onImageUpdate, onImageRemove }) => (
@@ -136,6 +137,39 @@ const ImageEditor = ({
                         fontSize="small"
                       />
                     </Button>
+=======
+    <ImageUploading value={images} onChange={onChange} dataURLKey="data_url">
+      {({ onImageUpload, onImageUpdate, onImageRemove }) => (
+        <div>
+          {images.length === 1 ? (
+            <div>
+              {images.map((image, index) => (
+                <div key={index} className={avatarClassName}>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    onClick={() => onImageRemove(index)}
+                    className={classes.removeButton}
+                  >
+                    Remove
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size={"small"}
+                    onClick={() => {
+                      onUpload(images[0].file as File);
+                      onBack();
+                    }}
+                    className={classes.uploadButton}
+                  >
+                    Upload
+                    <PublishIcon
+                      style={{ marginLeft: "3px" }}
+                      fontSize="small"
+                    />
+                  </Button>
+>>>>>>> Stashed changes
 
                     <img
                       src={image.data_url}

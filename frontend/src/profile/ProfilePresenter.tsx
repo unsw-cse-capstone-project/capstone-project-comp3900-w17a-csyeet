@@ -51,9 +51,21 @@ export class ProfilePresenter {
           store.blurb = !!content["blurb"]
             ? content["blurb"]
             : "Update your bio";
+<<<<<<< Updated upstream
           store.myBidsResults = BidsResults;
           store.myListingsResults = ListingResults;
           store.starredResults = StarredResults;
+=======
+          store.myBidsResults = BidsResults.sort(
+            (a, b) => b.auction_start.getTime() - a.auction_start.getTime()
+          );
+          store.myListingsResults = ListingResults.sort(
+            (a, b) => b.auction_start.getTime() - a.auction_start.getTime()
+          );
+          store.starredResults = StarredResults.sort(
+            (a, b) => b.auction_start.getTime() - a.auction_start.getTime()
+          );
+>>>>>>> Stashed changes
         });
       }
     } catch {
@@ -65,8 +77,12 @@ export class ProfilePresenter {
   async updateBlurb(blurb: string, store: ProfileStore) {
     store.loadingState = "updating";
     try {
+<<<<<<< Updated upstream
       // ENDPOINT NOT UP YET
       const response = await fetch(`users/update`, {
+=======
+      const response = await fetch(`users/profile`, {
+>>>>>>> Stashed changes
         method: "post",
         body: JSON.stringify({
           blurb: blurb,
@@ -78,6 +94,7 @@ export class ProfilePresenter {
         runInAction(() => {
           store.loadingState = "success";
           store.blurb = blurb;
+          window.location.reload();
         });
       }
     } catch {
@@ -87,7 +104,7 @@ export class ProfilePresenter {
   }
 
   @action
-  async updateAvatar(image: File, img_url: string, store: ProfileStore) {
+  async updateAvatar(image: File, store: ProfileStore) {
     runInAction(() => (store.loadingState = "updating"));
     let form = new FormData();
     let data = await image.arrayBuffer();
