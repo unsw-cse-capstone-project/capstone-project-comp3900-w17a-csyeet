@@ -117,32 +117,9 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
   const classes = SearchBarStyles();
 
   const [showing, setShowing] = React.useState(false);
-
-  // const [bedsFilter, setBedFilter] = React.useState(store.filters.beds);
-  // const [bathsFilter, setBathsFilter] = React.useState(store.filters.baths);
-  // const [carFilter, setCarFilter] = React.useState(store.filters.cars);
-
   const onChange = action((value: number, field: string) => {
     (store as any).filters[field] = value;
   });
-
-  // const onBedChange = action((event: React.ChangeEvent<{ value: unknown }>) => {
-  //   setBedFilter(event.target.value as number);
-  //   (store as any).filters.beds = event.target.value;
-  // });
-
-  // const onBathChange = action(
-  //   (event: React.ChangeEvent<{ value: unknown }>) => {
-  //     setBathsFilter(event.target.value as number);
-  //     (store as any).filters.baths = event.target.value;
-  //   }
-  // );
-
-  // const onCarChange = action((event: React.ChangeEvent<{ value: unknown }>) => {
-  //   (store as any).filters.cars = event.target.value;
-  //   setCarFilter(store.filters.cars);
-  // });
-
   return (
     <div>
       <div>
@@ -201,31 +178,6 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
-// Component functions
-
-// export function NumberPicker(props: {
-//   value: any;
-//   onChange: any;
-//   label: String;
-// }) {
-//   const classes = SearchBarStyles();
-
-//   return (
-//     <TextField
-//       className={classes.formControl}
-//       size="small"
-//       variant="outlined"
-//       style={{ flex: 1 }}
-//       value={props.value}
-//       onChange={props.onChange}
-//       type="number"
-//       InputProps={{ inputProps: { min: 1 } }}
-//       label={props.label}
-//     />
-//   );
-// }
-
 export function TypePicker(props: { store: SearchStore }) {
   const classes = SearchBarStyles();
 
