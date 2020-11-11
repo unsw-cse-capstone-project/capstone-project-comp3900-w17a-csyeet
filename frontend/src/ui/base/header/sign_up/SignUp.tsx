@@ -13,6 +13,7 @@ import { Step0, Step1, Step2 } from "./Steps";
 import { ModalWrapper } from "../../modal_wrapper/ModalWrapper";
 import { SignUpStore } from "./SignUpStore";
 import { SignUpStyles } from "./SignUp.css";
+import { AddressDetails } from "../../address_form/AddressForm";
 
 export const SignUp: React.FC<{
   onSubmit: (
@@ -20,11 +21,7 @@ export const SignUp: React.FC<{
     email: string,
     password: string,
     phoneNo: string,
-    street: string,
-    suburb: string,
-    postcode: string,
-    state: string,
-    country: string
+    address: AddressDetails
   ) => void;
   store: SignUpStore;
 }> = observer(({ onSubmit, store }) => {
@@ -70,11 +67,11 @@ export const SignUp: React.FC<{
 
   const canProceedStep2 = computed(
     () =>
-      store.street !== "" &&
-      store.suburb !== "" &&
-      store.postcode !== "" &&
-      store.state !== "none" &&
-      store.country !== ""
+      store.address.street !== "" &&
+      store.address.suburb !== "" &&
+      store.address.postcode !== "" &&
+      store.address.state !== "" &&
+      store.address.country !== ""
   );
 
   const handleNext = () => {
@@ -91,11 +88,7 @@ export const SignUp: React.FC<{
       store.email,
       store.passwd,
       store.phoneNo,
-      store.street,
-      store.suburb,
-      store.postcode,
-      store.state,
-      store.country
+      store.address
     );
     closeModal();
   };

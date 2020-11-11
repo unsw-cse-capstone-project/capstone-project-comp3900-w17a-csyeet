@@ -10,13 +10,13 @@ import {
   FormControl,
 } from "@material-ui/core";
 
-export interface AddressData {
+export type AddressDetails = {
   street: string;
   suburb: string;
   postcode: string;
   state: string;
   country: string;
-}
+};
 
 // Countries and states sourced from
 // https://github.com/stefanbinder/countries-states
@@ -29,23 +29,11 @@ export const AddressForm = observer(
     readOnly = false,
   }: {
     onChange: (value: string, field: string) => void;
-    addressData?: AddressData;
+    addressData: AddressDetails;
     style?: React.CSSProperties;
     className?: string;
     readOnly?: boolean;
   }) => {
-    // If no data is given, it is an empty form
-    // Initialise with "NSW" and "Australia"
-    if (!addressData) {
-      addressData = {
-        street: "",
-        suburb: "",
-        postcode: "",
-        state: "",
-        country: "Australia",
-      };
-    }
-
     // Get all the countries
     const countryStateData = require("./country-state.json");
     let countries: Array<string> = [];
@@ -58,7 +46,7 @@ export const AddressForm = observer(
       for (var i = 0; i < countryStateData.length; ++i) {
         if (countryStateData[i].name === state) {
           for (var j = 0; j < countryStateData[i].states.length; ++j) {
-            newStates.push(countryStateData[i].states[j].name);
+            newStates.push(countryStateData[i].states[j].code);
           }
         }
       }

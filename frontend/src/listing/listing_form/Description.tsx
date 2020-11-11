@@ -1,18 +1,20 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { Typography, TextField } from "@material-ui/core";
-import { ListingStore } from "../ListingStore";
+import { Typography, TextField, FormHelperText } from "@material-ui/core";
+import { ListingStore } from "../ListingPresenter";
 import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
 import { Features } from "./Features";
 import { action } from "mobx";
 
 export const Description: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
+    const { title, description } = store.listing;
     const onChange = action((value: string, field: string) => {
-      (store as any)[field] = value;
+      (store as any).listing[field] = value;
     });
 
-    const [desc, setDesc] = React.useState(store.desc);
+    const [desc, setDesc] = React.useState<string>(description);
+    const [descError, setDescError] = React.useState<boolean>(false);
     return (
       <div>
         <div>
@@ -21,8 +23,9 @@ export const Description: React.FC<{ store: ListingStore }> = observer(
           </Typography>
           <TextFieldWrapper
             label={"Property Listing Title"}
-            field={"descTitle"}
+            field={"title"}
             onChange={onChange}
+            value={title}
           />
         </div>
         <div>
@@ -39,11 +42,19 @@ export const Description: React.FC<{ store: ListingStore }> = observer(
             multiline
             rows="10"
             value={desc}
+            onBlur={() =>
+              desc === "" ? setDescError(true) : setDescError(false)
+            }
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
               setDesc(e.target.value);
-              onChange(e.target.value, "desc");
+              onChange(e.target.value, "description");
             }}
           />
+          {descError && (
+            <FormHelperText style={{ color: "red" }}>
+              Description is required*
+            </FormHelperText>
+          )}
         </div>
         <Typography
           variant="subtitle1"

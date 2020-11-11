@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Typography, Card, Link, CardContent } from "@material-ui/core";
 import Slider from "react-slick";
-import { ListingActual, ListingSummary } from "../../util/types/listing";
+import { ListingActual } from "../../util/types/listing";
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
 import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
@@ -19,7 +19,7 @@ export const ListingCardSmall = ({
   onUnstar,
   style,
 }: {
-  listing: ListingSummary | ListingActual;
+  listing: ListingActual;
   onStar?: () => void;
   onUnstar?: () => void;
   style?: React.CSSProperties;

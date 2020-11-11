@@ -6,7 +6,6 @@ import ImageUploading, {
   ImageType,
 } from "react-images-uploading";
 import AddAPhotoOutlinedIcon from "@material-ui/icons/AddAPhotoOutlined";
-import EditIcon from "@material-ui/icons/Edit";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import { Button, IconButton } from "@material-ui/core";
 import classNames from "classnames";
@@ -16,7 +15,6 @@ export const ImageUploader: React.FC<{
   onImageChange: (images: ImageListType) => void;
   value?: ImageType;
   imageHeight?: string;
-  multiple?: boolean;
   max?: number;
   style?: React.CSSProperties;
   className?: string;
@@ -25,7 +23,6 @@ export const ImageUploader: React.FC<{
     onImageChange,
     value = [],
     imageHeight = "300px",
-    multiple = true,
     max = 20,
     style,
     className,
@@ -44,7 +41,6 @@ export const ImageUploader: React.FC<{
     return (
       <div className={classNames(className)} style={style}>
         <ImageUploading
-          multiple={multiple}
           value={images}
           onChange={onChange}
           maxNumber={max}
@@ -53,8 +49,6 @@ export const ImageUploader: React.FC<{
           {({
             imageList,
             onImageUpload,
-            onImageRemoveAll,
-            onImageUpdate,
             onImageRemove,
             isDragging,
             dragProps,
@@ -63,12 +57,6 @@ export const ImageUploader: React.FC<{
               <div className={classes.previewContainer}>
                 {imageList.map((image, index) => (
                   <div key={index} className={classes.imgContainer}>
-                    <IconButton
-                      className={classes.imgEdit}
-                      onClick={() => onImageUpdate(index)}
-                    >
-                      <EditIcon style={{ color: "#FFF" }} />
-                    </IconButton>
                     <IconButton
                       className={classes.imgDelete}
                       onClick={() => onImageRemove(index)}
@@ -86,23 +74,18 @@ export const ImageUploader: React.FC<{
                     />
                   </div>
                 ))}
-                {(multiple || (!multiple && images.length === 0)) && (
-                  <Button
-                    variant="outlined"
-                    className={classes.dropzone}
-                    style={{ height: imageHeight, width: imageHeight }}
-                    color={isDragging ? "secondary" : "default"}
-                    startIcon={<AddAPhotoOutlinedIcon />}
-                    onClick={onImageUpload}
-                    {...dragProps}
-                  >
-                    Upload Image{multiple && "s"}
-                  </Button>
-                )}
+                <Button
+                  variant="outlined"
+                  className={classes.dropzone}
+                  style={{ height: imageHeight, width: imageHeight }}
+                  color={isDragging ? "secondary" : "default"}
+                  startIcon={<AddAPhotoOutlinedIcon />}
+                  onClick={onImageUpload}
+                  {...dragProps}
+                >
+                  Upload Images
+                </Button>
               </div>
-              {multiple && (
-                <Button onClick={onImageRemoveAll}>Remove all images</Button>
-              )}
             </div>
           )}
         </ImageUploading>

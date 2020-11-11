@@ -1,4 +1,5 @@
 import { observable, makeObservable } from "mobx";
+import { AddressDetails } from "../../../../listing/listing_form/ListingForm";
 
 export class SignUpStore {
   @observable
@@ -17,19 +18,13 @@ export class SignUpStore {
   phoneNo: string = "";
 
   @observable
-  street: string = "";
-
-  @observable
-  suburb: string = "";
-
-  @observable
-  state: string = "";
-
-  @observable
-  country: string = "Australia";
-
-  @observable
-  postcode: string = "";
+  address: AddressDetails = {
+    street: "",
+    suburb: "",
+    postcode: "",
+    state: "NSW",
+    country: "Australia",
+  };
 
   @observable
   open: boolean = false;

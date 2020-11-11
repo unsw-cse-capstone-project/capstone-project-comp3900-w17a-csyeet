@@ -162,8 +162,8 @@ export const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
 // Step 2
 export const Step2: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
   const onChange = action((value: string, name: string) => {
-    (store as any)[name] = value;
+    (store as any).address[name] = value;
   });
 
-  return <AddressForm onChange={onChange} />;
+  return <AddressForm addressData={store.address} onChange={onChange} />;
 });

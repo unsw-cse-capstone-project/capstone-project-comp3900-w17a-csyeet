@@ -56,21 +56,3 @@ export type ListingActual = {
   reserve_met: boolean;
   user_bid?: number;
 };
-
-export type ListingSummary = {
-  id: number;
-  street: string;
-  suburb: string;
-  postcode: string;
-  state: string;
-  images: string[];
-  starred: boolean;
-  num_bedrooms: number;
-  num_bathrooms: number;
-  num_car_spaces: number;
-  auction_start: Date;
-  auction_end: Date;
-  reserve_met?: boolean;
-  highest_bid?: number | null;
-  user_bid?: number;
-};
