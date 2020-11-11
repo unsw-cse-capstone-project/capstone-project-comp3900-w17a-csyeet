@@ -4,7 +4,7 @@ import { action } from "mobx";
 import { Button, Typography, FormHelperText } from "@material-ui/core";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import { SignInStore } from "./SignInStore";
-import { TextFieldWrapper } from "../../textfield_wrapper/TextFieldWrapper";
+import { TextFieldWrapper } from "../../input/TextFieldWrapper";
 import { ModalWrapper } from "../../modal_wrapper/ModalWrapper";
 import logo from "../../../../images/logo.png";
 import { Password } from "../../input/Password";

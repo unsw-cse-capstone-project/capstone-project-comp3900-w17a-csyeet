@@ -12,13 +12,10 @@ import {
   Button,
 } from "@material-ui/core";
 import { DateRange } from "@material-ui/pickers";
-import { DateRangeWrapper } from "../../ui/base/date_range_picker/DateRangeWrapper";
+import { DateRangeWrapper } from "../../ui/base/input/DateRangeWrapper";
 import { InfoPopup } from "../../ui/base/info_popup/InfoPopup";
 import { ListingStore } from "../ListingPresenter";
-
-export const priceFormat = (s: string) => {
-  return s.toString().replace(/(?<=\d)(?=(\d\d\d)+(?!\d))/g, "$&,");
-};
+import { createPriceInput } from "../../ui/base/input/PriceFormat";
 
 const AuctionStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,22 +47,15 @@ export const AuctionDetails: React.FC<{
   store: ListingStore;
 }> = observer(({ store }) => {
   const { auction_start, auction_end, reserve_price } = store.auction;
-
-  const [reservePrice, setReservePrice] = React.useState<string | null>(
-    reserve_price
-  );
-
-  const handlePriceChange = action((e: React.ChangeEvent<HTMLInputElement>) => {
-    const strippedPrice: string = e.target.value.split(",").join("");
-    setReservePrice(strippedPrice);
-    (store as any).auction.reserve_price = parseInt(strippedPrice);
+  const PriceInputComponent = createPriceInput({
+    store,
+    name: "Reserve Price",
   });
 
   const handleDateChange = action((value: DateRange<Date>) => {
     const [start, end] = value;
     store.auction.auction_start = start;
     store.auction.auction_end = end;
-    console.log(store.auction.auction_start);
   });
 
   const reservePriceInfo =
@@ -115,12 +105,10 @@ export const AuctionDetails: React.FC<{
       <FormControl fullWidth variant="outlined">
         <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
         <OutlinedInput
-          value={reservePrice ? priceFormat(reservePrice) : ""}
           id="outlined-adornment-amount"
           startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          labelWidth={60}
-          aria-describedby="helper-text"
-          onChange={handlePriceChange}
+          labelWidth={110}
+          inputComponent={PriceInputComponent as any}
         />
       </FormControl>
     </div>

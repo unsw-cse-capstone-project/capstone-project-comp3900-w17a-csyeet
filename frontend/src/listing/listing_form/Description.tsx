@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Typography, TextField, FormHelperText } from "@material-ui/core";
 import { ListingStore } from "../ListingPresenter";
-import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
+import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
 import { Features } from "./Features";
 import { action } from "mobx";
 

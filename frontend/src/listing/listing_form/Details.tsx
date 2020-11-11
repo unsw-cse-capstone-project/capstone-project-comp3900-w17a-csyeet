@@ -3,12 +3,12 @@ import { observer } from "mobx-react";
 import { Paper, Typography, Grid } from "@material-ui/core";
 import { AddressForm } from "../../ui/base/address_form/AddressForm";
 import { ListingStore } from "../ListingPresenter";
-import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
-import { SelectWrapper } from "../../ui/base/select_wrapper/SelectWrapper";
+import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
+import { SelectWrapper } from "../../ui/base/input/SelectWrapper";
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
 import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
-
+import { NumberPicker } from "../../ui/base/input/NumberPicker";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { action } from "mobx";
 
@@ -71,12 +71,13 @@ export const Details: React.FC<{
               <HotelOutlinedIcon style={{ marginRight: "10px" }} />
               <Typography>Bedroom(s)</Typography>
             </div>
-            <TextFieldWrapper
-              field="num_bedrooms"
-              label="Bedroom(s)"
-              type="number"
-              onChange={onChange}
-              value={num_bedrooms.toString()}
+            <NumberPicker
+              style={{ flex: 1, marginTop: "10px" }}
+              value={num_bedrooms}
+              size={"medium"}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onChange(e.target.value, "num_bedrooms");
+              }}
             />
           </Paper>
         </Grid>
@@ -86,12 +87,13 @@ export const Details: React.FC<{
               <BathtubOutlinedIcon style={{ marginRight: "10px" }} />
               <Typography>Bathrooms(s)</Typography>
             </div>
-            <TextFieldWrapper
-              field="num_bathrooms"
-              label="Bathroom(s)"
-              type="number"
-              onChange={onChange}
-              value={num_bathrooms.toString()}
+            <NumberPicker
+              style={{ flex: 1, marginTop: "10px" }}
+              value={num_bathrooms}
+              size={"medium"}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onChange(e.target.value, "num_bathrooms");
+              }}
             />
           </Paper>
         </Grid>
@@ -101,12 +103,13 @@ export const Details: React.FC<{
               <DriveEtaOutlinedIcon style={{ marginRight: "10px" }} />
               <Typography>Car Spaces(s)</Typography>
             </div>
-            <TextFieldWrapper
-              field="num_car_spaces"
-              label="Garages(s)"
-              type="number"
-              onChange={onChange}
-              value={num_car_spaces.toString()}
+            <NumberPicker
+              style={{ flex: 1, marginTop: "10px" }}
+              value={num_car_spaces}
+              size={"medium"}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onChange(e.target.value, "num_car_spaces");
+              }}
             />
           </Paper>
         </Grid>

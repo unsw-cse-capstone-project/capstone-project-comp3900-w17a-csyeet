@@ -37,8 +37,8 @@ export class BidderRegistrationStore {
 export class BidderRegistrationPresenter {
   /**
    * Load listing information for the bidding page
-   * @param store 
-   * @param listing_id 
+   * @param store
+   * @param listing_id
    */
   @action
   async loadInformation(store: BidderRegistrationStore, listing_id: number) {
@@ -64,8 +64,8 @@ export class BidderRegistrationPresenter {
 
   /**
    * Submit bidder registration
-   * @param store 
-   * @param afterSubmit 
+   * @param store
+   * @param afterSubmit
    */
   @action
   async submit(store: BidderRegistrationStore, afterSubmit: () => void) {
