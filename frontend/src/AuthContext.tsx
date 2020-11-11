@@ -45,7 +45,6 @@ export default class Store {
               country: "Australia",
             })
         );
-        window.localStorage.setItem("id", content.id);
       }
     } catch {
       console.log("error T-T");
