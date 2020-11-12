@@ -150,7 +150,7 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
             showing ? setShowing(false) : setShowing(true);
           }}
         >
-          Refine Your Search
+          Advanced Search
         </Button>
       </div>
       <div>
