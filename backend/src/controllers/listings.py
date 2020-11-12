@@ -258,9 +258,9 @@ def update(id: int, req: UpdateListingRequest, signed_in_user: User = Depends(ge
         raise HTTPException(
             status_code=403, detail="User cannot edit this listing") 
     
-    if listing.auction_start < datetime.now() and any([req.auction_start, req.auction_end, req.reserve_price, req.account_name, req.bsb, req.account_number]):
+    if listing.auction_start < datetime.now() and any([req.auction_start, req.auction_end, req.reserve_price, req.account_name, req.bsb, req.account_number, req.num_bathrooms, req.num_bedrooms, req.num_car_spaces]):
         raise HTTPException(
-            status_code=403, detail="Cannot update auction details once auction has started")
+            status_code=403, detail="Cannot update auction details or number of bedrooms, bathrooms, or car spaces once auction has started")
     
     update_listing(listing, req)
 
