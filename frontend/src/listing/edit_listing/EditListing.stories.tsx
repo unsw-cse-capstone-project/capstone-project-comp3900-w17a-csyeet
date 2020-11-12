@@ -50,7 +50,7 @@ const populateStore = action(() => {
     confirmed_auction_start: new Date(2020, 12, 13),
     auction_start: new Date(2020, 12, 13),
     auction_end: new Date(2021, 1, 24),
-    reserve_price: 2400000,
+    reserve_price: "2400000",
   };
   store.listing = fake_listing;
   store.address = fake_address;

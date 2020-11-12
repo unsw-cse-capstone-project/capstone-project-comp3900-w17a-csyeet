@@ -95,8 +95,7 @@ export const ListingForm = observer(
       () =>
         store.auction.auction_start !== null &&
         store.auction.auction_end !== null &&
-        store.auction.reserve_price !== null &&
-        store.auction.reserve_price > 0
+        store.auction.reserve_price !== ""
     );
 
     const completedStep4 = computed(

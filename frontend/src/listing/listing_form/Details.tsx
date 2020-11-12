@@ -3,7 +3,6 @@ import { observer } from "mobx-react";
 import { Paper, Typography, Grid } from "@material-ui/core";
 import { AddressForm } from "../../ui/base/address_form/AddressForm";
 import { ListingStore } from "../ListingPresenter";
-import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
 import { SelectWrapper } from "../../ui/base/input/SelectWrapper";
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
 import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";

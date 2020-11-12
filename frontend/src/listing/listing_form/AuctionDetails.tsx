@@ -1,24 +1,20 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { action, runInAction } from "mobx";
+import { action } from "mobx";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import {
-  FormControl,
   InputAdornment,
-  InputLabel,
-  OutlinedInput,
   Typography,
   Paper,
   Button,
+  TextField,
 } from "@material-ui/core";
 import { DateRange } from "@material-ui/pickers";
 import { DateRangeWrapper } from "../../ui/base/input/DateRangeWrapper";
 import { InfoPopup } from "../../ui/base/info_popup/InfoPopup";
 import { ListingStore } from "../ListingPresenter";
-import { createPriceInput } from "../../ui/base/input/PriceFormat";
 import { Alert } from "@material-ui/lab";
 import NumberFormat from "react-number-format";
-
 
 const AuctionStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,10 +42,11 @@ const AuctionStyles = makeStyles((theme: Theme) =>
   })
 );
 
-type NumberFormatCustomProps = {
+interface NumberFormatCustomProps {
   inputRef: (instance: NumberFormat | null) => void;
+  onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
-};
+}
 
 export const AuctionDetails: React.FC<{
   store: ListingStore;
@@ -62,18 +59,20 @@ export const AuctionDetails: React.FC<{
     reserve_price,
   } = store.auction;
 
-  const PriceInputComponent = (props: NumberFormatCustomProps) => {
-    const { inputRef, ...other } = props;
+  const PriceInput = (props: NumberFormatCustomProps) => {
+    const { inputRef, onChange, ...other } = props;
 
     return (
       <NumberFormat
         {...other}
-        getInputRef={inputRef}
-        value={reserve_price?.toString()}
+        getInputRef={props.inputRef}
         onValueChange={(values) => {
-          runInAction(
-            () => (store.auction.reserve_price = parseInt(values.value))
-          );
+          props.onChange({
+            target: {
+              name: props.name,
+              value: values.value,
+            },
+          });
         }}
         thousandSeparator
         decimalScale={0}
@@ -82,10 +81,32 @@ export const AuctionDetails: React.FC<{
       />
     );
   };
-
+  const PriceInputField = () => {
+    const [price, setPrice] = React.useState<string>(reserve_price);
+    return (
+      <TextField
+        variant="outlined"
+        value={price}
+        label="Amount"
+        onBlur={action(() => (store.auction.reserve_price = price))}
+        fullWidth
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setPrice(event.target.value)
+        }
+        InputProps={{
+          inputComponent: PriceInput as any,
+          startAdornment: <InputAdornment position="start"> $</InputAdornment>,
+        }}
+      />
+    );
+  };
 
   const handleDateChange = action((value: DateRange<Date>) => {
     const [start, end] = value;
+    if (start && end) {
+      start.setHours(9); // Auction default starts at 9AM
+      end.setHours(17); // Auction by default ends at 5PM
+    }
     store.auction.auction_start = start;
     store.auction.auction_end = end;
   });
@@ -98,7 +119,6 @@ export const AuctionDetails: React.FC<{
   if (edit && confirmed_auction_start)
     readOnly =
       new Date().getTime() > (confirmed_auction_start as Date).getTime();
-
   const classes = AuctionStyles();
   return (
     <div className={classes.container}>
@@ -151,17 +171,7 @@ export const AuctionDetails: React.FC<{
           <InfoPopup data={reservePriceInfo} color="#c2c2c2" size="small" />
         </div>
       </div>
-      <FormControl fullWidth variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
-        <OutlinedInput
-          readOnly={readOnly}
-          id="outlined-adornment-amount"
-          value={reserve_price}
-          startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          labelWidth={110}
-          inputComponent={PriceInputComponent as any}
-        />
-      </FormControl>
+      <PriceInputField />
     </div>
   );
 });

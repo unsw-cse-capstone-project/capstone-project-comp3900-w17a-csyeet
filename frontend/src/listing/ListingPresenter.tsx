@@ -19,7 +19,7 @@ export type AuctionDetails = {
   confirmed_auction_start: Date | null;
   auction_start: Date | null;
   auction_end: Date | null;
-  reserve_price: number | null;
+  reserve_price: string;
 };
 
 export type PaymentDetails = {
@@ -55,7 +55,7 @@ const getAuctionFromResult = (result: any) => ({
   confirmed_auction_start: result.auction_start,
   auction_start: result.auction_start,
   auction_end: result.auction_end,
-  reserve_price: result.reserve_price,
+  reserve_price: result.reserve_price.toString(),
 });
 
 const getPaymentFromResult = (result: any) => ({
@@ -95,7 +95,7 @@ export class ListingStore {
     confirmed_auction_start: null,
     auction_start: null,
     auction_end: null,
-    reserve_price: null,
+    reserve_price: "",
   };
 
   @observable imageList: ImageListType = [];
@@ -164,7 +164,7 @@ export class ListingPresenter {
           num_car_spaces: store.listing.num_car_spaces,
           auction_start: store.auction.auction_start?.toISOString(),
           auction_end: store.auction.auction_end?.toISOString(),
-          reserve_price: store.auction.reserve_price,
+          reserve_price: parseInt(store.auction.reserve_price),
           account_name: store.payment.account_name,
           bsb: store.payment.bsb,
           account_number: store.payment.account_number,
