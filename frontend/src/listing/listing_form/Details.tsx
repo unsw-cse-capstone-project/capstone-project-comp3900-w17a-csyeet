@@ -13,6 +13,7 @@ import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
 import { NumberPicker } from "../../ui/base/input/NumberPicker";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { action } from "mobx";
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 export const DetailStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,7 +39,8 @@ export const DetailStyles = makeStyles((theme: Theme) =>
 
 export const Details: React.FC<{
   store: ListingStore;
-}> = observer(({ store }) => {
+  edit: boolean;
+}> = observer(({ store, edit }) => {
   const { type, num_bedrooms, num_bathrooms, num_car_spaces } = store.listing;
   const addressData: AddressDetails = {
     street: store.address.street,
@@ -59,12 +61,23 @@ export const Details: React.FC<{
   const classes = DetailStyles();
   return (
     <div className={classes.container}>
+      {edit && (
+        <Alert
+          severity="info"
+          style={{ marginTop: "10px", marginBottom: "10px" }}
+        >
+          <AlertTitle>You cannot edit your address</AlertTitle>
+          If you have entered the wrong address, we advise you to delete this
+          listing and create a new one
+        </Alert>
+      )}
       <Typography variant={"subtitle1"}> Property Address</Typography>
       <AddressForm onChange={onChangeAddress} addressData={addressData} />
       <Typography variant={"subtitle1"} style={{ marginTop: "30px" }}>
         Property Details
       </Typography>
       <SelectWrapper
+        readOnly={edit}
         data={propertyTypes}
         label="Property Type"
         field="type"
@@ -80,6 +93,7 @@ export const Details: React.FC<{
               <Typography>Bedroom(s)</Typography>
             </div>
             <NumberPicker
+              readOnly={edit}
               style={{ flex: 1, marginTop: "10px" }}
               value={num_bedrooms}
               size={"medium"}
@@ -96,6 +110,7 @@ export const Details: React.FC<{
               <Typography>Bathrooms(s)</Typography>
             </div>
             <NumberPicker
+              readOnly={edit}
               style={{ flex: 1, marginTop: "10px" }}
               value={num_bathrooms}
               size={"medium"}
@@ -112,6 +127,7 @@ export const Details: React.FC<{
               <Typography>Car Spaces(s)</Typography>
             </div>
             <NumberPicker
+              readOnly={edit}
               style={{ flex: 1, marginTop: "10px" }}
               value={num_car_spaces}
               size={"medium"}

@@ -33,7 +33,7 @@ export const AddListingPageBase = observer(
     const onSuccess = () => {
       setOpen(true);
       setStatus("success");
-      history.push("/listing/" + store.listing.id);
+      history.push(`/listing/${store.listing.id}`);
     };
     const onError = () => {
       setOpen(true);

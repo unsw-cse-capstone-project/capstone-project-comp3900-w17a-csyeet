@@ -16,6 +16,7 @@ import { Password } from "../../input/Password";
 import { TextFieldWrapper } from "../../input/TextFieldWrapper";
 import { AddressForm } from "../../address_form/AddressForm";
 import { SignUpStore } from "./SignUpStore";
+import { isValidEmail } from "../../../util/helper";
 
 export const Step0: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
   const onChange = action((value: string, field: string) => {
@@ -23,27 +24,36 @@ export const Step0: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
   });
 
   // Email Validation
-  const [emailError, setEmailError] = React.useState<boolean>();
+  const [emailError, setEmailError] = React.useState<string | undefined>(
+    undefined
+  );
   const validateEmail = () => {
-    !store.email.includes("@") ? setEmailError(true) : setEmailError(false);
+    !isValidEmail(store.email)
+      ? setEmailError("Invalid email format")
+      : setEmailError(undefined);
   };
 
   // Password Strength
-  const [passTooShort, setPassTooShort] = React.useState<boolean>();
+  const [passTooShort, setPassTooShort] = React.useState<string | undefined>(
+    undefined
+  );
   const checkPassword = () => {
-    if (store.passwd.length < 5) setPassTooShort(true);
-    else setPassTooShort(false);
+    store.passwd.length < 5
+      ? setPassTooShort("Password must be longer than 5 characters")
+      : setPassTooShort(undefined);
   };
 
   // Password Validation
-  const [passwdError, setPasswdError] = React.useState<boolean>();
+  const [passwdError, setPasswdError] = React.useState<string | undefined>(
+    undefined
+  );
   const validatePasswd = () => {
     store.passwd !== store.passwdVerify
-      ? setPasswdError(true)
-      : setPasswdError(false);
+      ? setPasswdError("Passwords do not match")
+      : setPasswdError(undefined);
   };
   return (
-    <div style={{ margin: "10px" }}>
+    <div>
       <TextFieldWrapper
         value={store.usernm}
         field="usernm"
@@ -52,34 +62,27 @@ export const Step0: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
         adornment={<PersonOutlineOutlinedIcon style={{ color: "#7b7b7b" }} />}
       />
       <TextFieldWrapper
-        error={emailError}
+        error={!!emailError}
         value={store.email}
+        helperText={emailError}
         field="email"
         label="Email"
         onChange={onChange}
         onBlur={validateEmail}
         adornment={<AlternateEmailIcon style={{ color: "#7b7b7b" }} />}
       />
-      {emailError && (
-        <FormHelperText style={{ color: "red" }}>
-          Email must be in the format jenn@example.com
-        </FormHelperText>
-      )}
       <Password
         field="passwd"
         label="Password"
         onBlur={checkPassword}
-        error={passTooShort}
+        error={!!passTooShort}
+        helperText={passTooShort}
         value={store.passwd}
         onChange={onChange}
       />
-      {passTooShort && (
-        <FormHelperText style={{ color: "red" }}>
-          Password must be longer than 5 characters
-        </FormHelperText>
-      )}
       <TextFieldWrapper
-        error={passwdError}
+        error={!!passwdError}
+        helperText={passwdError}
         value={store.passwdVerify}
         type="password"
         field="passwdVerify"
@@ -87,11 +90,6 @@ export const Step0: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
         onChange={onChange}
         onBlur={validatePasswd}
       />
-      {passwdError && (
-        <FormHelperText style={{ color: "red" }}>
-          Passwords do not match
-        </FormHelperText>
-      )}
     </div>
   );
 });
@@ -103,7 +101,7 @@ type NumberFormatCustomProps = {
   name: string;
 };
 
-export const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
+export const Step1 = observer(({ store }: { store: SignUpStore }) => {
   const onChange = action((value: string, name: string) => {
     (store as any)[name] = value;
   });
@@ -131,31 +129,29 @@ export const Step1: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
   });
 
   return (
-    <div style={{ marginBottom: "10px" }}>
-      <FormControl fullWidth variant="outlined" error={phoneError}>
-        <InputLabel
-          htmlFor="outlined-adornment-card"
-          style={{ background: "white" }}
-        >
-          Phone Number
-        </InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-card"
-          endAdornment={
-            <InputAdornment position="end">
-              <PhoneAndroidOutlinedIcon style={{ color: "#7b7b7b" }} />
-            </InputAdornment>
-          }
-          labelWidth={110}
-          inputComponent={PhoneInput as any}
-        />
-        {phoneError && (
-          <FormHelperText style={{ color: "red" }}>
-            Phone format must be 04.. ... ...
-          </FormHelperText>
-        )}
-      </FormControl>
-    </div>
+    <FormControl fullWidth variant="outlined" error={phoneError} style={{marginTop: "10px"}}>
+      <InputLabel
+        htmlFor="outlined-adornment-card"
+        style={{ background: "white" }}
+      >
+        Phone Number
+      </InputLabel>
+      <OutlinedInput
+        id="outlined-adornment-card"
+        endAdornment={
+          <InputAdornment position="end">
+            <PhoneAndroidOutlinedIcon style={{ color: "#7b7b7b" }} />
+          </InputAdornment>
+        }
+        labelWidth={110}
+        inputComponent={PhoneInput as any}
+      />
+      {phoneError && (
+        <FormHelperText style={{ color: "red" }}>
+          Phone format must be 04.. ... ...
+        </FormHelperText>
+      )}
+    </FormControl>
   );
 });
 
@@ -165,5 +161,12 @@ export const Step2: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
     (store as any).address[name] = value;
   });
 
-  return <AddressForm addressData={store.address} onChange={onChange} />;
+  return (
+    <AddressForm
+      where="signUp"
+      addressData={store.address}
+      onChange={onChange}
+      style={{ display: "block" }}
+    />
+  );
 });

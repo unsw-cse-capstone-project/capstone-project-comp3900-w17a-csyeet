@@ -24,10 +24,12 @@ export type AddressDetails = {
 export const ListingForm = observer(
   ({
     store,
+    edit = false,
     onPreview,
     onBack,
   }: {
     store: ListingStore;
+    edit?: boolean;
     onPreview: () => void;
     onBack: () => void;
   }) => {
@@ -43,7 +45,7 @@ export const ListingForm = observer(
     const getContent = (activeStep: number) => {
       switch (activeStep) {
         case 0:
-          return <Details store={store} />;
+          return <Details edit={edit} store={store} />;
         case 1:
           return <Images store={store} />;
         case 2:

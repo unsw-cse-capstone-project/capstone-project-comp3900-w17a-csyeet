@@ -129,8 +129,6 @@ export const PaymentDetails: React.FC<{
     );
   };
 
-  console.log(bsb);
-  console.log(account_number);
   return (
     <>
       <Typography variant={"subtitle1"}>Payment Details</Typography>

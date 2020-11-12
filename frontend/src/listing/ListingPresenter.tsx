@@ -212,29 +212,32 @@ export class ListingPresenter {
     onError: () => void
   ) {
     try {
-      const response = await fetch(`/listings/`, {
-        method: "post",
-        body: JSON.stringify({
-          type: store.listing.type.toLowerCase(),
-          title: store.listing.title,
-          description: store.listing.description,
-          street: store.address.street,
-          suburb: store.address.suburb,
-          postcode: store.address.postcode,
-          state: store.address.state,
-          country: store.address.country,
-          features: store.listing.features,
-          num_bedrooms: store.listing.num_bedrooms,
-          num_bathrooms: store.listing.num_bathrooms,
-          num_car_spaces: store.listing.num_car_spaces,
-          auction_start: store.auction.auction_start?.toISOString(),
-          auction_end: store.auction.auction_end?.toISOString(),
-          reserve_price: store.auction.reserve_price,
-          account_name: store.payment.account_name,
-          bsb: store.payment.bsb,
-          account_number: store.payment.account_number,
-        }),
-      });
+      const response = await fetch(
+        `/listings/${store.listing.id?.toString()}`,
+        {
+          method: "post",
+          body: JSON.stringify({
+            type: store.listing.type.toLowerCase(),
+            title: store.listing.title,
+            description: store.listing.description,
+            street: store.address.street,
+            suburb: store.address.suburb,
+            postcode: store.address.postcode,
+            state: store.address.state,
+            country: store.address.country,
+            features: store.listing.features,
+            num_bedrooms: store.listing.num_bedrooms,
+            num_bathrooms: store.listing.num_bathrooms,
+            num_car_spaces: store.listing.num_car_spaces,
+            auction_start: store.auction.auction_start?.toISOString(),
+            auction_end: store.auction.auction_end?.toISOString(),
+            reserve_price: store.auction.reserve_price,
+            account_name: store.payment.account_name,
+            bsb: store.payment.bsb,
+            account_number: store.payment.account_number,
+          }),
+        }
+      );
       const result = await response.json();
       if ("detail" in result) {
         onError();

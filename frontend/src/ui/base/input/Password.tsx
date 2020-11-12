@@ -10,12 +10,14 @@ export const Password = ({
   value,
   error,
   onBlur,
+  helperText,
 }: {
   field: string;
   label: string;
   onChange: (value: string, field: string) => void;
   value?: string;
   error?: boolean;
+  helperText?: string;
   onBlur?: () => void;
 }) => {
   const [visible, setVisible] = React.useState(false);
@@ -30,6 +32,7 @@ export const Password = ({
       label={label}
       value={value}
       onChange={onChange}
+      helperText={helperText}
       onBlur={onBlur ? onBlur : undefined}
       type={visible ? "text" : "password"}
       adornment={

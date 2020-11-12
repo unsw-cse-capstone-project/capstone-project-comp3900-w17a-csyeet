@@ -26,7 +26,11 @@ const ListingPagePlaceholderStyle = makeStyles((theme: Theme) =>
         },
       },
     },
-    root: { display: "flex !important", flexDirection: "column" },
+    root: {
+      display: "flex !important",
+      flexDirection: "column",
+      paddingBottom: theme.spacing(20),
+    },
     titleLoader: { height: "100px !important" },
     largeImageLoader: { width: "100% !important", height: "400px !important" },
   })

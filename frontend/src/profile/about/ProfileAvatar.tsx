@@ -53,7 +53,6 @@ export const ProfileAvatar = ({
   const mode: boolean = avatar === "" ? true : false;
   const [edit, setEdit] = React.useState<boolean>(mode);
   const classes = AvatarStyles();
-  console.log(avatar);
   return (
     <div className={className}>
       {edit ? (
