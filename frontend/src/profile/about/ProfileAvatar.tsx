@@ -5,7 +5,7 @@ import { useStore } from "../../AuthContext";
 import PublishIcon from "@material-ui/icons/Publish";
 import CloseIcon from "@material-ui/icons/Close";
 import AddAPhotoOutlinedIcon from "@material-ui/icons/AddAPhotoOutlined";
-import { createStyles, makeStyles, Theme, Avatar } from "@material-ui/core";
+import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 export const AvatarStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,7 +53,7 @@ export const ProfileAvatar = ({
   const mode: boolean = avatar === "" ? true : false;
   const [edit, setEdit] = React.useState<boolean>(mode);
   const classes = AvatarStyles();
-  console.log(avatar)
+  console.log(avatar);
   return (
     <div className={className}>
       {edit ? (
@@ -64,10 +64,7 @@ export const ProfileAvatar = ({
         />
       ) : (
         <div className={classes.avatarStyle}>
-          <Avatar
-            src={avatar}
-            className={classes.avatarImage}
-          />
+          <Avatar src={avatar} className={classes.avatarImage} />
           <Fab
             size="small"
             color="secondary"

@@ -11,6 +11,7 @@ import { PaymentDetails } from "./Payment";
 import { ListingFormStyles } from "./ListingForm.css";
 import Alert from "@material-ui/lab/Alert";
 import { ArrowBackIos } from "@material-ui/icons";
+import { Features } from "./Features";
 
 export type AddressDetails = {
   street: string;
@@ -37,6 +38,7 @@ export const ListingForm = observer(
       "Property Details",
       "Upload Images",
       "Property Description",
+      "Property Features",
       "Auction Detail",
       "Payment Details",
     ];
@@ -49,8 +51,10 @@ export const ListingForm = observer(
         case 2:
           return <Description store={store} />;
         case 3:
-          return <AuctionDetails edit={edit} store={store} />;
+          return <Features store={store} />;
         case 4:
+          return <AuctionDetails edit={edit} store={store} />;
+        case 5:
           return <PaymentDetails edit={edit} store={store} />;
         default:
           return "404 You've fallen into outer space!";

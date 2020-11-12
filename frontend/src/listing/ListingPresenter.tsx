@@ -59,9 +59,9 @@ const getAuctionFromResult = (result: any) => ({
 });
 
 const getPaymentFromResult = (result: any) => ({
-  account_name: result.account_name || "Jane Doe",
-  bsb: result.bsb || "123456",
-  account_number: result.account_number || "12345678",
+  account_name: result.account_name,
+  bsb: result.bsb,
+  account_number: result.account_number,
 });
 
 export class ListingStore {
@@ -153,10 +153,7 @@ export class ListingPresenter {
           street: store.address.street,
           suburb: store.address.suburb,
           postcode: store.address.postcode,
-          state: store.address.state
-            .split(" ")
-            .map((word) => word[0])
-            .join(""),
+          state: store.address.state,
           country: store.address.country,
           features: store.listing.features,
           num_bedrooms: store.listing.num_bedrooms,
@@ -215,7 +212,6 @@ export class ListingPresenter {
     onError: () => void
   ) {
     try {
-      // TODO: Update this path (if different)
       const response = await fetch(`/listings/`, {
         method: "post",
         body: JSON.stringify({

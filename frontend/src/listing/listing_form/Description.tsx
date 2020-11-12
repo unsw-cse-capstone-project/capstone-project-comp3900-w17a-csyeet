@@ -3,7 +3,6 @@ import { observer } from "mobx-react";
 import { Typography, TextField, FormHelperText } from "@material-ui/core";
 import { ListingStore } from "../ListingPresenter";
 import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
-import { Features } from "./Features";
 import { action } from "mobx";
 
 export const Description: React.FC<{ store: ListingStore }> = observer(
@@ -56,13 +55,6 @@ export const Description: React.FC<{ store: ListingStore }> = observer(
             </FormHelperText>
           )}
         </div>
-        <Typography
-          variant="subtitle1"
-          style={{ marginBottom: "5px", marginTop: "35px" }}
-        >
-          Tell us some features of your property
-        </Typography>
-        <Features store={store} />
       </div>
     );
   }

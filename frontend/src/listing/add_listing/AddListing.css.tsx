@@ -7,7 +7,6 @@ export const AddListingStyles = makeStyles((theme: Theme) =>
       height: "1000px",
       padding: theme.spacing(0, "15%", "200px", "15%"),
       boxSizing: "border-box",
-      overflow: "auto",
       marginTop: "0px",
       [theme.breakpoints.down("xs")]: {
         padding: theme.spacing(0, "5%", "200px", "5%"),

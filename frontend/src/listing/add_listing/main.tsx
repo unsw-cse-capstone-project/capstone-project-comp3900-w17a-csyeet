@@ -1,16 +1,7 @@
 import * as React from "react";
 import { ListingStore, ListingPresenter } from "../ListingPresenter";
 import { useHistory } from "react-router-dom";
-import {
-  Snackbar,
-  Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-} from "@material-ui/core";
+import { Snackbar, Typography } from "@material-ui/core";
 import { ListingForm } from "../listing_form/ListingForm";
 import { PreviewListing } from "../PreviewListing";
 import { AddListingStyles } from "./AddListing.css";
