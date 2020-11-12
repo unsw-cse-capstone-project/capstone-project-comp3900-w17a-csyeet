@@ -14,10 +14,16 @@ code {
 
 .page {
   height: 100vh;
-  overflow: hidden;
+  overflow: scroll;
 }
 .content {
   overflow-x: hidden;
   overflow-y: scroll;
   height: -webkit-fill-available;
+}
+
+.pageContainer {
+  height: calc(100% - 77px);
+  display: flex;
+  flex-direction: column;
 }

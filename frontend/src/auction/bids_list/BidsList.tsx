@@ -18,6 +18,11 @@ export const BidsList = ({ bids }: { bids: Bid[] }) => {
     <div>
       <Typography variant="h5">Bidding History</Typography>
       <Divider className={classes.divider} />
+      {bids.length === 0 && (
+          <Typography variant="body1" color="textSecondary">
+            Currently, there are no bids.
+          </Typography>
+        )}
       {bids.map((bid, i) => (
         <div key={i} className={classes.bidContainer}>
           <BidPriceWithBidderTag

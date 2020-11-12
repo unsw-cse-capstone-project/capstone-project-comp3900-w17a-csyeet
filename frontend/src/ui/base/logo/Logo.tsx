@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "./logo.png";
+import logo from "../../../images/logo.png";
 
 type LogoSize = "small" | "large";
 export interface LogoProps {
@@ -14,8 +14,9 @@ const Logo = ({ size = "large", onClick }: LogoProps) => {
         <div onClick={onClick} style={{ cursor: "pointer" }}>
           <img
             style={{
-              height: "70px",
+              height: "50px",
               // width: "210px",
+              padding: "10px 20px"
             }}
             src={logo}
             alt="Adobe Logo"
@@ -26,8 +27,8 @@ const Logo = ({ size = "large", onClick }: LogoProps) => {
       {size === "large" && (
         <img
           style={{
-            height: "250px",
-            width: "500px",
+            height: "auto",
+            width: "100%",
           }}
           src={logo}
           alt="Adobe Logo"

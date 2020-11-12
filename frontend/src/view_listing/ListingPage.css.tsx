@@ -6,6 +6,7 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
     page: {
       padding: theme.spacing(2, "15%", 0, "15%"),
       display: "flex",
+      flex: 1,
       flexDirection: "column",
     },
     backButton: {

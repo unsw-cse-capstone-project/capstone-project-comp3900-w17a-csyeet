@@ -8,6 +8,7 @@ import { createUpcomingAuction } from "./upcoming_auctions/create";
 import { observer } from "mobx-react";
 import { useStore } from "../AuthContext";
 import { createRecommendations } from "./recommendations/create";
+import { Footer } from "../ui/base/footer/Footer";
 
 /**
  * Home page for Abode

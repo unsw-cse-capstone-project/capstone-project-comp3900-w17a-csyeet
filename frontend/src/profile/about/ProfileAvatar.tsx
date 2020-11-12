@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Fab } from "@material-ui/core";
+import { Avatar, Button, Fab } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { useStore } from "../../AuthContext";
 import PublishIcon from "@material-ui/icons/Publish";
@@ -53,6 +53,7 @@ export const ProfileAvatar = ({
   const mode: boolean = avatar === "" ? true : false;
   const [edit, setEdit] = React.useState<boolean>(mode);
   const classes = AvatarStyles();
+  console.log(avatar)
   return (
     <div className={className}>
       {edit ? (
@@ -64,8 +65,8 @@ export const ProfileAvatar = ({
       ) : (
         <div className={classes.avatarStyle}>
           <Avatar
-            src={`/users/${userStore?.user.id}/avatar`}
-            style={{ width: "200px", height: "200px" }}
+            src={avatar}
+            className={classes.avatarImage}
           />
           <Fab
             size="small"

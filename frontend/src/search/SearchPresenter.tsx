@@ -71,7 +71,7 @@ export class SearchPresenter {
     features && features.map(feature => searchQuery += `&features=${feature}`);
     landmarks && landmarks.map(landmark => searchQuery += `&landmarks=${landmark}`);
     searchQuery += store.continuation? `&continuation=${store.continuation}`: ""; 
-    searchQuery += "&limit=2"; 
+    searchQuery += "&limit=4"; 
     try {
       // Change this to add the filters
       const response = await fetch(`/listings/${searchQuery}`);

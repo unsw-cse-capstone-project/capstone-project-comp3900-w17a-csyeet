@@ -9,8 +9,8 @@ export const SearchPageStyles = makeStyles((theme: Theme) =>
     },
     page: {
       display: "flex",
+      flex: 1,
       flexDirection: "column",
-      paddingBottom: theme.spacing(12),
     },
     searchContainer: {
       width: "60%",
