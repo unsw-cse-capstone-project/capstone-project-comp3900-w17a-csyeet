@@ -105,4 +105,5 @@ def map_user_to_user_profile_response(user: User, session: Session) -> UserProfi
 
 def update_user(user: User, data: dict):
     for key, value in data.items():
-        setattr(user, key, value)
+        if value is not None:
+            setattr(user, key, value)

@@ -89,6 +89,9 @@ class ListingResponse(ListingBase):
     highest_bid: Optional[int]
     reserve_met: bool
     reserve_price: Optional[int]
+    account_name: Optional[str]
+    bsb: Optional[str]
+    account_number: Optional[str]
     landmarks: List[LandmarkReponse]
     image_ids: List[int]
 
@@ -119,3 +122,24 @@ class SearchListingsResponse(BaseModel):
 class AuctionResponse(BaseModel):
     bidders: List[int]
     bids: List[BidResponse]
+
+
+class UpdateListingRequest(BaseModel):
+    type: Optional[ListingType]
+    title: Optional[str]
+    description: Optional[str]
+    num_bedrooms: Optional[int] = Field(None, ge=1)
+    num_bathrooms: Optional[int] = Field(None, ge=1)
+    num_car_spaces: Optional[int] = Field(None, ge=0)
+    auction_start: Optional[datetime]
+    auction_end: Optional[datetime]
+    reserve_price: Optional[int] = Field(None, ge=1)
+    account_name: Optional[str]
+    bsb: Optional[str] 
+    account_number: Optional[str]
+    features: Optional[List[Feature]]
+
+      
+class UploadImagesResponse(BaseModel):
+    ids: List[int]
+    
