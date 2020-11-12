@@ -3,6 +3,7 @@ import { Button, Fab } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { useStore } from "../../AuthContext";
 import PublishIcon from "@material-ui/icons/Publish";
+import CloseIcon from "@material-ui/icons/Close";
 import AddAPhotoOutlinedIcon from "@material-ui/icons/AddAPhotoOutlined";
 import { createStyles, makeStyles, Theme, Avatar } from "@material-ui/core";
 import ImageUploading, { ImageListType } from "react-images-uploading";
@@ -82,11 +83,6 @@ export const ProfileAvatar = ({
 
 const ImageEditorStyles = makeStyles((theme: Theme) =>
   createStyles({
-    removeButton: {
-      position: "absolute",
-      bottom: "45px",
-      right: "0px",
-    },
     uploadButton: {
       position: "absolute",
       bottom: "10px",
@@ -125,19 +121,14 @@ const ImageEditor = ({
           {images.length === 1 ? (
             <div>
               {images.map((image, index) => (
-                <div key={index} className={avatarClassName}>
-                  <Button
+                <div
+                  key={index}
+                  className={avatarClassName}
+                  style={{ position: "relative" }}
+                >
+                  <Fab
                     size="small"
-                    variant="contained"
-                    onClick={() => onImageRemove(index)}
-                    className={classes.removeButton}
-                  >
-                    Remove
-                  </Button>
-                  <Button
-                    variant="contained"
                     color="primary"
-                    size={"small"}
                     onClick={() => {
                       onUpload(
                         images[0].file as File,
@@ -145,15 +136,26 @@ const ImageEditor = ({
                       );
                       onBack();
                     }}
-                    className={classes.uploadButton}
+                    style={{
+                      position: "absolute",
+                      bottom: "0px",
+                      right: "0px",
+                    }}
                   >
-                    Upload
-                    <PublishIcon
-                      style={{ marginLeft: "3px" }}
-                      fontSize="small"
-                    />
-                  </Button>
-
+                    <PublishIcon fontSize="small" />{" "}
+                  </Fab>
+                  <Fab
+                    size="small"
+                    color="default"
+                    onClick={() => onImageRemove(index)}
+                    style={{
+                      position: "absolute",
+                      bottom: "0",
+                      right: "45px",
+                    }}
+                  >
+                    <CloseIcon fontSize="small" />
+                  </Fab>
                   <img
                     src={image.data_url}
                     className={classes.image}
@@ -163,29 +165,28 @@ const ImageEditor = ({
               ))}
             </div>
           ) : (
-            <Button
-              variant="outlined"
-              onClick={onImageUpload}
-              className={avatarClassName}
-            >
-              <AddAPhotoOutlinedIcon
-                fontSize="small"
-                style={{ marginRight: "5px" }}
-              />
-              Drop/Upload
+            <div style={{ position: "relative" }}>
               <Button
-                size={"small"}
-                variant="contained"
-                onClick={() => onBack()}
+                variant="outlined"
+                onClick={onImageUpload}
+                className={avatarClassName}
+              >
+                <AddAPhotoOutlinedIcon fontSize="small" />
+                Drop/Upload
+              </Button>
+              <Fab
+                size="small"
+                color="default"
+                onClick={onBack}
                 style={{
                   position: "absolute",
-                  bottom: "10px",
-                  right: "0px",
+                  bottom: "30px",
+                  right: "10px",
                 }}
               >
-                Back
-              </Button>
-            </Button>
+                <CloseIcon fontSize="small" />
+              </Fab>
+            </div>
           )}
         </div>
       )}
