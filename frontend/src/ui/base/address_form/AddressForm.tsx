@@ -27,12 +27,14 @@ export const AddressForm = observer(
     style,
     className,
     readOnly = false,
+    where = 'other',
   }: {
     onChange: (value: string, field: string) => void;
     addressData: AddressDetails;
     style?: React.CSSProperties;
     className?: string;
     readOnly?: boolean;
+    where?: 'other' | 'signUp';
   }) => {
     // Get all the countries
     const countryStateData = require("./country-state.json");
@@ -60,82 +62,84 @@ export const AddressForm = observer(
     );
     const [countryValue, setCountry] = React.useState<string>(country);
     return (
-      <div style={style} className={className}>
-        <TextFieldWrapper
-          readOnly={readOnly}
-          field="street"
-          label="Street"
-          onChange={onChange}
-          value={street}
-        />
-        <TextFieldWrapper
-          readOnly={readOnly}
-          field="suburb"
-          label="Suburb"
-          onChange={onChange}
-          value={suburb}
-        />
-        <Grid container spacing={2}>
-          <Grid item xs>
-            <TextFieldWrapper
-              readOnly={readOnly}
-              field="postcode"
-              style={{
-                minWidth: "100px",
-              }}
-              label="Postcode"
-              onChange={onChange}
-              value={postcode}
-            />
-          </Grid>
-
-          {/* Defaults to NSW */}
-          <Grid item xs>
-            <SelectWrapper
-              onChange={onChange}
-              field="state"
-              label="State"
-              data={states}
-              value={state}
-            />
-          </Grid>
-
-          {/* Defaults to Australia */}
-          <Grid item xs={6}>
-            <FormControl
-              fullWidth
-              variant="outlined"
-              style={{
-                minWidth: "120px",
-                marginTop: "10px",
-              }}
-            >
-              <InputLabel id="select-outlined-label">Country</InputLabel>
-              <Select
-                labelId="select-outlined-label"
-                id="select-outlined"
-                readOnly={readOnly}
-                value={countryValue}
-                onChange={(e: React.ChangeEvent<{ value: unknown }>) => {
-                  onChange(e.target.value as string, "country");
-                  setCountry(e.target.value as string);
-                  setStates(getStates(e.target.value as string));
-                }}
-                label="Country"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {countries.map((v, i) => (
-                  <MenuItem value={v} key={i}>
-                    {v}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+      <Grid container spacing={where === 'signUp'? 0: 2} style={style} className={className}>
+        <Grid item xs={12}>
+          <TextFieldWrapper
+            readOnly={readOnly}
+            field="street"
+            label="Street"
+            onChange={onChange}
+            value={street}
+          />
         </Grid>
-      </div>
+        <Grid item xs={12} md={where === 'signUp'? 12: 6}>
+          <TextFieldWrapper
+            readOnly={readOnly}
+            field="suburb"
+            label="Suburb"
+            onChange={onChange}
+            value={suburb}
+          />
+        </Grid>
+        <Grid item xs={where === 'signUp'? 12: 6}>
+          <TextFieldWrapper
+            readOnly={readOnly}
+            field="postcode"
+            style={{
+              minWidth: "100px",
+            }}
+            label="Postcode"
+            onChange={onChange}
+            value={postcode}
+          />
+        </Grid>
+
+        {/* Defaults to NSW */}
+        <Grid item xs={where === 'signUp'? 12: 6}>
+          <SelectWrapper
+            onChange={onChange}
+            field="state"
+            label="State"
+            data={states}
+            value={state}
+          />
+        </Grid>
+
+        {/* Defaults to Australia */}
+        <Grid item xs={where === 'signUp'? 12: 6}>
+          <FormControl
+            fullWidth
+            variant="outlined"
+            style={{
+              minWidth: "120px",
+              marginTop: "10px",
+            }}
+          >
+            <InputLabel id="select-outlined-label">Country</InputLabel>
+            <Select
+              labelId="select-outlined-label"
+              id="select-outlined"
+              readOnly={readOnly}
+              value={countryValue}
+              onChange={(e: React.ChangeEvent<{ value: unknown }>) => {
+                onChange(e.target.value as string, "country");
+                setCountry(e.target.value as string);
+                setStates(getStates(e.target.value as string));
+              }}
+              label="Country"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {countries.map((v, i) => (
+                <MenuItem value={v} key={i}>
+                  {v}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
     );
   }
 );

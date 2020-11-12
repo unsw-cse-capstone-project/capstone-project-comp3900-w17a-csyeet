@@ -1,28 +1,25 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
-export const SignInStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    height: "100%",
-    padding: theme.spacing(2, "10%", 0, "10%"),
-    [theme.breakpoints.down("xs")]: {
-      padding: theme.spacing(2, "5%", 0, "5%"),
+export const SignInStyle = makeStyles((theme: Theme) =>
+  createStyles({
+    logo: {
+      margin: "auto",
+      marginTop: theme.spacing(2),
+      width: "60%",
+      [theme.breakpoints.down("xs")]: {
+        width: "80%",
+      },
     },
-    boxSizing: "border-box",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-  },
-  content: {
-    display: "flex",
-    flexDirection: "column",
-    boxSizing: "border-box",
-  },
-  message: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-}));
+    dividerContainer: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    divider: {
+      flex: 1,
+    },
+    text: {
+      padding: theme.spacing(0, 1),
+    },
+  })
+);

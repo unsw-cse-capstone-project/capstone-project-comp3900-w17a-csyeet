@@ -54,9 +54,11 @@ export const OwnerHeader = ({
   onDelete,
   id,
   isAuctionClosed,
+  hasAuctionStarted,
 }: {
   onDelete(): Promise<boolean>;
   isAuctionClosed: boolean;
+  hasAuctionStarted: boolean;
   id: number;
 }) => {
   const history = useHistory();
@@ -107,7 +109,7 @@ export const OwnerHeader = ({
           {matches && "Edit"}
         </Fab>
       )}
-      {!isAuctionClosed && (
+      {!hasAuctionStarted && (
         <Fab
           color="secondary"
           onClick={onDeleteClick}

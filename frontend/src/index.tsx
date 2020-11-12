@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-import { AuthProvider, useStore } from "./AuthContext";
+import { AuthProvider, SignInArgs, SignUpArgs, useStore } from "./AuthContext";
 import { observer } from "mobx-react";
 import { SearchPage } from "./search/main";
 import { ProfilePage } from "./profile/main";
@@ -14,10 +14,7 @@ import { BidderRegistrationPage } from "./bidder_registration/main";
 import { AuctionPage } from "./auction/main";
 import { HomePage } from "./home/main";
 import Header from "./ui/base/header/Header";
-import { SignInStore } from "./ui/base/header/sign_in/SignInStore";
 import { SignUpStore } from "./ui/base/header/sign_up/SignUpStore";
-import { SignIn } from "./ui/base/header/sign_in/SignIn";
-import { runInAction } from "mobx";
 import { MessagesPage } from "./messages/main";
 import { ListingMessagesPage } from "./listing_messages/main";
 import {
@@ -27,45 +24,62 @@ import {
 } from "@material-ui/core/styles";
 import { ErrorPage } from "./error/main";
 import { Footer } from "./ui/base/footer/Footer";
+import {
+  Authentication,
+} from "./ui/base/header/authentication/Authentication";
+import { SignUp } from "./ui/base/header/sign_up/SignUp";
+import { AddressDetails } from "./ui/base/address_form/AddressForm";
+import { SignIn } from './ui/base/header/sign_in/SignIn';
 
 let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);
+const signUpStore = new SignUpStore();
 
 const ProtectedComponent = observer(
-  ({
-    Component,
-    signInStore,
-  }: {
-    Component: React.ComponentType;
-    signInStore: SignInStore;
-  }) => {
+  ({ Component }: { Component: React.ComponentType }) => {
     const store = useStore();
+    const [openModal, setOpenModal] = React.useState(true);
+    const [signInMode, setSignInMode] = React.useState(true);
     if (!store) throw Error("Store shouldn't be null");
     if (!store.user) {
-      runInAction(() => (signInStore.open = true));
-      return (
+      const SignInWrapper = () => (
         <SignIn
-          store={signInStore}
-          onSubmit={(email: string, password: string, onError: () => void) =>
-            store.signIn(email, password, onError)
+          switchMode={() => setSignInMode(false)}
+          onSubmit={(args: SignInArgs) => store.signIn(args)}
+          closeModal={() => setOpenModal(false)}
+        />
+      );
+      const SignUpWrapper = () => (
+        <SignUp
+          switchMode={() => setSignInMode(true)}
+          store={signUpStore}
+          onSubmit={(args: SignUpArgs) =>
+            store.signUp(args)
           }
+          closeModal={() => setOpenModal(false)}
+        />
+      );
+      return (
+        <Authentication
+          signInMode={signInMode}
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          SignIn={SignInWrapper}
+          SignUp={SignUpWrapper}
         />
       );
     }
-    runInAction(() => (signInStore.open = false));
     return <Component />;
   }
 );
 
-const signInStore = new SignInStore();
-const signUpStore = new SignUpStore();
 ReactDOM.render(
   <React.StrictMode>
     <div className="page">
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <AuthProvider>
-            <Header signInStore={signInStore} signUpStore={signUpStore} />
+            <Header signUpStore={signUpStore} />
             <div className="content" id="content">
               <div className="pageContainer">
                 <Switch>
@@ -76,7 +90,6 @@ ReactDOM.render(
                     render={(props) => (
                       <ProtectedComponent
                         {...props}
-                        signInStore={signInStore}
                         Component={BidderRegistrationPage}
                       />
                     )}
@@ -87,7 +100,6 @@ ReactDOM.render(
                     render={(props) => (
                       <ProtectedComponent
                         {...props}
-                        signInStore={signInStore}
                         Component={ListingMessagesPage}
                       />
                     )}
@@ -112,7 +124,6 @@ ReactDOM.render(
                     render={(props) => (
                       <ProtectedComponent
                         {...props}
-                        signInStore={signInStore}
                         Component={AddListingPage}
                       />
                     )}
@@ -121,21 +132,13 @@ ReactDOM.render(
                   <Route
                     path="/profile"
                     render={(props) => (
-                      <ProtectedComponent
-                        {...props}
-                        signInStore={signInStore}
-                        Component={ProfilePage}
-                      />
+                      <ProtectedComponent {...props} Component={ProfilePage} />
                     )}
                   />
                   <Route
                     path="/messages"
                     render={(props) => (
-                      <ProtectedComponent
-                        {...props}
-                        signInStore={signInStore}
-                        Component={MessagesPage}
-                      />
+                      <ProtectedComponent {...props} Component={MessagesPage} />
                     )}
                   />
                   <Route exact path="/" component={HomePage} />

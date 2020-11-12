@@ -27,9 +27,6 @@ export class SignUpStore {
   };
 
   @observable
-  open: boolean = false;
-
-  @observable
   success: boolean = false;
 
   constructor() {

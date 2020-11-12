@@ -18,7 +18,6 @@ export const NumberPicker = ({
 }) => {
   return (
     <TextField
-      fullWidth
       className={className}
       style={style}
       size={size}

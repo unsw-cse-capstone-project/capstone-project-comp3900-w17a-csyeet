@@ -1,87 +1,189 @@
-import React from "react";
-import { observer } from "mobx-react";
-import { action } from "mobx";
-import { Button, Typography, FormHelperText } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Button,
+  Divider,
+  Link,
+  TextField,
+} from "@material-ui/core";
+import * as React from "react";
+import { SignInArgs } from "../../../../AuthContext";
+import { isValidEmail } from "../../../util/helper";
+import Logo from "../../logo/Logo";
+import { SignInStyle } from "./SignIn.css";
+import MuiAlert from "@material-ui/lab/Alert";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
-import { SignInStore } from "./SignInStore";
-import { TextFieldWrapper } from "../../input/TextFieldWrapper";
-import { ModalWrapper } from "../../modal_wrapper/ModalWrapper";
-import logo from "../../../../images/logo.png";
-import { Password } from "../../input/Password";
-import { SignInStyles } from "./SignIn.css";
 
-export interface SignInProps {}
-
-export const SignIn: React.FC<{
-  onSubmit: (email: string, passwd: string, onError: () => void) => void;
-  store: SignInStore;
-  className?: string;
-}> = observer(({ onSubmit, store, className }) => {
-  const onChange = action((value: string, name: string) => {
-    (store as any)[name] = value;
-  });
-
-  const closeModal = action(() => {
-    store.open = false;
-  });
-
-  const [error, setError] = React.useState<boolean>(false);
-  const handleError = () => setError(true);
-  const classes = SignInStyles();
+export const SignIn = ({
+  switchMode,
+  onSubmit,
+  closeModal,
+}: {
+  switchMode: () => void;
+  onSubmit: (args: SignInArgs) => void;
+  closeModal: () => void;
+}) => {
+  const classes = SignInStyle();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState<string | undefined>(undefined);
+  const onFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const onError = (error: string) => setError(error);
+    const onSuccess = () => {
+      setEmail("");
+      setPassword("");
+      setError("");
+      closeModal();
+    };
+    onSubmit({ email, password, onError, onSuccess });
+  };
   return (
-    <ModalWrapper open={store.open} onClose={closeModal}>
-      <div className={classes.root}>
-        <div className={classes.header}>
-          <img
-            width="200px"
-            src={logo}
-            alt="Adobe logo"
-            style={{ marginBottom: "10px", alignItems: "center" }}
-          />
-          <Typography align="center"> Welcome Back</Typography>
-        </div>
-        <form
-          className={classes.content}
-          onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            onSubmit(store.email, store.passwd, handleError);
-            if (!error) closeModal();
-          }}
-        >
-          <TextFieldWrapper
-            error={error}
-            field="email"
-            label="Email"
-            onChange={onChange}
-            adornment={<AlternateEmailIcon style={{ color: "#7b7b7b" }} />}
-          />
-          <Password
-            error={error}
-            field="passwd"
-            label="Password"
-            value={store.passwd}
-            onChange={onChange}
-          />
-          {error && (
-            <FormHelperText style={{ color: "red", margin: "5px" }}>
-              Email or Password is invalid
-            </FormHelperText>
-          )}
+    <form onSubmit={onFormSubmit} onChange={() => setError(undefined)}>
+      <Grid container direction="column" spacing={2}>
+        <Grid item className={classes.logo}>
+          <Logo size="large" />
+        </Grid>
+        <Grid item>
+          <Typography variant="h5" align="center">
+            <b>Welcome Back</b>
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button variant="contained" color="secondary" fullWidth>
+            Sign in with Google
+          </Button>
+        </Grid>
+        <Grid item className={classes.dividerContainer}>
+          <Divider className={classes.divider} />
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            className={classes.text}
+          >
+            or
+          </Typography>
+          <Divider className={classes.divider} />
+        </Grid>
+        <Grid item>
+          <EmailInput email={email} setEmail={setEmail} />
+        </Grid>
+        <Grid item>
+          <PasswordInput password={password} setPassword={setPassword} />
+        </Grid>
+        {!!error && (
+          <Grid item>
+            <MuiAlert severity="error">{error}</MuiAlert>
+          </Grid>
+        )}
+        <Grid item>
           <Button
-            variant="outlined"
-            color="primary"
             fullWidth
             type="submit"
-            style={{ marginTop: "10px" }}
-            onClick={() => {
-              onSubmit(store.email, store.passwd, handleError);
-              if (!error) closeModal();
-            }}
+            variant="contained"
+            color="primary"
+            disabled={!isValidEmail(email) || password.length === 0}
+          >
+            Log In
+          </Button>
+        </Grid>
+        <Grid item>
+          <Typography variant="body1" style={{ display: "inline-block" }}>
+            New to Abode?
+          </Typography>
+          <Link
+            onClick={switchMode}
+            style={{ display: "inline-block", marginLeft: "5px" }}
           >
             Sign In
-          </Button>
-        </form>
-      </div>
-    </ModalWrapper>
+          </Link>
+        </Grid>
+      </Grid>
+    </form>
   );
-});
+};
+
+export const PasswordInput = ({
+  password,
+  setPassword,
+}: {
+  password: string;
+  setPassword: (password: string) => void;
+}) => {
+  const [error, setError] = React.useState<string | undefined>(undefined);
+  const [visible, setVisible] = React.useState(false);
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setError(undefined);
+    setPassword(event.target.value);
+  };
+  const onBlur = () => {
+    if (password === "") {
+      setError("Password cannot be empty");
+    }
+    setError(undefined);
+  };
+  return (
+    <TextField
+      value={password}
+      fullWidth
+      error={!!error}
+      helperText={error}
+      onChange={onChange}
+      label="Password"
+      variant="outlined"
+      type={visible ? "text" : "password"}
+      onBlur={onBlur}
+      InputProps={{
+        endAdornment: (
+          <div onClick={() => setVisible((visible) => !visible)}>
+            {visible ? (
+              <VisibilityIcon style={{ color: "#7b7b7b" }} />
+            ) : (
+              <VisibilityOffIcon style={{ color: "#7b7b7b" }} />
+            )}
+          </div>
+        ),
+      }}
+    />
+  );
+};
+
+export const EmailInput = ({
+  email,
+  setEmail,
+}: {
+  email: string;
+  setEmail: (email: string) => void;
+}) => {
+  const [error, setError] = React.useState<string | undefined>(undefined);
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setError(undefined);
+    setEmail(event.target.value);
+  };
+  const onBlur = () => {
+    if (!isValidEmail(email)) {
+      setError("Invalid email");
+      return;
+    }
+    setError(undefined);
+  };
+  return (
+    <TextField
+      value={email}
+      fullWidth
+      error={!!error}
+      helperText={error}
+      onChange={onChange}
+      label="Email"
+      autoFocus
+      variant="outlined"
+      type="email"
+      onBlur={onBlur}
+      InputProps={{
+        endAdornment: <AlternateEmailIcon style={{ color: "#7b7b7b" }} />,
+      }}
+    />
+  );
+};

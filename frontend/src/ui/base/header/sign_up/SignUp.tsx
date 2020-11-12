@@ -1,34 +1,32 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { action, computed } from "mobx";
+import { action, computed, runInAction } from 'mobx';
 import {
   Button,
   Typography,
   StepLabel,
+  Grid,
   Stepper,
+  Link,
   Step,
 } from "@material-ui/core";
 import logo from "../../../../images/logo.png";
 import { Step0, Step1, Step2 } from "./Steps";
-import { ModalWrapper } from "../../modal_wrapper/ModalWrapper";
 import { SignUpStore } from "./SignUpStore";
 import { SignUpStyles } from "./SignUp.css";
-import { AddressDetails } from "../../address_form/AddressForm";
+import Logo from "../../logo/Logo";
+import { SignUpArgs } from "../../../../AuthContext";
+import MuiAlert from '@material-ui/lab/Alert';
 
-export const SignUp: React.FC<{
-  onSubmit: (
-    name: string,
-    email: string,
-    password: string,
-    phoneNo: string,
-    address: AddressDetails
-  ) => void;
+type SignUpProps = {
+  onSubmit: (args: SignUpArgs) => void;
   store: SignUpStore;
-}> = observer(({ onSubmit, store }) => {
-  const closeModal = action(() => {
-    store.open = false;
-  });
+  closeModal: () => void;
+  switchMode: () => void;
+}
 
+export const SignUp = observer(({ onSubmit, store, closeModal, switchMode }: SignUpProps) => {
+  const [error, setError] = React.useState<string | undefined>(undefined)
   const getStepContent = (stepIndex: number) => {
     switch (stepIndex) {
       case 0:
@@ -75,71 +73,113 @@ export const SignUp: React.FC<{
   );
 
   const handleNext = () => {
+    setError(undefined);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
+    setError(undefined);
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleConfirm = () => {
-    onSubmit(
-      store.usernm,
-      store.email,
-      store.passwd,
-      store.phoneNo,
-      store.address
+    setError(undefined);
+    const onError = (error: string) => {
+      setError(error);
+    }
+
+    const onSuccess = () => {
+      runInAction(() => {
+        store.address = {
+          street: "",
+          suburb: "",
+          state: "",
+          postcode: "",
+          country: "",
+        };
+        store.phoneNo = "";
+        store.email = "";
+        store.passwd = "";
+        store.usernm ="";
+        store.passwdVerify = "";
+        setError(undefined);
+      })
+      closeModal();
+    }
+    onSubmit({
+      name: store.usernm,
+      email: store.email,
+      password: store.passwd,
+      phone_number: store.phoneNo,
+      address: store.address,
+      onError,
+      onSuccess,
+    }
     );
-    closeModal();
   };
 
   const steps = ["User Details", "Phone Number", "Address"];
   const classes = SignUpStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   return (
-    <ModalWrapper open={store.open} onClose={closeModal}>
-      <div className={classes.root}>
-        <img
-          width="200px"
-          src={logo}
-          alt="Adobe logo"
-          style={{ marginBottom: "10px", alignContent: "center" }}
-        />
-        <Typography style={{ alignContent: "center" }}>
-          Join our family today
+    <Grid container direction="column" spacing={2}>
+      <Grid item className={classes.logo}>
+        <Logo size="large" />
+      </Grid>
+      <Grid item>
+        <Typography variant="h5" align="center">
+          <b>Join our family</b>
         </Typography>
-        <Stepper activeStep={activeStep} alternativeLabel>
+      </Grid>
+      <Grid item className={classes.switch}>
+          <Typography variant="body1" style={{ display: "inline-block" }}>
+            Already have an account?
+          </Typography>
+          <Link
+            onClick={switchMode}
+            style={{ display: "inline-block", marginLeft: "5px" }}
+          >
+            Sign In
+          </Link>
+        </Grid>
+      <Grid item>
+        <Stepper
+          activeStep={activeStep}
+          alternativeLabel
+          className={classes.stepper}
+        >
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
             </Step>
           ))}
         </Stepper>
-        {activeStep < steps.length && (
-          <div>
-            {getStepContent(activeStep)}
-            <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.backButton}
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={
-                  activeStep === 2 ? () => handleConfirm() : () => handleNext()
-                }
-                disabled={disableNext()}
-              >
-                {activeStep === 2 ? "Sign Up" : "Next"}
-              </Button>
-            </div>
-          </div>
+        {getStepContent(activeStep)}
+      </Grid>
+      {!!error && (
+          <Grid item>
+            <MuiAlert severity="error">{error}</MuiAlert>
+          </Grid>
         )}
-      </div>
-    </ModalWrapper>
+      <Grid item className={classes.actionButtons}>
+        <Button
+          disabled={activeStep === 0}
+          onClick={handleBack}
+          className={classes.backButton}
+        >
+          Back
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={
+            activeStep === 2 ? () => handleConfirm() : () => handleNext()
+          }
+          disabled={disableNext()}
+        >
+          {activeStep === 2 ? "Sign Up" : "Next"}
+        </Button>
+      </Grid>
+    </Grid>
   );
 });
