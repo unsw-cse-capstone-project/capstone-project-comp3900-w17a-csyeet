@@ -55,7 +55,7 @@ export const SellerProfile = ({
       <Divider className={classes.divider} />
       <div className={classes.summaryInfo}>
         <div className={classes.avatarContainer}>
-        <Avatar className={classes.largeAvatar} src={avatar} />
+          <Avatar className={classes.largeAvatar} src={avatar} />
         </div>
         <Typography variant="h6" className={classes.displayname}>
           <Link onClick={() => setOpen(true)}>{name}</Link>

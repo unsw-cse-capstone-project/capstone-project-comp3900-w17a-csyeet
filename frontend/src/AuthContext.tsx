@@ -6,13 +6,6 @@ export type User = {
   name: string;
   email: string;
   id: number;
-  // avatar: string;
-  phone_number?: string;
-  street?: string;
-  suburb?: string;
-  postcode?: string;
-  state?: string;
-  country?: string;
 };
 
 export default class Store {
@@ -39,12 +32,6 @@ export default class Store {
               name: content.name,
               id: content.id,
               email: content.email,
-              phone_number: "0412345678",
-              street: "12 Street St",
-              suburb: "Fairfield",
-              postcode: "2194",
-              state: "NSW",
-              country: "Australia",
             })
         );
         window.localStorage.setItem("id", content.id);
@@ -69,12 +56,6 @@ export default class Store {
           name: name,
           email: email,
           password: password,
-          phone_number: phone_number,
-          street: address.street,
-          suburb: address.suburb,
-          postcode: address.postcode,
-          state: address.state,
-          country: address.country,
         }),
       });
       const content = await response.json();
@@ -84,12 +65,6 @@ export default class Store {
             name: content.name,
             id: content.id,
             email: content.email,
-            phone_number: "0412345678",
-            street: "12 Street St",
-            suburb: "Fairfield",
-            postcode: "2194",
-            state: "NSW",
-            country: "Australia",
           })
       );
     } catch {
@@ -112,17 +87,6 @@ export default class Store {
   constructor() {
     makeObservable(this);
   }
-
-  convertBlobToBase64(blob: Blob) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onerror = reject;
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-      reader.readAsDataURL(blob);
-    });
-  }
 }
 
 const checkSession = async (store: Store) => {
@@ -143,12 +107,6 @@ const checkSession = async (store: Store) => {
             id: result.id,
             name: result.name,
             email: result.email,
-            phone_number: "0412345678",
-            street: "12 Street St",
-            suburb: "Fairfield",
-            postcode: "2194",
-            state: "NSW",
-            country: "Australia",
           })
       );
     } catch {

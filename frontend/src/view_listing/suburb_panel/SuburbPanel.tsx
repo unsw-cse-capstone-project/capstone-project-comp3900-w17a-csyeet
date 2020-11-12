@@ -44,7 +44,7 @@ export const SuburbPanel = ({
         </Typography>
       </AccordionSummary>
       <AccordionDetails className={classes.accordianDetails}>
-        <Typography variant="body1" className={classes.description}>
+        <Typography variant="body1" className={classes.description} color='textSecondary'>
           For a {listing.num_bedrooms} bedroom {listing.type} in{" "}
           {listing.suburb}
         </Typography>

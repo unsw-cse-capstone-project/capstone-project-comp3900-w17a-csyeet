@@ -3,13 +3,13 @@ import {
   UpcomingAuctionsStore,
   UpcomingAuctionPresenter,
 } from "./UpcomingAuctionsPresenter";
-import { Grid, Snackbar, Typography, withWidth } from '@material-ui/core';
+import { Grid, Snackbar, Typography, withWidth } from "@material-ui/core";
 import { ListingCardSmall } from "../../ui/base/listing_card_sm/ListingCardSmall";
 import { observer } from "mobx-react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ListingCardSmallLoadingRow } from "../../ui/base/loading_state/ListingCardSmallLoadingRow";
 import MuiAlert from "@material-ui/lab/Alert";
-import { getNumCards } from '../../ui/util/helper';
+import { getNumCards } from "../../ui/util/helper";
 
 /**
  * List of upcoming auctions with loading states
@@ -65,7 +65,11 @@ export const UpcomingAuctionsBase = observer(
         hasMore={!!store.continuation}
         loader={<ListingCardSmallLoadingRow />}
         endMessage={
-          <Typography align="center" variant="body1">
+          <Typography
+            align="center"
+            variant="body1"
+            style={{ marginTop: "15px" }}
+          >
             No more listings to show
           </Typography>
         }

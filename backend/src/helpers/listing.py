@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from dataclasses import asdict
 from typing import List, Optional, Tuple
 from sqlalchemy.orm import Session
-from ..schemas import ListingResponse, Feature, field_to_feature_map
+from ..schemas import ListingResponse, Feature, field_to_feature_map, UpdateListingRequest
 from ..models import Listing, User, Starred, Registration
 from .bid import get_highest_bid
 
@@ -67,3 +67,15 @@ def is_user_registered_bidder(listing: Listing, user: Optional[User], session: S
     if user is None:
         return False
     return session.query(Registration).get((listing.id, user.id)) is not None
+
+
+def update_listing(listing: Listing, req: UpdateListingRequest):
+    data = req.dict()
+    if data['features'] is not None:
+        for key, value in field_to_feature_map.items():
+            data[key] = value in data['features']
+    data.pop('features')
+
+    for key, value in data.items():
+        if value is not None:
+            setattr(listing, key, value)

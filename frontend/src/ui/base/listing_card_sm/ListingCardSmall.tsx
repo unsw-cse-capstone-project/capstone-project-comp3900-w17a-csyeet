@@ -41,13 +41,6 @@ export const ListingCardSmall = ({
   const history = useHistory();
   const userStore = useStore();
 
-  const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
   const { streetAddress, remainingAddress } = formatAddress({
     street,
     suburb,
@@ -59,16 +52,11 @@ export const ListingCardSmall = ({
   return (
     <Card className={classes.card} elevation={2} style={style}>
       <div className={classes.sliderContainer}>
-        <Slider {...settings}>
-          {images.map((image, i) => (
-            <img
-              className={classes.imageContainer}
-              src={image}
-              key={i}
-              alt={"sm-img-" + i}
-            />
-          ))}
-        </Slider>
+        <img
+          className={classes.imageContainer}
+          src={images[0]}
+          alt={"sm-img"}
+        />
       </div>
       <div className={classes.cardContent}>
         {userStore?.user && (
