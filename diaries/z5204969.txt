@@ -19,3 +19,17 @@
 ## Week 5
 
 - Finished the View Listing page, separating the feature, nearby facilities, and suburb profile accordions into separate components. Also abstracted the seller profile, map and auction details into individual components. Wired up the page to auction pages and search pages.
+
+## Week 6
+
+- Worked on the filters for search listing. Refactored code and changed some of the date selector components to have consistent UI across pages.
+
+# Week 7
+- Worked on the profile functionality. Added basic structure for the profile page and tab components. Implemented the My Bids, Starred Properties and My Listings tabs on the profile with Teresa
+
+# Week 8
+- Worked on the profile modal on the view listing page that included information about the seller including avatar, name and blurb as well as all of the user's listings.
+
+# Week 9
+- Worked with Eddie on the HTML templates for email notifications for notifying users about auctions starting, auctions ending, buyers that won an auction, buyers that were unsuccessful at an auction, sellers that sold their property, sellers that had a property pass in at auction.
+- Also worked on UI component to include closed auctions for search filters
