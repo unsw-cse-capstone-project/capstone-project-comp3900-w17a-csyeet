@@ -1,5 +1,5 @@
 import { observable, makeObservable } from "mobx";
-import { AddressDetails } from "../../../../listing/listing_form/ListingForm";
+import { AddressDetails } from "../../address_form/AddressForm";
 
 export class SignUpStore {
   @observable

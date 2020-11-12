@@ -4,7 +4,6 @@ import { action } from "mobx";
 import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
 import { ListingStore } from "../ListingPresenter";
 import { FormHelperText, Typography, TextField } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
 import NumberFormat from "react-number-format";
 
 interface NumberFormatCustomProps {
@@ -54,9 +53,7 @@ const AccNoInput = (props: NumberFormatCustomProps) => {
 
 export const PaymentDetails: React.FC<{
   store: ListingStore;
-  edit: boolean;
-}> = observer(({ store, edit }) => {
-  const { confirmed_auction_start } = store.auction;
+}> = observer(({ store }) => {
   const { account_name, bsb, account_number } = store.payment;
   const onChange = action((value: string, field: string) => {
     (store as any).payment[field] = value;
@@ -132,27 +129,16 @@ export const PaymentDetails: React.FC<{
     );
   };
 
-  let readOnly = false;
-  if (edit && confirmed_auction_start)
-    readOnly =
-      new Date().getTime() > (confirmed_auction_start as Date).getTime();
+  console.log(bsb);
+  console.log(account_number);
   return (
     <>
-      {readOnly && (
-        <Alert
-          severity="info"
-          style={{ marginTop: "10px", marginBottom: "10px" }}
-        >
-          You cannot edit your payment details during your auction
-        </Alert>
-      )}
       <Typography variant={"subtitle1"}>Payment Details</Typography>
       <TextFieldWrapper
         value={account_name}
         field="account_name"
         label="Account Name"
         onChange={onChange}
-        readOnly={readOnly}
       />
       <BSBInputField />
       <AccNoInputField />

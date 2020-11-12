@@ -2,7 +2,7 @@ import * as React from "react";
 import { ListingStore, ListingPresenter } from "../ListingPresenter";
 import { useHistory } from "react-router-dom";
 import { Snackbar, Typography } from "@material-ui/core";
-import { ListingForm } from "../listing_form/ListingForm";
+import { ListingForm } from "./ListingForm";
 import { PreviewListing } from "../PreviewListing";
 import { AddListingStyles } from "./AddListing.css";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";

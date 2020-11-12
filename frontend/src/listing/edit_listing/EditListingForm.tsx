@@ -3,15 +3,14 @@ import { observer } from "mobx-react";
 import { computed } from "mobx";
 import { Button, Stepper, Step, StepButton, Snackbar } from "@material-ui/core";
 import { ListingStore } from "../ListingPresenter";
-import { Details } from "./Details";
-import { Images } from "./Images";
-import { Description } from "./Description";
-import { AuctionDetails } from "./AuctionDetails";
-import { PaymentDetails } from "./Payment";
-import { ListingFormStyles } from "./ListingForm.css";
+import { Images } from "../listing_form/Images";
+import { Description } from "../listing_form/Description";
+import { AuctionDetails } from "../listing_form/AuctionDetails";
+import { PaymentDetails } from "../listing_form/Payment";
+import { ListingFormStyles } from "../add_listing/ListingForm.css";
 import Alert from "@material-ui/lab/Alert";
 import { ArrowBackIos } from "@material-ui/icons";
-import { Features } from "./Features";
+import { Features } from "../listing_form/Features";
 
 export type AddressDetails = {
   street: string;
@@ -21,41 +20,46 @@ export type AddressDetails = {
   country: string;
 };
 
-export const ListingForm = observer(
+export const EditListingForm = observer(
   ({
     store,
-    edit = false,
     onPreview,
     onBack,
   }: {
     store: ListingStore;
-    edit?: boolean;
     onPreview: () => void;
     onBack: () => void;
   }) => {
+    const [openSnack, setSnack] = React.useState<boolean>(false);
     const [activeStep, setActiveStep] = React.useState<number>(0);
-    const steps = [
-      "Property Details",
-      "Upload Images",
-      "Property Description",
-      "Property Features",
-      "Auction Detail",
-      "Payment Details",
-    ];
+    const getSteps = () => {
+      if (store.auctionState === "pre-auction")
+        return [
+          "Upload Images",
+          "Property Description",
+          "Property Features",
+          "Auction Detail",
+          "Payment Details",
+        ];
+      else
+        return ["Upload Images", "Property Description", "Property Features"];
+    };
+
+    const steps = getSteps();
     const getContent = (activeStep: number) => {
       switch (activeStep) {
         case 0:
-          return <Details edit={edit} store={store} />;
-        case 1:
           return <Images store={store} />;
-        case 2:
+        case 1:
           return <Description store={store} />;
-        case 3:
+        case 2:
           return <Features store={store} />;
+        case 3:
+          if (store.auctionState !== "pre-auction") return "Error";
+          return <AuctionDetails store={store} />;
         case 4:
-          return <AuctionDetails edit={edit} store={store} />;
-        case 5:
-          return <PaymentDetails edit={edit} store={store} />;
+          if (store.auctionState !== "pre-auction") return "Error";
+          return <PaymentDetails store={store} />;
         default:
           return "404 You've fallen into outer space!";
       }
@@ -68,7 +72,7 @@ export const ListingForm = observer(
         case 1:
           return completedStep1.get();
         case 2:
-          return completedStep2.get();
+          return true;
         case 3:
           return completedStep3.get();
         case 4:
@@ -79,19 +83,10 @@ export const ListingForm = observer(
     };
 
     const completedStep0 = computed(
-      () =>
-        store.address.street !== "" &&
-        store.address.suburb !== "" &&
-        store.address.state !== "" &&
-        store.address.country !== "" &&
-        store.listing.type !== ""
-    );
-
-    const completedStep1 = computed(
       () => store.imageList.length > 0 || store.listing.images.length > 0
     );
 
-    const completedStep2 = computed(
+    const completedStep1 = computed(
       () => store.listing.title !== "" && store.listing.description !== ""
     );
 
@@ -113,7 +108,6 @@ export const ListingForm = observer(
     const canPreview =
       completedStep0.get() &&
       completedStep1.get() &&
-      completedStep2.get() &&
       completedStep3.get() &&
       completedStep4.get();
 
@@ -134,7 +128,6 @@ export const ListingForm = observer(
       setActiveStep(step);
     };
 
-    const [openSnack, setSnack] = React.useState<boolean>(false);
     const classes = ListingFormStyles();
     return (
       <div>
@@ -156,6 +149,7 @@ export const ListingForm = observer(
               </Button>
             </div>
           </div>
+
           <Stepper alternativeLabel nonLinear activeStep={activeStep}>
             {steps.map((label, index) => {
               const stepProps: { completed?: boolean } = {};

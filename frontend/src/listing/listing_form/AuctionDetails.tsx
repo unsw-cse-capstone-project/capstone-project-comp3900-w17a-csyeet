@@ -13,7 +13,6 @@ import { DateRange } from "@material-ui/pickers";
 import { DateRangeWrapper } from "../../ui/base/input/DateRangeWrapper";
 import { InfoPopup } from "../../ui/base/info_popup/InfoPopup";
 import { ListingStore } from "../ListingPresenter";
-import { Alert } from "@material-ui/lab";
 import NumberFormat from "react-number-format";
 
 const AuctionStyles = makeStyles((theme: Theme) =>
@@ -50,14 +49,8 @@ interface NumberFormatCustomProps {
 
 export const AuctionDetails: React.FC<{
   store: ListingStore;
-  edit: boolean;
-}> = observer(({ store, edit }) => {
-  const {
-    confirmed_auction_start,
-    auction_start,
-    auction_end,
-    reserve_price,
-  } = store.auction;
+}> = observer(({ store }) => {
+  const { auction_start, auction_end, reserve_price } = store.auction;
 
   const PriceInput = (props: NumberFormatCustomProps) => {
     const { inputRef, onChange, ...other } = props;
@@ -114,23 +107,9 @@ export const AuctionDetails: React.FC<{
   const reservePriceInfo =
     " Reserve price is the minimum before the property can be sold. If the highest bidding price does not reach the reservation price, the property is passed in and you may have to negotiate with sellers.";
 
-  // Users cannot edit anything once the auction has begun
-  let readOnly = false;
-  if (edit && confirmed_auction_start)
-    readOnly =
-      new Date().getTime() > (confirmed_auction_start as Date).getTime();
   const classes = AuctionStyles();
   return (
     <div className={classes.container}>
-      {readOnly && (
-        <Alert
-          severity="info"
-          style={{ marginTop: "10px", marginBottom: "10px" }}
-        >
-          You cannot edit your Auction Dates and reserve price during your
-          auction
-        </Alert>
-      )}
       <Typography
         variant="subtitle1"
         style={{ marginBottom: "5px", marginTop: "35px" }}
@@ -152,7 +131,6 @@ export const AuctionDetails: React.FC<{
               const emptyDate: DateRange<Date> = [null, null];
               handleDateChange(emptyDate);
             }}
-            disabled={readOnly}
           >
             Change
           </Button>

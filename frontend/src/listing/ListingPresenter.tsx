@@ -16,7 +16,6 @@ export type ListingDetails = {
 };
 
 export type AuctionDetails = {
-  confirmed_auction_start: Date | null;
   auction_start: Date | null;
   auction_end: Date | null;
   reserve_price: string;
@@ -39,12 +38,9 @@ const getListingFromResult = (result: any) => ({
   type: result.type,
   title: result.title,
   description: result.description,
-
   num_bedrooms: result.num_bedrooms,
   num_bathrooms: result.num_bathrooms,
   num_car_spaces: result.num_car_spaces,
-  auction_start: new Date(result.auction_start),
-  auction_end: new Date(result.auction_end),
   images: result["image_ids"].map(
     (id: any) => `/listings/${result.id}/images/${id}`
   ),
@@ -52,9 +48,8 @@ const getListingFromResult = (result: any) => ({
 });
 
 const getAuctionFromResult = (result: any) => ({
-  confirmed_auction_start: result.auction_start,
-  auction_start: result.auction_start,
-  auction_end: result.auction_end,
+  auction_start: new Date(result.auction_start),
+  auction_end: new Date(result.auction_end),
   reserve_price: result.reserve_price.toString(),
 });
 
@@ -92,12 +87,12 @@ export class ListingStore {
   };
 
   @observable auction: AuctionDetails = {
-    confirmed_auction_start: null,
     auction_start: null,
     auction_end: null,
     reserve_price: "",
   };
 
+  @observable auctionState: string = "pre-auction";
   @observable imageList: ImageListType = [];
 
   constructor() {
@@ -124,15 +119,20 @@ export class ListingPresenter {
         const address: AddressDetails = getAddressFromResult(result);
         const auction: AuctionDetails = getAuctionFromResult(result);
         const payment: PaymentDetails = getPaymentFromResult(result);
+        console.log(auction.auction_start, typeof auction.auction_start);
+        const auctionState =
+          new Date().getTime() >= (auction.auction_start as Date).getTime()
+            ? "ongoing-auction"
+            : "pre-auction";
         runInAction(() => {
           store.listing = listing;
           store.address = address;
           store.auction = auction;
           store.payment = payment;
+          store.auctionState = auctionState;
         });
       }
     } catch (e) {
-      console.log(e);
       onError();
     }
   }
@@ -221,10 +221,7 @@ export class ListingPresenter {
           street: store.address.street,
           suburb: store.address.suburb,
           postcode: store.address.postcode,
-          state: store.address.state
-            .split(" ")
-            .map((word) => word[0])
-            .join(""),
+          state: store.address.state,
           country: store.address.country,
           features: store.listing.features,
           num_bedrooms: store.listing.num_bedrooms,
