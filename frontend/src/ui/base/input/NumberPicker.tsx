@@ -20,7 +20,6 @@ export const NumberPicker = ({
 }) => {
   return (
     <TextField
-      fullWidth
       className={className}
       disabled={readOnly}
       style={style}

@@ -8,13 +8,35 @@ export type User = {
   id: number;
 };
 
+export type SignInArgs = {
+  email: string;
+  password: string;
+  onError: (error: string) => void;
+  onSuccess: () => void;
+};
+
+export type SignUpArgs = {
+  name: string,
+  email: string,
+  password: string,
+  phone_number: string,
+  address: AddressDetails,
+  onError: (error: string) => void,
+  onSuccess: () => void,
+}
+
 export default class Store {
   @observable user?: User;
   @observable openSignUp: boolean = false;
   @observable openSignIn: boolean = false;
 
   @action
-  async signIn(email: string, password: string, onError: () => void) {
+  async signIn({
+    email,
+    password,
+    onError,
+    onSuccess,
+  }: SignInArgs) {
     try {
       const response = await fetch("/login", {
         method: "post",
@@ -23,8 +45,7 @@ export default class Store {
       });
       const content = await response.json();
       if ("detail" in content) {
-        console.log("error", content.detail);
-        onError();
+        onError(content.detail);
       } else {
         runInAction(
           () =>
@@ -34,21 +55,23 @@ export default class Store {
               email: content.email,
             })
         );
-        window.localStorage.setItem("id", content.id);
+        onSuccess();
       }
     } catch {
-      console.log("error T-T");
+      onError("Error occurred please try again");
     }
   }
 
   @action
-  async signUp(
-    name: string,
-    email: string,
-    password: string,
-    phone_number: string,
-    address: AddressDetails
-  ) {
+  async signUp({
+    name,
+    email,
+    password,
+    phone_number,
+    address,
+    onError,
+    onSuccess,
+  }: SignUpArgs) {
     try {
       const response = await fetch("/signup", {
         method: "post",
@@ -56,9 +79,19 @@ export default class Store {
           name: name,
           email: email,
           password: password,
+          phone_number: phone_number,
+          street: address.street,
+          state: address.state,
+          postcode: address.postcode,
+          country: address.country,
+          suburb: address.suburb,
         }),
       });
       const content = await response.json();
+      if ('detail' in content) {
+        onError(content.detail);
+        return;
+      }
       runInAction(
         () =>
           (this.user = {
@@ -67,8 +100,9 @@ export default class Store {
             email: content.email,
           })
       );
+      onSuccess();
     } catch {
-      console.log("error T-T");
+      onError("Error occurred when signing up");
     }
   }
 

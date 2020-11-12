@@ -55,7 +55,7 @@ export const BidderRegistrationWrapper = observer(
       const classes = BidderRegistrationStyle();
       return (
         <div className={classes.root}>
-          <div className={classes.main}>
+          <div className={classes.main} style={{ paddingBottom: "200px" }}>
             <BackButton
               className={classes.backToListingButton}
               onClick={() => history.push(`/listing/${id}`)}

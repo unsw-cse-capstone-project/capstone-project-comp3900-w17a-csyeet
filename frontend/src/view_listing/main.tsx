@@ -89,6 +89,9 @@ export const ListingPageWrapper = observer(
         <OwnerHeader
           onDelete={() => presenter.deleteListing(listing.id)}
           id={listing.id}
+          hasAuctionStarted={
+            new Date().getTime() >= listing.auction_start.getTime()
+          }
           isAuctionClosed={
             new Date().getTime() >= listing.auction_end.getTime()
           }

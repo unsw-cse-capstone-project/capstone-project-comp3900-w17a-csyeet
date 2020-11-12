@@ -1,6 +1,6 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import { InputAdornment, FormHelperText } from "@material-ui/core";
+import { InputAdornment } from "@material-ui/core";
 export interface TextFieldWrapperProps {
   field?: string;
   label: string;
@@ -8,24 +8,26 @@ export interface TextFieldWrapperProps {
   adornment?: React.ReactNode;
   value?: string;
   error?: boolean;
+  helperText?: string;
   onBlur?: () => void;
   onChange?: (value: string, field: string) => void;
   readOnly?: boolean;
   style?: React.CSSProperties;
 }
 
-export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
+export const TextFieldWrapper = ({
   field,
   label,
   type = "text",
   adornment = null,
   value = "",
   error,
+  helperText,
   style,
   onBlur,
   onChange,
   readOnly,
-}) => {
+}: TextFieldWrapperProps) => {
   const [v, setValue] = React.useState(value);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === "number" && e.target.value === "-1") return; // Disable Negative
@@ -40,6 +42,15 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
     v === "" ? setError(true) : setError(false);
     if (onBlur) onBlur();
   };
+
+  const errorText = () => {
+    if (e) {
+      return `${label} is required*`;
+    }
+    if (error) {
+      return helperText;
+    }
+  };
   return (
     <div style={{ marginTop: "10px" }}>
       <TextField
@@ -53,6 +64,7 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
         type={type}
         onBlur={customOnBlur}
         onChange={handleChange}
+        helperText={errorText()}
         InputProps={{
           readOnly: readOnly,
           endAdornment: (
@@ -60,11 +72,6 @@ export const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
           ),
         }}
       />
-      {error !== true && e && (
-        <FormHelperText style={{ color: "red" }}>
-          {label} is required*
-        </FormHelperText>
-      )}
     </div>
   );
 };
