@@ -59,9 +59,9 @@ const getAuctionFromResult = (result: any) => ({
 });
 
 const getPaymentFromResult = (result: any) => ({
-  account_name: result.account_name,
-  bsb: result.bsb,
-  account_number: result.account_number,
+  account_name: result.account_name || "Jane Doe",
+  bsb: result.bsb || "123456",
+  account_number: result.account_number || "12345678",
 });
 
 export class ListingStore {

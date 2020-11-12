@@ -26,6 +26,7 @@ import {
   ThemeProvider,
 } from "@material-ui/core/styles";
 import { ErrorPage } from "./error/main";
+import { Footer } from "./ui/base/footer/Footer";
 
 let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);
@@ -66,75 +67,82 @@ ReactDOM.render(
           <AuthProvider>
             <Header signInStore={signInStore} signUpStore={signUpStore} />
             <div className="content" id="content">
-              <Switch>
-                <Route path="/search" component={SearchPage} />
-                <Route
-                  exact
-                  path="/listing/:id/register"
-                  render={(props) => (
-                    <ProtectedComponent
-                      {...props}
-                      signInStore={signInStore}
-                      Component={BidderRegistrationPage}
-                    />
-                  )}
-                />
-                <Route
-                  exact
-                  path="/listing/:id/messages"
-                  render={(props) => (
-                    <ProtectedComponent
-                      {...props}
-                      signInStore={signInStore}
-                      Component={ListingMessagesPage}
-                    />
-                  )}
-                />
-                <Route
-                  exact
-                  path="/listing/:id/auction"
-                  component={AuctionPage}
-                />
-                <Route exact path="/listing/:id" component={ViewListingPage} />
-                <Route
-                  exact
-                  path="/listing/:id/edit"
-                  component={EditListingPage}
-                />
-                <Route
-                  path="/add"
-                  render={(props) => (
-                    <ProtectedComponent
-                      {...props}
-                      signInStore={signInStore}
-                      Component={AddListingPage}
-                    />
-                  )}
-                />
-                {/* Profile Pages */}
-                <Route
-                  path="/profile"
-                  render={(props) => (
-                    <ProtectedComponent
-                      {...props}
-                      signInStore={signInStore}
-                      Component={ProfilePage}
-                    />
-                  )}
-                />
-                <Route
-                  path="/messages"
-                  render={(props) => (
-                    <ProtectedComponent
-                      {...props}
-                      signInStore={signInStore}
-                      Component={MessagesPage}
-                    />
-                  )}
-                />
-                <Route exact path="/" component={HomePage} />
-                <Route component={ErrorPage} />
-              </Switch>
+              <div className="pageContainer">
+                <Switch>
+                  <Route path="/search" component={SearchPage} />
+                  <Route
+                    exact
+                    path="/listing/:id/register"
+                    render={(props) => (
+                      <ProtectedComponent
+                        {...props}
+                        signInStore={signInStore}
+                        Component={BidderRegistrationPage}
+                      />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/listing/:id/messages"
+                    render={(props) => (
+                      <ProtectedComponent
+                        {...props}
+                        signInStore={signInStore}
+                        Component={ListingMessagesPage}
+                      />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/listing/:id/auction"
+                    component={AuctionPage}
+                  />
+                  <Route
+                    exact
+                    path="/listing/:id"
+                    component={ViewListingPage}
+                  />
+                  <Route
+                    exact
+                    path="/listing/:id/edit"
+                    component={EditListingPage}
+                  />
+                  <Route
+                    path="/add"
+                    render={(props) => (
+                      <ProtectedComponent
+                        {...props}
+                        signInStore={signInStore}
+                        Component={AddListingPage}
+                      />
+                    )}
+                  />
+                  {/* Profile Pages */}
+                  <Route
+                    path="/profile"
+                    render={(props) => (
+                      <ProtectedComponent
+                        {...props}
+                        signInStore={signInStore}
+                        Component={ProfilePage}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/messages"
+                    render={(props) => (
+                      <ProtectedComponent
+                        {...props}
+                        signInStore={signInStore}
+                        Component={MessagesPage}
+                      />
+                    )}
+                  />
+                  <Route exact path="/" component={HomePage} />
+                  <Route component={ErrorPage} />
+                </Switch>
+                <Footer />
+              </div>
             </div>
           </AuthProvider>
         </ThemeProvider>

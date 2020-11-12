@@ -129,7 +129,7 @@ export const ListingPage = observer(
             <Typography variant="body1" className={classes.description}>
               {description}
             </Typography>
-            <FeaturesPanel features={features} />
+            {features.length !== 0 && <FeaturesPanel features={features} />}
             <LandmarksPanel facilities={landmarks} isPreview={disableActions} />
             <SuburbPanel listing={listing} Content={SuburbPanelContent} />
           </Grid>

@@ -6,7 +6,7 @@ export const HomePageStyle = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      padding: theme.spacing(0, 0, 12, 0),
+      flex: 1,
     },
     logo: {
       width: "200px",
@@ -39,6 +39,7 @@ export const HomePageStyle = makeStyles((theme: Theme) =>
     },
     upcomingAuctionContainer: {
       width: "80%",
+      paddingBottom: theme.spacing(10)
     },
     upcomingAuctionTitle: {
       fontWeight: "bold",

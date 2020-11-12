@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Fab } from "@material-ui/core";
+import { Avatar, Button, Fab } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import PublishIcon from "@material-ui/icons/Publish";
 import AddAPhotoOutlinedIcon from "@material-ui/icons/AddAPhotoOutlined";
@@ -48,6 +48,7 @@ export const ProfileAvatar = ({
   const mode: boolean = avatar === "" ? true : false;
   const [edit, setEdit] = React.useState<boolean>(mode);
   const classes = AvatarStyles();
+  console.log(avatar)
   return (
     <div className={className}>
       {edit ? (
@@ -58,10 +59,9 @@ export const ProfileAvatar = ({
         />
       ) : (
         <div className={classes.avatarStyle}>
-          <img
+          <Avatar
             src={avatar}
             className={classes.avatarImage}
-            alt="uploaded-profile-img"
           />
           <Fab
             size="small"
