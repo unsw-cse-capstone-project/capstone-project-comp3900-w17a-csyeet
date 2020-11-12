@@ -11,16 +11,15 @@ export type ListingDetails = {
   num_bedrooms: number;
   num_bathrooms: number;
   num_car_spaces: number;
-  auction_start: Date | null;
-  auction_end: Date | null;
   images: string[];
   features: string[];
 };
 
 export type AuctionDetails = {
+  confirmed_auction_start: Date | null;
   auction_start: Date | null;
   auction_end: Date | null;
-  reserve_price: string | null;
+  reserve_price: string;
 };
 
 export type PaymentDetails = {
@@ -41,9 +40,9 @@ const getListingFromResult = (result: any) => ({
   title: result.title,
   description: result.description,
 
-  num_bedrooms: parseInt(result.num_bedrooms),
-  num_bathrooms: parseInt(result.num_bathrooms),
-  num_car_spaces: parseInt(result.num_car_spaces),
+  num_bedrooms: result.num_bedrooms,
+  num_bathrooms: result.num_bathrooms,
+  num_car_spaces: result.num_car_spaces,
   auction_start: new Date(result.auction_start),
   auction_end: new Date(result.auction_end),
   images: result["image_ids"].map(
@@ -53,6 +52,7 @@ const getListingFromResult = (result: any) => ({
 });
 
 const getAuctionFromResult = (result: any) => ({
+  confirmed_auction_start: result.auction_start,
   auction_start: result.auction_start,
   auction_end: result.auction_end,
   reserve_price: result.reserve_price.toString(),
@@ -81,8 +81,6 @@ export class ListingStore {
     num_bedrooms: 0,
     num_bathrooms: 0,
     num_car_spaces: 0,
-    auction_start: null,
-    auction_end: null,
     images: [],
     features: [],
   };
@@ -94,9 +92,10 @@ export class ListingStore {
   };
 
   @observable auction: AuctionDetails = {
+    confirmed_auction_start: null,
     auction_start: null,
     auction_end: null,
-    reserve_price: null,
+    reserve_price: "",
   };
 
   @observable imageList: ImageListType = [];
@@ -118,11 +117,9 @@ export class ListingPresenter {
       const result = await response.json();
 
       // Error Handling
-      if ("detail" in result){
-        console.log(result)
+      if ("detail" in result) {
         onError();
-      }
-      else {
+      } else {
         const listing: ListingDetails = getListingFromResult(result);
         const address: AddressDetails = getAddressFromResult(result);
         const auction: AuctionDetails = getAuctionFromResult(result);
@@ -134,8 +131,8 @@ export class ListingPresenter {
           store.payment = payment;
         });
       }
-    } catch(e) {
-      console.log(e)
+    } catch (e) {
+      console.log(e);
       onError();
     }
   }
@@ -156,10 +153,7 @@ export class ListingPresenter {
           street: store.address.street,
           suburb: store.address.suburb,
           postcode: store.address.postcode,
-          state: store.address.state
-            .split(" ")
-            .map((word) => word[0])
-            .join(""),
+          state: store.address.state,
           country: store.address.country,
           features: store.listing.features,
           num_bedrooms: store.listing.num_bedrooms,
@@ -167,7 +161,7 @@ export class ListingPresenter {
           num_car_spaces: store.listing.num_car_spaces,
           auction_start: store.auction.auction_start?.toISOString(),
           auction_end: store.auction.auction_end?.toISOString(),
-          reserve_price: parseInt(store.auction.reserve_price as string),
+          reserve_price: parseInt(store.auction.reserve_price),
           account_name: store.payment.account_name,
           bsb: store.payment.bsb,
           account_number: store.payment.account_number,
@@ -218,7 +212,6 @@ export class ListingPresenter {
     onError: () => void
   ) {
     try {
-      // TODO: Update this path (if different)
       const response = await fetch(`/listings/`, {
         method: "post",
         body: JSON.stringify({
@@ -247,7 +240,6 @@ export class ListingPresenter {
       });
       const result = await response.json();
       if ("detail" in result) {
-        console.log(result);
         onError();
         return;
       }

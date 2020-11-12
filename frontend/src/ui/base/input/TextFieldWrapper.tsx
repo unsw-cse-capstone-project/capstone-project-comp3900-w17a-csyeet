@@ -57,7 +57,8 @@ export const TextFieldWrapper = ({
         error={e || error ? true : false}
         fullWidth
         style={style}
-        variant="outlined"
+        variant={"outlined"}
+        disabled={readOnly}
         value={v}
         label={label}
         type={type}

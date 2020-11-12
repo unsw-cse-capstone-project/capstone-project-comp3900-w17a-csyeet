@@ -24,6 +24,7 @@ export const AddressForm = observer(
   ({
     onChange,
     addressData,
+    readOnly = false,
     style,
     className,
     readOnly = false,
@@ -31,6 +32,7 @@ export const AddressForm = observer(
   }: {
     onChange: (value: string, field: string) => void;
     addressData: AddressDetails;
+    readOnly?: boolean;
     style?: React.CSSProperties;
     className?: string;
     readOnly?: boolean;
@@ -98,13 +100,13 @@ export const AddressForm = observer(
         <Grid item xs={where === 'signUp'? 12: 6}>
           <SelectWrapper
             onChange={onChange}
+            readOnly={readOnly}
             field="state"
             label="State"
             data={states}
             value={state}
           />
         </Grid>
-
         {/* Defaults to Australia */}
         <Grid item xs={where === 'signUp'? 12: 6}>
           <FormControl

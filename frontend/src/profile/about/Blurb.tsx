@@ -1,7 +1,9 @@
 import React from "react";
-import { TextField, Typography, IconButton, Button } from "@material-ui/core";
+import { TextField, Typography, IconButton, Fab } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import DoneIcon from "@material-ui/icons/Done";
 import classNames from "classnames";
 
 export const BlurbStyle = makeStyles((theme: Theme) =>
@@ -42,16 +44,57 @@ export const Blurb = ({
   onEdit: (blurb: string) => void;
   className?: string;
 }) => {
+  const onBack = () => setEdit(false);
+  const [value, setValue] = React.useState<string>(blurb);
   const [edit, setEdit] = React.useState<boolean>(false);
   const classes = BlurbStyle();
   return (
     <div className={classNames(classes.root, className)}>
       {edit ? (
-        <EditBlurb
-          blurb={blurb}
-          onEdit={onEdit}
-          onBack={() => setEdit(false)}
-        />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <TextField
+            size="small"
+            variant={"outlined"}
+            autoFocus={true}
+            value={value}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setValue(e.target.value);
+            }}
+            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+              if (e.key === "enter") {
+                e.preventDefault();
+                onEdit(value);
+                onBack();
+              }
+            }}
+          />
+          <Fab
+            size="small"
+            color="primary"
+            style={{ marginLeft: "5px" }}
+            onClick={() => {
+              onEdit(value);
+              onBack();
+            }}
+          >
+            <DoneIcon fontSize={"small"} />
+          </Fab>
+          <Fab
+            style={{ marginLeft: "5px" }}
+            size="small"
+            color="default"
+            onClick={onBack}
+            // style={{ marginRight: "40px" }}
+          >
+            <CloseIcon fontSize="small" />
+          </Fab>
+        </div>
       ) : (
         <div className={classes.blurbView}>
           <div className={classes.blurbContainer}>
@@ -66,51 +109,5 @@ export const Blurb = ({
         </div>
       )}
     </div>
-  );
-};
-
-const EditBlurb = ({
-  blurb,
-  onEdit,
-  onBack,
-  className,
-}: {
-  blurb: string;
-  onEdit: (blurb: string) => void;
-  onBack: () => void;
-  className?: string;
-}) => {
-  const [value, setValue] = React.useState<string>(blurb);
-  return (
-    <TextField
-      size="small"
-      className={className}
-      style={{ display: "flex" }}
-      variant={"outlined"}
-      autoFocus={true}
-      InputProps={{
-        endAdornment: (
-          <Button
-            size={"small"}
-            onClick={onBack}
-            variant="contained"
-            color="secondary"
-          >
-            Save
-          </Button>
-        ),
-      }}
-      value={value}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-        setValue(e.target.value)
-      }
-      onBlur={onBack}
-      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          onEdit(value);
-        }
-      }}
-    />
   );
 };

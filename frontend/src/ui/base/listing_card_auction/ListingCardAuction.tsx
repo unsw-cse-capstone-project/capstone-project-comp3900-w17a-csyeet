@@ -150,7 +150,6 @@ async function getBidFromAuction(auction_id: Number, user_id: Number) {
     let return_bid = -1;
     bids.forEach((bid: Bid) => {
       if (bid.bidder_id === user_id) {
-        console.log("returning bid:", bid.bid);
         return_bid = bid.bid;
       }
     });

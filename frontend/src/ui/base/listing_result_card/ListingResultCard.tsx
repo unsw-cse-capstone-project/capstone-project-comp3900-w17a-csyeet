@@ -55,7 +55,6 @@ export const ListingResultCard = observer(
     const history = useHistory();
     const userStore = useStore();
     const location = useLocation();
-    console.log(location);
 
     const BidStatus = () => {
       if (
