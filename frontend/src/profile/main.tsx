@@ -50,62 +50,31 @@ export const ProfilePageWrapper = observer(
         <div className={classes.userInfo}>
           <ProfileAvatar onUpload={onEditAvatar} avatar={store.avatar} />
           <Typography variant="h4">{userStore.user.name}</Typography>
-          <Typography variant="body1" color="textSecondary">{userStore.user.email}</Typography>
+          <Typography variant="body1" color="textSecondary">
+            {userStore.user.email}
+          </Typography>
           <Blurb
             className={classes.blurbStyle}
             blurb={store.blurb}
             onEdit={onEditBlurb}
           />
         </div>
-        <div>
-          <ProfileTabs store={store} />
-        </div>
+        <ProfileTabs store={store} />
       </div>
     );
   }
 );
 
-function TabPanel(props: {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
-      {children}
-    </div>
-  );
-}
-
-function a11yProps(index: any) {
-  return {
-    id: `scrollable-auto-tab-${index}`,
-    "aria-controls": `scrollable-auto-tabpanel-${index}`,
-  };
-}
-
 const ProfileTabs = ({ store }: { store: ProfileStore }) => {
   const classes = ProfilePageStyles();
   const [value, setValue] = React.useState(0);
-  // const [localStore, setStore] = React.useState(store);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    // presenter.getProfileInfo(localStore);
+  const handleChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
-    console.log("setting Store");
-    // setStore(localStore);
   };
 
   return (
-    <div style={{ paddingBottom: "200px" }}>
+    <div className={classes.root}>
       <div className={classes.tabBar}>
         <Tabs
           value={value}
@@ -114,27 +83,28 @@ const ProfileTabs = ({ store }: { store: ProfileStore }) => {
           textColor="primary"
           variant="scrollable"
           scrollButtons="auto"
-          aria-label="scrollable auto tabs example"
         >
-          <Tab label="My Bids" {...a11yProps(0)} />
-          <Tab label="My Listings" {...a11yProps(1)} />
-          <Tab label="Starred Properties" {...a11yProps(2)} />
-          <Tab label="My Details" {...a11yProps(3)} />
+          <Tab label="My Bids" />
+          <Tab label="My Listings" />
+          <Tab label="Starred Properties" />
+          <Tab label="My Details" />
         </Tabs>
       </div>
 
-      <TabPanel value={value} index={0}>
+      <div className={classes.tabPanel}>
+      <div hidden={value !== 0}>
         <MyBids store={store} />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
+      </div>
+      <div hidden={value !== 1}>
         <MyListings store={store} />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
+      </div>
+      <div hidden={value !== 2}>
         <StarredProperties store={store} />
-      </TabPanel>
-      <TabPanel value={value} index={3}>
+      </div>
+      <div hidden={value !== 3}>
         <MyDetails />
-      </TabPanel>
+      </div>
+      </div>
     </div>
   );
 };

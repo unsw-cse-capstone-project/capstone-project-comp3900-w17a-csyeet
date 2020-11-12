@@ -49,13 +49,11 @@ export const DetailsPage = () => {
   fillDetailStore();
 
   return (
-    <div style={{ width: "80%", margin: "auto" }}>
       <Details
         store={store}
         onUpdate={onUpdate}
         onChangePassword={onChangePassword}
       />
-    </div>
   );
   // Snack for error on update here.
   // Snack for success update here.
