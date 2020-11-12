@@ -38,21 +38,20 @@ export const AddListingPageBase = observer(
     const history = useHistory();
     const [status, setStatus] = React.useState<string | null>(null);
     const [openSnack, setOpen] = React.useState<boolean>(false);
-    const [openConfirmDialog, setDialog] = React.useState<boolean>(false);
     const [isEditing, setIsEditing] = React.useState<boolean>(true);
     const onSuccess = () => {
       setOpen(true);
       setStatus("success");
       history.push("/listing/" + store.listing.id);
     };
-    const confirmPublish = () => {};
+    const onError = () => {
+      setOpen(true);
+      setStatus("error");
+    };
     const onPublish = () => {
       setOpen(true);
       setStatus("publishing");
-      presenter.publishListing(store, onSuccess, () => {
-        setOpen(true);
-        setStatus("error");
-      });
+      presenter.publishListing(store, onSuccess, onError);
     };
 
     const snackContent = (status: string) => {
@@ -86,10 +85,7 @@ export const AddListingPageBase = observer(
               <PreviewListing
                 store={store}
                 onBack={() => setIsEditing(true)}
-                onPublish={() => {
-                  confirmPublish();
-                  onSuccess();
-                }}
+                onPublish={onPublish}
               />
             )}
           </div>
@@ -107,36 +103,6 @@ export const AddListingPageBase = observer(
             {snackContent(status)}
           </Snackbar>
         )}
-        <Dialog open={openConfirmDialog} onClose={() => setDialog(false)}>
-          <DialogTitle>{"Publish your listing"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              <strong>Warning:</strong>Once you publish your listing you won't
-              be able to edit the address of your property.
-            </DialogContentText>
-            <DialogContentText>
-              <strong>Warning:</strong>Once the auction has begun, you can no
-              longer change your auction dates, reserve price or payment
-              details.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setDialog(false)} color="primary">
-              Back
-            </Button>
-            <Button
-              onClick={() => {
-                setDialog(false);
-                onPublish();
-              }}
-              variant="contained"
-              color="primary"
-              autoFocus
-            >
-              Continue
-            </Button>
-          </DialogActions>
-        </Dialog>
       </>
     );
   }

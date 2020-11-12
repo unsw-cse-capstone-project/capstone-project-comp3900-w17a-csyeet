@@ -7,6 +7,11 @@ import {
   makeStyles,
   Theme,
   CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@material-ui/core";
 import { ListingPage } from "../view_listing/ListingPage";
 import { ListingActual } from "../ui/util/types/listing";
@@ -54,14 +59,13 @@ export const PreviewListing = observer(
       type: store.listing.type,
       street: toCapitaliseCase(store.address.street),
       suburb: toCapitaliseCase(store.address.suburb),
-      state: store.address.state
-        .split(" ")
-        .map((word) => word[0])
-        .join(""),
+      state: store.address.state,
       country: store.address.country,
       postcode: store.address.postcode,
       auction_start: store.auction.auction_start as Date,
       auction_end: store.auction.auction_end as Date,
+
+      // Already uploaded images also need to be shown
       images: store.imageList.map((image) => image.data_url || ""),
       features: store.listing.features,
       starred: false,
@@ -71,12 +75,12 @@ export const PreviewListing = observer(
       highest_bid: null,
     };
 
-    const onClick = () => {
+    const confirmedPublish = () => {
       setSubmitting(true);
       onPublish();
     };
 
-    console.log(listing.auction_start);
+    const [openConfirmDialog, setDialog] = React.useState<boolean>(false);
     const classes = PreviewListingStyle();
     return (
       <div>
@@ -90,7 +94,7 @@ export const PreviewListing = observer(
             variant={"contained"}
             disabled={isSubmitting}
             color={"primary"}
-            onClick={onClick}
+            onClick={() => setDialog(true)}
           >
             {isSubmitting ? <CircularProgress size="small" /> : "Publish"}
           </Button>
@@ -104,6 +108,36 @@ export const PreviewListing = observer(
             </Typography>
           )}
         />
+        <Dialog open={openConfirmDialog} onClose={() => setDialog(false)}>
+          <DialogTitle>{"Publish your listing"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <strong>Warning: </strong>Once you publish your listing you won't
+              be able to edit the address of your property.
+            </DialogContentText>
+            <DialogContentText>
+              <strong>Warning: </strong>Once the auction has begun, you can no
+              longer change your auction dates, reserve price or payment
+              details.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDialog(false)} color="primary">
+              Back
+            </Button>
+            <Button
+              onClick={() => {
+                setDialog(false);
+                confirmedPublish();
+              }}
+              variant="contained"
+              color="primary"
+              autoFocus
+            >
+              Continue
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }

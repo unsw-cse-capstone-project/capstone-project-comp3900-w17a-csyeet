@@ -14,7 +14,7 @@ export const NumberPicker = ({
   onChange: any;
   label?: string;
   size?: "small" | "medium";
-  readOnly: boolean;
+  readOnly?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }) => {

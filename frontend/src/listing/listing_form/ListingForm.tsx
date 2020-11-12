@@ -101,8 +101,9 @@ export const ListingForm = observer(
     const completedStep4 = computed(
       () =>
         store.payment.account_name !== "" &&
-        store.payment.bsb.length === 7 &&
-        store.payment.account_number.length === 8
+        store.payment.bsb.length === 6 &&
+        store.payment.account_number.length >= 8 &&
+        store.payment.account_number.length <= 10
     );
 
     const canPreview =

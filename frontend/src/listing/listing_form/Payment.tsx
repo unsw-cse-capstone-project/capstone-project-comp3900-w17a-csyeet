@@ -20,7 +20,7 @@ const BSBInput = (props: NumberFormatCustomProps) => {
     <NumberFormat
       {...other}
       getInputRef={props.inputRef}
-      format="### ###"
+      format="###-###"
       mask="#"
       onValueChange={(values) => {
         props.onChange({
@@ -67,6 +67,7 @@ export const PaymentDetails: React.FC<{
   });
   const BSBInputField = () => {
     const [value, setValue] = React.useState<string>(bsb);
+    console.log(value.length);
     const [BSBError, setBSBError] = React.useState<boolean>(false);
     return (
       <>
@@ -77,13 +78,12 @@ export const PaymentDetails: React.FC<{
           error={BSBError}
           label="BSB"
           onBlur={() => {
-            value.length !== 7 ? setBSBError(true) : setBSBError(false);
+            value.length !== 6 ? setBSBError(true) : setBSBError(false);
             setBsbNo(value);
           }}
           fullWidth
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setValue(event.target.value);
-            console.log("Value: ", value);
           }}
           InputProps={{
             inputComponent: BSBInput as any,
@@ -126,7 +126,7 @@ export const PaymentDetails: React.FC<{
         />
         {AccNoError && (
           <FormHelperText style={{ color: "red" }}>
-            Invalid Account Number
+            Invalid Account Number (8-10 digits)
           </FormHelperText>
         )}
       </>

@@ -40,9 +40,9 @@ const getListingFromResult = (result: any) => ({
   title: result.title,
   description: result.description,
 
-  num_bedrooms: parseInt(result.num_bedrooms),
-  num_bathrooms: parseInt(result.num_bathrooms),
-  num_car_spaces: parseInt(result.num_car_spaces),
+  num_bedrooms: result.num_bedrooms,
+  num_bathrooms: result.num_bathrooms,
+  num_car_spaces: result.num_car_spaces,
   auction_start: new Date(result.auction_start),
   auction_end: new Date(result.auction_end),
   images: result["image_ids"].map(
