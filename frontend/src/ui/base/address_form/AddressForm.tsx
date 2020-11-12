@@ -27,14 +27,14 @@ export const AddressForm = observer(
     readOnly = false,
     style,
     className,
-    where = 'other',
+    where = "other",
   }: {
     onChange: (value: string, field: string) => void;
     addressData: AddressDetails;
+    readOnly?: boolean;
     style?: React.CSSProperties;
     className?: string;
-    readOnly?: boolean;
-    where?: 'other' | 'signUp';
+    where?: "other" | "signUp";
   }) => {
     // Get all the countries
     const countryStateData = require("./country-state.json");
@@ -62,7 +62,12 @@ export const AddressForm = observer(
     );
     const [countryValue, setCountry] = React.useState<string>(country);
     return (
-      <Grid container spacing={where === 'signUp'? 0: 2} style={style} className={className}>
+      <Grid
+        container
+        spacing={where === "signUp" ? 0 : 2}
+        style={style}
+        className={className}
+      >
         <Grid item xs={12}>
           <TextFieldWrapper
             readOnly={readOnly}
@@ -72,7 +77,7 @@ export const AddressForm = observer(
             value={street}
           />
         </Grid>
-        <Grid item xs={12} md={where === 'signUp'? 12: 6}>
+        <Grid item xs={12} md={where === "signUp" ? 12 : 6}>
           <TextFieldWrapper
             readOnly={readOnly}
             field="suburb"
@@ -81,7 +86,7 @@ export const AddressForm = observer(
             value={suburb}
           />
         </Grid>
-        <Grid item xs={where === 'signUp'? 12: 6}>
+        <Grid item xs={where === "signUp" ? 12 : 6}>
           <TextFieldWrapper
             readOnly={readOnly}
             field="postcode"
@@ -95,7 +100,7 @@ export const AddressForm = observer(
         </Grid>
 
         {/* Defaults to NSW */}
-        <Grid item xs={where === 'signUp'? 12: 6}>
+        <Grid item xs={where === "signUp" ? 12 : 6}>
           <SelectWrapper
             onChange={onChange}
             readOnly={readOnly}
@@ -106,7 +111,7 @@ export const AddressForm = observer(
           />
         </Grid>
         {/* Defaults to Australia */}
-        <Grid item xs={where === 'signUp'? 12: 6}>
+        <Grid item xs={where === "signUp" ? 12 : 6}>
           <FormControl
             fullWidth
             variant="outlined"
@@ -119,7 +124,7 @@ export const AddressForm = observer(
             <Select
               labelId="select-outlined-label"
               id="select-outlined"
-              readOnly={readOnly}
+              disabled={readOnly}
               value={countryValue}
               onChange={(e: React.ChangeEvent<{ value: unknown }>) => {
                 onChange(e.target.value as string, "country");

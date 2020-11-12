@@ -1,7 +1,10 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { Paper, Typography, Grid } from "@material-ui/core";
-import { AddressForm } from "../../ui/base/address_form/AddressForm";
+import {
+  AddressForm,
+  AddressDetails,
+} from "../../ui/base/address_form/AddressForm";
 import { ListingStore } from "../ListingPresenter";
 import { SelectWrapper } from "../../ui/base/input/SelectWrapper";
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
@@ -39,8 +42,14 @@ export const Details: React.FC<{
   edit: boolean;
 }> = observer(({ store, edit }) => {
   const { type, num_bedrooms, num_bathrooms, num_car_spaces } = store.listing;
+  const addressData: AddressDetails = {
+    street: store.address.street,
+    suburb: store.address.suburb,
+    postcode: store.address.postcode,
+    state: store.address.state,
+    country: store.address.country,
+  };
   const propertyTypes = ["Apartment", "Duplex", "House", "Studio", "Townhouse"];
-
   const onChange = action((value: string, field: string) => {
     (store as any).listing[field] = value;
   });
@@ -63,11 +72,7 @@ export const Details: React.FC<{
         </Alert>
       )}
       <Typography variant={"subtitle1"}> Property Address</Typography>
-      <AddressForm
-        readOnly={edit}
-        onChange={onChangeAddress}
-        addressData={store.address}
-      />
+      <AddressForm onChange={onChangeAddress} addressData={addressData} />
       <Typography variant={"subtitle1"} style={{ marginTop: "30px" }}>
         Property Details
       </Typography>

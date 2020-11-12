@@ -1,19 +1,6 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { InputAdornment } from "@material-ui/core";
-export interface TextFieldWrapperProps {
-  field?: string;
-  label: string;
-  type?: string;
-  adornment?: React.ReactNode;
-  value?: string;
-  error?: boolean;
-  helperText?: string;
-  onBlur?: () => void;
-  onChange?: (value: string, field: string) => void;
-  readOnly?: boolean;
-  style?: React.CSSProperties;
-}
 
 export const TextFieldWrapper = ({
   field,
@@ -27,8 +14,20 @@ export const TextFieldWrapper = ({
   onBlur,
   onChange,
   readOnly,
-}: TextFieldWrapperProps) => {
-  const [v, setValue] = React.useState(value);
+}: {
+  field?: string;
+  label: string;
+  type?: string;
+  adornment?: React.ReactNode;
+  value?: string;
+  error?: boolean;
+  helperText?: string;
+  onBlur?: () => void;
+  onChange?: (value: string, field: string) => void;
+  readOnly?: boolean;
+  style?: React.CSSProperties;
+}) => {
+  const [v, setValue] = React.useState<string>(value);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === "number" && e.target.value === "-1") return; // Disable Negative
     if (onChange) onChange(e.target.value, field as string);

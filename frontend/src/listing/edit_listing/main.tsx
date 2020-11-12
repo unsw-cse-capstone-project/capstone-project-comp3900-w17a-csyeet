@@ -2,11 +2,11 @@ import * as React from "react";
 import { ListingStore, ListingPresenter } from "../ListingPresenter";
 import { useHistory, useParams } from "react-router-dom";
 import { Snackbar, Typography } from "@material-ui/core";
-import { ListingForm } from "../listing_form/ListingForm";
 import { PreviewListing } from "../PreviewListing";
 import { EditListingStyles } from "./EditListing.css";
 import MuiAlert from "@material-ui/lab/Alert";
 import { observer } from "mobx-react";
+import { EditListingForm } from "./EditListingForm";
 
 export const EditListingPage = () => {
   const presenter = new ListingPresenter();
@@ -90,8 +90,7 @@ export const EditListingPageBase = observer(
           {isEditing ? (
             <>
               <Typography variant="h3">Edit Listing</Typography>
-              <ListingForm
-                edit={true}
+              <EditListingForm
                 store={store}
                 onBack={() => history.push("/")}
                 onPreview={() => setIsEditing(false)}
