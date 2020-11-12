@@ -3,7 +3,7 @@ import { ListingActual } from "../ui/util/types/listing";
 import { getListingFromResult } from "../ui/util/helper";
 
 export class ProfileStore {
-  @observable blurb: string = "Update your bio"; // Tempporary
+  @observable blurb: string = "Update your bio";
   @observable avatar: string;
 
   @observable
@@ -51,22 +51,30 @@ export class ProfilePresenter {
           store.blurb = !!content["blurb"]
             ? content["blurb"]
             : "Update your bio";
-          store.myBidsResults = BidsResults;
-          store.myListingsResults = ListingResults;
-          store.starredResults = StarredResults;
+          store.myBidsResults = BidsResults.sort(
+            (a, b) => b.auction_start.getTime() - a.auction_start.getTime()
+          );
+          store.myListingsResults = ListingResults.sort(
+            (a, b) => b.auction_start.getTime() - a.auction_start.getTime()
+          );
+          store.starredResults = StarredResults.sort(
+            (a, b) => b.auction_start.getTime() - a.auction_start.getTime()
+          );
         });
       }
     } catch {
-      console.log("Error :( ");
+      runInAction(() => {
+        store.loadingState = "error";
+      });
     }
   }
 
   @action
   async updateBlurb(blurb: string, store: ProfileStore) {
     store.loadingState = "updating";
+    console.log("Updating blurb");
     try {
-      // ENDPOINT NOT UP YET
-      const response = await fetch(`users/update`, {
+      const response = await fetch(`users/profile`, {
         method: "post",
         body: JSON.stringify({
           blurb: blurb,

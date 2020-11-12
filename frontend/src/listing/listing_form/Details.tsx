@@ -2,15 +2,15 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Paper, Typography, Grid } from "@material-ui/core";
 import { AddressForm } from "../../ui/base/address_form/AddressForm";
-import { ListingStore } from "../ListingStore";
-import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
-import { SelectWrapper } from "../../ui/base/select_wrapper/SelectWrapper";
+import { ListingStore } from "../ListingPresenter";
+import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
+import { SelectWrapper } from "../../ui/base/input/SelectWrapper";
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
 import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";
 import DriveEtaOutlinedIcon from "@material-ui/icons/DriveEtaOutlined";
-
+import { NumberPicker } from "../../ui/base/input/NumberPicker";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { computed, runInAction } from "mobx";
+import { action } from "mobx";
 
 export const DetailStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,26 +37,22 @@ export const DetailStyles = makeStyles((theme: Theme) =>
 export const Details: React.FC<{
   store: ListingStore;
 }> = observer(({ store }) => {
-  const classes = DetailStyles();
+  const { type, num_bedrooms, num_bathrooms, num_car_spaces } = store.listing;
   const propertyTypes = ["Apartment", "Duplex", "House", "Studio", "Townhouse"];
-  const onChange = (value: string, field: string) => {
-    console.log("OnChange ", field, "new", value);
-    runInAction(() => ((store as any)[field] = value));
-  };
 
-  const getAddressData = computed(() => {
-    return {
-      street: store.street,
-      suburb: store.suburb,
-      postcode: store.postcode,
-      state: store.state,
-      country: store.country,
-    };
+  const onChange = action((value: string, field: string) => {
+    (store as any).listing[field] = value;
   });
+
+  const onChangeAddress = action((value: string, field: string) => {
+    (store as any).address[field] = value;
+  });
+
+  const classes = DetailStyles();
   return (
     <div className={classes.container}>
       <Typography variant={"subtitle1"}> Property Address</Typography>
-      <AddressForm onChange={onChange} addressData={getAddressData.get()} />
+      <AddressForm onChange={onChangeAddress} addressData={store.address} />
       <Typography variant={"subtitle1"} style={{ marginTop: "30px" }}>
         Property Details
       </Typography>
@@ -64,7 +60,7 @@ export const Details: React.FC<{
         data={propertyTypes}
         label="Property Type"
         field="type"
-        value={store.type}
+        value={type}
         onChange={onChange}
         required={true}
       />
@@ -75,12 +71,13 @@ export const Details: React.FC<{
               <HotelOutlinedIcon style={{ marginRight: "10px" }} />
               <Typography>Bedroom(s)</Typography>
             </div>
-            <TextFieldWrapper
-              field="nBedrooms"
-              label="Bedroom(s)"
-              type="number"
-              onChange={onChange}
-              value={store.nBedrooms}
+            <NumberPicker
+              style={{ flex: 1, marginTop: "10px" }}
+              value={num_bedrooms}
+              size={"medium"}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onChange(e.target.value, "num_bedrooms");
+              }}
             />
           </Paper>
         </Grid>
@@ -90,12 +87,13 @@ export const Details: React.FC<{
               <BathtubOutlinedIcon style={{ marginRight: "10px" }} />
               <Typography>Bathrooms(s)</Typography>
             </div>
-            <TextFieldWrapper
-              field="nBathrooms"
-              label="Bathroom(s)"
-              type="number"
-              onChange={onChange}
-              value={store.nBathrooms}
+            <NumberPicker
+              style={{ flex: 1, marginTop: "10px" }}
+              value={num_bathrooms}
+              size={"medium"}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onChange(e.target.value, "num_bathrooms");
+              }}
             />
           </Paper>
         </Grid>
@@ -103,14 +101,15 @@ export const Details: React.FC<{
           <Paper className={classes.cardContainer}>
             <div className={classes.cardLabel}>
               <DriveEtaOutlinedIcon style={{ marginRight: "10px" }} />
-              <Typography>Garages(s)</Typography>
+              <Typography>Car Spaces(s)</Typography>
             </div>
-            <TextFieldWrapper
-              field="nGarages"
-              label="Garages(s)"
-              type="number"
-              onChange={onChange}
-              value={store.nGarages}
+            <NumberPicker
+              style={{ flex: 1, marginTop: "10px" }}
+              value={num_car_spaces}
+              size={"medium"}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onChange(e.target.value, "num_car_spaces");
+              }}
             />
           </Paper>
         </Grid>

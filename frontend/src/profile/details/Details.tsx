@@ -13,13 +13,13 @@ import {
 } from "@material-ui/core";
 import { Password } from "../../ui/base/input/Password";
 import NumberFormat from "react-number-format";
-import { TextFieldWrapper } from "../../ui/base/textfield_wrapper/TextFieldWrapper";
+import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
 import { DetailStore } from "./DetailPresenter";
 import { ModalWrapper } from "../../ui/base/modal_wrapper/ModalWrapper";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
 import {
   AddressForm,
-  AddressData,
+  AddressDetails,
 } from "../../ui/base/address_form/AddressForm";
 import { DetailStyles } from "./Detail.css";
 
@@ -66,7 +66,7 @@ export const Details: React.FC<{
     );
   });
 
-  const addressData: AddressData = {
+  const addressData: AddressDetails = {
     street: store.street,
     suburb: store.suburb,
     postcode: store.postcode,

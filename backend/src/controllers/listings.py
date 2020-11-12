@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy import or_
 from sqlalchemy.orm import Session, Query
 from starlette.responses import StreamingResponse
-from ..schemas import CreateListingRequest, ListingResponse, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse, UpdateListingRequest
+from ..schemas import CreateListingRequest, ListingResponse, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse, UploadImagesResponse, UpdateListingRequest
 from ..models import Listing, User, Starred, Bid, Registration, Landmark, Image, Interaction, InteractionType
 from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing, remove_listing_from_ML_model, update_listing_in_ML_model
 
@@ -32,7 +32,7 @@ def create(req: CreateListingRequest, signed_in_user: User = Depends(get_signed_
 
     session.commit()
     add_listing_to_ML_model(listing, session)
-    return map_listing_to_response(listing, None, False, False)
+    return map_listing_to_response(listing, None, False, False, True)
 
 
 @router.get('/', response_model=SearchListingsResponse)
@@ -195,7 +195,7 @@ def unstar(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
     session.commit()
 
 
-@router.post('/{id}/images', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
+@router.post('/{id}/images', response_model=UploadImagesResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def upload_images(id: int, files: List[UploadFile] = File(...), signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Upload images '''
     listing = session.query(Listing).get(id)
@@ -211,6 +211,7 @@ def upload_images(id: int, files: List[UploadFile] = File(...), signed_in_user: 
               for image in files]
     session.add_all(images)
     session.commit()
+    return { 'ids': [image.id for image in images] }
 
 
 @router.get('/{listing_id}/images/{image_id}', responses={404: {"description": "Resource not found"}})
@@ -228,6 +229,28 @@ def get_image(listing_id: int, image_id: int, session: Session = Depends(get_ses
 
     return StreamingResponse(io.BytesIO(image.data), media_type=image.image_type)
 
+
+
+@router.delete('/{listing_id}/images/{image_id}', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
+def delete_image(listing_id: int, image_id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
+    ''' Delete an image '''
+    listing = session.query(Listing).get(listing_id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+    
+    if signed_in_user.id != listing.owner_id:
+        raise HTTPException(
+            status_code=403, detail="User cannot delete images for this listing")
+
+    image = session.query(Image).get(image_id)
+    if image is None:
+        raise HTTPException(
+            status_code=404, detail="Requested image could not be found")
+    
+    session.delete(image)
+    session.commit()
+    
 
 @router.delete('/{id}', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):

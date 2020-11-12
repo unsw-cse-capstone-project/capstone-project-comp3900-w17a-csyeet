@@ -1,15 +1,8 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { computed } from "mobx";
-import {
-  Button,
-  Stepper,
-  Step,
-  StepButton,
-  Snackbar,
-  Typography,
-} from "@material-ui/core";
-import { ListingStore } from "../ListingStore";
+import { Button, Stepper, Step, StepButton, Snackbar } from "@material-ui/core";
+import { ListingStore } from "../ListingPresenter";
 import { Details } from "./Details";
 import { Images } from "./Images";
 import { Description } from "./Description";
@@ -18,6 +11,15 @@ import { PaymentDetails } from "./Payment";
 import { ListingFormStyles } from "./ListingForm.css";
 import Alert from "@material-ui/lab/Alert";
 import { ArrowBackIos } from "@material-ui/icons";
+
+export type AddressDetails = {
+  street: string;
+  suburb: string;
+  postcode: string;
+  state: string;
+  country: string;
+};
+
 export const ListingForm = observer(
   ({
     store,
@@ -72,34 +74,33 @@ export const ListingForm = observer(
 
     const completedStep0 = computed(
       () =>
-        store.street !== "" &&
-        store.suburb !== "" &&
-        store.state !== "" &&
-        store.country !== "" &&
-        store.type !== "" &&
-        store.nBedrooms !== "" &&
-        store.nBathrooms !== "" &&
-        store.nGarages !== ""
+        store.address.street !== "" &&
+        store.address.suburb !== "" &&
+        store.address.state !== "" &&
+        store.address.country !== "" &&
+        store.listing.type !== ""
     );
 
-    const completedStep1 = computed(() => store.images.length > 0);
+    const completedStep1 = computed(
+      () => store.imageList.length > 0 || store.listing.images.length > 0
+    );
 
     const completedStep2 = computed(
-      () => store.descTitle !== "" && store.desc !== ""
+      () => store.listing.title !== "" && store.listing.description !== ""
     );
 
     const completedStep3 = computed(
       () =>
-        store.auctionStart !== null &&
-        store.auctionEnd !== null &&
-        store.reservePrice !== 0
+        store.auction.auction_start !== null &&
+        store.auction.auction_end !== null &&
+        store.auction.reserve_price !== ""
     );
 
     const completedStep4 = computed(
       () =>
-        store.accName !== "" &&
-        store.bsb.length === 6 &&
-        store.accNumber.length === 8
+        store.payment.account_name !== "" &&
+        store.payment.bsb.length === 6 &&
+        store.payment.account_number.length === 8
     );
 
     const canPreview =
@@ -147,7 +148,6 @@ export const ListingForm = observer(
                 Preview
               </Button>
             </div>
-            <Typography variant="h3">Add Listing</Typography>
           </div>
           <Stepper alternativeLabel nonLinear activeStep={activeStep}>
             {steps.map((label, index) => {

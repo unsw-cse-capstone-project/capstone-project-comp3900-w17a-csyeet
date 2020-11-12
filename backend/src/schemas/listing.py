@@ -88,6 +88,10 @@ class ListingResponse(ListingBase):
     registered_bidder: bool
     highest_bid: Optional[int]
     reserve_met: bool
+    reserve_price: Optional[int]
+    account_name: Optional[str]
+    bsb: Optional[str]
+    account_number: Optional[str]
     landmarks: List[LandmarkReponse]
     image_ids: List[int]
 
@@ -134,4 +138,8 @@ class UpdateListingRequest(BaseModel):
     bsb: Optional[str] 
     account_number: Optional[str]
     features: Optional[List[Feature]]
+
+      
+class UploadImagesResponse(BaseModel):
+    ids: List[int]
     

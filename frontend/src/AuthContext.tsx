@@ -1,5 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import React from "react";
+import { AddressDetails } from "./ui/base/address_form/AddressForm";
 
 export type User = {
   name: string;
@@ -24,7 +25,7 @@ export default class Store {
     try {
       const response = await fetch("/login", {
         method: "post",
-        credentials:"include",
+        credentials: "include",
         body: JSON.stringify({ email: email, password: password }),
       });
       const content = await response.json();
@@ -46,7 +47,7 @@ export default class Store {
               country: "Australia",
             })
         );
-        window.localStorage.setItem('id', content.id);
+        window.localStorage.setItem("id", content.id);
       }
     } catch {
       console.log("error T-T");
@@ -59,11 +60,7 @@ export default class Store {
     email: string,
     password: string,
     phone_number: string,
-    street: string,
-    suburb: string,
-    postcode: string,
-    state: string,
-    country: string
+    address: AddressDetails
   ) {
     try {
       const response = await fetch("/signup", {
@@ -73,11 +70,11 @@ export default class Store {
           email: email,
           password: password,
           phone_number: phone_number,
-          street: street,
-          suburb: suburb,
-          postcode: postcode,
-          state: state,
-          country: country,
+          street: address.street,
+          suburb: address.suburb,
+          postcode: address.postcode,
+          state: address.state,
+          country: address.country,
         }),
       });
       const content = await response.json();
@@ -126,35 +123,39 @@ export default class Store {
       reader.readAsDataURL(blob);
     });
   }
-
 }
 
 const checkSession = async (store: Store) => {
-  let session = document.cookie.split(' ').find(cookie => cookie.startsWith('session='));
+  let session = document.cookie
+    .split(" ")
+    .find((cookie) => cookie.startsWith("session="));
   if (session) {
     try {
       const response = await fetch("/users/profile", {
         headers: {
-          'Cookie': session.split('=')[1],
-        }
+          Cookie: session.split("=")[1],
+        },
       });
       const result = await response.json();
-      runInAction(() => store.user = {
-        id: result.id,
-        name: result.name,
-        email: result.email,
-        phone_number: "0412345678",
-        street: "12 Street St",
-        suburb: "Fairfield",
-        postcode: "2194",
-        state: "NSW",
-        country: "Australia",
-      })
+      runInAction(
+        () =>
+          (store.user = {
+            id: result.id,
+            name: result.name,
+            email: result.email,
+            phone_number: "0412345678",
+            street: "12 Street St",
+            suburb: "Fairfield",
+            postcode: "2194",
+            state: "NSW",
+            country: "Australia",
+          })
+      );
     } catch {
       console.log("error T-T");
     }
   }
-}
+};
 
 export const AuthContext = React.createContext<Store | null>(null);
 

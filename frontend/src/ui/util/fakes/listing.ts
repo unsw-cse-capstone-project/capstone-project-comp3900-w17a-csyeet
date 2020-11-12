@@ -1,4 +1,4 @@
-import { Listing, ListingActual } from '../types/listing';
+import { Listing, ListingActual } from "../types/listing";
 export const createFakeListing = (opts?: Partial<Listing>) => ({
   id: 1,
   owner_id: 1,
@@ -22,7 +22,7 @@ export const createFakeListing = (opts?: Partial<Listing>) => ({
     "https://i2.au.reastatic.net/1340x824-resize,extend,r=33,g=40,b=46/10784f34dc9c093688c1c137dff1aad545ad5000ebf653ca90e0793569231fe9/image.jpg",
     "https://i2.au.reastatic.net/1340x824-resize,extend,r=33,g=40,b=46/45efa7d514e314b49996d38460b3f1f7dc3160958a43b84211346b1a9b854032/image.jpg",
   ],
-  features: ['ensuite', 'bathtub'],
+  features: ["ensuite", "bathtub"],
   starred: false,
   registered_bidder: false,
   ...opts,
@@ -40,7 +40,7 @@ export const createFakeActualListing = (opts?: Partial<ListingActual>) => ({
   street: "8 Holland Street",
   suburb: "Chatswood",
   postcode: "2067",
-  state: "NSW",
+  state: "New South Wales",
   country: "Australia",
   type: "House",
   num_bedrooms: 5,
@@ -110,7 +110,7 @@ export const createFakeActualListing = (opts?: Partial<ListingActual>) => ({
       distance: 0.2,
     },
   ],
-  features: ['ensuite', 'bathtub'],
+  features: ["ensuite", "bathtub"],
   starred: false,
   registered_bidder: false,
   highest_bid: 0,

@@ -42,14 +42,14 @@ class UserProfileResponse(ProfileBase):
 
 
 class UpdateUserBase(BaseModel):
-    name: str
-    blurb: str
-    phone_number: str
-    street: str
-    suburb: str
-    postcode: str
-    state: str 
-    country: str
+    name: Optional[str]
+    blurb: Optional[str]
+    phone_number: Optional[str]
+    street: Optional[str]
+    suburb: Optional[str]
+    postcode: Optional[str]
+    state: Optional[str] 
+    country: Optional[str]
 
 
 class UpdateUserRequest(UpdateUserBase):

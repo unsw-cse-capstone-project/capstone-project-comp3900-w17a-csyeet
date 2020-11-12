@@ -2,6 +2,10 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
 export const ProfilePageStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {
+      paddingBottom: "200px",
+    },
+    tabPanel: { width: "80%", margin: "auto" },
     userInfo: {
       [theme.breakpoints.up("xs")]: {
         display: "flex",
@@ -18,7 +22,6 @@ export const ProfilePageStyles = makeStyles((theme: Theme) =>
     blurbStyle: {
       marginTop: theme.spacing(1),
       width: "70%",
-      
     },
     tabBar: {
       position: "sticky",

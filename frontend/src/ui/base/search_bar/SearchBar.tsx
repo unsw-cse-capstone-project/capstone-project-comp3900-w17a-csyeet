@@ -23,6 +23,7 @@ import {
   DateRange,
   LocalizationProvider,
 } from "@material-ui/pickers";
+import { NumberPicker } from "../../base/input/NumberPicker";
 import { toCamelCase, toSentenceCase } from "../../util/helper";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
@@ -116,28 +117,9 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
   const classes = SearchBarStyles();
 
   const [showing, setShowing] = React.useState(false);
-
-  const [bedsFilter, setBedFilter] = React.useState(store.filters.beds);
-  const [bathsFilter, setBathsFilter] = React.useState(store.filters.baths);
-  const [carFilter, setCarFilter] = React.useState(store.filters.cars);
-
-  const onBedChange = action((event: React.ChangeEvent<{ value: unknown }>) => {
-    setBedFilter(event.target.value as number);
-    (store as any).filters.beds = event.target.value;
+  const onChange = action((value: number, field: string) => {
+    (store as any).filters[field] = value;
   });
-
-  const onBathChange = action(
-    (event: React.ChangeEvent<{ value: unknown }>) => {
-      setBathsFilter(event.target.value as number);
-      (store as any).filters.baths = event.target.value;
-    }
-  );
-
-  const onCarChange = action((event: React.ChangeEvent<{ value: unknown }>) => {
-    (store as any).filters.cars = event.target.value;
-    setCarFilter(store.filters.cars);
-  });
-
   return (
     <div>
       <div>
@@ -157,21 +139,27 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
         >
           <TypePicker store={store} />
           <NumberPicker
-            store={store}
-            value={bedsFilter}
-            onChange={onBedChange}
+            className={classes.formControl}
+            value={store.filters.beds}
+            onChange={(e: React.ChangeEvent<{ value: unknown }>) =>
+              onChange(e.target.value as number, "beds")
+            }
             label="Beds"
           />
           <NumberPicker
-            store={store}
-            value={bathsFilter}
-            onChange={onBathChange}
+            className={classes.formControl}
+            value={store.filters.baths}
+            onChange={(e: React.ChangeEvent<{ value: unknown }>) =>
+              onChange(e.target.value as number, "baths")
+            }
             label="Baths"
           />
           <NumberPicker
-            store={store}
-            value={carFilter}
-            onChange={onCarChange}
+            className={classes.formControl}
+            value={store.filters.cars}
+            onChange={(e: React.ChangeEvent<{ value: unknown }>) =>
+              onChange(e.target.value as number, "cars")
+            }
             label="Cars"
           />
           <div className={classes.dateInput} style={{ flex: 4 }}>
@@ -190,32 +178,6 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
-// Component functions
-
-export function NumberPicker(props: {
-  store: SearchStore;
-  value: any;
-  onChange: any;
-  label: String;
-}) {
-  const classes = SearchBarStyles();
-
-  return (
-    <TextField
-      className={classes.formControl}
-      size="small"
-      variant="outlined"
-      style={{ flex: 1 }}
-      value={props.value}
-      onChange={props.onChange}
-      type="number"
-      InputProps={{ inputProps: { min: 1 } }}
-      label={props.label}
-    />
-  );
-}
-
 export function TypePicker(props: { store: SearchStore }) {
   const classes = SearchBarStyles();
 
