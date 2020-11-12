@@ -1,6 +1,8 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import React from "react";
+import { useGoogleLogin } from "react-google-login";
 import { AddressDetails } from "./ui/base/address_form/AddressForm";
+import { clientId } from './ui/base/header/google_auth/GoogleAuth';
 
 export type User = {
   name: string;
@@ -21,6 +23,16 @@ export type SignUpArgs = {
   password: string,
   phone_number: string,
   address: AddressDetails,
+  onError: (error: string) => void,
+  onSuccess: () => void,
+}
+
+export type SignUpGoogleArgs = {
+  name: string,
+  email: string,
+  phone_number: string,
+  address: AddressDetails,
+  googleId: string,
   onError: (error: string) => void,
   onSuccess: () => void,
 }
@@ -60,6 +72,19 @@ export default class Store {
     } catch {
       onError("Error occurred please try again");
     }
+  }
+
+  @action
+  async signUpGoogle({
+    name,
+    email,
+    phone_number,
+    address,
+    googleId,
+    onError,
+    onSuccess,
+  }: SignUpGoogleArgs) {
+    console.log("Signing in with ", {name, email, phone_number, googleId, address});
   }
 
   @action

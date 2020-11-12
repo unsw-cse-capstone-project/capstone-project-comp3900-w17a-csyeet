@@ -15,6 +15,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
+import { GoogleLogin } from "../google_auth/GoogleAuth";
 
 export const SignIn = ({
   switchMode,
@@ -40,6 +41,19 @@ export const SignIn = ({
     };
     onSubmit({ email, password, onError, onSuccess });
   };
+  const onSuccess = ({
+    email,
+    name,
+    googleId,
+  }: {
+    email: string;
+    name: string;
+    googleId: string;
+  }) => {
+    console.log({ email, name, googleId });
+  };
+  const onError = (error: string) => setError(error);
+
   return (
     <form onSubmit={onFormSubmit} onChange={() => setError(undefined)}>
       <Grid container direction="column" spacing={2}>
@@ -52,9 +66,7 @@ export const SignIn = ({
           </Typography>
         </Grid>
         <Grid item>
-          <Button variant="contained" color="secondary" fullWidth>
-            Sign in with Google
-          </Button>
+          <GoogleLogin onSuccessLogin={onSuccess} onError={onError} label="Sign In with Google" />
         </Grid>
         <Grid item className={classes.dividerContainer}>
           <Divider className={classes.divider} />

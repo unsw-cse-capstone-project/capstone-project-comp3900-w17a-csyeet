@@ -41,4 +41,15 @@ export const SignUpStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
+  dividerContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  divider: {
+    flex: 1,
+  },
+  text: {
+    padding: theme.spacing(0, 1),
+  },
 }));
