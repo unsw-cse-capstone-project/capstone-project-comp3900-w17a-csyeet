@@ -6,6 +6,7 @@ import {
   Select,
   TextField,
   FormControl,
+  FormControlLabel,
 } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import { action } from "mobx";
@@ -23,7 +24,6 @@ import {
   DateRange,
   LocalizationProvider,
 } from "@material-ui/pickers";
-import { NumberPicker } from "../../base/input/NumberPicker";
 import { toCamelCase, toSentenceCase } from "../../util/helper";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
@@ -43,6 +43,7 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
         end_date,
         features,
         landmarks,
+        closed_auction,
       },
     } = store;
     let featuresString = features ? features.join("_") : "";
@@ -58,6 +59,7 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
     searchQuery += featuresString !== "" ? "&features=" + featuresString : "";
     searchQuery +=
       landmarksString !== "" ? "&landmarks=" + landmarksString : "";
+    searchQuery += closed_auction === 'true' ? `&include_closed_auctions=true` : `&include_closed_auctions=false`;
 
     history.push("/search?" + searchQuery);
   };
@@ -117,9 +119,28 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
   const classes = SearchBarStyles();
 
   const [showing, setShowing] = React.useState(false);
-  const onChange = action((value: number, field: string) => {
-    (store as any).filters[field] = value;
+
+  const [bedsFilter, setBedFilter] = React.useState(store.filters.beds);
+  const [bathsFilter, setBathsFilter] = React.useState(store.filters.baths);
+  const [carFilter, setCarFilter] = React.useState(store.filters.cars);
+
+  const onBedChange = action((event: React.ChangeEvent<{ value: unknown }>) => {
+    setBedFilter(event.target.value as number);
+    (store as any).filters.beds = event.target.value;
   });
+
+  const onBathChange = action(
+    (event: React.ChangeEvent<{ value: unknown }>) => {
+      setBathsFilter(event.target.value as number);
+      (store as any).filters.baths = event.target.value;
+    }
+  );
+
+  const onCarChange = action((event: React.ChangeEvent<{ value: unknown }>) => {
+    (store as any).filters.cars = event.target.value;
+    setCarFilter(store.filters.cars);
+  });
+
   return (
     <div>
       <div>
@@ -137,39 +158,37 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
           className={classes.filters}
           style={{ display: showing ? "flex" : "none" }}
         >
-          <TypePicker store={store} />
-          <NumberPicker
-            className={classes.formControl}
-            value={store.filters.beds}
-            onChange={(e: React.ChangeEvent<{ value: unknown }>) =>
-              onChange(e.target.value as number, "beds")
-            }
-            label="Beds"
-          />
-          <NumberPicker
-            className={classes.formControl}
-            value={store.filters.baths}
-            onChange={(e: React.ChangeEvent<{ value: unknown }>) =>
-              onChange(e.target.value as number, "baths")
-            }
-            label="Baths"
-          />
-          <NumberPicker
-            className={classes.formControl}
-            value={store.filters.cars}
-            onChange={(e: React.ChangeEvent<{ value: unknown }>) =>
-              onChange(e.target.value as number, "cars")
-            }
-            label="Cars"
-          />
-          <div className={classes.dateInput} style={{ flex: 4 }}>
-            <LocalizationProvider dateAdapter={DateFnsUtils}>
-              <MinMaxDateRangePicker store={store} />
-            </LocalizationProvider>
+          <div className={classes.filterRows}>
+            <TypePicker store={store} />
+            <NumberPicker
+              store={store}
+              value={bedsFilter}
+              onChange={onBedChange}
+              label="Beds"
+            />
+            <NumberPicker
+              store={store}
+              value={bathsFilter}
+              onChange={onBathChange}
+              label="Baths"
+            />
+            <NumberPicker
+              store={store}
+              value={carFilter}
+              onChange={onCarChange}
+              label="Cars"
+            />
+            <div className={classes.dateInput} style={{ flex: 4 }}>
+              <LocalizationProvider dateAdapter={DateFnsUtils}>
+                <MinMaxDateRangePicker store={store} />
+              </LocalizationProvider>
+            </div>
           </div>
-
-          <FeaturePicker store={store} />
-          <LandmarkPicker store={store} />
+          <div className={classes.filterRows}>
+            <FeaturePicker store={store} />
+            <LandmarkPicker store={store} />
+            <ClosedAuctionsPicker store={store} />
+          </div>
         </div>
       </div>
     </div>
@@ -214,6 +233,30 @@ export function TypePicker(props: { store: SearchStore }) {
   );
 }
 
+export function NumberPicker(props: {
+  store: SearchStore;
+  value: any;
+  onChange: any;
+  label: String;
+}) {
+  const classes = SearchBarStyles();
+
+  return (
+    <TextField
+      className={classes.formControl}
+      size="small"
+      variant="outlined"
+      style={{ flex: 1 }}
+      value={props.value}
+      onChange={props.onChange}
+      type="number"
+      InputProps={{ inputProps: { min: 1 } }}
+      label={props.label}
+    />
+  );
+}
+
+
 export function FeaturePicker(props: { store: SearchStore }) {
   // Options for picker
   const features = [
@@ -255,7 +298,7 @@ export function FeaturePicker(props: { store: SearchStore }) {
       size="small"
       limitTags={2}
       defaultValue={featureFilters}
-      style={{ flex: 2 }}
+      style={{ flex: 1 }}
       id="features-checkboxes"
       options={features}
       disableCloseOnSelect
@@ -309,7 +352,7 @@ export function LandmarkPicker(props: { store: SearchStore }) {
       size="small"
       limitTags={2}
       defaultValue={landmarkFilters}
-      style={{ flex: 2 }}
+      style={{ flex: 1 }}
       id="landmarks-checkboxes"
       options={landmarks}
       disableCloseOnSelect
@@ -368,5 +411,41 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
         </React.Fragment>
       )}
     />
+  );
+}
+
+export function ClosedAuctionsPicker(props: { store: SearchStore }) {
+  const classes = SearchBarStyles();
+
+  const [closedAuction, setClosedAuction] = React.useState(props.store.filters.closed_auction);
+
+  const onChange = action((event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.checked);
+    setClosedAuction(event.target.checked === true ? 'true' : 'false');
+    props.store.filters.closed_auction =
+      event.target.checked === true ? 'true' : 'false';
+  });
+
+  return (
+    <FormControl
+      className={classes.formControl}
+      size="small"
+      variant="outlined"
+      style={{ flex: 1, background: 'none' }}>
+
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={closedAuction === "true" ? true : false}
+            onChange={onChange}
+            name="Closed Auction"
+            color="primary"
+            style={{ paddingLeft: '20px' }}
+          />
+        }
+        label="Include Closed Auctions"
+      />
+    </FormControl >
+
   );
 }

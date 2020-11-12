@@ -39,17 +39,22 @@ export const SearchBarStyles = makeStyles((theme: Theme) =>
       minWidth: 120,
     },
     selectControl: {
-      minWidth: "47%",
+      minWidth: "25%",
     },
     filterDropdown: {
       marginRight: "auto",
       marginTop: theme.spacing(2),
     },
     filters: {
+      flexDirection: 'column',
+    },
+    filterRows: {
       width: "100%",
       alignItems: "center",
       flexWrap: "wrap",
       justifyContent: "space-between",
+      display: 'flex',
+      flexDirection: 'row',
     },
   })
 );
