@@ -1,9 +1,10 @@
 import React from "react";
 import { Button, Fab } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
+import { useStore } from "../../AuthContext";
 import PublishIcon from "@material-ui/icons/Publish";
 import AddAPhotoOutlinedIcon from "@material-ui/icons/AddAPhotoOutlined";
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import { createStyles, makeStyles, Theme, Avatar } from "@material-ui/core";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 export const AvatarStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,6 +46,9 @@ export const ProfileAvatar = ({
   avatar?: string;
   className?: string;
 }) => {
+  const userStore = useStore();
+  if (!userStore) throw Error("Userstor should never be null");
+  if (!userStore.user) throw Error("User not logged in");
   const mode: boolean = avatar === "" ? true : false;
   const [edit, setEdit] = React.useState<boolean>(mode);
   const classes = AvatarStyles();
@@ -58,10 +62,9 @@ export const ProfileAvatar = ({
         />
       ) : (
         <div className={classes.avatarStyle}>
-          <img
-            src={avatar}
-            className={classes.avatarImage}
-            alt="uploaded-profile-img"
+          <Avatar
+            src={`/users/${userStore?.user.id}/avatar`}
+            style={{ width: "200px", height: "200px" }}
           />
           <Fab
             size="small"

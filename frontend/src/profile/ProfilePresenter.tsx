@@ -51,9 +51,15 @@ export class ProfilePresenter {
           store.blurb = !!content["blurb"]
             ? content["blurb"]
             : "Update your bio";
-          store.myBidsResults = BidsResults.sort((a, b) => b.auction_start.getTime() - a.auction_start.getTime());
-          store.myListingsResults = ListingResults.sort((a, b) => b.auction_start.getTime() - a.auction_start.getTime());
-          store.starredResults = StarredResults.sort((a, b) => b.auction_start.getTime() - a.auction_start.getTime());
+          store.myBidsResults = BidsResults.sort(
+            (a, b) => b.auction_start.getTime() - a.auction_start.getTime()
+          );
+          store.myListingsResults = ListingResults.sort(
+            (a, b) => b.auction_start.getTime() - a.auction_start.getTime()
+          );
+          store.starredResults = StarredResults.sort(
+            (a, b) => b.auction_start.getTime() - a.auction_start.getTime()
+          );
         });
       }
     } catch {
@@ -67,7 +73,7 @@ export class ProfilePresenter {
   async updateBlurb(blurb: string, store: ProfileStore) {
     store.loadingState = "updating";
     try {
-      const response = await fetch(`users/update`, {
+      const response = await fetch(`users/profile`, {
         method: "post",
         body: JSON.stringify({
           blurb: blurb,
