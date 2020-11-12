@@ -28,7 +28,6 @@ import {
   Authentication,
 } from "./ui/base/header/authentication/Authentication";
 import { SignUp } from "./ui/base/header/sign_up/SignUp";
-import { AddressDetails } from "./ui/base/address_form/AddressForm";
 import { SignIn } from './ui/base/header/sign_in/SignIn';
 
 let theme = createMuiTheme();

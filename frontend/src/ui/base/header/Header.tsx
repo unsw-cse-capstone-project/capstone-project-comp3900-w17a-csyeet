@@ -1,6 +1,5 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { action } from "mobx";
 import { useHistory, useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Logo from "../logo/Logo";
@@ -13,7 +12,6 @@ import { UserMenu } from "./user_menu/UserMenu";
 import { MinimisedSearch } from "./minimised_search/MinimisedSearch";
 import classNames from "classnames";
 import { HeaderStyles } from "./Header.css";
-import { AddressDetails } from "../address_form/AddressForm";
 import { Authentication } from "./authentication/Authentication";
 
 export interface HeaderProps {

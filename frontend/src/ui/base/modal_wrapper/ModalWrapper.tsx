@@ -25,7 +25,7 @@ export const ModalWrapper = ({
       BackdropComponent={Backdrop}
       closeAfterTransition
       BackdropProps={{
-        timeout: 300,
+        timeout: 500,
       }}
     >
       <Fade in={open}>

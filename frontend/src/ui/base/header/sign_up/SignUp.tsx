@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { action, computed, runInAction } from 'mobx';
+import { computed, runInAction } from 'mobx';
 import {
   Button,
   Typography,
@@ -10,7 +10,6 @@ import {
   Link,
   Step,
 } from "@material-ui/core";
-import logo from "../../../../images/logo.png";
 import { Step0, Step1, Step2 } from "./Steps";
 import { SignUpStore } from "./SignUpStore";
 import { SignUpStyles } from "./SignUp.css";

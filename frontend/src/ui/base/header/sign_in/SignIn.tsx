@@ -97,7 +97,7 @@ export const SignIn = ({
             onClick={switchMode}
             style={{ display: "inline-block", marginLeft: "5px" }}
           >
-            Sign In
+            Sign Up
           </Link>
         </Grid>
       </Grid>
