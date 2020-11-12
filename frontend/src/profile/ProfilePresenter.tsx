@@ -72,6 +72,7 @@ export class ProfilePresenter {
   @action
   async updateBlurb(blurb: string, store: ProfileStore) {
     store.loadingState = "updating";
+    console.log("Updating blurb");
     try {
       const response = await fetch(`users/profile`, {
         method: "post",
