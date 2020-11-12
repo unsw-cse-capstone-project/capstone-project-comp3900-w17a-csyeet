@@ -240,7 +240,6 @@ export class ListingPresenter {
       });
       const result = await response.json();
       if ("detail" in result) {
-        console.log(result);
         onError();
         return;
       }

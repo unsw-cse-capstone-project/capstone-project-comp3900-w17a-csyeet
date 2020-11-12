@@ -67,7 +67,6 @@ export const PaymentDetails: React.FC<{
   });
   const BSBInputField = () => {
     const [value, setValue] = React.useState<string>(bsb);
-    console.log(value.length);
     const [BSBError, setBSBError] = React.useState<boolean>(false);
     return (
       <>
@@ -133,7 +132,6 @@ export const PaymentDetails: React.FC<{
     );
   };
 
-  console.log(store.payment.bsb);
   let readOnly = false;
   if (edit && confirmed_auction_start)
     readOnly =

@@ -55,7 +55,6 @@ export const EditListingPageBase = observer(
     const onSuccess = () => {
       setStatus("success");
       setOpen(true);
-      console.log(store.listing.id);
       history.push("/listing/" + store.listing.id?.toString());
     };
 

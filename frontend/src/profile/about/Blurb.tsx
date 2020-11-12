@@ -65,11 +65,9 @@ export const Blurb = ({
             value={value}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setValue(e.target.value);
-              console.log("HI New value!");
             }}
             onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
               if (e.key === "enter") {
-                console.log("PRESSING ENTER");
                 e.preventDefault();
                 onEdit(value);
                 onBack();
@@ -81,7 +79,6 @@ export const Blurb = ({
             color="primary"
             style={{ marginLeft: "5px" }}
             onClick={() => {
-              console.log("Clickin Save");
               onEdit(value);
               onBack();
             }}
