@@ -88,6 +88,7 @@ export const Details: React.FC<{
               <Typography>Bedroom(s)</Typography>
             </div>
             <NumberPicker
+              readOnly={edit}
               style={{ flex: 1, marginTop: "10px" }}
               value={num_bedrooms}
               size={"medium"}
@@ -104,6 +105,7 @@ export const Details: React.FC<{
               <Typography>Bathrooms(s)</Typography>
             </div>
             <NumberPicker
+              readOnly={edit}
               style={{ flex: 1, marginTop: "10px" }}
               value={num_bathrooms}
               size={"medium"}
@@ -120,6 +122,7 @@ export const Details: React.FC<{
               <Typography>Car Spaces(s)</Typography>
             </div>
             <NumberPicker
+              readOnly={edit}
               style={{ flex: 1, marginTop: "10px" }}
               value={num_car_spaces}
               size={"medium"}

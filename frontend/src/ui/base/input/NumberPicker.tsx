@@ -6,20 +6,23 @@ export const NumberPicker = ({
   onChange,
   label,
   className,
+  readOnly = false,
   style,
   size = "small",
 }: {
   value: any;
   onChange: any;
   label?: string;
-  className?: string;
   size?: "small" | "medium";
+  readOnly: boolean;
+  className?: string;
   style?: React.CSSProperties;
 }) => {
   return (
     <TextField
       fullWidth
       className={className}
+      disabled={readOnly}
       style={style}
       size={size}
       variant="outlined"
