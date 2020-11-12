@@ -1,7 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Typography, Card, Link, CardContent } from "@material-ui/core";
-import Slider from "react-slick";
 import { ListingActual } from "../../util/types/listing";
 import HotelOutlinedIcon from "@material-ui/icons/HotelOutlined";
 import BathtubOutlinedIcon from "@material-ui/icons/BathtubOutlined";

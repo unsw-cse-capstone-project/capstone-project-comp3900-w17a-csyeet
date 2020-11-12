@@ -59,6 +59,12 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
 
     return (
       <div className={classes.root}>
+        <Typography
+          variant="subtitle1"
+          style={{ marginBottom: "5px", marginTop: "35px" }}
+        >
+          Tell us some features of your property
+        </Typography>
         <Accordion
           expanded={expanded === "panel1"}
           onChange={handleChange("panel1")}

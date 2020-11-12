@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  TextField,
-  Typography,
-  IconButton,
-  Button,
-  Fab,
-} from "@material-ui/core";
+import { TextField, Typography, IconButton, Fab } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
@@ -71,11 +65,9 @@ export const Blurb = ({
             value={value}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setValue(e.target.value);
-              console.log("HI New value!");
             }}
             onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
               if (e.key === "enter") {
-                console.log("PRESSING ENTER");
                 e.preventDefault();
                 onEdit(value);
                 onBack();
@@ -87,7 +79,6 @@ export const Blurb = ({
             color="primary"
             style={{ marginLeft: "5px" }}
             onClick={() => {
-              console.log("Clickin Save");
               onEdit(value);
               onBack();
             }}

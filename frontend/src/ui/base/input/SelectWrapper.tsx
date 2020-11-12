@@ -48,7 +48,9 @@ export const SelectWrapper = ({
         <InputLabel id="select-outlined-label">{label}</InputLabel>
         <Select
           readOnly={readOnly}
+          disabled={readOnly}
           labelId="select-outlined-label"
+          variant={"outlined"}
           id="select-outlined"
           value={selected}
           onChange={handleChange}

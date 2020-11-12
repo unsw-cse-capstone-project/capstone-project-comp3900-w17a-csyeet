@@ -51,10 +51,7 @@ export const EditListingPageBase = observer(
     const [openSnack, setOpen] = React.useState<boolean>(false);
     const [isEditing, setIsEditing] = React.useState<boolean>(true);
     const classes = EditListingStyles();
-    const onLoad = () => {
-      setStatus("updating");
-      setOpen(true);
-    };
+
     const onSuccess = () => {
       setStatus("success");
       setOpen(true);
@@ -64,6 +61,12 @@ export const EditListingPageBase = observer(
     const onError = () => {
       setStatus("error");
       setOpen(true);
+    };
+
+    const onPublish = () => {
+      setOpen(true);
+      setStatus("updating");
+      onUpdateListing(store, onSuccess, onError);
     };
 
     const snackContent = (status: string) => {
@@ -88,6 +91,7 @@ export const EditListingPageBase = observer(
             <>
               <Typography variant="h3">Edit Listing</Typography>
               <ListingForm
+                edit={true}
                 store={store}
                 onBack={() => history.push("/")}
                 onPreview={() => setIsEditing(false)}
@@ -97,10 +101,7 @@ export const EditListingPageBase = observer(
             <PreviewListing
               store={store}
               onBack={() => setIsEditing(true)}
-              onPublish={() => {
-                onLoad();
-                onUpdateListing(store, onSuccess, onError);
-              }}
+              onPublish={onPublish}
             />
           )}
         </div>

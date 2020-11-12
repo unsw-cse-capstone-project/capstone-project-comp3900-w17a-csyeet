@@ -40,7 +40,7 @@ export const Images: React.FC<{ store: ListingStore }> = observer(
 
     const onDeleteImage = action((imageStr: string) => {
       store.listing.images = store.listing.images.filter(function (img) {
-        return img != imageStr;
+        return img !== imageStr;
       });
     });
     const classes = ImagesStyles();

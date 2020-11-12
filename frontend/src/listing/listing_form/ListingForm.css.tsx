@@ -23,7 +23,7 @@ export const ListingFormStyles = makeStyles((theme: Theme) =>
       height: "1000px",
       padding: theme.spacing(0, "15%", "200px", "15%"),
       boxSizing: "border-box",
-      overflow: "auto",
+      // overflow: "auto",
       marginTop: "0px",
       [theme.breakpoints.down("sm")]: {
         padding: theme.spacing(0, 2, "200px", 2),

@@ -30,21 +30,19 @@ export const AddListingPageBase = observer(
     const [status, setStatus] = React.useState<string | null>(null);
     const [openSnack, setOpen] = React.useState<boolean>(false);
     const [isEditing, setIsEditing] = React.useState<boolean>(true);
-    const classes = AddListingStyles();
     const onSuccess = () => {
+      setOpen(true);
+      setStatus("success");
+      history.push("/listing/" + store.listing.id);
+    };
+    const onError = () => {
+      setOpen(true);
+      setStatus("error");
+    };
+    const onPublish = () => {
+      setOpen(true);
       setStatus("publishing");
-      presenter.publishListing(
-        store,
-        () => {
-          setOpen(true);
-          setStatus("success");
-          history.push("/listing/" + store.listing.id);
-        },
-        () => {
-          setOpen(true);
-          setStatus("error");
-        }
-      );
+      presenter.publishListing(store, onSuccess, onError);
     };
 
     const snackContent = (status: string) => {
@@ -60,6 +58,7 @@ export const AddListingPageBase = observer(
       }
     };
 
+    const classes = AddListingStyles();
     return (
       <>
         <div className={classes.root}>
@@ -77,7 +76,7 @@ export const AddListingPageBase = observer(
               <PreviewListing
                 store={store}
                 onBack={() => setIsEditing(true)}
-                onPublish={onSuccess}
+                onPublish={onPublish}
               />
             )}
           </div>

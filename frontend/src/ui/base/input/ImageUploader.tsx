@@ -74,6 +74,7 @@ export const ImageUploader: React.FC<{
     return (
       <div className={classNames(className)} style={style}>
         <ImageUploading
+          multiple
           value={images}
           onChange={onChange}
           maxNumber={max}

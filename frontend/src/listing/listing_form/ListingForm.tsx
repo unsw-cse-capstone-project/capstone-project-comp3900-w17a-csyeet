@@ -11,6 +11,7 @@ import { PaymentDetails } from "./Payment";
 import { ListingFormStyles } from "./ListingForm.css";
 import Alert from "@material-ui/lab/Alert";
 import { ArrowBackIos } from "@material-ui/icons";
+import { Features } from "./Features";
 
 export type AddressDetails = {
   street: string;
@@ -23,10 +24,12 @@ export type AddressDetails = {
 export const ListingForm = observer(
   ({
     store,
+    edit = false,
     onPreview,
     onBack,
   }: {
     store: ListingStore;
+    edit?: boolean;
     onPreview: () => void;
     onBack: () => void;
   }) => {
@@ -35,21 +38,24 @@ export const ListingForm = observer(
       "Property Details",
       "Upload Images",
       "Property Description",
+      "Property Features",
       "Auction Detail",
       "Payment Details",
     ];
     const getContent = (activeStep: number) => {
       switch (activeStep) {
         case 0:
-          return <Details store={store} />;
+          return <Details edit={edit} store={store} />;
         case 1:
           return <Images store={store} />;
         case 2:
           return <Description store={store} />;
         case 3:
-          return <AuctionDetails store={store} />;
+          return <Features store={store} />;
         case 4:
-          return <PaymentDetails store={store} />;
+          return <AuctionDetails edit={edit} store={store} />;
+        case 5:
+          return <PaymentDetails edit={edit} store={store} />;
         default:
           return "404 You've fallen into outer space!";
       }
@@ -100,7 +106,8 @@ export const ListingForm = observer(
       () =>
         store.payment.account_name !== "" &&
         store.payment.bsb.length === 6 &&
-        store.payment.account_number.length === 8
+        store.payment.account_number.length >= 8 &&
+        store.payment.account_number.length <= 10
     );
 
     const canPreview =
