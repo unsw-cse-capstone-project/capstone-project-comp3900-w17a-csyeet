@@ -17,6 +17,7 @@ export class SearchStore {
     start_date: undefined,
     end_date: undefined,
     landmarks: undefined,
+    closed_auction: undefined,
   };
 
   @observable
@@ -26,7 +27,7 @@ export class SearchStore {
   searchState?: "loading" | "loaded" | "error";
 
   continuation?: string;
-  
+
   constructor(
     query?: string,
     type?: string,
@@ -37,6 +38,7 @@ export class SearchStore {
     end?: string,
     features?: string[],
     landmarks?: string[],
+    closed_auction?: string,
   ) {
     makeObservable(this);
     this.input = query ? query : "";
@@ -49,6 +51,7 @@ export class SearchStore {
       end_date: end ? new Date(end) : undefined,
       features,
       landmarks,
+      closed_auction,
     };
   }
 }
@@ -57,9 +60,9 @@ export class SearchPresenter {
   @action
   async search(store: SearchStore) {
     if (!store.continuation) {
-      runInAction(() => {store.searchState = "loading"});
+      runInAction(() => { store.searchState = "loading" });
     }
-    const { type, beds, baths, cars, start_date, end_date, features, landmarks } = store.filters;
+    const { type, beds, baths, cars, start_date, end_date, features, landmarks, closed_auction } = store.filters;
     // Parse through filters and format into a query string
     let searchQuery = `?location=${store.input}`;
     searchQuery += type ? `&type=${type}` : "";
@@ -70,8 +73,9 @@ export class SearchPresenter {
     searchQuery += end_date ? `&auction_end=${end_date.toISOString()}` : "";
     features && features.map(feature => searchQuery += `&features=${feature}`);
     landmarks && landmarks.map(landmark => searchQuery += `&landmarks=${landmark}`);
-    searchQuery += store.continuation? `&continuation=${store.continuation}`: ""; 
-    searchQuery += "&limit=4"; 
+    searchQuery += closed_auction ? `&include_closed_auctions=${closed_auction}` : "";
+    searchQuery += store.continuation ? `&continuation=${store.continuation}` : "";
+    searchQuery += "&limit=4";
     try {
       // Change this to add the filters
       const response = await fetch(`/listings/${searchQuery}`);
