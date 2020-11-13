@@ -16,24 +16,24 @@ export type SignInArgs = {
 };
 
 export type SignUpArgs = {
-  name: string,
-  email: string,
-  password: string,
-  phone_number: string,
-  address: AddressDetails,
-  onError: (error: string) => void,
-  onSuccess: () => void,
-}
+  name: string;
+  email: string;
+  password: string;
+  phone_number: string;
+  address: AddressDetails;
+  onError: (error: string) => void;
+  onSuccess: () => void;
+};
 
 export type SignUpGoogleArgs = {
-  name: string,
-  email: string,
-  phone_number: string,
-  address: AddressDetails,
-  googleId: string,
-  onError: (error: string) => void,
-  onSuccess: () => void,
-}
+  name: string;
+  email: string;
+  phone_number: string;
+  address: AddressDetails;
+  googleId: string;
+  onError: (error: string) => void;
+  onSuccess: () => void;
+};
 
 export default class Store {
   @observable user?: User;
@@ -41,12 +41,7 @@ export default class Store {
   @observable openSignIn: boolean = false;
 
   @action
-  async signIn({
-    email,
-    password,
-    onError,
-    onSuccess,
-  }: SignInArgs) {
+  async signIn({ email, password, onError, onSuccess }: SignInArgs) {
     try {
       const response = await fetch("/login", {
         method: "post",
@@ -66,6 +61,9 @@ export default class Store {
             })
         );
         onSuccess();
+        window.localStorage.setItem("name", content.name);
+        window.localStorage.setItem("email", content.email);
+        window.localStorage.setItem("id", content.id);
       }
     } catch {
       onError("Error occurred please try again");
@@ -82,7 +80,13 @@ export default class Store {
     onError,
     onSuccess,
   }: SignUpGoogleArgs) {
-    console.log("Signing in with ", {name, email, phone_number, googleId, address});
+    console.log("Signing in with ", {
+      name,
+      email,
+      phone_number,
+      googleId,
+      address,
+    });
   }
 
   @action
@@ -111,7 +115,7 @@ export default class Store {
         }),
       });
       const content = await response.json();
-      if ('detail' in content) {
+      if ("detail" in content) {
         onError(content.detail);
         return;
       }
@@ -123,6 +127,9 @@ export default class Store {
             email: content.email,
           })
       );
+      window.localStorage.setItem("name", content.name);
+      window.localStorage.setItem("email", content.email);
+      window.localStorage.setItem("id", content.id);
       onSuccess();
     } catch {
       onError("Error occurred when signing up");
@@ -136,6 +143,9 @@ export default class Store {
         method: "post",
       });
       runInAction(() => (this.user = undefined));
+      window.localStorage.removeItem("name");
+      window.localStorage.removeItem("email");
+      window.localStorage.removeItem("id");
     } catch {
       console.log("error T-T");
     }
@@ -147,6 +157,19 @@ export default class Store {
 }
 
 const checkSession = async (store: Store) => {
+  if (
+    window.localStorage.getItem("id") &&
+    window.localStorage.getItem("name") &&
+    window.localStorage.getItem("email")
+  ) {
+    runInAction(() => {
+      store.user = {
+        name: window.localStorage.getItem("name") as string,
+        id: parseInt(window.localStorage.getItem("id") as string),
+        email: window.localStorage.getItem("email") as string,
+      };
+    });
+  }
   let session = document.cookie
     .split(" ")
     .find((cookie) => cookie.startsWith("session="));
@@ -158,17 +181,30 @@ const checkSession = async (store: Store) => {
         },
       });
       const result = await response.json();
-      runInAction(
-        () =>
-          (store.user = {
-            id: result.id,
-            name: result.name,
-            email: result.email,
-          })
-      );
+      const user = {
+        id: result.id,
+        name: result.name,
+        email: result.email,
+      };
+      if (
+        (store.user as any).id !== user.id ||
+        (store.user as any).name !== user.name ||
+        (store.user as any).email !== user.name
+      ) {
+        runInAction(
+          () =>
+            (store.user = {
+              id: result.id,
+              name: result.name,
+              email: result.email,
+            })
+        );
+      }
     } catch {
-      console.log("error T-T");
+      runInAction(() => (store.user = undefined));
     }
+  } else {
+    runInAction(() => (store.user = undefined));
   }
 };
 

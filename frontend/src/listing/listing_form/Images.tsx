@@ -6,7 +6,7 @@ import { ImageUploader } from "../../ui/base/input/ImageUploader";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import { IconButton } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { ImageListType } from "react-images-uploading";
+import { ImageListType, ImageType } from "react-images-uploading";
 
 export const ImagesStyles = makeStyles((theme: Theme) =>
   createStyles({
