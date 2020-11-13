@@ -1,60 +1,66 @@
 import React from "react";
-import { action } from "mobx";
-import { useStore } from "../../AuthContext";
-import { DetailStore } from "./DetailPresenter";
 import { Details } from "./Details";
+import MuiAlert from "@material-ui/lab/Alert";
+import { Snackbar } from "@material-ui/core";
+import { ProfileStore } from "../ProfilePresenter";
 
-export const DetailsPage = () => {
-  const userStore = useStore();
-  if (!userStore) throw Error("User Store cannot be null");
-
-  const store = new DetailStore();
-  const fillDetailStore = action(() => {
-    if (!userStore.user) throw Error("User does not exit");
-    const {
-      id,
-      name,
-      // phone_number,
-      // street,
-      // suburb,
-      // postcode,
-      // state,
-      // country,
-    } = userStore.user;
-    store.id = id as number;
-    store.name = name as string;
-    store.phone_number = "0000 000 000";
-    store.street = "23 Holland Avenue";
-    store.suburb = "CrossVill";
-    store.postcode = "1234";
-    store.state = "NSW";
-    store.country = "Australia";
-    // store.phone_number = phone_number;
-    // store.street = street;
-    // store.suburb = suburb;
-    // store.postcode = postcode;
-    // store.state = state;
-    // store.country = country;
-  });
-
-  const onUpdate = () => {
-    // (Jenn) TODO: Update
-    console.log("Updating");
+export const DetailsPage: React.FC<{
+  store: ProfileStore;
+  onUpdateUserDetails: () => void;
+  onChangePassword: (onPasswordIncorrect: () => void) => void;
+}> = ({ store, onUpdateUserDetails, onChangePassword }) => {
+  const [openSnack, setOpen] = React.useState<boolean>(false);
+  const [status, setStatus] = React.useState<string | null>(null);
+  const snackContent = (status: string) => {
+    switch (status) {
+      case "success":
+        return <MuiAlert severity="success">Successfully updated!</MuiAlert>;
+      case "updating":
+        return <MuiAlert severity="info">Updating your details...</MuiAlert>;
+      case "incorrect password":
+        return (
+          <MuiAlert severity="error">
+            Incorrect password, your password was not changed
+          </MuiAlert>
+        );
+      default:
+        return <></>;
+    }
   };
 
-  const onChangePassword = (onError: () => void) => {
-    // (Jenn) TODO: Update
-    console.log("Changing password");
+  if (store.loadingState === "success") {
+    setStatus("success");
+    setOpen(true);
+  } else if (store.loadingState === "updating") {
+    setStatus("updating");
+    setOpen(true);
+  }
+
+  const onIncorrectPassword = () => {
+    setStatus("incorrect password");
+    setOpen(true);
   };
-  fillDetailStore();
 
   return (
+    <div>
       <Details
         store={store}
-        onUpdate={onUpdate}
-        onChangePassword={onChangePassword}
+        onUpdateUserDetails={onUpdateUserDetails}
+        onChangePassword={() => onChangePassword(onIncorrectPassword)}
       />
+      {status !== null && (
+        <Snackbar
+          open={openSnack}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          autoHideDuration={1500}
+          onClose={() => {
+            setOpen(false);
+            setStatus(null);
+          }}
+        >
+          {snackContent(status)}
+        </Snackbar>
+      )}
+    </div>
   );
-  // Snack for error on update here.
-  // Snack for success update here.
 };

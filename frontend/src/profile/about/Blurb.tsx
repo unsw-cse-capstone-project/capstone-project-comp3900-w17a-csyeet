@@ -90,7 +90,6 @@ export const Blurb = ({
             size="small"
             color="default"
             onClick={onBack}
-            // style={{ marginRight: "40px" }}
           >
             <CloseIcon fontSize="small" />
           </Fab>

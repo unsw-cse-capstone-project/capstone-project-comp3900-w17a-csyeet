@@ -15,6 +15,7 @@ export const createSearchPage = (
   end?: string,
   featureList?: string[],
   landmarkList?: string[],
+  closed_auction?: string,
 ) => {
   const store = new SearchStore(
     query,
@@ -26,6 +27,7 @@ export const createSearchPage = (
     end,
     featureList,
     landmarkList,
+    closed_auction
   );
   const presenter = new SearchPresenter();
 

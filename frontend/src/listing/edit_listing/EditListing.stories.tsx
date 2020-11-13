@@ -47,7 +47,6 @@ const populateStore = action(() => {
     account_number: "19584038",
   };
   const fake_auction: AuctionDetails = {
-    confirmed_auction_start: new Date(2020, 12, 13),
     auction_start: new Date(2020, 12, 13),
     auction_end: new Date(2021, 1, 24),
     reserve_price: "2400000",

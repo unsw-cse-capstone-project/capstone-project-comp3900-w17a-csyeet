@@ -3,15 +3,15 @@ import { observer } from "mobx-react";
 import { computed } from "mobx";
 import { Button, Stepper, Step, StepButton, Snackbar } from "@material-ui/core";
 import { ListingStore } from "../ListingPresenter";
-import { Details } from "./Details";
-import { Images } from "./Images";
-import { Description } from "./Description";
-import { AuctionDetails } from "./AuctionDetails";
-import { PaymentDetails } from "./Payment";
+import { Details } from "../listing_form/Details";
+import { Images } from "../listing_form/Images";
+import { Description } from "../listing_form/Description";
+import { AuctionDetails } from "../listing_form/AuctionDetails";
+import { PaymentDetails } from "../listing_form/Payment";
 import { ListingFormStyles } from "./ListingForm.css";
 import Alert from "@material-ui/lab/Alert";
 import { ArrowBackIos } from "@material-ui/icons";
-import { Features } from "./Features";
+import { Features } from "../listing_form/Features";
 
 export type AddressDetails = {
   street: string;
@@ -53,9 +53,9 @@ export const ListingForm = observer(
         case 3:
           return <Features store={store} />;
         case 4:
-          return <AuctionDetails edit={edit} store={store} />;
+          return <AuctionDetails store={store} />;
         case 5:
-          return <PaymentDetails edit={edit} store={store} />;
+          return <PaymentDetails store={store} />;
         default:
           return "404 You've fallen into outer space!";
       }

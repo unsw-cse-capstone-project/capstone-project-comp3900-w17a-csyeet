@@ -21,13 +21,15 @@ export const DateRangeWrapper: React.FC<{
     onDateChange(range);
     setValue(range);
   };
-
+  var minDate = new Date();
+  minDate.setDate(minDate.getDate() + 1);
   return (
     <div style={style} className={className}>
       <div style={{ marginTop: "10px" }}>
         <LocalizationProvider dateAdapter={DateFnsUtils}>
           <DateRangePicker
             disablePast
+            minDate={minDate}
             value={value}
             onChange={onChange}
             renderInput={(startProps: any, endProps: any) => (

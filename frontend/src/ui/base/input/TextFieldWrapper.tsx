@@ -14,7 +14,6 @@ export interface TextFieldWrapperProps {
   readOnly?: boolean;
   style?: React.CSSProperties;
 }
-
 export const TextFieldWrapper = ({
   field,
   label,
@@ -52,9 +51,10 @@ export const TextFieldWrapper = ({
     }
   };
   return (
-    <div style={{ marginTop: "10px" }}>
+    <div style={{ marginTop: "5px" }}>
       <TextField
         error={e || error ? true : false}
+        size={size}
         fullWidth
         style={style}
         variant={"outlined"}
