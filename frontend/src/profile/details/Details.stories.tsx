@@ -11,16 +11,14 @@ export default {
 
 const store = new ProfileStore(5);
 runInAction(() => {
-  store.userDetails = {
-    name: "Jennifer",
-    email: "Jenn@example.com",
-    phone_number: "0414555666",
-    street: "30 Gellot Tripe",
-    suburb: "Tpeorh",
-    postcode: "2356",
-    state: "NSW",
-    country: "Australia",
-  };
+  store.name = "Jennifer";
+  store.email = "Jenn@example.com";
+  store.phone_number = "0414555666";
+  store.street = "30 Gellot Tripe";
+  store.suburb = "Tpeorh";
+  store.postcode = "2356";
+  store.state = "NSW";
+  store.country = "Australia";
 });
 
 export const Overview = () => (

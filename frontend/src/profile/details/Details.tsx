@@ -1,236 +1,222 @@
 import React from "react";
 import { action } from "mobx";
+import EditIcon from "@material-ui/icons/Edit";
+import { formatAddress } from "../../ui/util/helper";
 import { observer } from "mobx-react";
 import {
-  Grid,
   Button,
-  FormHelperText,
-  Typography,
-  InputLabel,
-  FormControl,
-  OutlinedInput,
-  InputAdornment,
-  TextField,
+  Card,
+  Fab,
+  CardHeader,
+  CardContent,
+  ListItemAvatar,
+  ListItem,
+  ListItemText,
+  Divider,
+  List,
 } from "@material-ui/core";
-import { Password } from "../../ui/base/input/Password";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import NumberFormat from "react-number-format";
-import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
+import HomeIcon from "@material-ui/icons/Home";
 import { ModalWrapper } from "../../ui/base/modal_wrapper/ModalWrapper";
-import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
+import PersonIcon from "@material-ui/icons/Person";
+import PhoneIcon from "@material-ui/icons/Phone";
+import EmailIcon from "@material-ui/icons/Email";
 import {
   AddressForm,
   AddressDetails,
 } from "../../ui/base/address_form/AddressForm";
 import { DetailStyles } from "./Detail.css";
 import { ProfileStore } from "../ProfilePresenter";
-
-type NumberFormatCustomProps = {
-  inputRef: (instance: NumberFormat | null) => void;
-  name: string;
-};
+import { PasswordResetForm } from "./PasswordResetForm";
+import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
 
 export const Details: React.FC<{
   store: ProfileStore;
   onUpdateUserDetails: () => void;
   onChangePassword: () => void;
 }> = observer(({ store, onUpdateUserDetails, onChangePassword }) => {
-  const {
-    name,
-    email,
-    phone_number,
-    street,
-    suburb,
-    postcode,
-    state,
-    country,
-  } = store.userDetails;
-
   const addressData: AddressDetails = {
-    street: street,
-    suburb: suburb,
-    postcode: postcode,
-    state: state,
-    country: country,
+    street: "",
+    suburb: "",
+    postcode: "",
+    state: "NSW",
+    country: "Australia",
+  };
+  const userAddress = {
+    street: store.street,
+    suburb: store.suburb,
+    state: store.state,
+    postcode: store.postcode,
   };
 
-  const [open, setOpen] = React.useState<boolean>(false);
-  const [readOnly, setReadOnly] = React.useState<boolean>(true);
-  const [passTooShort, setPassTooShort] = React.useState<boolean>(false);
-  const [passMatchError, setPassMatchError] = React.useState<boolean>(false);
-
   const onChange = action((value: string, field: string) => {
-    (store as any).userDetails[field] = value;
-  });
-
-  const onPasswordChange = action((value: string, field: string) => {
     (store as any)[field] = value;
   });
+  const [edit, setEdit] = React.useState<boolean>(false);
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [editAddress, setEditAddress] = React.useState<boolean>(false);
+  const { streetAddress, remainingAddress } = formatAddress(userAddress);
+  const address = streetAddress + " " + remainingAddress;
 
-  const [phoneError, setPhoneError] = React.useState<boolean>(false);
-  const PhoneInput = observer((props: NumberFormatCustomProps) => {
-    const { inputRef, ...other } = props;
-    return (
-      <NumberFormat
-        {...other}
-        format="#### ### ###"
-        mask="#"
-        placeholder="04"
-        value={phone_number}
-        onValueChange={(values) => {
-          onChange(values.value, "phone_number");
-        }}
-        onBlur={() => {
-          phone_number.length !== 10
-            ? setPhoneError(true)
-            : setPhoneError(false);
-        }}
-        disable={readOnly}
-      />
-    );
-  });
-
-  const [nameError, setNameError] = React.useState<boolean>(false);
-  const classes = DetailStyles();
   return (
     <>
-      <Typography>General</Typography>
-      <TextField
-        fullWidth
-        variant={"outlined"}
-        style={{ marginTop: "10px" }}
-        label={"Name"}
-        value={name}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          onChange(e.target.value, "name")
-        }
-        helperText="Name is required*"
-        InputProps={{
-          readOnly: readOnly,
-        }}
-      />
+      <Card>
+        <CardHeader
+          title="User Profile"
+          subheader={"Edit or update your personal information"}
+        ></CardHeader>
 
-      <Grid container spacing={2}>
-        <Grid item xs>
-          <TextFieldWrapper
-            field="email"
-            label="Email"
-            onChange={onChange}
-            value={email}
-          />
-        </Grid>
-        <Grid item xs>
-          <FormControl
-            fullWidth
-            variant="outlined"
-            error={phoneError}
-            style={{ marginTop: "10px" }}
-          >
-            <InputLabel
-              htmlFor="outlined-adornment-card"
-              style={{ background: "white" }}
-            >
-              Phone Number
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-card"
-              endAdornment={
-                <InputAdornment position="end">
-                  <PhoneAndroidOutlinedIcon style={{ color: "#7b7b7b" }} />
-                </InputAdornment>
-              }
-              labelWidth={110}
-              inputComponent={PhoneInput as any}
-            />
-            {phoneError && (
-              <FormHelperText style={{ color: "red" }}>
-                Invalid Phone Number
-              </FormHelperText>
-            )}
-          </FormControl>
-        </Grid>
-      </Grid>
+        <CardContent>
+          <List>
+            <Divider light />
+            <ListItem style={{ position: "relative" }}>
+              {edit ? (
+                <>
+                  <Button
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "100px",
+                    }}
+                    color="default"
+                    onClick={() => setEdit(false)}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={store.name === "" || store.phone_number === ""}
+                    style={{ position: "absolute", top: "10px", right: "10px" }}
+                    onClick={() => onUpdateUserDetails()}
+                  >
+                    Save
+                  </Button>
+                </>
+              ) : (
+                <Fab
+                  size={"small"}
+                  color={"primary"}
+                  onClick={() => setEdit(true)}
+                  disabled={editAddress}
+                  style={{ position: "absolute", top: "10px", right: "10px" }}
+                >
+                  <EditIcon style={{ color: "#FFF" }} fontSize="small" />
+                </Fab>
+              )}
+              <ListItemAvatar>
+                <PersonIcon style={{ color: "#838383" }} />
+              </ListItemAvatar>
+              {edit ? (
+                <TextFieldWrapper
+                  value={store.name}
+                  error={store.name === ""}
+                  field={"name"}
+                  label={"Name"}
+                  onChange={onChange}
+                />
+              ) : (
+                <ListItemText primary="Name" secondary={store.name} />
+              )}
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+                <EmailIcon style={{ color: "#838383" }} />
+              </ListItemAvatar>
+              <ListItemText primary="Email" secondary={store.email} />
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+                <PhoneIcon style={{ color: "#838383" }} />
+              </ListItemAvatar>
+              {edit ? (
+                <TextFieldWrapper
+                  value={store.phone_number}
+                  error={store.phone_number === ""}
+                  field={"phone_number"}
+                  label={"Phone Number"}
+                  onChange={onChange}
+                />
+              ) : (
+                <ListItemText
+                  primary="Phone Number"
+                  secondary={store.phone_number}
+                />
+              )}
+            </ListItem>
+            <Divider light />
+            <ListItem style={{ position: "relative" }}>
+              {editAddress ? (
+                <>
+                  <Button
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "100px",
+                    }}
+                    color="default"
+                    onClick={() => setEditAddress(false)}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    variant="contained"
+                    disabled={
+                      store.street === "" ||
+                      store.suburb === "" ||
+                      store.postcode === "" ||
+                      store.state === "" ||
+                      store.country === ""
+                    }
+                    color="primary"
+                    onClick={() => onUpdateUserDetails()}
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                    }}
+                  >
+                    Save
+                  </Button>
+                </>
+              ) : (
+                <Fab
+                  onClick={() => setEditAddress(true)}
+                  disabled={edit}
+                  color={"primary"}
+                  size={"small"}
+                  style={{ position: "absolute", top: "10px", right: "10px" }}
+                >
+                  <EditIcon style={{ color: "#FFF" }} fontSize={"small"} />
+                </Fab>
+              )}
+              <ListItemAvatar>
+                <HomeIcon style={{ color: "#838383" }} />
+              </ListItemAvatar>
+              {editAddress ? (
+                <AddressForm
+                  addressData={addressData}
+                  onChange={onChange}
+                  style={{ marginTop: "40px" }}
+                />
+              ) : (
+                <ListItemText primary="Address" secondary={address} />
+              )}
+            </ListItem>
+            <Divider />
 
-      <AddressForm
-        onChange={onChange}
-        addressData={addressData}
-        readOnly={readOnly}
-      />
-      <div className={classes.buttonContainer}>
-        {readOnly ? (
-          <Button
-            variant="contained"
-            onClick={() => setReadOnly(false)}
-            color="primary"
-          >
-            Edit
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            onClick={onUpdateUserDetails}
-            color="primary"
-          >
-            Save
-          </Button>
-        )}
-
-        <Button
-          style={{ marginLeft: "10px" }}
-          variant="contained"
-          onClick={() => setOpen(true)}
-          disabled={!readOnly}
-        >
-          Change Password
-        </Button>
-      </div>
+            <ListItem button onClick={() => setOpen(true)}>
+              <ListItemAvatar>
+                <VpnKeyIcon style={{ color: "#838383" }} />
+              </ListItemAvatar>
+              <ListItemText primary="Change Password" />
+            </ListItem>
+          </List>
+        </CardContent>
+      </Card>
       <ModalWrapper open={open} onClose={() => setOpen(false)}>
-        <Typography> Update your password</Typography>
-        <Password
-          field="old_password"
-          label="Current Password"
-          onChange={onPasswordChange}
-        />
-        <Password
-          field="new_password"
-          label="New Password"
-          onChange={onPasswordChange}
-          onBlur={() => {
-            if (store.new_password.length <= 5) setPassTooShort(true);
-            else setPassTooShort(false);
-          }}
-          error={passTooShort}
-        />
-        {passTooShort && (
-          <FormHelperText style={{ color: "red" }}>
-            Password has to be at least 5 characters
-          </FormHelperText>
-        )}
-        <Password
-          field="new_password_confirm"
-          label="Confirm Password"
-          onChange={onPasswordChange}
-          onBlur={() => {
-            if (store.new_password !== store.new_password_confirm)
-              setPassMatchError(true);
-            else setPassMatchError(false);
-          }}
-          error={passMatchError}
-        />
-        {passMatchError && (
-          <FormHelperText style={{ color: "red" }}>
-            Passwords do not match
-          </FormHelperText>
-        )}
-
-        <Button
-          style={{ marginTop: "15px", display: "flex", flex: 1 }}
-          color="primary"
-          variant="contained"
-          onClick={onChangePassword}
-          disabled={passTooShort || passMatchError}
-        >
-          Update Password
-        </Button>
+        <PasswordResetForm store={store} onChangePassword={onChangePassword} />
       </ModalWrapper>
     </>
   );

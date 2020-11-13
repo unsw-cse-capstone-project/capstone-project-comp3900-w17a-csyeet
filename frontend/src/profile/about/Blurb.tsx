@@ -1,15 +1,5 @@
 import React from "react";
-<<<<<<< HEAD
 import { TextField, Typography, IconButton, Fab } from "@material-ui/core";
-=======
-import {
-  TextField,
-  Typography,
-  IconButton,
-  Button,
-  Fab,
-} from "@material-ui/core";
->>>>>>> e4436e63a5979a7596a89401b67f5303257c044a
 import EditIcon from "@material-ui/icons/Edit";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";

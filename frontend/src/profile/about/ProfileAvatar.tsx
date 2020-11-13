@@ -1,11 +1,17 @@
 import React from "react";
-import { Avatar, Button, Fab } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
+import {
+  Avatar,
+  Button,
+  Fab,
+  createStyles,
+  makeStyles,
+  Theme,
+} from "@material-ui/core";
 import { useStore } from "../../AuthContext";
+import EditIcon from "@material-ui/icons/Edit";
 import PublishIcon from "@material-ui/icons/Publish";
 import CloseIcon from "@material-ui/icons/Close";
 import AddAPhotoOutlinedIcon from "@material-ui/icons/AddAPhotoOutlined";
-import { createStyles, makeStyles, Theme, Avatar } from "@material-ui/core";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 export const AvatarStyles = makeStyles((theme: Theme) =>
   createStyles({

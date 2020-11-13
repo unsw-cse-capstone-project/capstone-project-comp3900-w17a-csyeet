@@ -14,6 +14,7 @@ export const TextFieldWrapper = ({
   onBlur,
   onChange,
   readOnly,
+  size = "medium",
 }: {
   field?: string;
   label: string;
@@ -26,6 +27,7 @@ export const TextFieldWrapper = ({
   onChange?: (value: string, field: string) => void;
   readOnly?: boolean;
   style?: React.CSSProperties;
+  size?: "small" | "medium";
 }) => {
   const [v, setValue] = React.useState<string>(value);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,9 +53,10 @@ export const TextFieldWrapper = ({
     }
   };
   return (
-    <div style={{ marginTop: "10px" }}>
+    <div style={{ marginTop: "5px" }}>
       <TextField
         error={e || error ? true : false}
+        size={size}
         fullWidth
         style={style}
         variant={"outlined"}

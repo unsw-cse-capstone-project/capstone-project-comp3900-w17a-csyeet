@@ -2,7 +2,7 @@ import * as React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import { createStyles, Typography } from "@material-ui/core";
-import { formatAddress } from '../../util/helper';
+import { formatAddress } from "../../util/helper";
 
 export const AddressHeadingStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,13 +30,22 @@ export const AddressHeading = ({
   postcode: string;
 }) => {
   const classes = AddressHeadingStyle();
-  const {streetAddress, remainingAddress} = formatAddress({street, suburb, state, postcode});
+  const { streetAddress, remainingAddress } = formatAddress({
+    street,
+    suburb,
+    state,
+    postcode,
+  });
   return (
     <div>
       <Typography variant="h2" className={classes.streetAddress}>
         {streetAddress}
       </Typography>
-      <Typography variant="h4" color="textSecondary" className={classes.secondaryAddress}>
+      <Typography
+        variant="h4"
+        color="textSecondary"
+        className={classes.secondaryAddress}
+      >
         {remainingAddress}
       </Typography>
     </div>
