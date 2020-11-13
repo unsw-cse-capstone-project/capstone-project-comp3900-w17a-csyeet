@@ -1,6 +1,7 @@
 import { action, observable, runInAction, makeObservable } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
-import { getListingFromResult } from "../ui/util/helper";
+import { getListingFromResult, resizeFile } from "../ui/util/helper";
+import { ImageType } from "react-images-uploading";
 
 export class ProfileStore {
   @observable name: string = "";
@@ -175,7 +176,8 @@ export class ProfilePresenter {
   async updateAvatar(image: File, img_url: string, store: ProfileStore) {
     runInAction(() => (store.loadingState = "updating"));
     let form = new FormData();
-    let data = await image.arrayBuffer();
+    const resized = await resizeFile(image as File);
+    let data = await (resized as Blob).arrayBuffer();
     form.append("file", new Blob([data], { type: image.type }));
     try {
       const response = await fetch(`/users/avatar`, {

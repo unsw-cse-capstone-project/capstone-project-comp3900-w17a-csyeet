@@ -13227,6 +13227,11 @@ react-hotkeys@2.0.0:
   dependencies:
     prop-types "^15.6.1"
 
+react-image-file-resizer@^0.3.8:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/react-image-file-resizer/-/react-image-file-resizer-0.3.8.tgz#c9ad58822f69432012f5e353933d4c11af26b034"
+  integrity sha512-54gA46Dmj2tSWuSGa0Gp6DBlur+MAnGh8q8eo/7hvh2bqoHmLo4mweJ4s0TUgANKllFAPD/5oLPK87M2AoOYTQ==
+
 react-images-uploading@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/react-images-uploading/-/react-images-uploading-3.1.2.tgz#c1636bab2cc709cdce47dba3f043a33a8ffe9edf"
