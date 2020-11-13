@@ -1,8 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import React from "react";
-import { useGoogleLogin } from "react-google-login";
 import { AddressDetails } from "./ui/base/address_form/AddressForm";
-import { clientId } from './ui/base/header/google_auth/GoogleAuth';
 
 export type User = {
   name: string;

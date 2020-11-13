@@ -16,7 +16,6 @@ import {
   List,
 } from "@material-ui/core";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import NumberFormat from "react-number-format";
 import HomeIcon from "@material-ui/icons/Home";
 import { ModalWrapper } from "../../ui/base/modal_wrapper/ModalWrapper";
 import PersonIcon from "@material-ui/icons/Person";
@@ -26,7 +25,6 @@ import {
   AddressForm,
   AddressDetails,
 } from "../../ui/base/address_form/AddressForm";
-import { DetailStyles } from "./Detail.css";
 import { ProfileStore } from "../ProfilePresenter";
 import { PasswordResetForm } from "./PasswordResetForm";
 import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
@@ -64,9 +62,8 @@ export const Details: React.FC<{
       <Card>
         <CardHeader
           title="User Profile"
-          subheader={"Edit or update your personal information"}
-        ></CardHeader>
-
+          subheader="Edit or update your personal information"
+        />
         <CardContent>
           <List>
             <Divider light />

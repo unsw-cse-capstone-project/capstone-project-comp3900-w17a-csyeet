@@ -2,7 +2,6 @@ import React from "react";
 import { observer } from "mobx-react";
 import { computed, runInAction } from "mobx";
 import {
-  CircularProgress,
   Button,
   Typography,
   StepLabel,

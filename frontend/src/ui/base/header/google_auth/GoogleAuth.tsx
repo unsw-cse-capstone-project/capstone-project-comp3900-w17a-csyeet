@@ -1,9 +1,6 @@
 import React from "react";
 import { useGoogleLogin } from "react-google-login";
-import Google from "./google.svg";
 
-// refresh token
-// import { refreshTokenSetup } from '../utils/refreshToken';
 import Button from "@material-ui/core/Button";
 
 export const clientId =
@@ -34,7 +31,6 @@ export const GoogleLogin = ({
         name: res.profileObj.name,
         googleId: res.profileObj.googleId,
       });
-    // refreshTokenSetup(res);
   };
 
   const onFailure = (res: any) => {
@@ -46,12 +42,10 @@ export const GoogleLogin = ({
     onFailure,
     clientId,
     isSignedIn: false,
-    // accessType: "offline",
   });
 
   const onButtonClick = () => {
     onClick && onClick();
-    console.log('signgin in')
     signIn();
   };
 

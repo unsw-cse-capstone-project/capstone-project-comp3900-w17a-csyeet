@@ -9,6 +9,7 @@ export interface TextFieldWrapperProps {
   value?: string;
   error?: boolean;
   helperText?: string;
+  size?: "small" | "medium";
   onBlur?: () => void;
   onChange?: (value: string, field: string) => void;
   readOnly?: boolean;
@@ -18,6 +19,7 @@ export const TextFieldWrapper = ({
   field,
   label,
   type = "text",
+  size = "medium",
   adornment = null,
   value = "",
   error,
