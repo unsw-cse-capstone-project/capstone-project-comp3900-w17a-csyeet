@@ -13,8 +13,8 @@ export const ListingResultCardStyles = makeStyles((theme: Theme) =>
         display: "flex",
       },
     },
-    cardContent: { 
-      width: "100%", 
+    cardContent: {
+      width: "100%",
       position: "relative",
       boxSizing: "border-box",
     },
@@ -27,6 +27,13 @@ export const ListingResultCardStyles = makeStyles((theme: Theme) =>
     detailBar: {
       display: "flex",
       margin: theme.spacing(1, 0, 0, 0),
+      flexWrap: "wrap",
+      alignContent: 'center',
+    },
+    icons: {
+      display: "flex",
+      flexWrap: "wrap",
+      alignContent: 'center',
     },
     description: {
       boxSizing: "border-box",
