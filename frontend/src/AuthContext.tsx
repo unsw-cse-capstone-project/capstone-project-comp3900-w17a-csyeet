@@ -25,6 +25,16 @@ export type SignUpArgs = {
   onSuccess: () => void,
 }
 
+export type SignUpGoogleArgs = {
+  name: string,
+  email: string,
+  phone_number: string,
+  address: AddressDetails,
+  googleId: string,
+  onError: (error: string) => void,
+  onSuccess: () => void,
+}
+
 export default class Store {
   @observable user?: User;
   @observable openSignUp: boolean = false;
@@ -60,6 +70,19 @@ export default class Store {
     } catch {
       onError("Error occurred please try again");
     }
+  }
+
+  @action
+  async signUpGoogle({
+    name,
+    email,
+    phone_number,
+    address,
+    googleId,
+    onError,
+    onSuccess,
+  }: SignUpGoogleArgs) {
+    console.log("Signing in with ", {name, email, phone_number, googleId, address});
   }
 
   @action
