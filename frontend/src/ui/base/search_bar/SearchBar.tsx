@@ -7,6 +7,7 @@ import {
   TextField,
   FormControl,
   FormControlLabel,
+  Typography,
 } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import { action } from "mobx";
@@ -443,7 +444,7 @@ export function ClosedAuctionsPicker(props: { store: SearchStore }) {
             style={{ paddingLeft: '20px' }}
           />
         }
-        label="Include Closed Auctions"
+        label={<Typography variant="body2" color="textSecondary">Include Closed Auctions</Typography>}
       />
     </FormControl >
 

@@ -15,7 +15,7 @@ export const HeaderStyles = makeStyles((theme: Theme) =>
       backgroundColor: "#f3f4f5",
     },
     signUpButton: {
-      margin: "15px",
+      margin: theme.spacing(1, 2, 1, 1),
     },
     loggedInHeader: {
       display: "flex",
