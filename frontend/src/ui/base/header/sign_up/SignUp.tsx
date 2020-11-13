@@ -50,7 +50,6 @@ export const SignUp = ({
   const [isGoogleLogin, setGoogleLogin] = React.useState<boolean | undefined>(
     undefined
   );
-  const [error, setError] = React.useState<string | undefined>(undefined);
 
   const classes = SignUpStyles();
   const SignUpHeader = ({ children }: { children: React.ReactNode }) => (
@@ -65,7 +64,7 @@ export const SignUp = ({
       </Grid>
       <Grid item className={classes.switch}>
         <Typography variant="body1" style={{ display: "inline-block" }}>
-          Already have an account?
+          Existing account?
         </Typography>
         <Link
           onClick={switchMode}
@@ -96,7 +95,7 @@ export const SignUp = ({
     setGoogleLogin(true);
   };
   const onError = (error: string) => {
-    setError(error);
+    console.log(error);
   };
 
   if (isGoogleLogin === undefined) {
@@ -110,11 +109,6 @@ export const SignUp = ({
               label="Sign Up with Google"
             />
           </Grid>
-          {!!error && (
-            <Grid item>
-              <MuiAlert severity="error">{error}</MuiAlert>
-            </Grid>
-          )}
           <Grid item className={classes.dividerContainer}>
             <Divider className={classes.divider} />
             <Typography

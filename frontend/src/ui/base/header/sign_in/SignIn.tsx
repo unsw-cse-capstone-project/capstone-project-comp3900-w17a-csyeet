@@ -52,7 +52,7 @@ export const SignIn = ({
   }) => {
     console.log({ email, name, googleId });
   };
-  const onError = (error: string) => setError(error);
+  const onError = (error: string) => console.log(error);
 
   return (
     <form onSubmit={onFormSubmit} onChange={() => setError(undefined)}>
