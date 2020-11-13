@@ -399,12 +399,14 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
           <TextField
             {...startProps}
             size="small"
+            fullWidth
             style={{ backgroundColor: "white" }}
             helperText={undefined}
           />
           <DateRangeDelimiter> to </DateRangeDelimiter>
           <TextField
             {...endProps}
+            fullWidth
             size="small"
             style={{ backgroundColor: "white" }}
             helperText={undefined}
