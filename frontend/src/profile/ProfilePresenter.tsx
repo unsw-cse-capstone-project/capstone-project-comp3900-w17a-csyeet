@@ -3,8 +3,23 @@ import { ListingActual } from "../ui/util/types/listing";
 import { getListingFromResult } from "../ui/util/helper";
 
 export class ProfileStore {
+  @observable userDetails = {
+    name: "",
+    email: "",
+    phone_number: "",
+    street: "",
+    suburb: "",
+    postcode: "",
+    state: "",
+    country: "",
+  };
+
   @observable blurb: string = "Update your bio";
   @observable avatar: string;
+
+  @observable old_password: string = "";
+  @observable new_password: string = "";
+  @observable new_password_confirm: string = "";
 
   @observable
   myBidsResults: ListingActual[] = [];
@@ -48,6 +63,16 @@ export class ProfilePresenter {
 
         runInAction(() => {
           store.loadingState = "loaded";
+          store.userDetails = {
+            name: content.name,
+            email: content.email,
+            phone_number: content.phone_number,
+            street: content.street,
+            suburb: content.suburb,
+            postcode: content.postcode,
+            state: content.state,
+            country: content.country,
+          };
           store.blurb = !!content["blurb"]
             ? content["blurb"]
             : "Update your bio";
@@ -65,6 +90,58 @@ export class ProfilePresenter {
     } catch {
       runInAction(() => {
         store.loadingState = "error";
+      });
+    }
+  }
+
+  @action
+  async updateUserDetails(store: ProfileStore) {
+    store.loadingState = "updating";
+    try {
+      const response = await fetch(`users/profile`, {
+        method: "post",
+        body: JSON.stringify({
+          name: store.userDetails.name,
+          phone_number: store.userDetails.phone_number,
+          street: store.userDetails.street,
+          suburb: store.userDetails.suburb,
+          postcode: store.userDetails.postcode,
+          state: store.userDetails.state,
+          country: store.userDetails.country,
+        }),
+      });
+      const result = await response.json();
+      if ("detail" in result) runInAction(() => (store.loadingState = "error"));
+      else runInAction(() => (store.loadingState = "success"));
+    } catch {
+      runInAction(() => {
+        store.loadingState = "error";
+        window.location.reload();
+      });
+    }
+  }
+
+  @action
+  async updateUserPassword(
+    store: ProfileStore,
+    onPasswordIncorrect: () => void
+  ) {
+    store.loadingState = "updating";
+    try {
+      const response = await fetch(`users/profile`, {
+        method: "post",
+        body: JSON.stringify({
+          old_password: store.old_password,
+          new_password: store.new_password,
+        }),
+      });
+      const result = await response.json();
+      if ("detail" in result) onPasswordIncorrect();
+      else runInAction(() => (store.loadingState = "success"));
+    } catch {
+      runInAction(() => {
+        store.loadingState = "error";
+        window.location.reload();
       });
     }
   }

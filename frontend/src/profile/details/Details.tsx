@@ -10,11 +10,11 @@ import {
   FormControl,
   OutlinedInput,
   InputAdornment,
+  TextField,
 } from "@material-ui/core";
 import { Password } from "../../ui/base/input/Password";
 import NumberFormat from "react-number-format";
 import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
-import { DetailStore } from "./DetailPresenter";
 import { ModalWrapper } from "../../ui/base/modal_wrapper/ModalWrapper";
 import PhoneAndroidOutlinedIcon from "@material-ui/icons/PhoneAndroidOutlined";
 import {
@@ -22,6 +22,7 @@ import {
   AddressDetails,
 } from "../../ui/base/address_form/AddressForm";
 import { DetailStyles } from "./Detail.css";
+import { ProfileStore } from "../ProfilePresenter";
 
 type NumberFormatCustomProps = {
   inputRef: (instance: NumberFormat | null) => void;
@@ -29,17 +30,39 @@ type NumberFormatCustomProps = {
 };
 
 export const Details: React.FC<{
-  store: DetailStore;
-  onUpdate: () => void;
-  onChangePassword: (onError: () => void) => void;
-}> = observer(({ store, onUpdate, onChangePassword }) => {
+  store: ProfileStore;
+  onUpdateUserDetails: () => void;
+  onChangePassword: () => void;
+}> = observer(({ store, onUpdateUserDetails, onChangePassword }) => {
+  const {
+    name,
+    email,
+    phone_number,
+    street,
+    suburb,
+    postcode,
+    state,
+    country,
+  } = store.userDetails;
+
+  const addressData: AddressDetails = {
+    street: street,
+    suburb: suburb,
+    postcode: postcode,
+    state: state,
+    country: country,
+  };
+
   const [open, setOpen] = React.useState<boolean>(false);
   const [readOnly, setReadOnly] = React.useState<boolean>(true);
   const [passTooShort, setPassTooShort] = React.useState<boolean>(false);
-  const [passIncorrect, setPassIncorrect] = React.useState<boolean>(false);
   const [passMatchError, setPassMatchError] = React.useState<boolean>(false);
 
   const onChange = action((value: string, field: string) => {
+    (store as any).userDetails[field] = value;
+  });
+
+  const onPasswordChange = action((value: string, field: string) => {
     (store as any)[field] = value;
   });
 
@@ -52,45 +75,47 @@ export const Details: React.FC<{
         format="#### ### ###"
         mask="#"
         placeholder="04"
-        value={store.phone_number}
+        value={phone_number}
         onValueChange={(values) => {
           onChange(values.value, "phone_number");
         }}
         onBlur={() => {
-          store.phone_number.length !== 10
+          phone_number.length !== 10
             ? setPhoneError(true)
             : setPhoneError(false);
         }}
-        readOnly={readOnly}
+        disable={readOnly}
       />
     );
   });
 
-  const addressData: AddressDetails = {
-    street: store.street,
-    suburb: store.suburb,
-    postcode: store.postcode,
-    state: store.street,
-    country: store.country,
-  };
-
+  const [nameError, setNameError] = React.useState<boolean>(false);
   const classes = DetailStyles();
   return (
     <>
       <Typography>General</Typography>
-      <TextFieldWrapper
-        readOnly={readOnly}
-        field="name"
-        label="Full Name"
-        onChange={onChange}
+      <TextField
+        fullWidth
+        variant={"outlined"}
+        style={{ marginTop: "10px" }}
+        label={"Name"}
+        value={name}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          onChange(e.target.value, "name")
+        }
+        helperText="Name is required*"
+        InputProps={{
+          readOnly: readOnly,
+        }}
       />
+
       <Grid container spacing={2}>
         <Grid item xs>
           <TextFieldWrapper
-            readOnly={readOnly}
             field="email"
             label="Email"
             onChange={onChange}
+            value={email}
           />
         </Grid>
         <Grid item xs>
@@ -118,7 +143,7 @@ export const Details: React.FC<{
             />
             {phoneError && (
               <FormHelperText style={{ color: "red" }}>
-                Phone format must be 04.. ... ...
+                Invalid Phone Number
               </FormHelperText>
             )}
           </FormControl>
@@ -140,7 +165,11 @@ export const Details: React.FC<{
             Edit
           </Button>
         ) : (
-          <Button variant="contained" onClick={onUpdate} color="primary">
+          <Button
+            variant="contained"
+            onClick={onUpdateUserDetails}
+            color="primary"
+          >
             Save
           </Button>
         )}
@@ -157,21 +186,16 @@ export const Details: React.FC<{
       <ModalWrapper open={open} onClose={() => setOpen(false)}>
         <Typography> Update your password</Typography>
         <Password
-          field="currPasswd"
+          field="old_password"
           label="Current Password"
-          onChange={onChange}
+          onChange={onPasswordChange}
         />
-        {passIncorrect && (
-          <FormHelperText style={{ color: "red" }}>
-            Password incorrect, could not change password
-          </FormHelperText>
-        )}
         <Password
-          field="newPasswd"
+          field="new_password"
           label="New Password"
-          onChange={onChange}
+          onChange={onPasswordChange}
           onBlur={() => {
-            if (store.newPasswd.length <= 5) setPassTooShort(true);
+            if (store.new_password.length <= 5) setPassTooShort(true);
             else setPassTooShort(false);
           }}
           error={passTooShort}
@@ -182,11 +206,11 @@ export const Details: React.FC<{
           </FormHelperText>
         )}
         <Password
-          field="newPasswdConfirm"
+          field="new_password_confirm"
           label="Confirm Password"
-          onChange={onChange}
+          onChange={onPasswordChange}
           onBlur={() => {
-            if (store.newPasswd !== store.newPasswdConfirm)
+            if (store.new_password !== store.new_password_confirm)
               setPassMatchError(true);
             else setPassMatchError(false);
           }}
@@ -202,10 +226,7 @@ export const Details: React.FC<{
           style={{ marginTop: "15px", display: "flex", flex: 1 }}
           color="primary"
           variant="contained"
-          onClick={() => {
-            setPassIncorrect(false);
-            onChangePassword(() => setPassIncorrect(true));
-          }}
+          onClick={onChangePassword}
           disabled={passTooShort || passMatchError}
         >
           Update Password
