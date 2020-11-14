@@ -178,7 +178,7 @@ const ImageEditor = ({
                 className={avatarClassName}
               >
                 <AddAPhotoOutlinedIcon fontSize="small" />
-                Drop/Upload
+                Upload
               </Button>
               <Fab
                 size="small"
