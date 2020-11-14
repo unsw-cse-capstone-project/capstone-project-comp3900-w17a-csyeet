@@ -3,9 +3,7 @@ from pydantic import BaseModel
 from .common import UserBase
 from .listing import ListingResponse
 
-
-class SignupRequest(UserBase):
-    password: str
+class SignupBase(UserBase):
     name: str
     phone_number: str
     street: str
@@ -13,6 +11,10 @@ class SignupRequest(UserBase):
     postcode: str
     state: str
     country: str
+
+
+class SignupRequest(SignupBase):
+    password: str
 
 
 class LoginRequest(UserBase):
@@ -61,15 +63,8 @@ class UpdateUserResponse(UpdateUserBase):
     pass
 
 
-class GoogleSignupRequest(UserBase):
+class GoogleSignupRequest(SignupBase):
     google_id: str
-    name: str
-    phone_number: str
-    street: str
-    suburb: str
-    postcode: str
-    state: str
-    country: str
 
 
 class GoogleLoginRequest(UserBase):
