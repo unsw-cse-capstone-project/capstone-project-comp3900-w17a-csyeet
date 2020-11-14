@@ -81,7 +81,6 @@ export const PreviewListing = observer(
     const confirmedPublish = () => {
       setSubmitting(true);
       onPublish();
-      setSubmitting(false);
     };
 
     const [openConfirmDialog, setDialog] = React.useState<boolean>(false);
