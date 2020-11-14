@@ -52,9 +52,11 @@ export const SelectWrapper = ({
           label={label}
           error={error}
         >
-          <MenuItem disabled value="">
-            <em>None</em>
-          </MenuItem>
+          {!required && (
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+          )}
           {data.map((v, i) => (
             <MenuItem value={v} key={i}>
               {v}
