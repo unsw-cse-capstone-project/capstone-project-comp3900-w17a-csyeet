@@ -25,6 +25,7 @@ export const ListingCardAuctionStyles = makeStyles((theme: Theme) =>
         width: "100%",
       },
       height: "160px",
+      position: "relative",
     },
     starContainer: {
       position: "absolute",
