@@ -241,7 +241,7 @@ const checkSession = async (store: Store) => {
     .find((cookie) => cookie.startsWith("session="));
   if (session) {
     try {
-      const response = await fetch("/users/profile", {
+      const response = await fetch("/users/me", {
         headers: {
           Cookie: session.split("=")[1],
         },

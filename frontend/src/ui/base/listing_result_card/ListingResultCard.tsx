@@ -154,7 +154,7 @@ export const ListingResultCard = observer(
               auction_start={auction_start}
               registered_bidder={registered_bidder}
               isUser={userStore?.user !== undefined}
-              isOwner={(userStore?.user as any).id === owner.id}
+              isOwner={!!userStore?.user && userStore?.user.id === owner.id}
             />
             <BidStatus />
             {registered_bidder && userStore && userStore.user && (
