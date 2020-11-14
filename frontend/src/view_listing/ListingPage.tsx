@@ -142,6 +142,7 @@ export const ListingPage = observer(
               disableAction={disableActions}
               registered_bidder={registered_bidder}
               isUser={userStore?.user !== undefined}
+              isOwner={(userStore?.user as any).id === owner.id}
             />
             <Map listing={listing} />
             <SellerProfile
@@ -156,9 +157,7 @@ export const ListingPage = observer(
                   variant="contained"
                   color="primary"
                   style={{ marginTop: "10px" }}
-                  onClick={() =>
-                    history.push(`/messages?to=${id}`)
-                  }
+                  onClick={() => history.push(`/messages?to=${id}`)}
                 >
                   Send Message
                 </Button>
@@ -216,7 +215,13 @@ const ImageSection = ({
           },
         },
       },
-      bigImage: { width: "100%", height: "100%", objectFit: "cover" },
+      bigImage: {
+        width: "100%",
+        height: "100%",
+        objectFit: "contain",
+        maxHeight: "50vw",
+        backgroundColor: "#333",
+      },
     })
   )();
 

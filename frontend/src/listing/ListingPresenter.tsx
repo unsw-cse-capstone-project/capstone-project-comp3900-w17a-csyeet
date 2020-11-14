@@ -256,7 +256,6 @@ export class ListingPresenter {
 
       // Delete old images
       for (var i = 0; i < store.imagesToDelete.length; ++i) {
-        console.log("deleting image with id: ", store.imagesToDelete[i]);
         if (
           !this.deleteImages(
             store.listing.id as number,

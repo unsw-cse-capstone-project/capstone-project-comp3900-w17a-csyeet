@@ -44,7 +44,7 @@ def map_listing_response(listing, current_user: Optional[User], session: Session
     registered_bidder = is_user_registered_bidder(
         listing, current_user, session)
     is_owner = current_user is not None and current_user.id == listing.owner_id
-    return map_listing_to_response(listing, highest_bid, starred, registered_bidder, is_owner)
+    return map_listing_to_response(listing, highest_bid and highest_bid.bid, starred, registered_bidder, is_owner)
 
 
 def get_field_for_feature(feature: Feature) -> str:

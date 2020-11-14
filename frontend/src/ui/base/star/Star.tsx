@@ -18,6 +18,9 @@ export const Star = ({
   onUnstar?: () => void;
 }) => {
   const [isStarred, setIsStarred] = React.useState(starred);
+  React.useEffect(() => {
+    setIsStarred(starred);
+  }, [starred])
   const [isError, setIsError] = React.useState(false);
   const onClick = async () => {
     if (isStarred) {
