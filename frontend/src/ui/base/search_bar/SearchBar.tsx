@@ -59,7 +59,10 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
     searchQuery += featuresString !== "" ? "&features=" + featuresString : "";
     searchQuery +=
       landmarksString !== "" ? "&landmarks=" + landmarksString : "";
-    searchQuery += closed_auction === 'true' ? `&include_closed_auctions=true` : `&include_closed_auctions=false`;
+    searchQuery +=
+      closed_auction === "true"
+        ? `&include_closed_auctions=true`
+        : `&include_closed_auctions=false`;
 
     history.push("/search?" + searchQuery);
   };
@@ -256,7 +259,6 @@ export function NumberPicker(props: {
   );
 }
 
-
 export function FeaturePicker(props: { store: SearchStore }) {
   // Options for picker
   const features = [
@@ -417,13 +419,14 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
 export function ClosedAuctionsPicker(props: { store: SearchStore }) {
   const classes = SearchBarStyles();
 
-  const [closedAuction, setClosedAuction] = React.useState(props.store.filters.closed_auction);
+  const [closedAuction, setClosedAuction] = React.useState(
+    props.store.filters.closed_auction
+  );
 
   const onChange = action((event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.checked);
-    setClosedAuction(event.target.checked === true ? 'true' : 'false');
+    setClosedAuction(event.target.checked === true ? "true" : "false");
     props.store.filters.closed_auction =
-      event.target.checked === true ? 'true' : 'false';
+      event.target.checked === true ? "true" : "false";
   });
 
   return (
@@ -431,8 +434,8 @@ export function ClosedAuctionsPicker(props: { store: SearchStore }) {
       className={classes.formControl}
       size="small"
       variant="outlined"
-      style={{ flex: 1, background: 'none' }}>
-
+      style={{ flex: 1, background: "none" }}
+    >
       <FormControlLabel
         control={
           <Checkbox
@@ -440,12 +443,11 @@ export function ClosedAuctionsPicker(props: { store: SearchStore }) {
             onChange={onChange}
             name="Closed Auction"
             color="primary"
-            style={{ paddingLeft: '20px' }}
+            style={{ paddingLeft: "20px" }}
           />
         }
         label="Include Closed Auctions"
       />
-    </FormControl >
-
+    </FormControl>
   );
 }

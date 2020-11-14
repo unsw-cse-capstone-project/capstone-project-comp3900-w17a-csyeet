@@ -120,7 +120,6 @@ export class ListingPresenter {
         const address: AddressDetails = getAddressFromResult(result);
         const auction: AuctionDetails = getAuctionFromResult(result);
         const payment: PaymentDetails = getPaymentFromResult(result);
-        console.log(auction.auction_start, typeof auction.auction_start);
         const auctionState =
           new Date().getTime() >= (auction.auction_start as Date).getTime()
             ? "ongoing-auction"
