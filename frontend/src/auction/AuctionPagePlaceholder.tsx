@@ -33,6 +33,9 @@ const AuctionPagePlaceholderStyle = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Place holder for auction page while the page is in a loading state
+ */
 export const AuctionPagePlaceholder = () => {
   const classes = AuctionPagePlaceholderStyle();
   return (

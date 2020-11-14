@@ -12,12 +12,19 @@ function Alert(props: AlertProps) {
   return <MuiAlert variant="filled" {...props} />;
 }
 
+
 export const AddListingPage = () => {
   const presenter = new ListingPresenter();
   const store = new ListingStore();
   return <AddListingPageBase store={store} presenter={presenter} />;
 };
 
+/**
+ * Add Listing component - contains the listing form flow for users to enter
+ * property details, as well as preview their new listing
+ * @param store
+ * @param presenter
+ */
 export const AddListingPageBase = observer(
   ({
     store,
@@ -73,12 +80,12 @@ export const AddListingPageBase = observer(
                 />
               </>
             ) : (
-              <PreviewListing
-                store={store}
-                onBack={() => setIsEditing(true)}
-                onPublish={onPublish}
-              />
-            )}
+                <PreviewListing
+                  store={store}
+                  onBack={() => setIsEditing(true)}
+                  onPublish={onPublish}
+                />
+              )}
           </div>
         </div>
         {status !== null && (

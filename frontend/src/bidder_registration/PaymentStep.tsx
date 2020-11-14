@@ -18,6 +18,7 @@ interface NumberFormatCustomProps {
 
 /**
  * Payment Step for bidder registration
+ * @param BidderRegistrationStore
  */
 export const PaymentStep = ({ store }: {
   store: BidderRegistrationStore;

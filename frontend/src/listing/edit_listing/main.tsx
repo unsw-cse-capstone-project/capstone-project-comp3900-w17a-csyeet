@@ -34,6 +34,11 @@ export const EditListingPage = () => {
   );
 };
 
+/**
+ * Edit Listing Page component that allows users to make changes to existing properties
+ * @param store
+ * @param onUpdatelisting
+ */
 export const EditListingPageBase = observer(
   ({
     store,
@@ -55,7 +60,7 @@ export const EditListingPageBase = observer(
     const onSuccess = () => {
       setStatus("success");
       setOpen(true);
-      history.push("/listing/" + store.listing.id?.toString());
+      history.push("/listing/" + store.listing.id ?.toString());
     };
 
     const onError = () => {
@@ -97,12 +102,12 @@ export const EditListingPageBase = observer(
               />
             </>
           ) : (
-            <PreviewListing
-              store={store}
-              onBack={() => setIsEditing(true)}
-              onPublish={onPublish}
-            />
-          )}
+              <PreviewListing
+                store={store}
+                onBack={() => setIsEditing(true)}
+                onPublish={onPublish}
+              />
+            )}
         </div>
         {status !== null && (
           <Snackbar

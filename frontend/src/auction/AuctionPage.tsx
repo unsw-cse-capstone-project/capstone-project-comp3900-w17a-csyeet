@@ -23,6 +23,13 @@ export type AuctionBid = {
 /**
  * Auction Page Component that shows the details of the auction including
  * time, current bid, bidders and bids
+ * @param address
+ * @param auction_start
+ * @param auction_end
+ * @param mainImage
+ * @param BiddinBox
+ * @param BidsList
+ * @param BiddersList
  */
 export const AuctionPage = ({
   address,

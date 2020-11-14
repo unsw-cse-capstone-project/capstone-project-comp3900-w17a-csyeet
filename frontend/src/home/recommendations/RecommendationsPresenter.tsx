@@ -2,6 +2,9 @@ import { observable, action, runInAction, makeObservable } from "mobx";
 import { ListingActual } from "../../ui/util/types/listing";
 import { getListingFromResult } from "../../ui/util/helper";
 
+/**
+ * Store for recommendations component
+ */
 export class RecommendationsStore {
   @observable
   state?: "loading" | "loaded" | "error";

@@ -20,6 +20,14 @@ export type AddressDetails = {
   country: string;
 };
 
+/**
+ * Form for users to update details about an existing listing under thteir
+ * account. Fields that can be changed are Property Images, Description, Features,
+ * Auction Details and Payment Details
+ * @param store
+ * @param onPreview
+ * @param onBack
+ */
 export const EditListingForm = observer(
   ({
     store,
