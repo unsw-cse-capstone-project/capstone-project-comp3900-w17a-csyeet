@@ -1,5 +1,4 @@
 import Resizer from "react-image-file-resizer";
-import { ImageType } from "react-images-uploading";
 import { Address } from "../../auction/AuctionPage";
 import { createFakeListing } from "./fakes/listing";
 
@@ -70,7 +69,7 @@ export const getListingFromResult = (result: any) => ({
   num_bathrooms: parseInt(result.num_bathrooms),
   num_car_spaces: parseInt(result.num_car_spaces),
   auction_start: new Date(result.auction_start),
-  auction_end: new Date('2020-11-14T22:00:00'),//new Date(result.auction_end),
+  auction_end: new Date(result.auction_end),
   images:
     result["image_ids"].length !== 0
       ? result["image_ids"].map(
