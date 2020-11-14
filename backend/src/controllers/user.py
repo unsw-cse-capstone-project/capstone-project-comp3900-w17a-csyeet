@@ -89,7 +89,7 @@ def get_user_info(id: int, session: Session = Depends(get_session)):
     return user
 
 
-@router.get('/', response_model=UserResponse)
+@router.get('/me', response_model=UserResponse)
 def get_own_info(signed_in_user: User = Depends(get_signed_in_user)):
     ''' Get the signed in user's basic info '''
     return signed_in_user
