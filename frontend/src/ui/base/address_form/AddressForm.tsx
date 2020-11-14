@@ -31,10 +31,10 @@ export const AddressForm = observer(
   }: {
     onChange: (value: string, field: string) => void;
     addressData: AddressDetails;
-    readOnly?: boolean;
     style?: React.CSSProperties;
     className?: string;
-    where?: "other" | "signUp";
+    readOnly?: boolean;
+    where?: 'other' | 'signUp';
   }) => {
     // Get all the countries
     const countryStateData = require("./country-state.json");

@@ -1,7 +1,8 @@
 import { action, runInAction } from "mobx";
 import { observable, makeObservable } from "mobx";
-import { ImageListType } from "react-images-uploading";
+import { ImageListType, ImageType } from "react-images-uploading";
 import { AddressDetails } from "../ui/base/address_form/AddressForm";
+import { resizeFile } from "../ui/util/helper";
 
 export type ListingDetails = {
   id: number | null;
@@ -54,9 +55,9 @@ const getAuctionFromResult = (result: any) => ({
 });
 
 const getPaymentFromResult = (result: any) => ({
-  account_name: result.account_name,
-  bsb: result.bsb,
-  account_number: result.account_number,
+  account_name: result.account_name || "Jane Doe",
+  bsb: result.bsb || "123456",
+  account_number: result.account_number || "12345678",
 });
 
 export class ListingStore {
@@ -176,12 +177,14 @@ export class ListingPresenter {
 
       let form = new FormData();
       const data = await Promise.all(
-        store.imageList.map((image) =>
-          (image.file as any).arrayBuffer().then((buffer: any) => ({
+        store.imageList.map(async (image) => {
+          const resized = await resizeFile(image.file as File);
+          const buffer = await (resized as Blob).arrayBuffer();
+          return {
             data: buffer,
             type: (image.file as any).type,
-          }))
-        )
+          };
+        })
       );
       data.forEach((image) => {
         form.append("files", new Blob([image.data], { type: image.type }));

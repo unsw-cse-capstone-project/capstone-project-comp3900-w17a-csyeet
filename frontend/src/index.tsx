@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-import { AuthProvider, SignInArgs, SignUpArgs, useStore } from "./AuthContext";
+import { AuthProvider, SignInArgs, SignUpArgs, useStore, SignUpGoogleArgs } from './AuthContext';
 import { observer } from "mobx-react";
 import { SearchPage } from "./search/main";
 import { ProfilePage } from "./profile/main";
@@ -24,11 +24,9 @@ import {
 } from "@material-ui/core/styles";
 import { ErrorPage } from "./error/main";
 import { Footer } from "./ui/base/footer/Footer";
-import {
-  Authentication,
-} from "./ui/base/header/authentication/Authentication";
+import { Authentication } from "./ui/base/header/authentication/Authentication";
 import { SignUp } from "./ui/base/header/sign_up/SignUp";
-import { SignIn } from './ui/base/header/sign_in/SignIn';
+import { SignIn } from "./ui/base/header/sign_in/SignIn";
 
 let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);
@@ -52,9 +50,8 @@ const ProtectedComponent = observer(
         <SignUp
           switchMode={() => setSignInMode(true)}
           store={signUpStore}
-          onSubmit={(args: SignUpArgs) =>
-            store.signUp(args)
-          }
+          onSubmitNormal={(args: SignUpArgs) => store.signUp(args)}
+          onSubmitGoogle={(args: SignUpGoogleArgs) => store.signUpGoogle(args)}
           closeModal={() => setOpenModal(false)}
         />
       );
