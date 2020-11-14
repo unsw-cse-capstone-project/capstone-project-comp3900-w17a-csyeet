@@ -2,15 +2,10 @@ import * as React from "react";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import {
-  Grid,
-  ListItem,
-  ListItemIcon,
-  Typography,
-} from "@material-ui/core";
+import { Grid, ListItem, ListItemIcon, Typography } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { toSentenceCase } from "../../ui/util/helper";
-import { FeaturePanelStyles } from './FeaturePanel.css';
+import { FeaturePanelStyles } from "./FeaturePanel.css";
 import * as Icon from "@material-ui/icons";
 
 /**
@@ -42,16 +37,16 @@ export const FeaturesPanel = ({ features }: { features: string[] }) => {
       </AccordionSummary>
       <AccordionDetails className={classes.details}>
         <Grid container spacing={3} className={classes.grid}>
-            {features.map((feature, i) => (
-              <Grid item xs={12} sm={6} key={i} className={classes.listItem}>
-                <ListItem>
-                  <ListItemIcon>{getFeatureIcon(feature)}</ListItemIcon>
-                  <Typography variant="body1">
-                    {toSentenceCase(feature)}
-                  </Typography>
-                </ListItem>
-              </Grid>
-            ))}
+          {features.map((feature, i) => (
+            <Grid item xs={12} sm={6} key={i} className={classes.listItem}>
+              <ListItem>
+                <ListItemIcon>{getFeatureIcon(feature)}</ListItemIcon>
+                <Typography variant="body1">
+                  {toSentenceCase(feature)}
+                </Typography>
+              </ListItem>
+            </Grid>
+          ))}
         </Grid>
       </AccordionDetails>
     </Accordion>
@@ -60,12 +55,12 @@ export const FeaturesPanel = ({ features }: { features: string[] }) => {
 
 /**
  * Maps a feature name to an icon
- * @param feature 
+ * @param feature
  */
 const getFeatureIcon = (feature: string) => {
   switch (feature) {
     case "ensuite":
-      return <Icon.Accessible />;
+      return <Icon.MeetingRoom />;
     case "builtInWardrobe":
       return <Icon.MeetingRoom />;
     case "bathtub":

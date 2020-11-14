@@ -55,9 +55,9 @@ const getAuctionFromResult = (result: any) => ({
 });
 
 const getPaymentFromResult = (result: any) => ({
-  account_name: result.account_name || "Jane Doe",
-  bsb: result.bsb || "123456",
-  account_number: result.account_number || "12345678",
+  account_name: result.account_name,
+  bsb: result.bsb,
+  account_number: result.account_number,
 });
 
 export class ListingStore {
@@ -120,7 +120,6 @@ export class ListingPresenter {
         const address: AddressDetails = getAddressFromResult(result);
         const auction: AuctionDetails = getAuctionFromResult(result);
         const payment: PaymentDetails = getPaymentFromResult(result);
-        console.log(auction.auction_start, typeof auction.auction_start);
         const auctionState =
           new Date().getTime() >= (auction.auction_start as Date).getTime()
             ? "ongoing-auction"

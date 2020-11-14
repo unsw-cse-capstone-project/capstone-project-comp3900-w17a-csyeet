@@ -11,7 +11,7 @@ import { ProfileAvatar } from "./about/ProfileAvatar";
 import { ProfileStore, ProfilePresenter } from "./ProfilePresenter";
 import { useStore } from "../AuthContext";
 
-export const ProfilePage = observer(() => {
+export const ProfilePage = () => {
   const userStore = useStore();
   if (!userStore || !userStore.user) {
     return null;
@@ -22,7 +22,7 @@ export const ProfilePage = observer(() => {
   return (
     <ProfilePageWrapper
       store={store}
-      onEditBlurb={(blurb: string) => presenter.updateBlurb(blurb, store)}
+      onEditBlurb={() => presenter.updateBlurb(store)}
       onEditAvatar={(image: File, img_url: string) =>
         presenter.updateAvatar(image, img_url, store)
       }
@@ -32,7 +32,7 @@ export const ProfilePage = observer(() => {
       }
     />
   );
-});
+};
 
 export const ProfilePageWrapper = observer(
   ({
@@ -43,7 +43,7 @@ export const ProfilePageWrapper = observer(
     onChangePassword,
   }: {
     store: ProfileStore;
-    onEditBlurb: (blurb: string) => void;
+    onEditBlurb: () => void;
     onEditAvatar: (image: File, img_url: string) => void;
     onUpdateUserDetails: () => void;
     onChangePassword: (onPasswordIncorrect: () => void) => void;
@@ -61,13 +61,13 @@ export const ProfilePageWrapper = observer(
       <div>
         <div className={classes.userInfo}>
           <ProfileAvatar onUpload={onEditAvatar} avatar={store.avatar} />
-          <Typography variant="h4">{userStore.user.name}</Typography>
+          <Typography variant="h4">{store.name}</Typography>
           <Typography variant="body1" color="textSecondary">
             {userStore.user.email}
           </Typography>
           <Blurb
             className={classes.blurbStyle}
-            blurb={store.blurb}
+            store={store}
             onEdit={onEditBlurb}
           />
         </div>

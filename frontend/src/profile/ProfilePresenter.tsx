@@ -1,7 +1,6 @@
 import { action, observable, runInAction, makeObservable } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
 import { getListingFromResult, resizeFile } from "../ui/util/helper";
-import { ImageType } from "react-images-uploading";
 
 export class ProfileStore {
   @observable name: string = "";
@@ -15,7 +14,7 @@ export class ProfileStore {
   @observable state: string = "";
   @observable country: string = "";
 
-  @observable blurb: string = "Update your bio";
+  @observable blurb: string = "";
   @observable avatar: string;
 
   @observable old_password: string = "";
@@ -129,7 +128,7 @@ export class ProfilePresenter {
           store.state = result.state;
           store.country = result.country;
         });
-        // window.location.reload();
+
       }
     } catch {
       runInAction(() => {
@@ -165,23 +164,19 @@ export class ProfilePresenter {
   }
 
   @action
-  async updateBlurb(blurb: string, store: ProfileStore) {
+  async updateBlurb(store: ProfileStore) {
     store.loadingState = "updating";
     try {
+      console.log(store.blurb);
       const response = await fetch(`users/profile`, {
         method: "post",
         body: JSON.stringify({
-          blurb: blurb,
+          blurb: store.blurb,
         }),
       });
       const result = await response.json();
       if ("detail" in result) runInAction(() => (store.loadingState = "error"));
-      else {
-        runInAction(() => {
-          store.loadingState = "success";
-          store.blurb = blurb;
-        });
-      }
+      else runInAction(() => (store.loadingState = "success"));
     } catch {
       runInAction(() => (store.loadingState = "error"));
     }
