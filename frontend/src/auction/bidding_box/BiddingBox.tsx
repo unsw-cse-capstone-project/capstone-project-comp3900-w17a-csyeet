@@ -81,7 +81,9 @@ export const BiddingBox = observer(
             <b>{isAuctionClosed ? "Final Bid" : "Current Bid"}</b>
           </Typography>
           {!currentBid || !BidderTag ? (
-            <Typography variant="body1" color="textSecondary">No bids yet</Typography>
+            <Typography variant="body1" color="textSecondary">
+              No bids yet
+            </Typography>
           ) : (
             <BidPriceWithBidderTag
               BidPrice={BidPriceWrapper}

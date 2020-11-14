@@ -71,25 +71,20 @@ export const ListingCardAuction = ({
   const classes = ListingCardAuctionStyles();
   return (
     <Card className={classes.card} style={style}>
-      <div className={classes.cardContent}>
-        <div className={classes.sliderContainer}>
-          <Slider {...settings}>
-            {images.map((image, i) => (
-              <img
-                className={classes.imageContainer}
-                src={image}
-                key={i}
-                alt={"sm-img-" + i}
-              />
-            ))}
-          </Slider>
-        </div>
+      <div className={classes.sliderContainer}>
+        <img
+          className={classes.imageContainer}
+          src={images[0]}
+          alt={"sm-img"}
+        />
         <AuctionTag
           className={classes.auctionTagStyle}
           start={auction_start as Date}
           end={auction_end as Date}
           style={{ marginTop: "2px", marginBottom: "2px" }}
         />
+      </div>
+      <div className={classes.cardContent}>
         <div className={classes.cardContent}>
           {userStore?.user && (
             <div className={classes.starContainer}>

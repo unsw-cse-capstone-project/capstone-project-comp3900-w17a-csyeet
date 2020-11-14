@@ -107,13 +107,21 @@ const ProfileDialog = (props: {
           {!props.listings ? (
             <ListingCardSmallLoadingRow />
           ) : (
-            <Grid container spacing={3}>
-              {props.listings.map((listing, i) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={i}>
-                  <ListingCardSmall listing={listing} />
+            <div>
+              {props.listings.length === 0 ? (
+                <Typography variant="body1" color="textSecondary">
+                  Seller has no listings
+                </Typography>
+              ) : (
+                <Grid container spacing={3}>
+                  {props.listings.map((listing, i) => (
+                    <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={i}>
+                      <ListingCardSmall listing={listing} />
+                    </Grid>
+                  ))}
                 </Grid>
-              ))}
-            </Grid>
+              )}
+            </div>
           )}
         </div>
       </DialogContent>
