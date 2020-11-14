@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import RedirectResponse, Response
 from sqlalchemy.orm import Session
 from ..schemas import LoginRequest, SignupRequest, UserResponse, GoogleLoginRequest, GoogleSignupRequest
-from ..helpers import get_session, load_user, hash_password, password_matches, cookie_name, create_token, get_current_user, is_google_user
+from ..helpers import get_session, load_user, hash_password, password_matches, cookie_name, create_token, get_current_user, is_google_user, validate_google_id_token
 from ..models import User
 
 router = APIRouter()
@@ -27,7 +27,9 @@ def google_signup(req: GoogleSignupRequest, session: Session = Depends(get_sessi
     ''' Signs up a new user and logs them in through Google SSO '''
     if load_user(req.email, session) is not None:
         raise HTTPException(409, detail='Email already in use')
-
+    
+    validate_google_id_token(req.google_id_token)
+    
     user_data = req.dict()
     user = User(**user_data)
     session.add(user)
@@ -59,9 +61,8 @@ def google_login(req: GoogleLoginRequest, response: Response, session: Session =
         raise HTTPException(401, detail='Invalid email')
     if not is_google_user(user):
         raise HTTPException(401, detail='User did not sign up with Google SSO')
-    if user.google_id != req.google_id:
-        raise HTTPException(401, detail='Invalid Google id')
-
+    
+    validate_google_id_token(req.google_id_token)
     token = create_token(req.email)
     response.set_cookie(cookie_name, token.decode(), httponly=False)
     return user

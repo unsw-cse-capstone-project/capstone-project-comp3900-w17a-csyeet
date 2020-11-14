@@ -64,8 +64,8 @@ class UpdateUserResponse(UpdateUserBase):
 
 
 class GoogleSignupRequest(SignupBase):
-    google_id: str
+    google_id_token: str
 
 
 class GoogleLoginRequest(UserBase):
-    google_id: str
+    google_id_token: str

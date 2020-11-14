@@ -11,7 +11,6 @@ class User(Base):
     id: Column = Column(Integer, primary_key=True)
     email: Column = Column(String(), unique=True, nullable=False)
     hashed_password: Column = Column(String(), nullable=True)
-    google_id: Column = Column(String(), nullable=True)
     name: Column = Column(String(), nullable=False)
     blurb: Column = Column(Text(), nullable=True)
     avatar_data: Column = Column(LargeBinary(), nullable=True)
