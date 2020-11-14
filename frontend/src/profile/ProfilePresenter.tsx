@@ -15,6 +15,7 @@ export class ProfileStore {
   @observable country: string = "";
 
   @observable blurb: string = "";
+  @observable tmpBlurb: string = "";
   @observable avatar: string;
 
   @observable old_password: string = "";
@@ -74,6 +75,9 @@ export class ProfilePresenter {
           store.state = content.state;
           store.country = content.country;
           store.blurb = !!content["blurb"]
+            ? content["blurb"]
+            : "Update your bio";
+          store.tmpBlurb = !!content["blurb"]
             ? content["blurb"]
             : "Update your bio";
           store.myBidsResults = BidsResults.sort(
@@ -165,8 +169,8 @@ export class ProfilePresenter {
   @action
   async updateBlurb(store: ProfileStore) {
     store.loadingState = "updating";
+    console.log(store.blurb, store.tmpBlurb);
     try {
-      console.log(store.blurb);
       const response = await fetch(`users/profile`, {
         method: "post",
         body: JSON.stringify({
@@ -175,7 +179,12 @@ export class ProfilePresenter {
       });
       const result = await response.json();
       if ("detail" in result) runInAction(() => (store.loadingState = "error"));
-      else runInAction(() => (store.loadingState = "success"));
+      else
+        runInAction(() => {
+          store.loadingState = "success";
+          store.blurb = store.tmpBlurb;
+        });
+      console.log(store.blurb, store.tmpBlurb);
     } catch {
       runInAction(() => (store.loadingState = "error"));
     }
