@@ -1,6 +1,6 @@
 import { action, runInAction } from "mobx";
 import { observable, makeObservable } from "mobx";
-import { ImageListType } from "react-images-uploading";
+import { ImageListType, ImageType } from "react-images-uploading";
 import { AddressDetails } from "../ui/base/address_form/AddressForm";
 import { resizeFile } from "../ui/util/helper";
 
@@ -95,7 +95,7 @@ export class ListingStore {
 
   @observable auctionState: string = "pre-auction";
   @observable imageList: ImageListType = [];
-  @observable imagesToDelete: number[] = [];
+  @observable imagesToDelete: string[] = [];
 
   constructor() {
     makeObservable(this);
@@ -208,6 +208,11 @@ export class ListingPresenter {
     }
   }
 
+  private onUpdateError(onError: () => void) {
+    onError();
+    window.location.reload();
+  }
+
   @action
   async updateListing(
     store: ListingStore,
@@ -244,19 +249,31 @@ export class ListingPresenter {
       );
       const result = await response.json();
       if ("detail" in result) {
-        onError();
+        this.onUpdateError(onError);
         return;
       }
 
       // Upload new images
       if (!this.uploadImages(store.listing.id as number, store.imageList)) {
-        onError();
+        this.onUpdateError(onError);
         return;
       }
 
-      // Delete previously uploaded images
+      // Delete old images
+      for (var i = 0; i < store.imagesToDelete.length; ++i) {
+        if (
+          !this.deleteImages(
+            store.listing.id as number,
+            store.imagesToDelete[i]
+          )
+        )
+          this.onUpdateError(onError);
+      }
+
+      // Everything has been done
+      onSuccess();
     } catch {
-      onError();
+      this.onUpdateError(onError);
     }
   }
 
@@ -295,22 +312,31 @@ export class ListingPresenter {
     }
   }
 
+  /**
+   * Get the image id from the string
+   * URL: /listing/images/45
+   * Returns 45
+   */
+  private getImageId = (url: string) => {
+    var i = url.length;
+    while (url[i] != "/") --i;
+    return url.slice(i, url.length);
+  };
+
   @action
-  async deleteImages(
-    listing_id: number,
-    image_id: number,
-    onError: () => void
-  ) {
+  async deleteImages(listing_id: number, image_url: string) {
     try {
+      const image_id = this.getImageId(image_url);
       const response = await fetch(
         `/listings/${listing_id}/images/${image_id}`,
         {
           method: "delete",
         }
       );
-      if (response.status !== 200) onError();
+      if (response.status !== 200) return false;
+      return true;
     } catch {
-      onError();
+      return false;
     }
   }
 }
