@@ -46,6 +46,7 @@ const Template: Story<{
       registered_bidder={props.registered_bidder}
       id={1}
       isUser={false}
+      isOwner={false}
     />
   );
 };

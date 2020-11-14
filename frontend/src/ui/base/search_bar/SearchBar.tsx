@@ -393,7 +393,6 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
 
   return (
     <DateRangePicker
-      disablePast
       value={value}
       onChange={onChange}
       renderInput={(startProps: any, endProps: any) => (
