@@ -95,7 +95,7 @@ export class ListingStore {
 
   @observable auctionState: string = "pre-auction";
   @observable imageList: ImageListType = [];
-  @observable imagesToDelete: number[] = [];
+  @observable imagesToDelete: string[] = [];
 
   constructor() {
     makeObservable(this);
@@ -253,6 +253,21 @@ export class ListingPresenter {
         onError();
         return;
       }
+
+      // Delete old images
+      for (var i = 0; i < store.imagesToDelete.length; ++i) {
+        console.log("deleting image with id: ", store.imagesToDelete[i]);
+        if (
+          !this.deleteImages(
+            store.listing.id as number,
+            store.imagesToDelete[i]
+          )
+        )
+          onError();
+      }
+
+      // Everything has been done
+      onSuccess();
     } catch {
       onError();
     }
@@ -293,22 +308,31 @@ export class ListingPresenter {
     }
   }
 
+  /**
+   * Get the image id from the string
+   * URL: /listing/images/45
+   * Returns 45
+   */
+  private getImageId = (url: string) => {
+    var i = url.length;
+    while (url[i] != "/") --i;
+    return url.slice(i, url.length);
+  };
+
   @action
-  async deleteImages(
-    listing_id: number,
-    image_id: number,
-    onError: () => void
-  ) {
+  async deleteImages(listing_id: number, image_url: string) {
     try {
+      const image_id = this.getImageId(image_url);
       const response = await fetch(
         `/listings/${listing_id}/images/${image_id}`,
         {
           method: "delete",
         }
       );
-      if (response.status !== 200) onError();
+      if (response.status !== 200) return false;
+      return true;
     } catch {
-      onError();
+      return false;
     }
   }
 }
