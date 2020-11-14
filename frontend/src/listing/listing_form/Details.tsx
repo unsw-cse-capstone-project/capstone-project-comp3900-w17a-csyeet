@@ -69,6 +69,7 @@ export const Details: React.FC<{
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 onChange(e.target.value, "num_bedrooms");
               }}
+              isCarPicker={false}
             />
           </Paper>
         </Grid>
@@ -85,6 +86,7 @@ export const Details: React.FC<{
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 onChange(e.target.value, "num_bathrooms");
               }}
+              isCarPicker={false}
             />
           </Paper>
         </Grid>
@@ -101,6 +103,7 @@ export const Details: React.FC<{
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 onChange(e.target.value, "num_car_spaces");
               }}
+              isCarPicker={true}
             />
           </Paper>
         </Grid>
