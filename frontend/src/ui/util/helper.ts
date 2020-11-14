@@ -1,3 +1,5 @@
+import Resizer from "react-image-file-resizer";
+import { ImageType } from "react-images-uploading";
 import { Address } from "../../auction/AuctionPage";
 import { createFakeListing } from "./fakes/listing";
 
@@ -115,6 +117,8 @@ export const getNumCards = (width: string) => {
       return 3;
     case "lg":
       return 4;
+    case "xl":
+      return 5;
     default:
       return 3;
   }
@@ -130,3 +134,19 @@ export const isValidEmail = (email: string) => {
   }
   return true;
 };
+
+export const resizeFile = (file: File) =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file as Blob,
+      1000,
+      1000,
+      (file as any).type.slice(6),
+      80,
+      0,
+      (uri) => {
+        resolve(uri);
+      },
+      "blob"
+    );
+  });

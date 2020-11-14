@@ -30,11 +30,6 @@ export const SelectWrapper = ({
   };
 
   const [error, setError] = React.useState<boolean>(false);
-  const handleBlur = () => {
-    if (required && selected === "") setError(true);
-    else setError(false);
-  };
-
   return (
     <div>
       <FormControl
@@ -55,24 +50,20 @@ export const SelectWrapper = ({
           value={selected}
           onChange={handleChange}
           label={label}
-          onBlur={handleBlur}
           error={error}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
+          {!required && (
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+          )}
           {data.map((v, i) => (
             <MenuItem value={v} key={i}>
               {v}
             </MenuItem>
           ))}
         </Select>
-      </FormControl>
-      {error && (
-        <FormHelperText style={{ color: "red" }}>
-          {label} is required*
-        </FormHelperText>
-      )}
+      </FormControl>{" "}
     </div>
   );
 };

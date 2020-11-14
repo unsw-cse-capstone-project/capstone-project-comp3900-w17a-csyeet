@@ -6,6 +6,7 @@ export const TextFieldWrapper = ({
   field,
   label,
   type = "text",
+  size = "medium",
   adornment = null,
   value = "",
   error,
@@ -25,6 +26,7 @@ export const TextFieldWrapper = ({
   onBlur?: () => void;
   onChange?: (value: string, field: string) => void;
   readOnly?: boolean;
+  size?: "small" | "medium";
   style?: React.CSSProperties;
 }) => {
   const [v, setValue] = React.useState<string>(value);
@@ -51,9 +53,10 @@ export const TextFieldWrapper = ({
     }
   };
   return (
-    <div style={{ marginTop: "10px" }}>
+    <div style={{ marginTop: "5px" }}>
       <TextField
         error={e || error ? true : false}
+        size={size}
         fullWidth
         style={style}
         variant={"outlined"}

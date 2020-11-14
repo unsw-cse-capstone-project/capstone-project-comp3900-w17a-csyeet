@@ -18,6 +18,7 @@ export const SearchPage = () => {
   const landmarks = useQuery().get("landmarks") || undefined;
   let featureList = features ?.split("_");
   let landmarkList = landmarks ?.split("_");
+  let closed_auction = useQuery().get("include_closed_auctions") || undefined;
 
   if (query === null || query === "") {
     return <Redirect to="/" />;
@@ -37,6 +38,7 @@ export const SearchPage = () => {
     end,
     featureList,
     landmarkList,
+    closed_auction,
   );
   return <Page />;
 };

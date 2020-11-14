@@ -129,7 +129,12 @@ export const Step1 = observer(({ store }: { store: SignUpStore }) => {
   });
 
   return (
-    <FormControl fullWidth variant="outlined" error={phoneError} style={{marginTop: "10px"}}>
+    <FormControl
+      fullWidth
+      variant="outlined"
+      error={phoneError}
+      style={{ marginTop: "10px" }}
+    >
       <InputLabel
         htmlFor="outlined-adornment-card"
         style={{ background: "white" }}
@@ -148,7 +153,7 @@ export const Step1 = observer(({ store }: { store: SignUpStore }) => {
       />
       {phoneError && (
         <FormHelperText style={{ color: "red" }}>
-          Phone format must be 04.. ... ...
+          Phone format must be 04xx xxx xxx
         </FormHelperText>
       )}
     </FormControl>

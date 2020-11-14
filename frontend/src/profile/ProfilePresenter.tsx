@@ -1,10 +1,24 @@
 import { action, observable, runInAction, makeObservable } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
-import { getListingFromResult } from "../ui/util/helper";
+import { getListingFromResult, resizeFile } from "../ui/util/helper";
+import { ImageType } from "react-images-uploading";
 
 export class ProfileStore {
+  @observable name: string = "";
+  @observable email: string = "";
+  @observable phone_number: string = "";
+  @observable street: string = "";
+  @observable suburb: string = "";
+  @observable postcode: string = "";
+  @observable state: string = "";
+  @observable country: string = "";
+
   @observable blurb: string = "Update your bio";
   @observable avatar: string;
+
+  @observable old_password: string = "";
+  @observable new_password: string = "";
+  @observable new_password_confirm: string = "";
 
   @observable
   myBidsResults: ListingActual[] = [];
@@ -48,6 +62,14 @@ export class ProfilePresenter {
 
         runInAction(() => {
           store.loadingState = "loaded";
+          store.name = content.name;
+          store.email = content.email;
+          store.phone_number = content.phone_number;
+          store.street = content.street;
+          store.suburb = content.suburb;
+          store.postcode = content.postcode;
+          store.state = content.state;
+          store.country = content.country;
           store.blurb = !!content["blurb"]
             ? content["blurb"]
             : "Update your bio";
@@ -65,6 +87,64 @@ export class ProfilePresenter {
     } catch {
       runInAction(() => {
         store.loadingState = "error";
+      });
+    }
+  }
+
+  @action
+  async updateUserDetails(store: ProfileStore) {
+    store.loadingState = "updating";
+    try {
+      const response = await fetch(`users/profile`, {
+        method: "post",
+        body: JSON.stringify({
+          name: store.name,
+          phone_number: store.phone_number,
+          street: store.street,
+          suburb: store.suburb,
+          postcode: store.postcode,
+          state: store.state,
+          country: store.country,
+        }),
+      });
+      const result = await response.json();
+      if ("detail" in result)
+        runInAction(() => {
+          store.loadingState = "error";
+        });
+      else {
+        runInAction(() => (store.loadingState = "success"));
+        window.location.reload();
+      }
+    } catch {
+      runInAction(() => {
+        store.loadingState = "error";
+        window.location.reload();
+      });
+    }
+  }
+
+  @action
+  async updateUserPassword(
+    store: ProfileStore,
+    onPasswordIncorrect: () => void
+  ) {
+    store.loadingState = "updating";
+    try {
+      const response = await fetch(`users/profile`, {
+        method: "post",
+        body: JSON.stringify({
+          old_password: store.old_password,
+          new_password: store.new_password,
+        }),
+      });
+      const result = await response.json();
+      if ("detail" in result) onPasswordIncorrect();
+      else runInAction(() => (store.loadingState = "success"));
+    } catch {
+      runInAction(() => {
+        store.loadingState = "error";
+        window.location.reload();
       });
     }
   }
@@ -96,7 +176,8 @@ export class ProfilePresenter {
   async updateAvatar(image: File, img_url: string, store: ProfileStore) {
     runInAction(() => (store.loadingState = "updating"));
     let form = new FormData();
-    let data = await image.arrayBuffer();
+    const resized = await resizeFile(image as File);
+    let data = await (resized as Blob).arrayBuffer();
     form.append("file", new Blob([data], { type: image.type }));
     try {
       const response = await fetch(`/users/avatar`, {

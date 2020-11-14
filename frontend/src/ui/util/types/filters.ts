@@ -7,4 +7,5 @@ export type Filters = {
   start_date?: Date;
   end_date?: Date;
   landmarks?: string[];
+  closed_auction?: string;
 };
