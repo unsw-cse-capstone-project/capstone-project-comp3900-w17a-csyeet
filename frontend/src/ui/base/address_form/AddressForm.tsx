@@ -40,7 +40,6 @@ export const AddressForm = observer(
   }: {
     onChange: (value: string, field: string) => void;
     addressData: AddressDetails;
-    readOnly?: boolean;
     style?: React.CSSProperties;
     className?: string;
     readOnly?: boolean;
