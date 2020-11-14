@@ -76,6 +76,9 @@ export const Countdown = observer((props: { date: Date }) => {
     return { days, hours, minutes, seconds };
   };
   const classes = useStyles();
+  if (timeLeftMs < 0) {
+    timeLeftMs = 0;
+  }
   const timeStuff = getTimeStuff(timeLeftMs);
 
   return (
