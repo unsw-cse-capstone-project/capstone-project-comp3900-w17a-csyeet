@@ -50,6 +50,7 @@ export const ListingResultCard = observer(
       starred,
       registered_bidder,
       highest_bid,
+      owner,
       reserve_met,
     } = props.listing;
     const history = useHistory();
@@ -97,7 +98,7 @@ export const ListingResultCard = observer(
           </Slider>
         </div>
         <CardContent className={classes.cardContent}>
-          {userStore ?.user && (
+          {userStore?.user && (
             <div className={classes.starContainer}>
               <Star id={id} starred={starred} />
             </div>
@@ -152,7 +153,8 @@ export const ListingResultCard = observer(
               id={id}
               auction_start={auction_start}
               registered_bidder={registered_bidder}
-              isUser={userStore ?.user !== undefined}
+              isUser={userStore?.user !== undefined}
+              isOwner={(userStore?.user as any).id === owner.id}
             />
             <BidStatus />
             {registered_bidder && userStore && userStore.user && (
