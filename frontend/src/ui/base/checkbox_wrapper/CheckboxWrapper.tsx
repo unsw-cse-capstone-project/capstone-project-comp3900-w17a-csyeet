@@ -1,6 +1,9 @@
 import React from "react";
 import { FormControlLabel, Checkbox } from "@material-ui/core";
 
+/**
+ * Checkbox wraps around material ui checkbox
+ */
 export const CheckboxWrapper: React.FC<{
   checked: boolean;
   field: string;

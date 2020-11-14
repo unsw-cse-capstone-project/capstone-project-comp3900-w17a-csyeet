@@ -15,38 +15,17 @@ import { InfoPopup } from "../../ui/base/info_popup/InfoPopup";
 import { ListingStore } from "../ListingPresenter";
 import NumberFormat from "react-number-format";
 
-const AuctionStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      display: "flex",
-      flexDirection: "column",
-    },
-    reserveLabel: {
-      marginTop: "15px",
-      width: "150px",
-      position: "relative",
-    },
-    infoContainer: {
-      position: "absolute",
-      width: "40%",
-      top: "15px",
-      right: "5px",
-    },
-    dateContainer: {
-      padding: "15px",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-    },
-  })
-);
-
 interface NumberFormatCustomProps {
   inputRef: (instance: NumberFormat | null) => void;
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
 }
 
+/**
+ * Auction Detail Step
+ * Includes: Auction Start and End Picker & Reserve Price Input
+ * @param store
+ */
 export const AuctionDetails: React.FC<{
   store: ListingStore;
 }> = observer(({ store }) => {
@@ -153,3 +132,29 @@ export const AuctionDetails: React.FC<{
     </div>
   );
 });
+
+const AuctionStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      display: "flex",
+      flexDirection: "column",
+    },
+    reserveLabel: {
+      marginTop: "15px",
+      width: "150px",
+      position: "relative",
+    },
+    infoContainer: {
+      position: "absolute",
+      width: "40%",
+      top: "15px",
+      right: "5px",
+    },
+    dateContainer: {
+      padding: "15px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+    },
+  })
+);

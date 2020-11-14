@@ -3,7 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-import { AuthProvider, SignInArgs, SignUpArgs, useStore, SignUpGoogleArgs } from './AuthContext';
+import {
+  AuthProvider,
+  SignInArgs,
+  SignUpArgs,
+  useStore,
+  SignUpGoogleArgs,
+} from "./AuthContext";
 import { observer } from "mobx-react";
 import { SearchPage } from "./search/main";
 import { ProfilePage } from "./profile/main";
@@ -13,7 +19,7 @@ import { ViewListingPage } from "./view_listing/main";
 import { BidderRegistrationPage } from "./bidder_registration/main";
 import { AuctionPage } from "./auction/main";
 import { HomePage } from "./home/main";
-import Header from "./ui/base/header/Header";
+import { Header } from "./ui/base/header/Header";
 import { SignUpStore } from "./ui/base/header/sign_up/SignUpStore";
 import { MessagesPage } from "./messages/main";
 import { ListingMessagesPage } from "./listing_messages/main";

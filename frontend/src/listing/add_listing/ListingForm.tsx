@@ -20,16 +20,19 @@ export type AddressDetails = {
   state: string;
   country: string;
 };
-
+/**
+ * Add listing form
+ * @param store
+ * @param onPreview
+ * @param onBack
+ */
 export const ListingForm = observer(
   ({
     store,
-    edit = false,
     onPreview,
     onBack,
   }: {
     store: ListingStore;
-    edit?: boolean;
     onPreview: () => void;
     onBack: () => void;
   }) => {
@@ -45,7 +48,7 @@ export const ListingForm = observer(
     const getContent = (activeStep: number) => {
       switch (activeStep) {
         case 0:
-          return <Details edit={edit} store={store} />;
+          return <Details store={store} />;
         case 1:
           return <Images store={store} />;
         case 2:
@@ -142,6 +145,18 @@ export const ListingForm = observer(
     const classes = ListingFormStyles();
     return (
       <div>
+        {/* Error Msgs */}
+        <Snackbar
+          open={openSnack}
+          autoHideDuration={6000}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          onClose={() => setSnack(false)}
+        >
+          <Alert onClose={() => setSnack(false)} severity="error">
+            You have yet to fill out all the information
+          </Alert>
+        </Snackbar>
+        {/* Form Content */}
         <div className={classes.header}>
           <div className={classes.headerContent}>
             <div className={classes.headerButtons}>
@@ -160,6 +175,7 @@ export const ListingForm = observer(
               </Button>
             </div>
           </div>
+          {/* Steps - Sticky at the top */}
           <Stepper alternativeLabel nonLinear activeStep={activeStep}>
             {steps.map((label, index) => {
               const stepProps: { completed?: boolean } = {};
@@ -193,16 +209,6 @@ export const ListingForm = observer(
             </Button>
           </div>
         </div>
-        <Snackbar
-          open={openSnack}
-          autoHideDuration={6000}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          onClose={() => setSnack(false)}
-        >
-          <Alert onClose={() => setSnack(false)} severity="error">
-            You have yet to fill out all the information
-          </Alert>
-        </Snackbar>
       </div>
     );
   }

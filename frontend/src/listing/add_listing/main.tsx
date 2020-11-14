@@ -12,12 +12,18 @@ function Alert(props: AlertProps) {
   return <MuiAlert variant="filled" {...props} />;
 }
 
+/**
+ * Add Listing Page Wraper
+ */
 export const AddListingPage = () => {
   const presenter = new ListingPresenter();
   const store = new ListingStore();
   return <AddListingPageBase store={store} presenter={presenter} />;
 };
 
+/**
+ * Add Listing Page content
+ */
 export const AddListingPageBase = observer(
   ({
     store,

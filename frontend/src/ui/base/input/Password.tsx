@@ -3,6 +3,16 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { TextFieldWrapper } from "./TextFieldWrapper";
 
+/**
+ * Password Input Component which toggles visibile/password mode
+ * @param field
+ * @param label
+ * @param onChange
+ * @param value
+ * @param error
+ * @param onBlur
+ * @param helperText
+ */
 export const Password = ({
   field,
   label,

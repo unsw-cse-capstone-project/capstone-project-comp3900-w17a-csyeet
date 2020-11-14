@@ -28,12 +28,14 @@ import {
 import { ProfileStore } from "../ProfilePresenter";
 import { PasswordResetForm } from "./PasswordResetForm";
 import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
+import { DetailStyles } from "./Detail.css";
 
 export const Details: React.FC<{
   store: ProfileStore;
   onUpdateUserDetails: () => void;
   onChangePassword: () => void;
 }> = observer(({ store, onUpdateUserDetails, onChangePassword }) => {
+  const classes = DetailStyles();
   const addressData: AddressDetails = {
     street: "",
     suburb: "",
@@ -71,22 +73,26 @@ export const Details: React.FC<{
               {edit ? (
                 <>
                   <Button
-                    style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "100px",
-                    }}
+                    className={classes.cancelButton}
                     color="default"
                     onClick={() => setEdit(false)}
                   >
-                    Back
+                    Cancel
                   </Button>
                   <Button
                     variant="contained"
                     color="primary"
-                    disabled={store.name === "" || store.phone_number === ""}
-                    style={{ position: "absolute", top: "10px", right: "10px" }}
-                    onClick={() => onUpdateUserDetails()}
+                    disabled={
+                      store.tmpName === "" ||
+                      store.tmpPhoneNumber === "" ||
+                      (store.tmpName === store.name &&
+                        store.tmpPhoneNumber === store.phone_number)
+                    }
+                    className={classes.saveButton}
+                    onClick={() => {
+                      onUpdateUserDetails();
+                      setEdit(false);
+                    }}
                   >
                     Save
                   </Button>
@@ -97,7 +103,7 @@ export const Details: React.FC<{
                   color={"primary"}
                   onClick={() => setEdit(true)}
                   disabled={editAddress}
-                  style={{ position: "absolute", top: "10px", right: "10px" }}
+                  className={classes.editButton}
                 >
                   <EditIcon style={{ color: "#FFF" }} fontSize="small" />
                 </Fab>
@@ -107,9 +113,9 @@ export const Details: React.FC<{
               </ListItemAvatar>
               {edit ? (
                 <TextFieldWrapper
-                  value={store.name}
-                  error={store.name === ""}
-                  field={"name"}
+                  value={store.tmpName}
+                  error={store.tmpName === ""}
+                  field={"tmpName"}
                   label={"Name"}
                   onChange={onChange}
                 />
@@ -129,9 +135,9 @@ export const Details: React.FC<{
               </ListItemAvatar>
               {edit ? (
                 <TextFieldWrapper
-                  value={store.phone_number}
-                  error={store.phone_number === ""}
-                  field={"phone_number"}
+                  value={store.tmpPhoneNumber}
+                  error={store.tmpPhoneNumber === ""}
+                  field={"tmpPhoneNumber"}
                   label={"Phone Number"}
                   onChange={onChange}
                 />
@@ -147,15 +153,11 @@ export const Details: React.FC<{
               {editAddress ? (
                 <>
                   <Button
-                    style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "100px",
-                    }}
+                    className={classes.cancelButton}
                     color="default"
                     onClick={() => setEditAddress(false)}
                   >
-                    Back
+                    Cancel
                   </Button>
                   <Button
                     variant="contained"
@@ -167,12 +169,11 @@ export const Details: React.FC<{
                       store.country === ""
                     }
                     color="primary"
-                    onClick={() => onUpdateUserDetails()}
-                    style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "10px",
+                    onClick={() => {
+                      onUpdateUserDetails();
+                      setEditAddress(false);
                     }}
+                    className={classes.saveButton}
                   >
                     Save
                   </Button>
@@ -183,7 +184,7 @@ export const Details: React.FC<{
                   disabled={edit}
                   color={"primary"}
                   size={"small"}
-                  style={{ position: "absolute", top: "10px", right: "10px" }}
+                  className={classes.editButton}
                 >
                   <EditIcon style={{ color: "#FFF" }} fontSize={"small"} />
                 </Fab>
@@ -195,7 +196,7 @@ export const Details: React.FC<{
                 <AddressForm
                   addressData={addressData}
                   onChange={onChange}
-                  style={{ marginTop: "40px" }}
+                  className={classes.addressFormStyle}
                 />
               ) : (
                 <ListItemText primary="Address" secondary={address} />
