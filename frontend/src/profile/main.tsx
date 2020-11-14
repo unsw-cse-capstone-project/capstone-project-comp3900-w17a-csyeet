@@ -79,7 +79,7 @@ export const ProfilePageWrapper = observer(
               indicatorColor="primary"
               textColor="primary"
               variant="scrollable"
-              scrollButtons="auto"
+              scrollButtons="on"
             >
               <Tab label="My Bids" />
               <Tab label="My Listings" />

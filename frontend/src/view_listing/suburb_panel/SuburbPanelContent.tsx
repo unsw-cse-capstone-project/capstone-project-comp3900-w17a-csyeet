@@ -83,6 +83,7 @@ export const SuburbPanelContent = observer(
         <Tabs
           orientation={matches ? "vertical" : "horizontal"}
           variant="scrollable"
+          scrollButtons="on"
           value={value}
           onChange={handleChange}
           className={classes.tabs}
