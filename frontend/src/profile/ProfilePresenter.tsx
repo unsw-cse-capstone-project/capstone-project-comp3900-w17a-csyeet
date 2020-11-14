@@ -128,7 +128,6 @@ export class ProfilePresenter {
           store.state = result.state;
           store.country = result.country;
         });
-
       }
     } catch {
       runInAction(() => {

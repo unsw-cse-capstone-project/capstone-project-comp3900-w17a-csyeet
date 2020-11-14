@@ -1,7 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Typography, Card, Link } from "@material-ui/core";
-import Slider from "react-slick";
 import { ListingActual } from "../../util/types/listing";
 import { AuctionTag } from "../auction_tag/AuctionTag";
 import { Star } from "../star/Star";
@@ -38,13 +37,6 @@ export const ListingCardAuction = ({
   } = listing;
   const history = useHistory();
   const userStore = useStore();
-
-  const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
 
   const getState = () => {
     if (highest_bid === null) return "current";
