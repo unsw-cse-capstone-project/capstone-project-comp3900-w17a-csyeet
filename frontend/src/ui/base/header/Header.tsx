@@ -45,6 +45,7 @@ export const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
   const location = useLocation();
   const isHome = location.pathname === "/";
   const isSearch = location.pathname.startsWith("/search");
+  const isAddListing = location.pathname.startsWith("/add");
 
   const SignInWrapper = () => (
     <SignIn
@@ -92,17 +93,19 @@ export const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
       ) : (
         <div className={classes.loggedInHeader}>
           <Hidden only="xs">{!isSearch && <MinimisedSearch />}</Hidden>
-          <Hidden only="xs">
-            <Button
-              variant={"contained"}
-              color={"secondary"}
-              size="medium"
-              className={classes.addListingButton}
-              onClick={() => history.push("/add")}
-            >
-              Add Listing
-            </Button>
-          </Hidden>
+          {!isAddListing && (
+            <Hidden only="xs">
+              <Button
+                variant={"contained"}
+                color={"secondary"}
+                size="medium"
+                className={classes.addListingButton}
+                onClick={() => history.push("/add")}
+              >
+                Add Listing
+              </Button>
+            </Hidden>
+          )}
           <UserMenu />
         </div>
       )}

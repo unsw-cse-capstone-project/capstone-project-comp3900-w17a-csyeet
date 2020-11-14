@@ -208,6 +208,11 @@ export class ListingPresenter {
     }
   }
 
+  private onUpdateError(onError: () => void) {
+    onError();
+    window.location.reload();
+  }
+
   @action
   async updateListing(
     store: ListingStore,
@@ -244,13 +249,13 @@ export class ListingPresenter {
       );
       const result = await response.json();
       if ("detail" in result) {
-        onError();
+        this.onUpdateError(onError);
         return;
       }
 
       // Upload new images
       if (!this.uploadImages(store.listing.id as number, store.imageList)) {
-        onError();
+        this.onUpdateError(onError);
         return;
       }
 
@@ -262,13 +267,13 @@ export class ListingPresenter {
             store.imagesToDelete[i]
           )
         )
-          onError();
+          this.onUpdateError(onError);
       }
 
       // Everything has been done
       onSuccess();
     } catch {
-      onError();
+      this.onUpdateError(onError);
     }
   }
 
