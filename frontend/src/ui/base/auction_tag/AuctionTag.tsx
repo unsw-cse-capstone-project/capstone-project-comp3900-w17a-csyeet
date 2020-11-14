@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: "3px",
       color: theme.palette.background.default,
       minWidth: theme.spacing(7),
+      marginBottom: theme.spacing(0.5)
     },
     preAuction: {
       backgroundColor: theme.palette.warning.main,

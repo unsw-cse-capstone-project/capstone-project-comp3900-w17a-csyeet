@@ -16,7 +16,7 @@ const Logo = ({ size = "large", onClick }: LogoProps) => {
             style={{
               height: "50px",
               // width: "210px",
-              padding: "10px 20px"
+              padding: "10px 10px 10px 20px"
             }}
             src={logo}
             alt="Adobe Logo"

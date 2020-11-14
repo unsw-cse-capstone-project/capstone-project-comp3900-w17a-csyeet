@@ -39,7 +39,7 @@ export const SearchBarStyles = makeStyles((theme: Theme) =>
       minWidth: 120,
     },
     selectControl: {
-      minWidth: "25%",
+      minWidth: "45%",
     },
     filterDropdown: {
       marginRight: "auto",
