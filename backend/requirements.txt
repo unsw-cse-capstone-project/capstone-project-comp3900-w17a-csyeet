@@ -59,3 +59,4 @@ urllib3==1.25.11
 uvicorn==0.12.1
 wrapt==1.12.1
 zipp==3.3.0
+google-api-python-client==1.12.5

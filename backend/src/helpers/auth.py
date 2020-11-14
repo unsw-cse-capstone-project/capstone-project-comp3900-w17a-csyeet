@@ -1,6 +1,8 @@
 import jwt
 import hashlib
 import uuid
+from google.oauth2.id_token import verify_oauth2_token
+from google.auth.transport import requests
 from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyCookie
 from starlette.status import HTTP_403_FORBIDDEN
@@ -13,6 +15,7 @@ from .common import get_session
 cookie_name = "session"
 cookie_security = APIKeyCookie(name=cookie_name, auto_error=False)
 secret_key = '825d86db7d67844c086c01ed8001f8df82dc99c16a8cad4e'  # TODO: extract
+client_id = '558318040284-qq4i7nn9ol3767cgg5neroen7mb65vkb.apps.googleusercontent.com'
 
 
 def load_user(email: str, session: Session) -> Optional[User]:
@@ -51,3 +54,15 @@ def hash_password(password: str) -> str:
 def password_matches(hashed_password: str, user_password: str) -> bool:
     password, salt = hashed_password.split(':')
     return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+
+
+def validate_google_id_token(token: str):
+    try:
+        verify_oauth2_token(token, requests.Request(), client_id)
+    except Exception:
+        raise HTTPException(status_code=HTTP_403_FORBIDDEN,
+                        detail="Invalid authentication")
+
+
+def is_google_user(user: User) -> bool:
+    return user.hashed_password is None
