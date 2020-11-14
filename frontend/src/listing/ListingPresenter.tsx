@@ -95,6 +95,7 @@ export class ListingStore {
 
   @observable auctionState: string = "pre-auction";
   @observable imageList: ImageListType = [];
+  @observable imagesToDelete: number[] = [];
 
   constructor() {
     makeObservable(this);
@@ -213,6 +214,7 @@ export class ListingPresenter {
     onSuccess: () => void,
     onError: () => void
   ) {
+    // Update listing information
     try {
       const response = await fetch(
         `/listings/${store.listing.id?.toString()}`,
@@ -245,10 +247,66 @@ export class ListingPresenter {
         onError();
         return;
       }
-      runInAction(() => {
-        store.listing.id = result.id;
+
+      // Upload new images
+      if (!this.uploadImages(store.listing.id as number, store.imageList)) {
+        onError();
+        return;
+      }
+    } catch {
+      onError();
+    }
+  }
+
+  @action
+  async uploadImages(listing_id: number, imageList: ImageListType) {
+    let form = new FormData();
+    const data = await Promise.all(
+      imageList.map(async (image) => {
+        const resized = await resizeFile(image.file as File);
+        const buffer = await (resized as Blob).arrayBuffer();
+        return {
+          data: buffer,
+          type: (image.file as any).type,
+        };
+      })
+    );
+    data.forEach((image) => {
+      form.append(
+        "files",
+        new Blob([image.data], {
+          type: image.type,
+        })
+      );
+    });
+    try {
+      const response = await fetch(`/listings/${listing_id}/images`, {
+        method: "post",
+        body: form,
       });
-      onSuccess();
+      if (response.status !== 200) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @action
+  async deleteImages(
+    listing_id: number,
+    image_id: number,
+    onError: () => void
+  ) {
+    try {
+      const response = await fetch(
+        `/listings/${listing_id}/images/${image_id}`,
+        {
+          method: "delete",
+        }
+      );
+      if (response.status !== 200) onError();
     } catch {
       onError();
     }

@@ -48,7 +48,6 @@ export const SelectWrapper = ({
           marginTop: "10px",
         }}
       >
-        <FormHelperText>Required*</FormHelperText>
         <InputLabel id="select-outlined-label">{label}</InputLabel>
         <Select
           readOnly={readOnly}

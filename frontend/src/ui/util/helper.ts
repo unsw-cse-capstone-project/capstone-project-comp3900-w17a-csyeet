@@ -1,5 +1,4 @@
 import Resizer from "react-image-file-resizer";
-import { ImageType } from "react-images-uploading";
 import { Address } from "../../auction/AuctionPage";
 import { createFakeListing } from "./fakes/listing";
 
