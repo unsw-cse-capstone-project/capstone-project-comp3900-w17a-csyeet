@@ -9,6 +9,13 @@ import { TextField, InputAdornment } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 
+/**
+ * Component which wraps around Material-ui DateRangePicker
+ * @param onDateChange
+ * @param dateRange
+ * @param style
+ * @param className
+ */
 export const DateRangeWrapper: React.FC<{
   onDateChange: (value: DateRange<Date>) => void;
   dateRange?: DateRange<Date>;
@@ -21,6 +28,8 @@ export const DateRangeWrapper: React.FC<{
     onDateChange(range);
     setValue(range);
   };
+
+  // Disable selecting the current date
   var minDate = new Date();
   minDate.setDate(minDate.getDate() + 1);
   return (

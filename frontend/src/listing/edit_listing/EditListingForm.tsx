@@ -20,6 +20,12 @@ export type AddressDetails = {
   country: string;
 };
 
+/**
+ * Edit Form which changes depending on whether the auction has started or not
+ * @param store
+ * @param onPreview
+ * @param onBack
+ */
 export const EditListingForm = observer(
   ({
     store,

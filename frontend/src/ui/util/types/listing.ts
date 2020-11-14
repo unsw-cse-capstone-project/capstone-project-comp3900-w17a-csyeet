@@ -56,3 +56,11 @@ export type ListingActual = {
   reserve_met: boolean;
   user_bid?: number;
 };
+
+export const PropertyTypes = [
+  "Apartment",
+  "Duplex",
+  "House",
+  "Studio",
+  "Townhouse",
+];
