@@ -15,26 +15,27 @@ export const GoogleLogin = ({
   onSuccessLogin: ({
     email,
     name,
-    googleId,
+    token,
   }: {
     email: string;
     name: string;
-    googleId: string;
+    token: string;
   }) => void;
-  onError: (error: string) => void;
+  onError?: (error: string) => void;
   label: string;
   onClick?: () => void;
 }) => {
   const onSuccess = (res: any) => {
+    console.log(res)
       onSuccessLogin({
         email: res.profileObj.email,
         name: res.profileObj.name,
-        googleId: res.profileObj.googleId,
+        token: res.tokenId,
       });
   };
 
   const onFailure = (res: any) => {
-    onError(res.error);
+    onError && onError(res.error);
   };
 
   const { signIn } = useGoogleLogin({

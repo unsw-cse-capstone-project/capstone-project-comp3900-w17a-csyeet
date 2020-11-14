@@ -3,7 +3,14 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-import { AuthProvider, SignInArgs, SignUpArgs, useStore, SignUpGoogleArgs } from './AuthContext';
+import {
+  AuthProvider,
+  SignInArgs,
+  SignUpArgs,
+  useStore,
+  SignUpGoogleArgs,
+  SignInGoogleArgs,
+} from "./AuthContext";
 import { observer } from "mobx-react";
 import { SearchPage } from "./search/main";
 import { ProfilePage } from "./profile/main";
@@ -43,6 +50,7 @@ const ProtectedComponent = observer(
         <SignIn
           switchMode={() => setSignInMode(false)}
           onSubmit={(args: SignInArgs) => store.signIn(args)}
+          onSubmitGoogle={(args: SignInGoogleArgs) => store.signInGoogle(args)}
           closeModal={() => setOpenModal(false)}
         />
       );

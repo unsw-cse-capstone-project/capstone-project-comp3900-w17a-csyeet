@@ -6,7 +6,7 @@ import Logo from "../logo/Logo";
 import { SignUpStore } from "./sign_up/SignUpStore";
 import { SignIn } from "./sign_in/SignIn";
 import { SignUp } from "./sign_up/SignUp";
-import { SignInArgs, useStore, SignUpArgs, SignUpGoogleArgs } from '../../../AuthContext';
+import { SignInArgs, useStore, SignUpArgs, SignUpGoogleArgs, SignInGoogleArgs } from '../../../AuthContext';
 import { Hidden } from "@material-ui/core";
 import { UserMenu } from "./user_menu/UserMenu";
 import { MinimisedSearch } from "./minimised_search/MinimisedSearch";
@@ -41,6 +41,7 @@ const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
     <SignIn
       switchMode={() => setSignInMode(false)}
       onSubmit={(args: SignInArgs) => store.signIn(args)}
+      onSubmitGoogle={(args: SignInGoogleArgs) => store.signInGoogle(args)}
       closeModal={() => setOpenModal(false)}
     />
   );
