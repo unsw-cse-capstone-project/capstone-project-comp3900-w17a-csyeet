@@ -4,3 +4,4 @@ from .listing import encode_continuation, decode_continuation, map_listing_respo
 from .landmark import find_nearby_landmarks
 from .bid import get_highest_bid, map_bid_to_response
 from .recommendations import initialise_ML_model, request_similarity_fields, add_listing_to_ML_model, update_listing_in_ML_model, remove_listing_from_ML_model, recommend_from_interactions
+from .notifications import start_monitoring_notifications, stop_monitoring_notifications

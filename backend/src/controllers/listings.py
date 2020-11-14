@@ -138,7 +138,7 @@ def place_bid(id: int, req: BidRequest, signed_in_user: User = Depends(get_signe
 
     highest_bid = get_highest_bid(listing.id, session)
     assert highest_bid is not None  # user is registered so there must be >= 1 bid
-    if req.bid <= highest_bid:
+    if req.bid <= highest_bid.bid:
         raise HTTPException(
             status_code=403, detail=f"Bid must be higher than the current highest bid of {highest_bid}")
 
