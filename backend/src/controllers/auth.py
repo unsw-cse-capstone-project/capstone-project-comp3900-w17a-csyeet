@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import RedirectResponse, Response
 from sqlalchemy.orm import Session
-from ..schemas import LoginRequest, SignupRequest, UserResponse
-from ..helpers import get_session, load_user, hash_password, password_matches, cookie_name, create_token, get_current_user
+from ..schemas import LoginRequest, SignupRequest, UserResponse, GoogleLoginRequest, GoogleSignupRequest
+from ..helpers import get_session, load_user, hash_password, password_matches, cookie_name, create_token, get_current_user, is_google_user
 from ..models import User
 
 router = APIRouter()
@@ -22,14 +22,45 @@ def signup(req: SignupRequest, session: Session = Depends(get_session)):
     return RedirectResponse(url='/login')
 
 
+@router.post('/google_signup', response_model=UserResponse, responses={409: {"description": "Conflict with existing entity"}})
+def google_signup(req: GoogleSignupRequest, session: Session = Depends(get_session)):
+    ''' Signs up a new user and logs them in through Google SSO '''
+    if load_user(req.email, session) is not None:
+        raise HTTPException(409, detail='Email already in use')
+
+    user_data = req.dict()
+    user = User(**user_data)
+    session.add(user)
+    session.commit()
+    return RedirectResponse(url='/google_login')
+
+
 @router.post("/login", response_model=UserResponse, responses={401: {'description': 'Invalid credentials'}})
 def login(req: LoginRequest, response: Response, session: Session = Depends(get_session)):
     ''' Logs in the user '''
     user = load_user(req.email, session)
     if user is None:
         raise HTTPException(401, detail='Invalid email')
+    if is_google_user(user):
+        raise HTTPException(401, detail='User did not sign up with email')
     if not password_matches(user.hashed_password, req.password):
         raise HTTPException(401, detail='Invalid password')
+
+    token = create_token(req.email)
+    response.set_cookie(cookie_name, token.decode(), httponly=False)
+    return user
+
+
+@router.post('/google_login', response_model=UserResponse, responses={401: {'description': 'Invalid credentials'}})
+def google_login(req: GoogleLoginRequest, response: Response, session: Session = Depends(get_session)):
+    ''' Logs in the user through Google SSO '''
+    user = load_user(req.email, session)
+    if user is None:
+        raise HTTPException(401, detail='Invalid email')
+    if not is_google_user(user):
+        raise HTTPException(401, detail='User did not sign up with Google SSO')
+    if user.google_id != req.google_id:
+        raise HTTPException(401, detail='Invalid Google id')
 
     token = create_token(req.email)
     response.set_cookie(cookie_name, token.decode(), httponly=False)

@@ -59,3 +59,18 @@ class UpdateUserRequest(UpdateUserBase):
 
 class UpdateUserResponse(UpdateUserBase):
     pass
+
+
+class GoogleSignupRequest(UserBase):
+    google_id: str
+    name: str
+    phone_number: str
+    street: str
+    suburb: str
+    postcode: str
+    state: str
+    country: str
+
+
+class GoogleLoginRequest(UserBase):
+    google_id: str
