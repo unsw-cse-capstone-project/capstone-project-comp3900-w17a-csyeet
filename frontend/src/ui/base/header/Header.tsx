@@ -11,6 +11,7 @@ import {
   useStore,
   SignUpArgs,
   SignUpGoogleArgs,
+  SignInGoogleArgs,
 } from "../../../AuthContext";
 import { Hidden } from "@material-ui/core";
 import { UserMenu } from "./user_menu/UserMenu";
@@ -49,6 +50,7 @@ export const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
     <SignIn
       switchMode={() => setSignInMode(false)}
       onSubmit={(args: SignInArgs) => store.signIn(args)}
+      onSubmitGoogle={(args: SignInGoogleArgs) => store.signInGoogle(args)}
       closeModal={() => setOpenModal(false)}
     />
   );

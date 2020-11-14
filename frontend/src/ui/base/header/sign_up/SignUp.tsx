@@ -79,17 +79,17 @@ export const SignUp = ({
   const onSuccess = ({
     email,
     name,
-    googleId,
+    token,
   }: {
     email: string;
     name: string;
-    googleId: string;
+    token: string;
   }) => {
-    console.log({ email, name, googleId });
+    console.log({ email, name, token });
     runInAction(() => {
       store.email = email;
       store.usernm = name;
-      store.googleId = googleId;
+      store.token = token;
     });
     setGoogleLogin(true);
   };
@@ -369,7 +369,7 @@ export const SignUpGoogle = observer(
       onSubmit({
         name: store.usernm,
         email: store.email,
-        googleId: store.googleId,
+        token: store.token,
         phone_number: store.phoneNo,
         address: store.address,
         onError,

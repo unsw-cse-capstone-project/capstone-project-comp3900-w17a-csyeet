@@ -15,6 +15,13 @@ export type SignInArgs = {
   onSuccess: () => void;
 };
 
+export type SignInGoogleArgs = {
+  email: string;
+  token: string;
+  onError: (error: string) => void;
+  onSuccess: () => void;
+};
+
 export type SignUpArgs = {
   name: string;
   email: string;
@@ -30,7 +37,7 @@ export type SignUpGoogleArgs = {
   email: string;
   phone_number: string;
   address: AddressDetails;
-  googleId: string;
+  token: string;
   onError: (error: string) => void;
   onSuccess: () => void;
 };
@@ -71,22 +78,81 @@ export default class Store {
   }
 
   @action
+  async signInGoogle({ email, token, onError, onSuccess }: SignInGoogleArgs) {
+    try {
+      const response = await fetch("/google_login", {
+        method: "post",
+        credentials: "include",
+        body: JSON.stringify({ email, google_id_token: token }),
+      });
+      const content = await response.json();
+      console.log(content)
+      if ("detail" in content) {
+        onError(content.detail);
+      } else {
+        runInAction(
+          () =>
+            (this.user = {
+              name: content.name,
+              id: content.id,
+              email: content.email,
+            })
+        );
+        onSuccess();
+        window.localStorage.setItem("name", content.name);
+        window.localStorage.setItem("email", content.email);
+        window.localStorage.setItem("id", content.id);
+      }
+    } catch {
+      onError("Error occurred please try again");
+    }
+  }
+
+  @action
   async signUpGoogle({
     name,
     email,
     phone_number,
     address,
-    googleId,
+    token,
     onError,
     onSuccess,
   }: SignUpGoogleArgs) {
-    console.log("Signing in with ", {
-      name,
-      email,
-      phone_number,
-      googleId,
-      address,
-    });
+    try {
+      const response = await fetch("/google_signup", {
+        method: "post",
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          google_id_token: token,
+          phone_number: phone_number,
+          street: address.street,
+          state: address.state,
+          postcode: address.postcode,
+          country: address.country,
+          suburb: address.suburb,
+        }),
+      });
+      const content = await response.json();
+      if ("detail" in content) {
+        onError(content.detail);
+        return;
+      }
+      runInAction(
+        () =>
+          (this.user = {
+            name: content.name,
+            id: content.id,
+            email: content.email,
+          })
+      );
+      window.localStorage.setItem("name", content.name);
+      window.localStorage.setItem("email", content.email);
+      window.localStorage.setItem("id", content.id);
+      onSuccess();
+    } catch {
+      onError("Error occurred when signing up");
+    }
   }
 
   @action
