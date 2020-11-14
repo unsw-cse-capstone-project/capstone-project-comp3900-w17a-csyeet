@@ -6,7 +6,12 @@ import Logo from "../logo/Logo";
 import { SignUpStore } from "./sign_up/SignUpStore";
 import { SignIn } from "./sign_in/SignIn";
 import { SignUp } from "./sign_up/SignUp";
-import { SignInArgs, useStore, SignUpArgs, SignUpGoogleArgs } from '../../../AuthContext';
+import {
+  SignInArgs,
+  useStore,
+  SignUpArgs,
+  SignUpGoogleArgs,
+} from "../../../AuthContext";
 import { Hidden } from "@material-ui/core";
 import { UserMenu } from "./user_menu/UserMenu";
 import { MinimisedSearch } from "./minimised_search/MinimisedSearch";
@@ -18,7 +23,10 @@ export interface HeaderProps {
   signUpStore: SignUpStore;
 }
 
-const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
+/** Website Header
+ * @param signUpStore
+ */
+export const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
   const history = useHistory();
   const [openModal, setOpenModal] = React.useState(false);
   const [signInMode, setSignInMode] = React.useState(true);
@@ -55,7 +63,10 @@ const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
   );
   return (
     <div className={classNames(classes.root, { [classes["home"]]: isHome })}>
+      {/* Hide logo on home page */}
       {!isHome && <Logo size="small" onClick={() => history.push("/")} />}
+
+      {/* Toggle between user header and signin/signup options */}
       {!store.user ? (
         <div>
           <Button
@@ -103,5 +114,3 @@ const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
     </div>
   );
 });
-
-export default Header;

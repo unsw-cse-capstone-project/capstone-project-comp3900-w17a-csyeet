@@ -11,39 +11,14 @@ import { Button, IconButton } from "@material-ui/core";
 import classNames from "classnames";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
-export const ImagesStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    previewContainer: {
-      display: "flex",
-      justifyContent: "flex-start",
-      flexDirection: "row",
-      flexWrap: "wrap",
-    },
-    imgContainer: {
-      position: "relative",
-      margin: "10px",
-      height: "300px",
-      width: "auto",
-      "&:hover": {
-        background: "#a9a9a9",
-      },
-    },
-    imgEdit: {
-      position: "absolute",
-      top: "0px",
-      left: "0px",
-    },
-    imgDelete: {
-      position: "absolute",
-      top: "0px",
-      right: "0px",
-    },
-    dropzone: {
-      margin: "10px",
-    },
-  })
-);
-
+/**
+ * Image Uploader Component to upload images with drag'n'drop properties
+ * @param value
+ * @param imageHeight
+ * @param max
+ * @param style
+ * @param className
+ */
 export const ImageUploader: React.FC<{
   onImageChange: (images: ImageListType) => void;
   value?: ImageType;
@@ -56,7 +31,7 @@ export const ImageUploader: React.FC<{
     onImageChange,
     value = [],
     imageHeight = "300px",
-    max = 20,
+    max = 10,
     style,
     className,
   }) => {
@@ -126,4 +101,37 @@ export const ImageUploader: React.FC<{
       </div>
     );
   }
+);
+
+export const ImagesStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    previewContainer: {
+      display: "flex",
+      justifyContent: "flex-start",
+      flexDirection: "row",
+      flexWrap: "wrap",
+    },
+    imgContainer: {
+      position: "relative",
+      margin: "10px",
+      height: "300px",
+      width: "auto",
+      "&:hover": {
+        background: "#a9a9a9",
+      },
+    },
+    imgEdit: {
+      position: "absolute",
+      top: "0px",
+      left: "0px",
+    },
+    imgDelete: {
+      position: "absolute",
+      top: "0px",
+      right: "0px",
+    },
+    dropzone: {
+      margin: "10px",
+    },
+  })
 );

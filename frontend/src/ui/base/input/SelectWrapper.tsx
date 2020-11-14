@@ -5,15 +5,16 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { FormHelperText } from "@material-ui/core";
 
-export interface SelectWrapperProps {
-  label: string;
-  field: string;
-  data: Array<string>;
-  onChange: (value: string, field: string) => void;
-  readOnly?: boolean;
-  required?: boolean;
-  value?: string;
-}
+/**
+ * Component which wraps around Material ui Select
+ * @param label
+ * @param field
+ * @param data
+ * @param onChange
+ * @param readOnly
+ * @param required
+ * @param value
+ */
 export const SelectWrapper = ({
   label,
   field,
@@ -22,14 +23,21 @@ export const SelectWrapper = ({
   readOnly = false,
   onChange,
   required = true,
-}: SelectWrapperProps) => {
+}: {
+  label: string;
+  field: string;
+  data: Array<string>;
+  onChange: (value: string, field: string) => void;
+  readOnly?: boolean;
+  required?: boolean;
+  value?: string;
+}) => {
   const [selected, setSelected] = React.useState(value);
   const handleChange = (e: React.ChangeEvent<{ value: unknown }>) => {
     onChange(e.target.value as string, field);
     setSelected(e.target.value as string);
   };
 
-  const [error, setError] = React.useState<boolean>(false);
   return (
     <div>
       <FormControl
@@ -40,6 +48,7 @@ export const SelectWrapper = ({
           marginTop: "10px",
         }}
       >
+        <FormHelperText>Required*</FormHelperText>
         <InputLabel id="select-outlined-label">{label}</InputLabel>
         <Select
           readOnly={readOnly}
@@ -50,7 +59,6 @@ export const SelectWrapper = ({
           value={selected}
           onChange={handleChange}
           label={label}
-          error={error}
         >
           {!required && (
             <MenuItem value="">
@@ -63,7 +71,7 @@ export const SelectWrapper = ({
             </MenuItem>
           ))}
         </Select>
-      </FormControl>{" "}
+      </FormControl>
     </div>
   );
 };

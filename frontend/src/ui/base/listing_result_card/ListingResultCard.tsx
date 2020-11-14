@@ -97,7 +97,7 @@ export const ListingResultCard = observer(
           </Slider>
         </div>
         <CardContent className={classes.cardContent}>
-          {userStore?.user && (
+          {userStore ?.user && (
             <div className={classes.starContainer}>
               <Star id={id} starred={starred} />
             </div>
@@ -132,15 +132,17 @@ export const ListingResultCard = observer(
           </Link>
           <div className={classes.detailBar}>
             <AuctionTag start={auction_start} end={auction_end} />
-            <ListingFeatureIcon value={num_bedrooms} Icon={LocalHotel} />
-            <ListingFeatureIcon value={num_bathrooms} Icon={Bathtub} />
-            <ListingFeatureIcon value={num_car_spaces} Icon={DriveEta} />
-            <Typography
-              variant="body1"
-              style={{ textTransform: "capitalize", marginLeft: "12px" }}
-            >
-              {type}
-            </Typography>
+            <div className={classes.icons}>
+              <ListingFeatureIcon value={num_bedrooms} Icon={LocalHotel} />
+              <ListingFeatureIcon value={num_bathrooms} Icon={Bathtub} />
+              <ListingFeatureIcon value={num_car_spaces} Icon={DriveEta} />
+              <Typography
+                variant="body1"
+                style={{ textTransform: "capitalize", marginLeft: "12px" }}
+              >
+                {type}
+              </Typography>
+            </div>
           </div>
           <Typography variant="body2" className={classes.description}>
             {description}
@@ -150,7 +152,7 @@ export const ListingResultCard = observer(
               id={id}
               auction_start={auction_start}
               registered_bidder={registered_bidder}
-              isUser={userStore?.user !== undefined}
+              isUser={userStore ?.user !== undefined}
             />
             <BidStatus />
             {registered_bidder && userStore && userStore.user && (

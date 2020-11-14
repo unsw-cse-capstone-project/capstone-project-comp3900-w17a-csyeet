@@ -18,8 +18,17 @@ export type AddressDetails = {
   country: string;
 };
 
-// Countries and states sourced from
-// https://github.com/stefanbinder/countries-states
+/**
+ * Address Form Component
+ * Countries and states sourced from
+ * https://github.com/stefanbinder/countries-states
+ * @param onChange
+ * @param addressData
+ * @param readOnly
+ * @param style
+ * @param className
+ * @param where
+ */
 export const AddressForm = observer(
   ({
     onChange,
@@ -34,6 +43,7 @@ export const AddressForm = observer(
     readOnly?: boolean;
     style?: React.CSSProperties;
     className?: string;
+    readOnly?: boolean;
     where?: "other" | "signUp";
   }) => {
     // Get all the countries
@@ -133,9 +143,6 @@ export const AddressForm = observer(
               }}
               label="Country"
             >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
               {countries.map((v, i) => (
                 <MenuItem value={v} key={i}>
                   {v}

@@ -9,9 +9,9 @@ export default {
 } as Meta;
 
 const data: AddressDetails = {
-  street: "5 middlebrook rise",
-  suburb: "bella Vista",
-  postcode: "2153",
+  street: "5 geteric rise",
+  suburb: "bellate",
+  postcode: "2158",
   state: "NSW",
   country: "Australia",
 };

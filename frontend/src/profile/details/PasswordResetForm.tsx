@@ -4,6 +4,11 @@ import { Password } from "../../ui/base/input/Password";
 import { ProfileStore } from "../ProfilePresenter";
 import { action } from "mobx";
 
+/**
+ * Form to reset password
+ * Password Validation
+ * @param store
+ */
 export const PasswordResetForm: React.FC<{
   store: ProfileStore;
   onChangePassword: () => void;
@@ -26,7 +31,7 @@ export const PasswordResetForm: React.FC<{
         label="New Password"
         onChange={onChange}
         onBlur={() => {
-          if (store.new_password.length <= 5) setPassTooShort(true);
+          if (store.new_password.length < 5) setPassTooShort(true);
           else setPassTooShort(false);
         }}
         error={passTooShort}
