@@ -31,6 +31,7 @@ def google_signup(req: GoogleSignupRequest, session: Session = Depends(get_sessi
     validate_google_id_token(req.google_id_token)
     
     user_data = req.dict()
+    user_data.pop('google_id_token')
     user = User(**user_data)
     session.add(user)
     session.commit()
