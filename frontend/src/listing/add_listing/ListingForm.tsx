@@ -73,6 +73,8 @@ export const ListingForm = observer(
           return completedStep3.get();
         case 4:
           return completedStep4.get();
+        case 5:
+          return completedStep5.get();
         default:
           return false;
       }
@@ -95,14 +97,15 @@ export const ListingForm = observer(
       () => store.listing.title !== "" && store.listing.description !== ""
     );
 
-    const completedStep3 = computed(
+    const completedStep3 = computed(() => store.listing.features.length > 1);
+    const completedStep4 = computed(
       () =>
         store.auction.auction_start !== null &&
         store.auction.auction_end !== null &&
         store.auction.reserve_price !== ""
     );
 
-    const completedStep4 = computed(
+    const completedStep5 = computed(
       () =>
         store.payment.account_name !== "" &&
         store.payment.bsb.length === 6 &&
@@ -115,7 +118,8 @@ export const ListingForm = observer(
       completedStep1.get() &&
       completedStep2.get() &&
       completedStep3.get() &&
-      completedStep4.get();
+      completedStep4.get() &&
+      completedStep5.get();
 
     const handleNext = () => {
       if (activeStep === steps.length - 1) {

@@ -63,7 +63,7 @@ export const Features: React.FC<{ store: ListingStore }> = observer(
           variant="subtitle1"
           style={{ marginBottom: "5px", marginTop: "35px" }}
         >
-          Tell us some features of your property
+          Tell us some features of your property (min. 2)
         </Typography>
         <Accordion
           expanded={expanded === "panel1"}

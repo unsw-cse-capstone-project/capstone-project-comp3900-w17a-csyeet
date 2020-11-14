@@ -72,7 +72,7 @@ export const EditListingForm = observer(
         case 1:
           return completedStep1.get();
         case 2:
-          return true;
+          return completedStep2.get();
         case 3:
           return completedStep3.get();
         case 4:
@@ -89,6 +89,8 @@ export const EditListingForm = observer(
     const completedStep1 = computed(
       () => store.listing.title !== "" && store.listing.description !== ""
     );
+
+    const completedStep2 = computed(() => store.listing.features.length > 1);
 
     const completedStep3 = computed(
       () =>
