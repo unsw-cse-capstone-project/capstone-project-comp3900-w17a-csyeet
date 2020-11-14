@@ -65,4 +65,4 @@ def validate_google_id_token(token: str):
 
 
 def is_google_user(user: User) -> bool:
-    return user is not None and user.hashed_password is None
+    return user.hashed_password is None
