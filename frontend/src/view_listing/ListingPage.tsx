@@ -142,6 +142,7 @@ export const ListingPage = observer(
               disableAction={disableActions}
               registered_bidder={registered_bidder}
               isUser={userStore?.user !== undefined}
+              isOwner={(userStore?.user as any).id === owner.id}
             />
             <Map listing={listing} />
             <SellerProfile

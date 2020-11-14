@@ -77,8 +77,8 @@ export const BiddingBox = observer(
     return (
       <Card variant="outlined" style={style}>
         <div className={classes.bidderBox}>
-          <Typography variant="body1">
-            {isAuctionClosed ? "Final Bid" : "Current Bid"}
+          <Typography variant="h6">
+            <b>{isAuctionClosed ? "Final Bid" : "Current Bid"}</b>
           </Typography>
           {!currentBid || !BidderTag ? (
             <Typography variant="body1" color="textSecondary">No bids yet</Typography>

@@ -12,6 +12,7 @@ export const AuctionDetails = ({
   isUser,
   registered_bidder,
   disableAction = false,
+  isOwner,
 }: {
   auction_start: Date;
   auction_end: Date;
@@ -19,6 +20,7 @@ export const AuctionDetails = ({
   registered_bidder: boolean;
   isUser: boolean;
   disableAction?: boolean;
+  isOwner: boolean;
 }) => {
   const classes = auctionDetailsStyle();
   return (
@@ -48,6 +50,7 @@ export const AuctionDetails = ({
           auction_start={auction_start}
           registered_bidder={registered_bidder}
           isUser={isUser}
+          isOwner={isOwner}
         />
       )}
     </div>

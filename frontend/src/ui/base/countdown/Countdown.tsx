@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import { Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 import classNames from "classnames";
@@ -42,10 +42,16 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       textAlign: "center",
     },
+    nearEnd: {
+      backgroundColor: theme.palette.error.light,
+    },
+    warningText: {
+      color: theme.palette.error.light,
+    }
   })
 );
 
-/** 
+/**
  * Countdown Component that will countdown by itself
  */
 export const Countdown = observer((props: { date: Date }) => {
@@ -81,39 +87,71 @@ export const Countdown = observer((props: { date: Date }) => {
   }
   const timeStuff = getTimeStuff(timeLeftMs);
 
+  // Less than 5 minutes
+  const isLessThan5Min = timeLeftMs < 5 * 1000 * 60;
+
   return (
-    <div className={classes.countDownContainer}>
-      <CountdownBox num={timeStuff.days} label="days" />
-      <CountdownBox num={maybePrependZero(timeStuff.hours)} label="hours" />
-      <Paper
-        elevation={0}
-        className={classNames(classes.countBox, classes.separatorBox)}
-      >
-        <Typography variant="h5">:</Typography>
-      </Paper>
-      <CountdownBox num={maybePrependZero(timeStuff.minutes)} label="minutes" />
-      <Paper
-        elevation={0}
-        className={classNames(classes.countBox, classes.separatorBox)}
-      >
-        <Typography variant="h5">:</Typography>
-      </Paper>
-      <CountdownBox num={maybePrependZero(timeStuff.seconds)} label="seconds" />
-    </div>
+    <Grid container spacing={3} direction="column" alignItems="center">
+      <Grid item className={classes.countDownContainer}>
+        <CountdownBox
+          num={timeStuff.days}
+          label="days"
+          nearEnd={isLessThan5Min}
+        />
+        <CountdownBox
+          num={maybePrependZero(timeStuff.hours)}
+          label="hours"
+          nearEnd={isLessThan5Min}
+        />
+        <Paper
+          elevation={0}
+          className={classNames(classes.countBox, classes.separatorBox)}
+        >
+          <Typography variant="h5">:</Typography>
+        </Paper>
+        <CountdownBox
+          num={maybePrependZero(timeStuff.minutes)}
+          label="minutes"
+          nearEnd={isLessThan5Min}
+        />
+        <Paper
+          elevation={0}
+          className={classNames(classes.countBox, classes.separatorBox)}
+        >
+          <Typography variant="h5">:</Typography>
+        </Paper>
+        <CountdownBox
+          num={maybePrependZero(timeStuff.seconds)}
+          label="seconds"
+          nearEnd={isLessThan5Min}
+        />
+      </Grid>
+      <Grid item>
+        {isLessThan5Min && timeLeftMs !== 0 && (
+          <Typography className={classes.warningText} variant="body1">
+            Less than 5 minutes until auction ends!
+          </Typography>
+        )}
+      </Grid>
+    </Grid>
   );
 });
 
 const CountdownBox = ({
   num,
   label,
+  nearEnd,
 }: {
   num: number | string;
   label: string;
+  nearEnd: boolean;
 }) => {
   const classes = useStyles();
   return (
     <div className={classes.countBoxContainer}>
-      <Paper className={classes.countBox}>
+      <Paper
+        className={classNames(classes.countBox, { [classes.nearEnd]: nearEnd })}
+      >
         <Typography variant="body1">{num}</Typography>
       </Paper>
       <Typography className={classes.labelText} variant="body2">
