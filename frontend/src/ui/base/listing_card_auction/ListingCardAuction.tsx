@@ -50,7 +50,6 @@ export const ListingCardAuction = ({
     state,
     postcode,
   });
-
   const [userBid, setUserBid] = React.useState<number | undefined>(undefined);
 
   // Get user bid
