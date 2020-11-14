@@ -5,7 +5,7 @@ import { ListingCardSmall } from "../../ui/base/listing_card_sm/ListingCardSmall
 import { observer } from "mobx-react";
 import { action } from "mobx";
 import { ListingCardSmallLoadingRow } from "../../ui/base/loading_state/ListingCardSmallLoadingRow";
-import { ListingActual } from '../../ui/util/types/listing';
+import { ListingActual } from "../../ui/util/types/listing";
 
 export const StarredPropertiesPage = observer(
   ({ store }: { store: ProfileStore }) => {
@@ -46,13 +46,11 @@ export const StarredPropertiesPage = observer(
                 );
 
                 if (bidIndex !== -1) {
-                  console.log('bidIndex', bidIndex);
                   const newListings = [...store.myBidsResults];
-                  listing.starred = false;
-                  newListings.push(listing);
+                  const newListing = { ...listing, starred: false };
+                  newListings.push(newListing);
+                  newListings.splice(bidIndex, 1);
                   store.myBidsResults = newListings;
-                  store.myBidsResults.splice(bidIndex, 1);
-
                 }
               })}
               onStar={action(() => {

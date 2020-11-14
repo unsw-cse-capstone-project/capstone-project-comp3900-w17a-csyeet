@@ -26,7 +26,6 @@ export const MyBidsPage = observer(({ store }: { store: ProfileStore }) => {
       </Typography>
     );
   }
-
   return (
     <Grid container spacing={3}>
       {store.myBidsResults.map((listing, i) => (
