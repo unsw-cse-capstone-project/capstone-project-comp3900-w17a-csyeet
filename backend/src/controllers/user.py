@@ -89,6 +89,12 @@ def get_user_info(id: int, session: Session = Depends(get_session)):
     return user
 
 
+@router.get('/', response_model=UserResponse)
+def get_own_info(signed_in_user: User = Depends(get_signed_in_user)):
+    ''' Get the signed in user's basic info '''
+    return signed_in_user
+
+    
 def map_user_to_own_profile_response(user: User, session: Session) -> OwnProfileResponse:
     response = asdict(user)
     response['listings'] = [map_listing_response(listing, user, session) for listing in user.listings]
