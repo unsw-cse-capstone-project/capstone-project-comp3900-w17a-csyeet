@@ -121,7 +121,7 @@ def notify_winning_bidder(winning_bidder: User, listing: Listing):
     html_tree.find(id='property-text').string = listing.title
     html_tree.find(id='seller-email').string = listing.owner.email
     html_tree.find(id='seller-phone').string = listing.owner.phone_number
-    email_subject = f"[Abode] You were the highest bidder for {listing.title}!"
+    email_subject = f"[Abode] You were the highest bidder for '{listing.title}'!"
     send_email(winning_bidder.email, email_subject, html_tree)
 
 
@@ -132,7 +132,7 @@ def notify_successful_seller(highest_bidder: User, listing: Listing):
     html_tree.find(id='property-text').string = listing.title
     html_tree.find(id='bidder-email').string = highest_bidder.email
     html_tree.find(id='bidder-phone').string = highest_bidder.phone_number
-    email_subject = f"[Abode] Your property, {listing.title}, was sold!"
+    email_subject = f"[Abode] Your property, '{listing.title}', was sold!"
     send_email(listing.owner.email, email_subject, html_tree)
 
 
@@ -140,7 +140,7 @@ def notify_losing_bidder(losing_bidder: User, listing: Listing):
     html_tree = BeautifulSoup(
         email_htmls[EmailType.losing_bidder.value], 'html.parser')
     html_tree.find(id='property-text').string = listing.title
-    email_subject = f"[Abode] {listing.title} was sold to another bidder"
+    email_subject = f"[Abode] '{listing.title}' was sold to another bidder"
     send_email(losing_bidder.email, email_subject, html_tree)
 
 
@@ -149,7 +149,7 @@ def notify_unsuccessful_seller(listing: Listing):
         email_htmls[EmailType.seller_passed_in.value], 'html.parser')
     html_tree.find(id='property-text').string = listing.title
     html_tree.find(id='auction-button')['href'] = get_auction_url(listing)
-    email_subject = f"[Abode] Your property, {listing.title}, was passed in"
+    email_subject = f"[Abode] Your property, '{listing.title}', was passed in"
     send_email(listing.owner.email, email_subject, html_tree)
 
 
@@ -157,7 +157,7 @@ def notify_failed_bidder(failed_bidder: User, listing: Listing):
     html_tree = BeautifulSoup(
         email_htmls[EmailType.bidder_passed_in.value], 'html.parser')
     html_tree.find(id='property-text').string = listing.title
-    email_subject = f"[Abode] {listing.title} was passed in"
+    email_subject = f"[Abode] '{listing.title}' was passed in"
     send_email(failed_bidder.email, email_subject, html_tree)
 
 
@@ -166,7 +166,7 @@ def notify_ending_soon(bidder: User, listing: Listing):
         email_htmls[EmailType.auction_ending_soon.value], 'html.parser')
     html_tree.find(id='property-text').string = listing.title
     html_tree.find(id='auction-button')['href'] = get_auction_url(listing)
-    email_subject = f"[Abode] The auction for {listing.title} is ending very soon!"
+    email_subject = f"[Abode] The auction for '{listing.title}' is ending very soon!"
     send_email(bidder.email, email_subject, html_tree)
 
 
@@ -175,7 +175,7 @@ def notify_started(bidder: User, listing: Listing):
         email_htmls[EmailType.auction_started.value], 'html.parser')
     html_tree.find(id='property-text').string = listing.title
     html_tree.find(id='auction-button')['href'] = get_auction_url(listing)
-    email_subject = f"[Abode] The auction for {listing.title} has started!"
+    email_subject = f"[Abode] The auction for '{listing.title}' has started!"
     send_email(bidder.email, email_subject, html_tree)
 
 
