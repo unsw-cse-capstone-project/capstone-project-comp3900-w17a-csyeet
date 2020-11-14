@@ -169,18 +169,21 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
               value={bedsFilter}
               onChange={onBedChange}
               label="Beds"
+              isCarPicker={false}
             />
             <NumberPicker
               store={store}
               value={bathsFilter}
               onChange={onBathChange}
               label="Baths"
+              isCarPicker={false}
             />
             <NumberPicker
               store={store}
               value={carFilter}
               onChange={onCarChange}
               label="Cars"
+              isCarPicker={true}
             />
             <div className={classes.dateInput} style={{ flex: 4 }}>
               <LocalizationProvider dateAdapter={DateFnsUtils}>
@@ -242,21 +245,47 @@ export function NumberPicker(props: {
   value: any;
   onChange: any;
   label: String;
+  isCarPicker: boolean;
 }) {
   const classes = SearchBarStyles();
 
   return (
-    <TextField
-      className={classes.formControl}
-      size="small"
-      variant="outlined"
-      style={{ flex: 1 }}
-      value={props.value}
-      onChange={props.onChange}
-      type="number"
-      InputProps={{ inputProps: { min: 1 } }}
-      label={props.label}
-    />
+    props.isCarPicker ?
+      (<TextField
+        className={
+          classes.formControl
+        }
+        size="small"
+        variant="outlined"
+        style={{ flex: 1 }
+        }
+        value={props.value}
+        onChange={props.onChange}
+        type="number"
+        InputProps={{
+          inputProps: { min: 0, max: 10 },
+          onKeyDown: (event) => {
+            if (!((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode === 8 || event.keyCode === 9))) event.preventDefault()
+          },
+        }
+        }
+        label={props.label}
+      />) : (<TextField
+        className={classes.formControl}
+        size="small"
+        variant="outlined"
+        style={{ flex: 1 }}
+        value={props.value}
+        onChange={props.onChange}
+        type="number"
+        InputProps={{
+          inputProps: { min: 1, max: 10 },
+          onKeyDown: (event) => {
+            if (!((event.keyCode >= 49 && event.keyCode <= 57) || (event.keyCode === 8 || event.keyCode === 9))) event.preventDefault()
+          },
+        }}
+        label={props.label}
+      />)
   );
 }
 
