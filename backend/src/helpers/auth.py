@@ -1,7 +1,7 @@
 import jwt
 import hashlib
 import uuid
-from google.oauth2 import id_token
+from google.oauth2.id_token import verify_oauth2_token
 from google.auth.transport import requests
 from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyCookie
@@ -15,7 +15,7 @@ from .common import get_session
 cookie_name = "session"
 cookie_security = APIKeyCookie(name=cookie_name, auto_error=False)
 secret_key = '825d86db7d67844c086c01ed8001f8df82dc99c16a8cad4e'  # TODO: extract
-google_client_id = '558318040284-qq4i7nn9ol3767cgg5neroen7mb65vkb.apps.googleusercontent.com'
+client_id = '558318040284-qq4i7nn9ol3767cgg5neroen7mb65vkb.apps.googleusercontent.com'
 
 
 def load_user(email: str, session: Session) -> Optional[User]:
@@ -58,7 +58,7 @@ def password_matches(hashed_password: str, user_password: str) -> bool:
 
 def validate_google_id_token(token: str):
     try:
-        id_token.verify_oauth2_token(token, requests.Request(), google_client_id)
+        verify_oauth2_token(token, requests.Request(), client_id)
     except Exception:
         raise HTTPException(status_code=HTTP_403_FORBIDDEN,
                         detail="Invalid authentication")

@@ -32,8 +32,7 @@ def google_signup(req: GoogleSignupRequest, session: Session = Depends(get_sessi
     
     user_data = req.dict()
     user_data.pop('google_id_token')
-    user = User(**user_data)
-    session.add(user)
+    session.add(User(**user_data))
     session.commit()
     return RedirectResponse(url='/google_login')
 
