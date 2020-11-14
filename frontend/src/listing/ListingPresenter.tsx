@@ -9,9 +9,9 @@ export type ListingDetails = {
   title: string;
   description: string;
   type: string;
-  num_bedrooms: number;
-  num_bathrooms: number;
-  num_car_spaces: number;
+  num_bedrooms: number | null;
+  num_bathrooms: number | null;
+  num_car_spaces: number | null;
   images: string[];
   features: string[];
 };
@@ -74,9 +74,9 @@ export class ListingStore {
     title: "",
     description: "",
     type: "",
-    num_bedrooms: 0,
-    num_bathrooms: 0,
-    num_car_spaces: 0,
+    num_bedrooms: null,
+    num_bathrooms: null,
+    num_car_spaces: null,
     images: [],
     features: [],
   };
