@@ -87,7 +87,7 @@ export const Recommendations = withWidth()(
                     {store.recommendations
                       .slice(page, page + numOnPage)
                       .map((listing, i) => (
-                        <Grid item key={i} xs={12} sm={6} md={4} lg={3}>
+                        <Grid item key={i} xs={12} sm={6} md={4} lg={3} xl={2}>
                           <ListingCardSmall listing={listing} />
                         </Grid>
                       ))}
