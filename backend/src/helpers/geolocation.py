@@ -19,5 +19,8 @@ def get_listing_coordinates(listing: Listing) -> Optional[Tuple[float, float]]:
 
 @rate_limiter
 def convert_address_to_postcode(address: str) -> Optional[str]:
-    location: Location = geolocator.geocode(address, addressdetails=True)
+    try:
+        location: Location = geolocator.geocode(address, addressdetails=True)
+    except Exception:
+        return None
     return location.raw['address'].get('postcode') if location is not None else None
