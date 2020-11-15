@@ -42,7 +42,7 @@ postcode_index = -1
 ammenity_indexes = None
 type_indexes = None
 feature_indexes = None
-# scales all values down to the range [-1, 1]
+# scales all values down to the range [-1, 1] and remembers the scaling used
 scaler = MinMaxScaler(feature_range=(-1, 1), copy=False)
 nn = NearestNeighbors()
 
@@ -126,9 +126,7 @@ def train_model(session: Session):
     feature_indexes = [columns.index(f) for f in field_to_feature_map.keys()]
 
     X = data_frame.to_numpy()
-    print(X)
     X_scaled = weight_fields(scaler.fit_transform(X))
-    print(X_scaled)
     nn.fit(X_scaled)
 
 
@@ -189,7 +187,6 @@ def convert_interactions(interactions: List[Interaction], users_country: str):
     df = pd.DataFrame.from_dict(rows).fillna(0)
     # then re-index it based on the original frame for fitting
     df = df.reindex(columns=data_frame.columns, fill_value=0, copy=False)
-    print(df)
     scaled = scaler.transform(df.to_numpy())
     return weight_fields(scaled)
 
@@ -210,15 +207,12 @@ def recommend_from_interactions(user: User, session: Session) -> List[Listing]:
                           for key in SearchListingsRequest.__pydantic_model__.schema()['properties'].keys()}
         interactions = [Interaction(type=InteractionType.search, search_query=postcode_query,
                                     timestamp=datetime.now(), user_id=user.id)]
-    print([i.listing_id if i.listing_id else i.search_query['location']
-           for i in interactions], flush=True)
+
     encoded_interactions = convert_interactions(interactions, user.country)
-    print(encoded_interactions)
     # interactions are generally for similar listings, if the number of interacted listings is high,
-    # it's likely we'll filter out quite a few neighbours, so we should search for a decent number
+    # it's likely we'll filter out quite a few neighbours, so we should search for quite a few neighbours
     num_neighbours = min(len(data_frame), 10)
     (distance_matrix, neighbour_index_matrix) = nn.kneighbors(encoded_interactions, num_neighbours)  # nopep8
-    print(distance_matrix, neighbour_index_matrix)
     # process the results
     interacted_listings = {i.listing_id for i in interactions if i.listing_id is not None}  # nopep8
     flattened_distances = []
@@ -236,14 +230,12 @@ def recommend_from_interactions(user: User, session: Session) -> List[Listing]:
             neighbour_index_row = np.delete(neighbour_indexes, indexes)
             distance_row = np.delete(distances, indexes)
 
-        print(distance_row, neighbour_index_row, end=' -> ')
         # give more weight to more recent interactions by distancing older interactions
         # but treat the `num_exempt` most recent as equal
         num_exempt = 2
         if i >= num_exempt:
             x = i - num_exempt + 1
             distance_row = distance_row + math.log(x + 1, 50)
-        print(distance_row, neighbour_index_row)
 
         flattened_distances.extend(distance_row.flatten())
         flattened_neighbour_indexes.extend(neighbour_index_row.flatten())
@@ -251,7 +243,6 @@ def recommend_from_interactions(user: User, session: Session) -> List[Listing]:
     # sort the flattened pairs by distance in ascending order
     closest_neighbour_pairs = sorted(zip(flattened_distances, flattened_neighbour_indexes),
                                      key=lambda pair: pair[0])
-    print(closest_neighbour_pairs)
     # choose 5 closest unique neighbours across all interactions
     max_num_recommendations = 5
     seen_neighbour_indexes: Set[int] = set()
@@ -263,7 +254,6 @@ def recommend_from_interactions(user: User, session: Session) -> List[Listing]:
             seen_neighbour_indexes.add(neighbour_index)
             closest_neighbour_indexes.append(neighbour_index)
         index += 1
-    print(closest_neighbour_indexes)
     # return the closest neighbours - i.e. similar listings
     similar_listings = []
     for index in closest_neighbour_indexes:
