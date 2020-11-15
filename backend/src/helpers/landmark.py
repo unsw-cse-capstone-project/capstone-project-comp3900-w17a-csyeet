@@ -10,7 +10,6 @@ from ..models import Listing, Landmark
 from ..schemas import LandmarkType
 from .geolocation import get_listing_coordinates
 
-# consider: https://pydantic-docs.helpmanual.io/usage/settings/#dotenv-env-support
 gmaps_client = googlemaps.Client(key='AIzaSyDakTtp6izOGX7zI_rWxT3a8E6rCX1gaso')
 search_places = bool(strtobool(os.getenv('SEARCH_PLACES', '0')))
 
