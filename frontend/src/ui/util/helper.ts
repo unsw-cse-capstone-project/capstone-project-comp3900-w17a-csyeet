@@ -134,7 +134,7 @@ export const getNumCards = (width: string) => {
     case "lg":
       return 4;
     case "xl":
-      return 5;
+      return 6;
     default:
       return 3;
   }
