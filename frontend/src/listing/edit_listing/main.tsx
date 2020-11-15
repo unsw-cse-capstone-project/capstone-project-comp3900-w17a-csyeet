@@ -37,11 +37,6 @@ export const EditListingPage = () => {
   );
 };
 
-/**
- * Edit Listing Page component that allows users to make changes to existing properties
- * @param store
- * @param onUpdatelisting
- */
 export const EditListingPageBase = observer(
   ({
     store,

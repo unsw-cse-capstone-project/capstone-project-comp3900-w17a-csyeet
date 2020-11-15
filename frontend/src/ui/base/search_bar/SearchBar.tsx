@@ -9,6 +9,7 @@ import {
   FormControlLabel,
   Typography,
   IconButton,
+  MenuItem,
 } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import { action } from "mobx";
@@ -245,12 +246,12 @@ export function TypePicker(props: { store: SearchStore }) {
         labelId="type-label"
         label="Type"
       >
-        <option value={""}></option>
-        <option value={"house"}>House</option>
-        <option value={"apartment"}>Apartment</option>
-        <option value={"townhouse"}>Townhouse</option>
-        <option value={"studio"}>Studio</option>
-        <option value={"duplex"}>Duplex</option>
+        <MenuItem value={""}><em>None</em></MenuItem>
+        <MenuItem value={"house"}>House</MenuItem>
+        <MenuItem value={"apartment"}>Apartment</MenuItem>
+        <MenuItem value={"townhouse"}>Townhouse</MenuItem>
+        <MenuItem value={"studio"}>Studio</MenuItem>
+        <MenuItem value={"duplex"}>Duplex</MenuItem>
       </Select>
     </FormControl>
   );

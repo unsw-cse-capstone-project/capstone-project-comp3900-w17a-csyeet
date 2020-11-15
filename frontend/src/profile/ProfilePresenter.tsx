@@ -15,6 +15,7 @@ export class ProfileStore {
   @observable country: string = "";
 
   @observable blurb: string = "";
+  @observable tmpBlurb: string = "";
   @observable avatar: string;
 
   @observable old_password: string = "";
@@ -78,6 +79,9 @@ export class ProfilePresenter {
           store.state = content.state;
           store.country = content.country;
           store.blurb = !!content["blurb"]
+            ? content["blurb"]
+            : "Update your bio";
+          store.tmpBlurb = !!content["blurb"]
             ? content["blurb"]
             : "Update your bio";
           store.myBidsResults = BidsResults.sort(
@@ -192,7 +196,11 @@ export class ProfilePresenter {
       });
       const result = await response.json();
       if ("detail" in result) runInAction(() => (store.loadingState = "error"));
-      else runInAction(() => (store.loadingState = "success"));
+      else
+        runInAction(() => {
+          store.loadingState = "success";
+          store.blurb = store.tmpBlurb;
+        });
     } catch {
       runInAction(() => (store.loadingState = "error"));
     }

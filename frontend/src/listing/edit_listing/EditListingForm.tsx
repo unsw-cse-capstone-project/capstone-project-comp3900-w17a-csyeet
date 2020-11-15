@@ -118,6 +118,7 @@ export const EditListingForm = observer(
     const canPreview =
       completedStep0.get() &&
       completedStep1.get() &&
+      completedStep2.get() &&
       completedStep3.get() &&
       completedStep4.get();
 

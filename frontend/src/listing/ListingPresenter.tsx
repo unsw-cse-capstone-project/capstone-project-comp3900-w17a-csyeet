@@ -9,9 +9,9 @@ export type ListingDetails = {
   title: string;
   description: string;
   type: string;
-  num_bedrooms: number;
-  num_bathrooms: number;
-  num_car_spaces: number;
+  num_bedrooms: number | null;
+  num_bathrooms: number | null;
+  num_car_spaces: number | null;
   images: string[];
   features: string[];
 };
@@ -30,7 +30,7 @@ export type PaymentDetails = {
 
 /**
  * Helper function to get the address of a listing
- * @param result 
+ * @param result
  */
 const getAddressFromResult = (result: any) => ({
   street: result.street,
@@ -41,8 +41,8 @@ const getAddressFromResult = (result: any) => ({
 });
 
 /**
- * Helper function to get listing details 
- * @param result 
+ * Helper function to get listing details
+ * @param result
  */
 const getListingFromResult = (result: any) => ({
   id: parseInt(result.id),
@@ -60,7 +60,7 @@ const getListingFromResult = (result: any) => ({
 
 /**
  * Helper functino to get auction details
- * @param result 
+ * @param result
  */
 const getAuctionFromResult = (result: any) => ({
   auction_start: new Date(result.auction_start),
@@ -69,8 +69,8 @@ const getAuctionFromResult = (result: any) => ({
 });
 
 /**
- * Helper function to get payment details 
- * @param result 
+ * Helper function to get payment details
+ * @param result
  */
 const getPaymentFromResult = (result: any) => ({
   account_name: result.account_name,
@@ -92,9 +92,9 @@ export class ListingStore {
     title: "",
     description: "",
     type: "",
-    num_bedrooms: 0,
-    num_bathrooms: 0,
-    num_car_spaces: 0,
+    num_bedrooms: null,
+    num_bathrooms: null,
+    num_car_spaces: null,
     images: [],
     features: [],
   };
@@ -123,9 +123,9 @@ export class ListingStore {
 export class ListingPresenter {
   /**
    * Get listing information from the backend given a listing ID
-   * @param store 
-   * @param listing_id 
-   * @param onError 
+   * @param store
+   * @param listing_id
+   * @param onError
    */
   @action
   async fetchListing(
@@ -164,9 +164,9 @@ export class ListingPresenter {
 
   /**
    * Send listing information to the backend when user creates a new listing
-   * @param store 
-   * @param onSuccess 
-   * @param onError 
+   * @param store
+   * @param onSuccess
+   * @param onError
    */
   @action
   async publishListing(
@@ -190,8 +190,8 @@ export class ListingPresenter {
           num_bedrooms: store.listing.num_bedrooms,
           num_bathrooms: store.listing.num_bathrooms,
           num_car_spaces: store.listing.num_car_spaces,
-          auction_start: store.auction.auction_start ?.toISOString(),
-          auction_end: store.auction.auction_end ?.toISOString(),
+          auction_start: store.auction.auction_start?.toISOString(),
+          auction_end: store.auction.auction_end?.toISOString(),
           reserve_price: parseInt(store.auction.reserve_price),
           account_name: store.payment.account_name,
           bsb: store.payment.bsb,
@@ -245,9 +245,9 @@ export class ListingPresenter {
 
   /**
    * Update backend to reflect changes made to listings made by users
-   * @param store 
-   * @param onSuccess 
-   * @param onError 
+   * @param store
+   * @param onSuccess
+   * @param onError
    */
   @action
   async updateListing(
@@ -258,7 +258,7 @@ export class ListingPresenter {
     // Update listing information
     try {
       const response = await fetch(
-        `/listings/${store.listing.id ?.toString()}`,
+        `/listings/${store.listing.id?.toString()}`,
         {
           method: "post",
           body: JSON.stringify({
@@ -274,8 +274,8 @@ export class ListingPresenter {
             num_bedrooms: store.listing.num_bedrooms,
             num_bathrooms: store.listing.num_bathrooms,
             num_car_spaces: store.listing.num_car_spaces,
-            auction_start: store.auction.auction_start ?.toISOString(),
-            auction_end: store.auction.auction_end ?.toISOString(),
+            auction_start: store.auction.auction_start?.toISOString(),
+            auction_end: store.auction.auction_end?.toISOString(),
             reserve_price: store.auction.reserve_price,
             account_name: store.payment.account_name,
             bsb: store.payment.bsb,
@@ -289,7 +289,10 @@ export class ListingPresenter {
         return;
       }
 
-      const uploadImage = await this.uploadImages(store.listing.id as number, store.imageList);
+      const uploadImage = await this.uploadImages(
+        store.listing.id as number,
+        store.imageList
+      );
 
       // Upload new images
       if (!uploadImage) {
@@ -297,12 +300,13 @@ export class ListingPresenter {
         return;
       }
 
-      const results = await Promise.all(store.imagesToDelete.map(image => this.deleteImages(
-        store.listing.id as number,
-        image
-      )));
+      const results = await Promise.all(
+        store.imagesToDelete.map((image) =>
+          this.deleteImages(store.listing.id as number, image)
+        )
+      );
 
-      if (results.find(item => item === false)) {
+      if (results.find((item) => item === false)) {
         this.onUpdateError(onError);
       }
 
@@ -355,7 +359,7 @@ export class ListingPresenter {
    */
   private getImageId = (url: string) => {
     var i = url.length;
-    while (url[i] !== "/")--i;
+    while (url[i] !== "/") --i;
     return url.slice(i, url.length);
   };
 
