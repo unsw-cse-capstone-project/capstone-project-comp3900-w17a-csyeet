@@ -19,6 +19,8 @@ import { LandmarksPanelStyles } from "./LandmarksPanel.css";
 /**
  * Landmarks fetched from Google Places Api
  * The landmarks are listing in ascending order of distance in kms
+ * @param facilities
+ * @param isPreview
  */
 export const LandmarksPanel = ({
   facilities,
@@ -62,69 +64,69 @@ export const LandmarksPanel = ({
             Nearby landmarks will be generated after the listing is created
           </Typography>
         ) : (
-          <div>
-            <Tabs
-              value={value}
-              indicatorColor="secondary"
-              onChange={handleTabChange}
-              variant="scrollable"
-              scrollButtons="on"
-              className={classes.tabs}
-            >
+            <div>
+              <Tabs
+                value={value}
+                indicatorColor="secondary"
+                onChange={handleTabChange}
+                variant="scrollable"
+                scrollButtons="on"
+                className={classes.tabs}
+              >
+                {["primarySchool", "secondarySchool", "park", "trainStation"].map(
+                  (type, i) => (
+                    <Tab
+                      key={i}
+                      label={type
+                        .replace(/([A-Z]+)/g, " $1")
+                        .replace(/([A-Z][a-z])/g, " $1")}
+                    />
+                  )
+                )}
+              </Tabs>
               {["primarySchool", "secondarySchool", "park", "trainStation"].map(
                 (type, i) => (
-                  <Tab
-                    key={i}
-                    label={type
-                      .replace(/([A-Z]+)/g, " $1")
-                      .replace(/([A-Z][a-z])/g, " $1")}
-                  />
-                )
-              )}
-            </Tabs>
-            {["primarySchool", "secondarySchool", "park", "trainStation"].map(
-              (type, i) => (
-                <div hidden={value !== i} key={i}>
-                  <Table>
-                    <TableBody>
-                      {facilities
-                        .filter((f) => f.type === type)
-                        .map((f, k) => (
-                          <TableRow key={k}>
-                            <TableCell
-                              component="th"
-                              className={classNames(
-                                {
+                  <div hidden={value !== i} key={i}>
+                    <Table>
+                      <TableBody>
+                        {facilities
+                          .filter((f) => f.type === type)
+                          .map((f, k) => (
+                            <TableRow key={k}>
+                              <TableCell
+                                component="th"
+                                className={classNames(
+                                  {
+                                    [classes["lastRow"]]:
+                                      facilities.filter((f) => f.type === type)
+                                        .length ===
+                                      k + 1,
+                                  },
+                                  classes.firstCell
+                                )}
+                              >
+                                {f.name}
+                              </TableCell>
+                              <TableCell
+                                align="right"
+                                className={classNames({
                                   [classes["lastRow"]]:
                                     facilities.filter((f) => f.type === type)
                                       .length ===
                                     k + 1,
-                                },
-                                classes.firstCell
-                              )}
-                            >
-                              {f.name}
+                                })}
+                              >
+                                {f.distance}km
                             </TableCell>
-                            <TableCell
-                              align="right"
-                              className={classNames({
-                                [classes["lastRow"]]:
-                                  facilities.filter((f) => f.type === type)
-                                    .length ===
-                                  k + 1,
-                              })}
-                            >
-                              {f.distance}km
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              )
-            )}
-          </div>
-        )}
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )
+              )}
+            </div>
+          )}
       </AccordionDetails>
     </Accordion>
   );

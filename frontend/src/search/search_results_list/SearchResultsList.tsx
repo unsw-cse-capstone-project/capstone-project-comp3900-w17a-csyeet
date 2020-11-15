@@ -16,6 +16,13 @@ const SearchResultsListStyles = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Component to display search results when a user performs a search
+ * Includes property placeholders while the page is in a loading state
+ * and infinite scroll functionality 
+ * @param store
+ * @param presenter 
+ */
 export const SearchResultsList = observer(
   ({
     store,
@@ -48,30 +55,30 @@ export const SearchResultsList = observer(
         {store.searchResults.length === 0 ? (
           <div style={{ textAlign: "center" }}>No results found</div>
         ) : (
-          <InfiniteScroll
-            dataLength={store.searchResults.length}
-            next={() => presenter.search(store)}
-            hasMore={!!store.continuation}
-            loader={
-              <ListingResultCardLoading className={classes.cardContainer} />
-            }
-            endMessage={
-              <p style={{ textAlign: "center" }}>
-                <b>No more results</b>
-              </p>
-            }
-            style={{ overflow: "visible" }}
-            scrollableTarget={"content"}
-          >
-            {store.searchResults.map((result, i) => (
-              <ListingResultCard
-                key={i}
-                listing={result}
-                className={classes.cardContainer}
-              />
-            ))}
-          </InfiniteScroll>
-        )}
+            <InfiniteScroll
+              dataLength={store.searchResults.length}
+              next={() => presenter.search(store)}
+              hasMore={!!store.continuation}
+              loader={
+                <ListingResultCardLoading className={classes.cardContainer} />
+              }
+              endMessage={
+                <p style={{ textAlign: "center" }}>
+                  <b>No more results</b>
+                </p>
+              }
+              style={{ overflow: "visible" }}
+              scrollableTarget={"content"}
+            >
+              {store.searchResults.map((result, i) => (
+                <ListingResultCard
+                  key={i}
+                  listing={result}
+                  className={classes.cardContainer}
+                />
+              ))}
+            </InfiniteScroll>
+          )}
       </div>
     );
   }

@@ -29,6 +29,9 @@ import { Carousel } from "../ui/base/carousel/Carousel";
 
 /**
  * Listing Page Content
+ * @param disableActions
+ * @param listing
+ * @param SuburbPanelContent
  */
 export const ListingPage = observer(
   ({
@@ -77,7 +80,7 @@ export const ListingPage = observer(
         />
         {/* first three images */}
         <Paper elevation={0} className={classes.greyBackground}>
-          {userStore?.user && userStore?.user.id !== owner.id && (
+          {userStore ?.user && userStore ?.user.id !== owner.id && (
             <div className={classes.starContainer}>
               <Star id={id} starred={starred} />
             </div>
@@ -161,7 +164,7 @@ export const ListingPage = observer(
                 >
                   Send Message
                 </Button>
-              ) : undefined}
+                ) : undefined}
             </SellerProfile>
           </Grid>
         </Grid>

@@ -3,6 +3,9 @@ import { ListingActual } from "../ui/util/types/listing";
 import { Filters } from "../ui/util/types/filters";
 import { getListingFromResult } from '../ui/util/helper';
 
+/**
+ * Store for searching
+ */
 export class SearchStore {
   @observable
   input: string = "";
@@ -57,6 +60,10 @@ export class SearchStore {
 }
 
 export class SearchPresenter {
+  /**
+   * Return a list of search results from backend based on search criteria provided by user
+   * @param store 
+   */
   @action
   async search(store: SearchStore) {
     if (!store.continuation) {

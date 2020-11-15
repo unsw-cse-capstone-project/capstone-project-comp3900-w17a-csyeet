@@ -8,6 +8,10 @@ import Talk from "talkjs";
 import MuiAlert from "@material-ui/lab/Alert";
 import { BackButton } from "../ui/base/back_button/BackButton";
 
+/**
+ * Page where an owner of a property can view all of the messages from potential 
+ * buyers relating to a specific property
+ */
 export const ListingMessagesPage = () => {
   const { id } = useParams<{ id: string }>();
   const classes = ListingMessagesPageStyles();
@@ -56,7 +60,7 @@ export const ListingMessagesPage = () => {
       inbox.setFeedFilter({ custom: { listingId: ["==", id] } });
     });
     // eslint-disable-next-line
-  }, [userStore?.user]);
+  }, [userStore ?.user]);
   return (
     <div className={classes.page}>
       <div className={classes.buttonContainer}>

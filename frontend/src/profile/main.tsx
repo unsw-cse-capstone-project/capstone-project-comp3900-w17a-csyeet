@@ -34,6 +34,14 @@ export const ProfilePage = () => {
   );
 };
 
+/**
+ * Component to display a user's profile 
+ * @param store 
+ * @param onEditBlurb
+ * @param onEditAvatar
+ * @param onUpdateUserDetails
+ * @param onChangePassword
+ */
 export const ProfilePageWrapper = observer(
   ({
     store,

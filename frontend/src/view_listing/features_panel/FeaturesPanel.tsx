@@ -11,6 +11,7 @@ import * as Icon from "@material-ui/icons";
 /**
  * Component to show the list of features included in the house
  * Each features will have a corresponding icon
+ * @param features
  */
 export const FeaturesPanel = ({ features }: { features: string[] }) => {
   const [expanded, setExpanded] = React.useState<string | false>("panel1");

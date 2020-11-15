@@ -7,6 +7,12 @@ import { action } from "mobx";
 import { ListingCardSmallLoadingRow } from "../../ui/base/loading_state/ListingCardSmallLoadingRow";
 import { ListingActual } from "../../ui/util/types/listing";
 
+/**
+ * Page component to display a user's list of starred properties
+ * Unstarring any property on this page will successfully remove it
+ * from the list of displayed properties.
+ * @param store
+ */
 export const StarredPropertiesPage = observer(
   ({ store }: { store: ProfileStore }) => {
     if (store.loadingState === "loading") {

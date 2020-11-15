@@ -1,7 +1,37 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { InputAdornment } from "@material-ui/core";
+export interface TextFieldWrapperProps {
+  field?: string;
+  label: string;
+  type?: string;
+  adornment?: React.ReactNode;
+  value?: string;
+  error?: boolean;
+  helperText?: string;
+  size?: "small" | "medium";
+  onBlur?: () => void;
+  onChange?: (value: string, field: string) => void;
+  readOnly?: boolean;
+  style?: React.CSSProperties;
+}
 
+/**
+ * Wrapper for material UI textfield component that allows
+ * customised props
+ * @param field
+ * @param label
+ * @param type
+ * @param size
+ * @param adornment
+ * @param value
+ * @param error
+ * @param helperText
+ * @param style
+ * @param onBlur
+ * @param onChange
+ * @param readOnly
+ */
 export const TextFieldWrapper = ({
   field,
   label,
@@ -15,20 +45,7 @@ export const TextFieldWrapper = ({
   onBlur,
   onChange,
   readOnly,
-}: {
-  field?: string;
-  label: string;
-  type?: string;
-  adornment?: React.ReactNode;
-  value?: string;
-  error?: boolean;
-  helperText?: string;
-  onBlur?: () => void;
-  onChange?: (value: string, field: string) => void;
-  readOnly?: boolean;
-  size?: "small" | "medium";
-  style?: React.CSSProperties;
-}) => {
+}: TextFieldWrapperProps) => {
   const [v, setValue] = React.useState<string>(value);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === "number" && e.target.value === "-1") return; // Disable Negative

@@ -4,15 +4,25 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
+export interface SelectWrapperProps {
+  label: string;
+  field: string;
+  data: Array<string>;
+  onChange: (value: string, field: string) => void;
+  readOnly?: boolean;
+  required?: boolean;
+  value?: string;
+}
+
 /**
- * Component which wraps around Material ui Select
+ * Wrapper for material ui select 
  * @param label
  * @param field
  * @param data
- * @param onChange
- * @param readOnly
- * @param required
  * @param value
+ * @param readOnly
+ * @param onChange
+ * @param required
  */
 export const SelectWrapper = ({
   label,
@@ -22,15 +32,7 @@ export const SelectWrapper = ({
   readOnly = false,
   onChange,
   required = true,
-}: {
-  label: string;
-  field: string;
-  data: Array<string>;
-  onChange: (value: string, field: string) => void;
-  readOnly?: boolean;
-  required?: boolean;
-  value?: string;
-}) => {
+}: SelectWrapperProps) => {
   const [selected, setSelected] = React.useState(value);
   const handleChange = (e: React.ChangeEvent<{ value: unknown }>) => {
     onChange(e.target.value as string, field);
