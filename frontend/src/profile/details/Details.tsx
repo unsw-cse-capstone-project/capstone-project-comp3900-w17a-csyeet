@@ -30,6 +30,14 @@ import { PasswordResetForm } from "./PasswordResetForm";
 import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
 import { DetailStyles } from "./Detail.css";
 
+/**
+ * Component used to display a user's details on their profile
+ * Also allows users to update specific details like name, phone number
+ * and personal address
+ * @param store 
+ * @param onUpdateUserDetails
+ * @param onChangePasswod
+ */
 export const Details: React.FC<{
   store: ProfileStore;
   onUpdateUserDetails: () => void;
@@ -120,8 +128,8 @@ export const Details: React.FC<{
                   onChange={onChange}
                 />
               ) : (
-                <ListItemText primary="Name" secondary={store.name} />
-              )}
+                  <ListItemText primary="Name" secondary={store.name} />
+                )}
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -142,11 +150,11 @@ export const Details: React.FC<{
                   onChange={onChange}
                 />
               ) : (
-                <ListItemText
-                  primary="Phone Number"
-                  secondary={store.phone_number}
-                />
-              )}
+                  <ListItemText
+                    primary="Phone Number"
+                    secondary={store.phone_number}
+                  />
+                )}
             </ListItem>
             <Divider light />
             <ListItem style={{ position: "relative" }}>
@@ -199,8 +207,8 @@ export const Details: React.FC<{
                   className={classes.addressFormStyle}
                 />
               ) : (
-                <ListItemText primary="Address" secondary={address} />
-              )}
+                  <ListItemText primary="Address" secondary={address} />
+                )}
             </ListItem>
             <Divider />
 

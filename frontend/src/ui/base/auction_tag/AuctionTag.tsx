@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 /**
  * Tag that labels a property to show the state of the auction
+ * @param start
+ * @param end
+ * @param className
+ * @param style
  */
 export const AuctionTag = ({
   start,

@@ -19,6 +19,9 @@ export const ErrorPageStyle = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Error Page for invalid page routes
+ */
 export const ErrorPage = () => {
   const classes = ErrorPageStyle();
   const history = useHistory();

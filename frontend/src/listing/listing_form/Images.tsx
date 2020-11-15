@@ -33,6 +33,10 @@ export const ImagesStyles = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Image upload component for the listing form
+ * @param store
+ */
 export const Images: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
     const classes = ImagesStyles();

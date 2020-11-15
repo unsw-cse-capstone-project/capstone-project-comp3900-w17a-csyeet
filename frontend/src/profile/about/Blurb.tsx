@@ -38,6 +38,13 @@ export const BlurbStyle = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Blurb component which displays the user's blurb on the profile. Allows
+ * users to update and change blurb.
+ * @param blurb
+ * @param onEdit
+ * @param className
+ */
 export const Blurb = observer(
   ({
     store,

@@ -7,6 +7,11 @@ export interface LogoProps {
   onClick?: () => void;
 }
 
+/**
+ * Logo for header
+ * @param size
+ * @param onClick
+ */
 const Logo = ({ size = "large", onClick }: LogoProps) => {
   return (
     <div>

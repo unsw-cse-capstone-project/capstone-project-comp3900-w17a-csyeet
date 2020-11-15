@@ -6,6 +6,8 @@ import { observer } from "mobx-react";
 
 /**
  * List of bidders in the auction and marks the tag of the current user
+ * @param bidders
+ * @param currentUser
  */
 export const BiddersList = observer(
   ({ bidders, currentUser }: { bidders: number[]; currentUser?: number }) => {

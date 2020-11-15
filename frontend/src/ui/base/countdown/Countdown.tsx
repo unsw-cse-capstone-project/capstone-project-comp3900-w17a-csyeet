@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 /**
  * Countdown Component that will countdown by itself
+ * @param date
  */
 export const Countdown = observer((props: { date: Date }) => {
   let store: { currentTime: number } = observable({

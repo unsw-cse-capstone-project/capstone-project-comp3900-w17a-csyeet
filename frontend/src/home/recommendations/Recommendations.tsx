@@ -18,6 +18,8 @@ import MuiAlert from "@material-ui/lab/Alert";
 
 /**
  * Recommendations slider
+ * @param store
+ * @param width
  */
 export const Recommendations = withWidth()(
   observer(

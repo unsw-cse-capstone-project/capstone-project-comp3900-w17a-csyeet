@@ -27,6 +27,15 @@ export class BiddingBoxStore {
 
 /**
  * Bidder box that allows a registered bidder to bid
+ * @param store
+ * @param currentBid
+ * @param shouldDisableBiddingButton
+ * @param bidState
+ * @param BidderTag
+ * @param isAuctionClosed
+ * @param enableBidding
+ * @param onPlaceBid
+ * @param style,
  */
 export const BiddingBox = observer(
   ({
@@ -85,11 +94,11 @@ export const BiddingBox = observer(
               No bids yet
             </Typography>
           ) : (
-            <BidPriceWithBidderTag
-              BidPrice={BidPriceWrapper}
-              BidderTag={BidderTag}
-            />
-          )}
+              <BidPriceWithBidderTag
+                BidPrice={BidPriceWrapper}
+                BidderTag={BidderTag}
+              />
+            )}
           {enableBidding && !isAuctionClosed && currentBid && (
             <div className={classes.inputContainer}>
               <Grid container spacing={2}>

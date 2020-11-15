@@ -4,6 +4,10 @@ import { SuburbPanelContent } from "./SuburbPanelContent";
 import { observer } from "mobx-react";
 import { SuburbPanelStore, SuburbPanelPresenter } from "./SuburbPanelPresenter";
 
+/**
+ * Populate SuburbPanelContent component with appropriate store
+ * @param listing 
+ */
 export const createSuburbPanelContent = (listing: ListingActual) => {
   const suburbPanelStore = new SuburbPanelStore();
   const suburbPanelPresenter = new SuburbPanelPresenter();

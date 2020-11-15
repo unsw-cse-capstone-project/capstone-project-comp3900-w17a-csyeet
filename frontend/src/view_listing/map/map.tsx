@@ -7,6 +7,7 @@ const googleAPIKey = "AIzaSyDS3k251uCtXDMWqcyD2wA9vkIg40sd9Lg";
 
 /**
  * Map generated from Google using the listing's address
+ * @param listing
  */
 export const Map = ({ listing }: { listing: ListingActual }) => {
   const classes = mapStyle();

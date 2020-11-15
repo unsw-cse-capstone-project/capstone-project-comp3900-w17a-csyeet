@@ -1,6 +1,16 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
 
+/**
+ * Select component for beds/baths/cars used on add listing form
+ * @param value
+ * @param onChange
+ * @param label
+ * @param className
+ * @param readOnly
+ * @param style
+ * @param size
+ */
 export const NumberPicker = ({
   value,
   onChange,

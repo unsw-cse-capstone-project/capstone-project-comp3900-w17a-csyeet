@@ -11,6 +11,10 @@ type InputProps = {
   name: any;
 };
 
+/**
+ * Price input wrapper
+ * @param props 
+ */
 const PriceInput = (props: NumberFormatCustomProps & InputProps) => {
   const { inputRef, store, name, ...other } = props;
   const [value, setValue] = React.useState<string>(store[name]);

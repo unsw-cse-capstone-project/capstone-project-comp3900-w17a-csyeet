@@ -36,6 +36,9 @@ const ListingPagePlaceholderStyle = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Page Component to display while listing page is in a loading state
+ */
 export const ListingPagePlaceholder = () => {
   const classes = ListingPagePlaceholderStyle();
   return (

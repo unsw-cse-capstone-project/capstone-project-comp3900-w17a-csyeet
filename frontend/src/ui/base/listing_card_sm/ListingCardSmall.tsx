@@ -12,6 +12,13 @@ import { useStore } from "../../../AuthContext";
 import { formatAddress } from "../../util/helper";
 import ReactPlaceholder from "react-placeholder/lib";
 
+/**
+ * Component to display listings on profile modal
+ * @param listing
+ * @param onStar
+ * @param onUnstar
+ * @param style
+ */
 export const ListingCardSmall = ({
   listing,
   onStar,
@@ -58,7 +65,7 @@ export const ListingCardSmall = ({
         />
       </div>
       <div className={classes.cardContent}>
-        {userStore?.user && (
+        {userStore ?.user && (
           <div className={classes.starContainer}>
             <Star
               id={id}

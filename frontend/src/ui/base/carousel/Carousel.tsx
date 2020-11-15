@@ -3,6 +3,8 @@ import Slider from "react-slick";
 
 /**
  * Carousel component for images
+ * @param images
+ * @param imageClass
  */
 export const Carousel = ({
   images,

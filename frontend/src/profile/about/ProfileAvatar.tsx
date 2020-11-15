@@ -44,6 +44,13 @@ export const AvatarStyles = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Profile Avatar component which displays the user's profile avatar on the profile page
+ * Also allows users to upload a new image to change their profile avatar
+ * @param avatar
+ * @param onUpload
+ * @param className
+ */
 export const ProfileAvatar = ({
   avatar = "",
   onUpload,
@@ -68,21 +75,21 @@ export const ProfileAvatar = ({
           avatarClassName={classes.avatarStyle}
         />
       ) : (
-        <div className={classes.avatarStyle}>
-          <Avatar
-            src={`/users/${userStore?.user.id}/avatar`}
-            style={{ width: "200px", height: "200px" }}
-          />
-          <Fab
-            size="small"
-            color="secondary"
-            onClick={() => setEdit(true)}
-            className={classes.editIcon}
-          >
-            <EditIcon fontSize={"small"} />
-          </Fab>
-        </div>
-      )}
+          <div className={classes.avatarStyle}>
+            <Avatar
+              src={`/users/${userStore ?.user.id}/avatar`}
+              style={{ width: "200px", height: "200px" }}
+            />
+            <Fab
+              size="small"
+              color="secondary"
+              onClick={() => setEdit(true)}
+              className={classes.editIcon}
+            >
+              <EditIcon fontSize={"small"} />
+            </Fab>
+          </div>
+        )}
     </div>
   );
 };
@@ -178,22 +185,22 @@ const ImageEditor = ({
                 className={avatarClassName}
               >
                 <AddAPhotoOutlinedIcon fontSize="small" />
-                Drop/Upload
+                Upload
               </Button>
-              <Fab
-                size="small"
-                color="default"
-                onClick={onBack}
-                style={{
-                  position: "absolute",
-                  bottom: "30px",
-                  right: "10px",
-                }}
-              >
-                <CloseIcon fontSize="small" />
-              </Fab>
-            </div>
-          )}
+                <Fab
+                  size="small"
+                  color="default"
+                  onClick={onBack}
+                  style={{
+                    position: "absolute",
+                    bottom: "30px",
+                    right: "10px",
+                  }}
+                >
+                  <CloseIcon fontSize="small" />
+                </Fab>
+              </div>
+            )}
         </div>
       )}
     </ImageUploading>

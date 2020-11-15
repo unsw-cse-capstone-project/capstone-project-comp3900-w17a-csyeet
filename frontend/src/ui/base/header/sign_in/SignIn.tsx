@@ -17,6 +17,12 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import { GoogleLogin } from "../google_auth/GoogleAuth";
 
+/**
+ * Handle sign in flow 
+ * @param switchMode
+ * @param onSubmit
+ * @param closeModal
+ */
 export const SignIn = ({
   switchMode,
   onSubmit,
@@ -131,6 +137,11 @@ export const SignIn = ({
   );
 };
 
+/**
+ * Password component for sign in form
+ * @param password
+ * @param setPassword
+ */
 export const PasswordInput = ({
   password,
   setPassword,
@@ -167,8 +178,8 @@ export const PasswordInput = ({
             {visible ? (
               <VisibilityIcon style={{ color: "#7b7b7b" }} />
             ) : (
-              <VisibilityOffIcon style={{ color: "#7b7b7b" }} />
-            )}
+                <VisibilityOffIcon style={{ color: "#7b7b7b" }} />
+              )}
           </div>
         ),
       }}
@@ -176,6 +187,11 @@ export const PasswordInput = ({
   );
 };
 
+/**
+ * Email component for sign in form
+ * @param email
+ * @param setEmail
+ */
 export const EmailInput = ({
   email,
   setEmail,

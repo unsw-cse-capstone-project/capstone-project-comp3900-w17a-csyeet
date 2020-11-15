@@ -22,7 +22,10 @@ export const AddListingPage = () => {
 };
 
 /**
- * Add Listing Page content
+ * Add Listing component - contains the listing form flow for users to enter
+ * property details, as well as preview their new listing
+ * @param store
+ * @param presenter
  */
 export const AddListingPageBase = observer(
   ({
@@ -79,12 +82,12 @@ export const AddListingPageBase = observer(
                 />
               </>
             ) : (
-              <PreviewListing
-                store={store}
-                onBack={() => setIsEditing(true)}
-                onPublish={onPublish}
-              />
-            )}
+                <PreviewListing
+                  store={store}
+                  onBack={() => setIsEditing(true)}
+                  onPublish={onPublish}
+                />
+              )}
           </div>
         </div>
         {status !== null && (

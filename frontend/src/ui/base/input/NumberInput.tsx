@@ -13,6 +13,10 @@ type InputProps = {
   name: any;
 };
 
+/**
+ * NumberInput wrapper
+ * @param props
+ */
 const NumberInput = (props: NumberFormatCustomProps & InputProps) => {
   const { inputRef, store, name, format, subname, ...other } = props;
   const [value, setValue] = React.useState<string>(
@@ -29,13 +33,13 @@ const NumberInput = (props: NumberFormatCustomProps & InputProps) => {
         runInAction(() =>
           subname
             ? (store[subname][name] =
-                typeof store[subname][name] === "number"
-                  ? parseInt(values.value)
-                  : values.value)
+              typeof store[subname][name] === "number"
+                ? parseInt(values.value)
+                : values.value)
             : (store[name] =
-                typeof store[name] === "number"
-                  ? parseInt(values.value)
-                  : values.value)
+              typeof store[name] === "number"
+                ? parseInt(values.value)
+                : values.value)
         );
       }}
       decimalScale={0}

@@ -6,6 +6,13 @@ import Button from "@material-ui/core/Button";
 export const clientId =
   "558318040284-qq4i7nn9ol3767cgg5neroen7mb65vkb.apps.googleusercontent.com";
 
+/**
+ * Google log-in component for sign in modal
+ * @param onSuccessLogin
+ * @param onError
+ * @param label
+ * @param onClick
+ */
 export const GoogleLogin = ({
   onSuccessLogin,
   onError,
@@ -27,11 +34,11 @@ export const GoogleLogin = ({
 }) => {
   const onSuccess = (res: any) => {
     console.log(res)
-      onSuccessLogin({
-        email: res.profileObj.email,
-        name: res.profileObj.name,
-        token: res.tokenId,
-      });
+    onSuccessLogin({
+      email: res.profileObj.email,
+      name: res.profileObj.name,
+      token: res.tokenId,
+    });
   };
 
   const onFailure = (res: any) => {

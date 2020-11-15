@@ -115,8 +115,8 @@ export const AuctionDetails: React.FC<{
           </Button>
         </>
       ) : (
-        <DateRangeWrapper onDateChange={handleDateChange} />
-      )}
+          <DateRangeWrapper onDateChange={handleDateChange} />
+        )}
       <div className={classes.reserveLabel}>
         <Typography
           variant="subtitle1"

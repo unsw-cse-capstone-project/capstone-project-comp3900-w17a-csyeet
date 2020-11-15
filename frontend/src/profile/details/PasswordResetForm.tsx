@@ -5,14 +5,17 @@ import { ProfileStore } from "../ProfilePresenter";
 import { action } from "mobx";
 
 /**
- * Form to reset password
- * Password Validation
+ * Form component that handles users updating their account password
  * @param store
+ * @param onChangePassword
  */
-export const PasswordResetForm: React.FC<{
+export const PasswordResetForm = ({
+  store,
+  onChangePassword,
+}: {
   store: ProfileStore;
   onChangePassword: () => void;
-}> = ({ store, onChangePassword }) => {
+}) => {
   const [passTooShort, setPassTooShort] = React.useState<boolean>(false);
   const [passMatchError, setPassMatchError] = React.useState<boolean>(false);
   const onChange = action((value: string, field: string) => {

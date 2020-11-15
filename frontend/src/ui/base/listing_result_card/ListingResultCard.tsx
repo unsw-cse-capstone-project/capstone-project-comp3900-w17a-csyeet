@@ -21,6 +21,12 @@ import { observer } from "mobx-react";
 import { priceFormatter } from "../../util/helper";
 import { AuctionActionButton } from "../auction_action_button/AuctionActionButton";
 
+/**
+ * Component to display listing results on search
+ * @param listing
+ * @param style
+ * @param className
+ */
 export const ListingResultCard = observer(
   (props: {
     listing: ListingActual;
@@ -154,7 +160,7 @@ export const ListingResultCard = observer(
               auction_start={auction_start}
               registered_bidder={registered_bidder}
               isUser={userStore?.user !== undefined}
-              isOwner={(userStore?.user as any).id === owner.id}
+              isOwner={!!userStore?.user && userStore?.user.id === owner.id}
             />
             <BidStatus />
             {registered_bidder && userStore && userStore.user && (

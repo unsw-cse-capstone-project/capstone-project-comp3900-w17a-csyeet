@@ -42,11 +42,21 @@ export type SignUpGoogleArgs = {
   onSuccess: () => void;
 };
 
+/**
+ * User Stoe
+ */
 export default class Store {
   @observable user?: User;
   @observable openSignUp: boolean = false;
   @observable openSignIn: boolean = false;
 
+  /**
+   * Sign in user
+   * @param email
+   * @param password
+   * @param onError
+   * @param onSuccess
+   */
   @action
   async signIn({ email, password, onError, onSuccess }: SignInArgs) {
     try {
@@ -77,6 +87,16 @@ export default class Store {
     }
   }
 
+  /**
+   * Sign in user with google
+   * @param name
+   * @param email
+   * @param phone_number
+   * @param address
+   * @param googleId
+   * @param onError
+   * @param onSuccess
+   */
   @action
   async signInGoogle({ email, token, onError, onSuccess }: SignInGoogleArgs) {
     try {
@@ -155,6 +175,16 @@ export default class Store {
     }
   }
 
+  /**
+   * Sign up user
+   * @param name
+   * @param email
+   * @param password
+   * @param phone_number
+   * @param address
+   * @param onError
+   * @param onSuccess
+   */
   @action
   async signUp({
     name,
@@ -202,6 +232,9 @@ export default class Store {
     }
   }
 
+  /**
+   * Sign out user
+   */
   @action
   async signOut() {
     try {
@@ -222,6 +255,10 @@ export default class Store {
   }
 }
 
+/**
+ * Allows users to have persistent log in on page refresh
+ * @param store
+ */
 const checkSession = async (store: Store) => {
   if (
     window.localStorage.getItem("id") &&
@@ -241,7 +278,7 @@ const checkSession = async (store: Store) => {
     .find((cookie) => cookie.startsWith("session="));
   if (session) {
     try {
-      const response = await fetch("/users/profile", {
+      const response = await fetch("/users/me", {
         headers: {
           Cookie: session.split("=")[1],
         },

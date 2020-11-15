@@ -15,6 +15,7 @@ import { Checkbox } from "../ui/base/input/Checkbox";
 /**
  * Initial bidding step to get the initial bid and confirm
  * terms and conditions
+ * @param store
  */
 export const InitialBidStep = ({
   store,

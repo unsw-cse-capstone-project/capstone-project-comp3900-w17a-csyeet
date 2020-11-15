@@ -50,8 +50,8 @@ export const Password = ({
           {visible ? (
             <VisibilityIcon style={{ color: "#7b7b7b" }} />
           ) : (
-            <VisibilityOffIcon style={{ color: "#7b7b7b" }} />
-          )}
+              <VisibilityOffIcon style={{ color: "#7b7b7b" }} />
+            )}
         </div>
       }
     />

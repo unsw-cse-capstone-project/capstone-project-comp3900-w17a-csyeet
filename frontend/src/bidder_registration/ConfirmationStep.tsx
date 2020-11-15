@@ -6,6 +6,7 @@ import { confirmationStepStyle } from "./ConfirmationStep.css";
 
 /**
  * Confirmation step with the bidding price
+ * @param store
  */
 export const ConfirmationStep = ({
   store,

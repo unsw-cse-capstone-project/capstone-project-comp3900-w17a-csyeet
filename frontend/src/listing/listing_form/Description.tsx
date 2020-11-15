@@ -5,6 +5,10 @@ import { ListingStore } from "../ListingPresenter";
 import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
 import { action } from "mobx";
 
+/**
+ * Component for listing form where users enter details about their property 
+ * @param store
+ */
 export const Description: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
     const { title, description } = store.listing;

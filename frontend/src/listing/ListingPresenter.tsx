@@ -1,6 +1,6 @@
 import { action, runInAction } from "mobx";
 import { observable, makeObservable } from "mobx";
-import { ImageListType, ImageType } from "react-images-uploading";
+import { ImageListType } from "react-images-uploading";
 import { AddressDetails } from "../ui/base/address_form/AddressForm";
 import { resizeFile } from "../ui/util/helper";
 
@@ -27,6 +27,11 @@ export type PaymentDetails = {
   bsb: string;
   account_number: string;
 };
+
+/**
+ * Helper function to get the address of a listing
+ * @param result
+ */
 const getAddressFromResult = (result: any) => ({
   street: result.street,
   suburb: result.suburb,
@@ -34,6 +39,11 @@ const getAddressFromResult = (result: any) => ({
   state: result.state,
   country: result.country,
 });
+
+/**
+ * Helper function to get listing details
+ * @param result
+ */
 const getListingFromResult = (result: any) => ({
   id: parseInt(result.id),
   type: result.type,
@@ -48,12 +58,20 @@ const getListingFromResult = (result: any) => ({
   features: result.features,
 });
 
+/**
+ * Helper functino to get auction details
+ * @param result
+ */
 const getAuctionFromResult = (result: any) => ({
   auction_start: new Date(result.auction_start),
   auction_end: new Date(result.auction_end),
   reserve_price: result.reserve_price.toString(),
 });
 
+/**
+ * Helper function to get payment details
+ * @param result
+ */
 const getPaymentFromResult = (result: any) => ({
   account_name: result.account_name,
   bsb: result.bsb,
@@ -103,6 +121,12 @@ export class ListingStore {
 }
 
 export class ListingPresenter {
+  /**
+   * Get listing information from the backend given a listing ID
+   * @param store
+   * @param listing_id
+   * @param onError
+   */
   @action
   async fetchListing(
     store: ListingStore,
@@ -138,6 +162,12 @@ export class ListingPresenter {
     }
   }
 
+  /**
+   * Send listing information to the backend when user creates a new listing
+   * @param store
+   * @param onSuccess
+   * @param onError
+   */
   @action
   async publishListing(
     store: ListingStore,
@@ -213,6 +243,12 @@ export class ListingPresenter {
     window.location.reload();
   }
 
+  /**
+   * Update backend to reflect changes made to listings made by users
+   * @param store
+   * @param onSuccess
+   * @param onError
+   */
   @action
   async updateListing(
     store: ListingStore,
@@ -253,21 +289,25 @@ export class ListingPresenter {
         return;
       }
 
+      const uploadImage = await this.uploadImages(
+        store.listing.id as number,
+        store.imageList
+      );
+
       // Upload new images
-      if (!this.uploadImages(store.listing.id as number, store.imageList)) {
+      if (!uploadImage) {
         this.onUpdateError(onError);
         return;
       }
 
-      // Delete old images
-      for (var i = 0; i < store.imagesToDelete.length; ++i) {
-        if (
-          !this.deleteImages(
-            store.listing.id as number,
-            store.imagesToDelete[i]
-          )
+      const results = await Promise.all(
+        store.imagesToDelete.map((image) =>
+          this.deleteImages(store.listing.id as number, image)
         )
-          this.onUpdateError(onError);
+      );
+
+      if (results.find((item) => item === false)) {
+        this.onUpdateError(onError);
       }
 
       // Everything has been done
@@ -319,7 +359,7 @@ export class ListingPresenter {
    */
   private getImageId = (url: string) => {
     var i = url.length;
-    while (url[i] != "/") --i;
+    while (url[i] !== "/") --i;
     return url.slice(i, url.length);
   };
 
