@@ -3,7 +3,7 @@ import { action } from "mobx";
 import React from "react";
 
 /**
- * Wrapper for material ui Checkbox component
+ * Component which wrapps around material-ui Checkbox
  * @param store
  * @param name
  * @param Label

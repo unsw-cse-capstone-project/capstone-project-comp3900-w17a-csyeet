@@ -7,7 +7,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import * as React from "react";
-import { SignInArgs } from "../../../../AuthContext";
+import { SignInArgs, SignInGoogleArgs } from "../../../../AuthContext";
 import { isValidEmail } from "../../../util/helper";
 import Logo from "../../logo/Logo";
 import { SignInStyle } from "./SignIn.css";
@@ -26,39 +26,45 @@ import { GoogleLogin } from "../google_auth/GoogleAuth";
 export const SignIn = ({
   switchMode,
   onSubmit,
+  onSubmitGoogle,
   closeModal,
 }: {
   switchMode: () => void;
   onSubmit: (args: SignInArgs) => void;
+  onSubmitGoogle: (args: SignInGoogleArgs) => void;
   closeModal: () => void;
 }) => {
   const classes = SignInStyle();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string | undefined>(undefined);
+  const [googleError, setGoogleError] = React.useState<string | undefined>(
+    undefined
+  );
+  const onError = (error: string) => setError(error);
+  const onGoogleError = (error: string) => setGoogleError(error);
+  const onSuccess = () => {
+    setEmail("");
+    setPassword("");
+    setError(undefined);
+    setGoogleError(undefined);
+    closeModal();
+  };
   const onFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const onError = (error: string) => setError(error);
-    const onSuccess = () => {
-      setEmail("");
-      setPassword("");
-      setError("");
-      closeModal();
-    };
     onSubmit({ email, password, onError, onSuccess });
   };
-  const onSuccess = ({
+  const onGoogleSuccess = ({
     email,
     name,
-    googleId,
+    token,
   }: {
     email: string;
     name: string;
-    googleId: string;
+    token: string;
   }) => {
-    console.log({ email, name, googleId });
+    onSubmitGoogle({ email, token, onError: onGoogleError, onSuccess });
   };
-  const onError = (error: string) => console.log(error);
 
   return (
     <form onSubmit={onFormSubmit} onChange={() => setError(undefined)}>
@@ -72,8 +78,16 @@ export const SignIn = ({
           </Typography>
         </Grid>
         <Grid item>
-          <GoogleLogin onSuccessLogin={onSuccess} onError={onError} label="Sign In with Google" />
+          <GoogleLogin
+            onSuccessLogin={onGoogleSuccess}
+            label="Sign In with Google"
+          />
         </Grid>
+        {!!googleError && (
+          <Grid item>
+            <MuiAlert severity="error">{googleError}</MuiAlert>
+          </Grid>
+        )}
         <Grid item className={classes.dividerContainer}>
           <Divider className={classes.divider} />
           <Typography

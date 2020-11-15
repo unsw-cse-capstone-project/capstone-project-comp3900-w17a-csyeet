@@ -4,15 +4,17 @@ import { getListingFromResult, resizeFile } from "../ui/util/helper";
 
 export class ProfileStore {
   @observable name: string = "";
+  @observable tmpName: string = "";
   @observable email: string = "";
   @observable phone_number: string = "";
+  @observable tmpPhoneNumber: string = "";
   @observable street: string = "";
   @observable suburb: string = "";
   @observable postcode: string = "";
   @observable state: string = "";
   @observable country: string = "";
 
-  @observable blurb: string = "Update your bio";
+  @observable blurb: string = "";
   @observable avatar: string;
 
   @observable old_password: string = "";
@@ -66,8 +68,10 @@ export class ProfilePresenter {
         runInAction(() => {
           store.loadingState = "loaded";
           store.name = content.name;
+          store.tmpName = content.name;
           store.email = content.email;
           store.phone_number = content.phone_number;
+          store.tmpPhoneNumber = content.phone_number;
           store.street = content.street;
           store.suburb = content.suburb;
           store.postcode = content.postcode;
@@ -105,8 +109,8 @@ export class ProfilePresenter {
       const response = await fetch(`users/profile`, {
         method: "post",
         body: JSON.stringify({
-          name: store.name,
-          phone_number: store.phone_number,
+          name: store.tmpName,
+          phone_number: store.tmpPhoneNumber,
           street: store.street,
           suburb: store.suburb,
           postcode: store.postcode,
@@ -120,8 +124,18 @@ export class ProfilePresenter {
           store.loadingState = "error";
         });
       else {
-        runInAction(() => (store.loadingState = "success"));
-        window.location.reload();
+        runInAction(() => {
+          store.loadingState = "success";
+          store.name = result.name;
+          store.tmpName = result.name;
+          store.phone_number = result.phone_number;
+          store.tmpPhoneNumber = result.phone_number;
+          store.street = result.street;
+          store.suburb = result.suburb;
+          store.postcode = result.postcode;
+          store.state = result.state;
+          store.country = result.country;
+        });
       }
     } catch {
       runInAction(() => {
@@ -167,23 +181,19 @@ export class ProfilePresenter {
    * @param store 
    */
   @action
-  async updateBlurb(blurb: string, store: ProfileStore) {
+  async updateBlurb(store: ProfileStore) {
     store.loadingState = "updating";
     try {
+      console.log(store.blurb);
       const response = await fetch(`users/profile`, {
         method: "post",
         body: JSON.stringify({
-          blurb: blurb,
+          blurb: store.blurb,
         }),
       });
       const result = await response.json();
       if ("detail" in result) runInAction(() => (store.loadingState = "error"));
-      else {
-        runInAction(() => {
-          store.loadingState = "success";
-          store.blurb = blurb;
-        });
-      }
+      else runInAction(() => (store.loadingState = "success"));
     } catch {
       runInAction(() => (store.loadingState = "error"));
     }

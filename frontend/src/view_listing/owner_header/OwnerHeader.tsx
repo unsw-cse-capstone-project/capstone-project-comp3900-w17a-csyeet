@@ -113,7 +113,7 @@ export const OwnerHeader = ({
           {matches && "Edit"}
         </Fab>
       )}
-      {!hasAuctionStarted && (
+      {!hasAuctionStarted && !isAuctionClosed && (
         <Fab
           color="secondary"
           onClick={onDeleteClick}

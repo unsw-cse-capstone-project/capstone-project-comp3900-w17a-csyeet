@@ -178,14 +178,14 @@ const ImageEditor = ({
               ))}
             </div>
           ) : (
-              <div style={{ position: "relative" }}>
-                <Button
-                  variant="outlined"
-                  onClick={onImageUpload}
-                  className={avatarClassName}
-                >
-                  <AddAPhotoOutlinedIcon fontSize="small" />
-                  Drop/Upload
+            <div style={{ position: "relative" }}>
+              <Button
+                variant="outlined"
+                onClick={onImageUpload}
+                className={avatarClassName}
+              >
+                <AddAPhotoOutlinedIcon fontSize="small" />
+                Upload
               </Button>
                 <Fab
                   size="small"

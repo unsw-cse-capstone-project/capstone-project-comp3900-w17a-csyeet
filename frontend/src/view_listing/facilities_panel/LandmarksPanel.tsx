@@ -70,6 +70,7 @@ export const LandmarksPanel = ({
                 indicatorColor="secondary"
                 onChange={handleTabChange}
                 variant="scrollable"
+                scrollButtons="on"
                 className={classes.tabs}
               >
                 {["primarySchool", "secondarySchool", "park", "trainStation"].map(

@@ -24,7 +24,6 @@ export interface SelectWrapperProps {
  * @param onChange
  * @param required
  */
-
 export const SelectWrapper = ({
   label,
   field,
@@ -40,8 +39,6 @@ export const SelectWrapper = ({
     setSelected(e.target.value as string);
   };
 
-  // eslint-disable-next-line
-  const [error, setError] = React.useState<boolean>(false);
   return (
     <div>
       <FormControl
@@ -62,7 +59,6 @@ export const SelectWrapper = ({
           value={selected}
           onChange={handleChange}
           label={label}
-          error={error}
         >
           {!required && (
             <MenuItem value="">
@@ -75,7 +71,7 @@ export const SelectWrapper = ({
             </MenuItem>
           ))}
         </Select>
-      </FormControl>{" "}
+      </FormControl>
     </div>
   );
 };

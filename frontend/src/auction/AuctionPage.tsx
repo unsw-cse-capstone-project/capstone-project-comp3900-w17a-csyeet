@@ -6,6 +6,7 @@ import classNames from "classnames";
 import { auctionPageStyle } from "./AuctionPage.css";
 import { dateFormatter } from "../ui/util/helper";
 import { AddressHeading } from "../ui/base/address_heading/AddressHeading";
+import MuiAlert from '@material-ui/lab/Alert';
 
 export type Address = {
   street: string;
@@ -78,7 +79,9 @@ export const AuctionPage = ({
     // eslint-disable-next-line react/display-name
     AuctionTime = () => (
       <div className={classNames(classes.auctionTime, classes.auctionClosed)}>
-        <Typography variant="body1">Auction closed</Typography>
+        <MuiAlert severity="error">
+          Auction is now closed
+        </MuiAlert>
       </div>
     );
   }

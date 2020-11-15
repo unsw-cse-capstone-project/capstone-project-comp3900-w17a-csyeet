@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
-import Header from "./Header";
+import { Header } from "./Header";
 import { AuthProvider } from "../../../AuthContext";
 import { SignUpStore } from "./sign_up/SignUpStore";
 export default {

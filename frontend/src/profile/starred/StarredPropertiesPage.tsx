@@ -45,6 +45,18 @@ export const StarredPropertiesPage = observer(
                   (l) => l.id === listing.id
                 );
                 index !== -1 && store.starredResults.splice(index, 1);
+
+                const bidIndex = store.myBidsResults.findIndex(
+                  (l) => l.id === listing.id
+                );
+
+                if (bidIndex !== -1) {
+                  const newListings = [...store.myBidsResults];
+                  const newListing = { ...listing, starred: false };
+                  newListings.push(newListing);
+                  newListings.splice(bidIndex, 1);
+                  store.myBidsResults = newListings;
+                }
               })}
               onStar={action(() => {
                 const listings = [...store.starredResults];

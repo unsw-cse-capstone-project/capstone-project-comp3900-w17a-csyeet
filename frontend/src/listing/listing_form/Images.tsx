@@ -39,16 +39,18 @@ export const ImagesStyles = makeStyles((theme: Theme) =>
  */
 export const Images: React.FC<{ store: ListingStore }> = observer(
   ({ store }) => {
+    const classes = ImagesStyles();
     const onImageChange = action((images: ImageListType) => {
       store.imageList = images;
     });
 
-    const onDeleteImage = action((imageStr: string) => {
+    const onDeleteImage = action((image: string) => {
+      store.imagesToDelete.push(image);
       store.listing.images = store.listing.images.filter(function (img) {
-        return img !== imageStr;
+        return img !== image;
       });
     });
-    const classes = ImagesStyles();
+
     return (
       <div>
         <div className={classes.previewContainer}>

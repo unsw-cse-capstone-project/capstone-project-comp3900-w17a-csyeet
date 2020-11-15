@@ -9,10 +9,13 @@ import { action } from "mobx";
  * @param store
  * @param onChangePassword
  */
-export const PasswordResetForm: React.FC<{
+export const PasswordResetForm = ({
+  store,
+  onChangePassword,
+}: {
   store: ProfileStore;
   onChangePassword: () => void;
-}> = ({ store, onChangePassword }) => {
+}) => {
   const [passTooShort, setPassTooShort] = React.useState<boolean>(false);
   const [passMatchError, setPassMatchError] = React.useState<boolean>(false);
   const onChange = action((value: string, field: string) => {
@@ -31,7 +34,7 @@ export const PasswordResetForm: React.FC<{
         label="New Password"
         onChange={onChange}
         onBlur={() => {
-          if (store.new_password.length <= 5) setPassTooShort(true);
+          if (store.new_password.length < 5) setPassTooShort(true);
           else setPassTooShort(false);
         }}
         error={passTooShort}

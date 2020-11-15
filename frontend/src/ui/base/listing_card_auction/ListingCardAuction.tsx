@@ -1,7 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Typography, Card, Link } from "@material-ui/core";
-import Slider from "react-slick";
 import { ListingActual } from "../../util/types/listing";
 import { AuctionTag } from "../auction_tag/AuctionTag";
 import { Star } from "../star/Star";
@@ -46,13 +45,6 @@ export const ListingCardAuction = ({
   const history = useHistory();
   const userStore = useStore();
 
-  const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
   const getState = () => {
     if (highest_bid === null) return "current";
     if (reserve_met) return "reserve_met";
@@ -65,7 +57,6 @@ export const ListingCardAuction = ({
     state,
     postcode,
   });
-
   const [userBid, setUserBid] = React.useState<number | undefined>(undefined);
 
   // Get user bid
@@ -78,25 +69,20 @@ export const ListingCardAuction = ({
   const classes = ListingCardAuctionStyles();
   return (
     <Card className={classes.card} style={style}>
-      <div className={classes.cardContent}>
-        <div className={classes.sliderContainer}>
-          <Slider {...settings}>
-            {images.map((image, i) => (
-              <img
-                className={classes.imageContainer}
-                src={image}
-                key={i}
-                alt={"sm-img-" + i}
-              />
-            ))}
-          </Slider>
-        </div>
+      <div className={classes.sliderContainer}>
+        <img
+          className={classes.imageContainer}
+          src={images[0]}
+          alt={"sm-img"}
+        />
         <AuctionTag
           className={classes.auctionTagStyle}
           start={auction_start as Date}
           end={auction_end as Date}
           style={{ marginTop: "2px", marginBottom: "2px" }}
         />
+      </div>
+      <div className={classes.cardContent}>
         <div className={classes.cardContent}>
           {userStore ?.user && (
             <div className={classes.starContainer}>

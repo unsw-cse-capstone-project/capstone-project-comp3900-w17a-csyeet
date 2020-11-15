@@ -1,9 +1,8 @@
 import React from "react";
-import { observer } from "mobx-react";
 import { action } from "mobx";
 import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
 import { ListingStore } from "../ListingPresenter";
-import { FormHelperText, Typography, TextField } from "@material-ui/core";
+import { Typography, TextField } from "@material-ui/core";
 import NumberFormat from "react-number-format";
 
 interface NumberFormatCustomProps {
@@ -51,9 +50,7 @@ const AccNoInput = (props: NumberFormatCustomProps) => {
   );
 };
 
-export const PaymentDetails: React.FC<{
-  store: ListingStore;
-}> = observer(({ store }) => {
+export const PaymentDetails = ({ store }: { store: ListingStore }) => {
   const { account_name, bsb, account_number } = store.payment;
   const onChange = action((value: string, field: string) => {
     (store as any).payment[field] = value;
@@ -66,29 +63,26 @@ export const PaymentDetails: React.FC<{
     const [value, setValue] = React.useState<string>(bsb);
     const [BSBError, setBSBError] = React.useState<boolean>(false);
     return (
-      <>
-        <TextField
-          style={{ marginTop: "10px" }}
-          variant="outlined"
-          value={value}
-          error={BSBError}
-          label="BSB"
-          onBlur={() => {
-            value.length !== 6 ? setBSBError(true) : setBSBError(false);
-            setBsbNo(value);
-          }}
-          fullWidth
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setValue(event.target.value);
-          }}
-          InputProps={{
-            inputComponent: BSBInput as any,
-          }}
-        />
-        {BSBError && (
-          <FormHelperText style={{ color: "red" }}>Invalid BSB</FormHelperText>
-        )}
-      </>
+      <TextField
+        style={{ marginTop: "10px" }}
+        variant="outlined"
+        value={value}
+        error={BSBError}
+        label="BSB"
+        helperText={BSBError ? "Invalid BSB" : undefined}
+        onBlur={() => {
+          setBsbNo(value);
+          value.length !== 6 ? setBSBError(true) : setBSBError(false);
+        }}
+        fullWidth
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setValue(event.target.value);
+          setBSBError(false);
+        }}
+        InputProps={{
+          inputComponent: BSBInput as any,
+        }}
+      />
     );
   };
 
@@ -99,33 +93,28 @@ export const PaymentDetails: React.FC<{
     const [value, setValue] = React.useState<string>(account_number);
     const [AccNoError, setAccNoError] = React.useState<boolean>(false);
     return (
-      <>
-        <TextField
-          style={{ marginTop: "10px" }}
-          variant="outlined"
-          value={value}
-          error={AccNoError}
-          label="Account Number"
-          onBlur={() => {
-            value.length < 8 || value.length > 10
-              ? setAccNoError(true)
-              : setAccNoError(false);
-            setAccNo(value);
-          }}
-          fullWidth
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setValue(event.target.value)
-          }
-          InputProps={{
-            inputComponent: AccNoInput as any,
-          }}
-        />
-        {AccNoError && (
-          <FormHelperText style={{ color: "red" }}>
-            Invalid Account Number (8-10 digits)
-          </FormHelperText>
-        )}
-      </>
+      <TextField
+        style={{ marginTop: "10px" }}
+        variant="outlined"
+        value={value}
+        helperText={AccNoError ? "Invalid Account Number (8-10 digits)" : undefined}
+        error={AccNoError}
+        label="Account Number"
+        onBlur={() => {
+          value.length < 8 || value.length > 10
+            ? setAccNoError(true)
+            : setAccNoError(false);
+          setAccNo(value);
+        }}
+        fullWidth
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setValue(event.target.value);
+          setAccNoError(false);
+        }}
+        InputProps={{
+          inputComponent: AccNoInput as any,
+        }}
+      />
     );
   };
 
@@ -142,4 +131,4 @@ export const PaymentDetails: React.FC<{
       <AccNoInputField />
     </>
   );
-});
+};

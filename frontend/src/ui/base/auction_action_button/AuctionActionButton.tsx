@@ -11,11 +11,13 @@ export const AuctionActionButton = ({
   auction_start,
   registered_bidder,
   isUser,
+  isOwner,
 }: {
   id: number;
   auction_start: Date;
   registered_bidder: boolean;
   isUser: boolean;
+  isOwner: boolean;
 }) => {
   const history = useHistory();
   const viewAuctionButton = (
@@ -38,7 +40,7 @@ export const AuctionActionButton = ({
       Register to Bid
     </Button>
   );
-  if (new Date().getTime() < auction_start.getTime()) {
+  if (new Date().getTime() < auction_start.getTime() && !isOwner) {
     if (isUser && registered_bidder) {
       return viewAuctionButton;
     } else {

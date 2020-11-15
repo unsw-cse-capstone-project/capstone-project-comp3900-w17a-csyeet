@@ -64,7 +64,10 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
     searchQuery += featuresString !== "" ? "&features=" + featuresString : "";
     searchQuery +=
       landmarksString !== "" ? "&landmarks=" + landmarksString : "";
-    searchQuery += closed_auction === 'true' ? `&include_closed_auctions=true` : `&include_closed_auctions=false`;
+    searchQuery +=
+      closed_auction === "true"
+        ? `&include_closed_auctions=true`
+        : `&include_closed_auctions=false`;
 
     history.push("/search?" + searchQuery);
   };
@@ -178,18 +181,21 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
               value={bedsFilter}
               onChange={onBedChange}
               label="Beds"
+              isCarPicker={false}
             />
             <NumberPicker
               store={store}
               value={bathsFilter}
               onChange={onBathChange}
               label="Baths"
+              isCarPicker={false}
             />
             <NumberPicker
               store={store}
               value={carFilter}
               onChange={onCarChange}
               label="Cars"
+              isCarPicker={true}
             />
             <div className={classes.dateInput} style={{ flex: 4 }}>
               <LocalizationProvider dateAdapter={DateFnsUtils}>
@@ -263,21 +269,47 @@ export function NumberPicker(props: {
   value: any;
   onChange: any;
   label: String;
+  isCarPicker: boolean;
 }) {
   const classes = SearchBarStyles();
 
   return (
-    <TextField
-      className={classes.formControl}
-      size="small"
-      variant="outlined"
-      style={{ flex: 1 }}
-      value={props.value}
-      onChange={props.onChange}
-      type="number"
-      InputProps={{ inputProps: { min: 1 } }}
-      label={props.label}
-    />
+    props.isCarPicker ?
+      (<TextField
+        className={
+          classes.formControl
+        }
+        size="small"
+        variant="outlined"
+        style={{ flex: 1 }
+        }
+        value={props.value}
+        onChange={props.onChange}
+        type="number"
+        InputProps={{
+          inputProps: { min: 0, max: 10 },
+          onKeyDown: (event) => {
+            if (!((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode === 8 || event.keyCode === 9))) event.preventDefault()
+          },
+        }
+        }
+        label={props.label}
+      />) : (<TextField
+        className={classes.formControl}
+        size="small"
+        variant="outlined"
+        style={{ flex: 1 }}
+        value={props.value}
+        onChange={props.onChange}
+        type="number"
+        InputProps={{
+          inputProps: { min: 1, max: 10 },
+          onKeyDown: (event) => {
+            if (!((event.keyCode >= 49 && event.keyCode <= 57) || (event.keyCode === 8 || event.keyCode === 9))) event.preventDefault()
+          },
+        }}
+        label={props.label}
+      />)
   );
 }
 
@@ -426,7 +458,6 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
 
   return (
     <DateRangePicker
-      disablePast
       value={value}
       onChange={onChange}
       renderInput={(startProps: any, endProps: any) => (
@@ -459,13 +490,14 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
 export function ClosedAuctionsPicker(props: { store: SearchStore }) {
   const classes = SearchBarStyles();
 
-  const [closedAuction, setClosedAuction] = React.useState(props.store.filters.closed_auction);
+  const [closedAuction, setClosedAuction] = React.useState(
+    props.store.filters.closed_auction
+  );
 
   const onChange = action((event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.checked);
-    setClosedAuction(event.target.checked === true ? 'true' : 'false');
+    setClosedAuction(event.target.checked === true ? "true" : "false");
     props.store.filters.closed_auction =
-      event.target.checked === true ? 'true' : 'false';
+      event.target.checked === true ? "true" : "false";
   });
 
   return (
@@ -473,8 +505,8 @@ export function ClosedAuctionsPicker(props: { store: SearchStore }) {
       className={classes.formControl}
       size="small"
       variant="outlined"
-      style={{ flex: 1, background: 'none' }}>
-
+      style={{ flex: 1, background: "none" }}
+    >
       <FormControlLabel
         control={
           <Checkbox
@@ -482,12 +514,11 @@ export function ClosedAuctionsPicker(props: { store: SearchStore }) {
             onChange={onChange}
             name="Closed Auction"
             color="primary"
-            style={{ paddingLeft: '20px' }}
+            style={{ paddingLeft: "20px" }}
           />
         }
         label={<Typography variant="body2" color="textSecondary">Include Closed Auctions</Typography>}
       />
-    </FormControl >
-
+    </FormControl>
   );
 }

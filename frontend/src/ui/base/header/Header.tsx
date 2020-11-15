@@ -6,7 +6,13 @@ import Logo from "../logo/Logo";
 import { SignUpStore } from "./sign_up/SignUpStore";
 import { SignIn } from "./sign_in/SignIn";
 import { SignUp } from "./sign_up/SignUp";
-import { SignInArgs, useStore, SignUpArgs, SignUpGoogleArgs } from '../../../AuthContext';
+import {
+  SignInArgs,
+  useStore,
+  SignUpArgs,
+  SignUpGoogleArgs,
+  SignInGoogleArgs,
+} from "../../../AuthContext";
 import { Hidden } from "@material-ui/core";
 import { UserMenu } from "./user_menu/UserMenu";
 import { MinimisedSearch } from "./minimised_search/MinimisedSearch";
@@ -18,11 +24,10 @@ export interface HeaderProps {
   signUpStore: SignUpStore;
 }
 
-/**
- * Header component for page
- * Contains logo, add listing button, messages and profile links
+/** Website Header
+ * @param signUpStore
  */
-const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
+export const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
   const history = useHistory();
   const [openModal, setOpenModal] = React.useState(false);
   const [signInMode, setSignInMode] = React.useState(true);
@@ -40,11 +45,13 @@ const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
   const location = useLocation();
   const isHome = location.pathname === "/";
   const isSearch = location.pathname.startsWith("/search");
+  const isAddListing = location.pathname.startsWith("/add");
 
   const SignInWrapper = () => (
     <SignIn
       switchMode={() => setSignInMode(false)}
       onSubmit={(args: SignInArgs) => store.signIn(args)}
+      onSubmitGoogle={(args: SignInGoogleArgs) => store.signInGoogle(args)}
       closeModal={() => setOpenModal(false)}
     />
   );
@@ -59,7 +66,10 @@ const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
   );
   return (
     <div className={classNames(classes.root, { [classes["home"]]: isHome })}>
+      {/* Hide logo on home page */}
       {!isHome && <Logo size="small" onClick={() => history.push("/")} />}
+
+      {/* Toggle between user header and signin/signup options */}
       {!store.user ? (
         <div>
           <Button
@@ -83,17 +93,19 @@ const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
       ) : (
           <div className={classes.loggedInHeader}>
             <Hidden only="xs">{!isSearch && <MinimisedSearch />}</Hidden>
-            <Hidden only="xs">
-              <Button
-                variant={"contained"}
-                color={"secondary"}
-                size="medium"
-                className={classes.addListingButton}
-                onClick={() => history.push("/add")}
-              >
-                Add Listing
-            </Button>
-            </Hidden>
+            {!isAddListing && (
+              <Hidden only="xs">
+                <Button
+                  variant={"contained"}
+                  color={"secondary"}
+                  size="medium"
+                  className={classes.addListingButton}
+                  onClick={() => history.push("/add")}
+                >
+                  Add Listing
+              </Button>
+              </Hidden>
+            )}
             <UserMenu />
           </div>
         )}
@@ -107,5 +119,3 @@ const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
     </div>
   );
 });
-
-export default Header;

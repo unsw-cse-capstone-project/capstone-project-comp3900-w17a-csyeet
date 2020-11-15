@@ -4,9 +4,9 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import { TextFieldWrapper } from "./TextFieldWrapper";
 
 /**
- * Component for password input on forms
+ * Password Input Component which toggles visibile/password mode
  * @param field
- * @param label 
+ * @param label
  * @param onChange
  * @param value
  * @param error

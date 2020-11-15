@@ -55,6 +55,11 @@ export const PreviewListing = observer(
     if (!userStore || !userStore.user) {
       return null;
     }
+
+    const uploadedImages: string[] = store.imageList.map(
+      (image) => image.data_url || ""
+    );
+    const allImages: string[] = uploadedImages.concat(store.listing.images);
     const listing: ListingActual = {
       id: -1,
       owner: userStore.user,
@@ -71,9 +76,7 @@ export const PreviewListing = observer(
       postcode: store.address.postcode,
       auction_start: store.auction.auction_start as Date,
       auction_end: store.auction.auction_end as Date,
-
-      // Already uploaded images also need to be shown
-      images: store.imageList.map((image) => image.data_url || ""),
+      images: allImages,
       features: store.listing.features,
       starred: false,
       registered_bidder: false,
