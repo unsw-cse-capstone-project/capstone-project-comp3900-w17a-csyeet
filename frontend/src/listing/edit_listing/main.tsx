@@ -7,7 +7,7 @@ import { EditListingStyles } from "./EditListing.css";
 import MuiAlert from "@material-ui/lab/Alert";
 import { observer } from "mobx-react";
 import { EditListingForm } from "./EditListingForm";
-import { ErrorBoundaryPage } from '../../ui/base/error_boundary/ErrorBoundary';
+import { ErrorBoundaryPage } from "../../ui/base/error_boundary/ErrorBoundary";
 
 export const EditListingPage = () => {
   const presenter = new ListingPresenter();
@@ -16,22 +16,11 @@ export const EditListingPage = () => {
   const [error, setError] = React.useState<boolean>(false);
   presenter.fetchListing(store, parseInt(id), () => setError(true));
   if (error) return <div>Error Fetching Listing</div>;
-  const updateListing = (
-    store: ListingStore,
-    onSuccess: () => void,
-    onError: () => void
-  ) => {
-    presenter.updateListing(store, onSuccess, onError);
-  };
   return (
     <ErrorBoundaryPage>
       <EditListingPageBase
         store={store}
-        onUpdateListing={(
-          store: ListingStore,
-          onSuccess: () => void,
-          onError: () => void
-        ) => updateListing(store, onSuccess, onError)}
+        onUpdateListing={presenter.updateListing}
       />
     </ErrorBoundaryPage>
   );
@@ -47,7 +36,7 @@ export const EditListingPageBase = observer(
       store: ListingStore,
       onSuccess: () => void,
       onError: () => void
-    ) => void;
+    ) => Promise<void>;
   }) => {
     const history = useHistory();
     const [status, setStatus] = React.useState<string | null>(null);
