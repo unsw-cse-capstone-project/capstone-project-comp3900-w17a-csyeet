@@ -84,6 +84,7 @@ export const AddressForm = observer(
             label="Street"
             onChange={onChange}
             value={street}
+            autoFocus={true}
           />
         </Grid>
         <Grid item xs={12} md={where === "signUp" ? 12 : 6}>

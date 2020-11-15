@@ -59,8 +59,9 @@ export const Blurb = observer(
     const [value, setValue] = React.useState<string>(store.blurb);
     const classes = BlurbStyle();
     const onChange = action((value: string) => {
-      (store as any).blurb = value;
+      (store as any).tmpBlurb = value;
     });
+    console.log(store.blurb, store.tmpBlurb);
     return (
       <div className={classNames(classes.root, className)}>
         {edit ? (

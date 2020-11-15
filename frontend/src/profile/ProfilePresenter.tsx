@@ -8,6 +8,13 @@ export class ProfileStore {
   @observable email: string = "";
   @observable phone_number: string = "";
   @observable tmpPhoneNumber: string = "";
+  @observable tmpAddress = {
+    street: "",
+    suburb: "",
+    postcode: "",
+    state: "NSW",
+    country: "Australia",
+  };
   @observable street: string = "";
   @observable suburb: string = "";
   @observable postcode: string = "";
@@ -15,6 +22,7 @@ export class ProfileStore {
   @observable country: string = "";
 
   @observable blurb: string = "";
+  @observable tmpBlurb: string = "";
   @observable avatar: string;
 
   @observable old_password: string = "";
@@ -42,7 +50,7 @@ export class ProfileStore {
 export class ProfilePresenter {
   /**
    * Fetch users profile information from the backend
-   * @param store 
+   * @param store
    */
   @action
   async getProfileInfo(store: ProfileStore) {
@@ -80,6 +88,9 @@ export class ProfilePresenter {
           store.blurb = !!content["blurb"]
             ? content["blurb"]
             : "Update your bio";
+          store.tmpBlurb = !!content["blurb"]
+            ? content["blurb"]
+            : "Update your bio";
           store.myBidsResults = BidsResults.sort(
             (a, b) => b.auction_start.getTime() - a.auction_start.getTime()
           );
@@ -100,7 +111,7 @@ export class ProfilePresenter {
 
   /**
    * Update user info on the backend to reflect changes made by users
-   * @param store 
+   * @param store
    */
   @action
   async updateUserDetails(store: ProfileStore) {
@@ -111,11 +122,11 @@ export class ProfilePresenter {
         body: JSON.stringify({
           name: store.tmpName,
           phone_number: store.tmpPhoneNumber,
-          street: store.street,
-          suburb: store.suburb,
-          postcode: store.postcode,
-          state: store.state,
-          country: store.country,
+          street: store.tmpAddress.street,
+          suburb: store.tmpAddress.suburb,
+          postcode: store.tmpAddress.postcode,
+          state: store.tmpAddress.state,
+          country: store.tmpAddress.country,
         }),
       });
       const result = await response.json();
@@ -147,8 +158,8 @@ export class ProfilePresenter {
 
   /**
    * Update user password on the backend
-   * @param store 
-   * @param onPasswordIncorrect 
+   * @param store
+   * @param onPasswordIncorrect
    */
   @action
   async updateUserPassword(
@@ -177,8 +188,7 @@ export class ProfilePresenter {
 
   /**
    * Update blurb on the backend
-   * @param blurb 
-   * @param store 
+   * @param store
    */
   @action
   async updateBlurb(store: ProfileStore) {
@@ -187,12 +197,16 @@ export class ProfilePresenter {
       const response = await fetch(`users/profile`, {
         method: "post",
         body: JSON.stringify({
-          blurb: store.blurb,
+          blurb: store.tmpBlurb,
         }),
       });
       const result = await response.json();
       if ("detail" in result) runInAction(() => (store.loadingState = "error"));
-      else runInAction(() => (store.loadingState = "success"));
+      else
+        runInAction(() => {
+          store.loadingState = "success";
+          store.blurb = store.tmpBlurb;
+        });
     } catch {
       runInAction(() => (store.loadingState = "error"));
     }
@@ -200,9 +214,9 @@ export class ProfilePresenter {
 
   /**
    * Update user's profile avatar on the backend
-   * @param image 
-   * @param img_url 
-   * @param store 
+   * @param image
+   * @param img_url
+   * @param store
    */
   @action
   async updateAvatar(image: File, img_url: string, store: ProfileStore) {
