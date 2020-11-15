@@ -271,9 +271,7 @@ export class ListingPresenter {
       }
 
       // Everything has been done
-      setTimeout(() => {
-        onSuccess();
-      }, 2000);
+      onSuccess();
     } catch {
       this.onUpdateError(onError);
     }
