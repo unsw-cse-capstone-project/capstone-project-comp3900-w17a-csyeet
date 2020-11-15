@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session, Query
 from starlette.responses import StreamingResponse
 from ..schemas import CreateListingRequest, ListingResponse, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse, UploadImagesResponse, UpdateListingRequest
 from ..models import Listing, User, Starred, Bid, Registration, Landmark, Image, Interaction, InteractionType
-from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing, batch_remove_listings_from_ML_model, update_listing_in_ML_model
+from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing, batch_remove_listings_from_ML_model, update_listing_in_ML_model, convert_address_to_postcode
 
 router = APIRouter()
 
@@ -41,6 +41,17 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
     ''' Finds listings which match all of the specified criteria '''
     if req.is_user_query and current_user is not None:
         req_dict = asdict(req)
+        if req.location and not req.location.isdigit():
+            # the user didn't query a postcode, so try convert it to one for recommendations.
+            # doing so here means the geocoding is only done once and it removes a slow
+            # network call from the recommendations engine
+
+            # assist the geocoding by adding the user's country
+            restricted_location = f'{req.location}, {current_user.country}'
+            potential_postcode = convert_address_to_postcode(restricted_location)  # nopep8
+            if potential_postcode and potential_postcode.isdigit():
+                req_dict['location'] = potential_postcode
+
         # datetime values require special serialisation handling
         req_dict['auction_start'] = req.auction_start and req.auction_start.isoformat()
         req_dict['auction_end'] = req.auction_end and req.auction_end.isoformat()

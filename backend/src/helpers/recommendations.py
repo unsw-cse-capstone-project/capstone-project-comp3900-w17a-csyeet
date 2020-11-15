@@ -13,7 +13,6 @@ from ..schemas import field_to_feature_map, ListingType, Feature, SearchListings
 from ..models import Interaction, InteractionType, Listing, User
 from .common import session_maker
 from .listing import get_field_for_feature
-from .geolocation import convert_address_to_postcode
 
 prefix_sep = '='
 
@@ -140,7 +139,7 @@ def weight_fields(scaled: np.ndarray) -> np.ndarray:
     return scaled
 
 
-def convert_interactions(interactions: List[Interaction], users_country: str):
+def convert_interactions(interactions: List[Interaction]):
     # set all the values from the interaction into the frame
     rows = []
     for interaction in interactions:
@@ -162,12 +161,6 @@ def convert_interactions(interactions: List[Interaction], users_country: str):
             if queried_location:
                 if queried_location.isdigit():
                     postcode_value = queried_location
-                else:  # the user didn't query a postcode, try convert it to one
-                    # assist the geocoding by adding the user's country
-                    restricted_location = f'{queried_location}, {users_country}'
-                    potential_postcode = convert_address_to_postcode(restricted_location)  # nopep8
-                    if potential_postcode and potential_postcode.isdigit():
-                        postcode_value = potential_postcode
             column_mapping['postcode'] = postcode_value
 
             requested_features = interaction.search_query['features'] or []
@@ -208,7 +201,7 @@ def recommend_from_interactions(user: User, session: Session) -> List[Listing]:
         interactions = [Interaction(type=InteractionType.search, search_query=postcode_query,
                                     timestamp=datetime.now(), user_id=user.id)]
 
-    encoded_interactions = convert_interactions(interactions, user.country)
+    encoded_interactions = convert_interactions(interactions)
     # interactions are generally for similar listings, if the number of interacted listings is high,
     # it's likely we'll filter out quite a few neighbours, so we should search for quite a few neighbours
     num_neighbours = min(len(data_frame), 10)
@@ -221,12 +214,12 @@ def recommend_from_interactions(user: User, session: Session) -> List[Listing]:
         distance_row = distances
         neighbour_index_row = neighbour_indexes
         if len(interacted_listings) > 0:
-            # remove all listings that have already been interacted with from the recommendations
-            indexes = np.argwhere(reduce(lambda acc, listing_id: acc | (neighbour_indexes == data_index_by_id.get(listing_id)),
-                                         interacted_listings, neighbour_indexes == -1))
+            # remove all owned and interacted listings from the recommendations, since they aren't "new" to the user
+            interacted_indexes = np.argwhere(reduce(lambda acc, listing_id: acc | (neighbour_indexes == data_index_by_id.get(listing_id)),
+                                                    interacted_listings, neighbour_indexes == -1))
             owned_listing_indexes = [[i] for i, neigh_idx in enumerate(neighbour_indexes)
                                      if session.merge(db_data[neigh_idx]).owner.id == user.id]
-            indexes = np.concatenate([indexes, owned_listing_indexes])
+            indexes = np.concatenate([interacted_indexes, owned_listing_indexes])  # nopep8
             neighbour_index_row = np.delete(neighbour_indexes, indexes)
             distance_row = np.delete(distances, indexes)
 
