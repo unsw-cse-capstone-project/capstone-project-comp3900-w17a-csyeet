@@ -8,15 +8,16 @@ from geopy.distance import distance
 from ..models import Listing, Landmark
 from ..schemas import LandmarkType
 from .geolocation import get_listing_coordinates
+from ratelimiter import RateLimiter
 
 # consider: https://pydantic-docs.helpmanual.io/usage/settings/#dotenv-env-support
 gmaps_client = googlemaps.Client(key='AIzaSyDakTtp6izOGX7zI_rWxT3a8E6rCX1gaso')
 search_places = bool(strtobool(os.getenv('SEARCH_PLACES', '0')))
 
 
+@RateLimiter(max_calls=50, period=1)  # max 50 calls/second
 def find_nearby_landmarks(listing: Listing) -> List[Landmark]:
     landmarks = []
-    # TODO: remove me - only use real APIs if the environment variable is set, otherwise return dummy results
     if search_places:
         listing_coordinates = get_listing_coordinates(listing)
         if listing_coordinates is not None:
@@ -25,17 +26,6 @@ def find_nearby_landmarks(listing: Listing) -> List[Landmark]:
                                          radius=3000, type=landmark_type.name)
                 landmarks += [create_landmark(place, landmark_type, listing, listing_coordinates)
                               for place in filter_places_response(response, landmark_type)]
-    else:
-        landmarks += [
-            Landmark(listing_id=listing.id, name="Primary School",
-                     type=LandmarkType.primary_school, distance=Decimal('2.21')),
-            Landmark(listing_id=listing.id, name="Secondary School",
-                     type=LandmarkType.secondary_school, distance=Decimal('2.01')),
-            Landmark(listing_id=listing.id, name="Park",
-                     type=LandmarkType.park, distance=Decimal('1.01')),
-            Landmark(listing_id=listing.id, name="Train Station",
-                     type=LandmarkType.train_station, distance=Decimal('0.91')),
-        ]
     return landmarks
 
 
