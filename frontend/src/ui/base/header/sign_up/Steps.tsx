@@ -59,6 +59,7 @@ export const Step0: React.FC<{ store: SignUpStore }> = observer(({ store }) => {
         field="usernm"
         label="Full Name"
         onChange={onChange}
+        autoFocus={true}
         adornment={<PersonOutlineOutlinedIcon style={{ color: "#7b7b7b" }} />}
       />
       <TextFieldWrapper
@@ -148,6 +149,7 @@ export const Step1 = observer(({ store }: { store: SignUpStore }) => {
             <PhoneAndroidOutlinedIcon style={{ color: "#7b7b7b" }} />
           </InputAdornment>
         }
+        autoFocus
         labelWidth={110}
         inputComponent={PhoneInput as any}
       />
