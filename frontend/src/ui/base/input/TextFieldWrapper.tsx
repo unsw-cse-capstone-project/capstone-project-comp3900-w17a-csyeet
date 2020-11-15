@@ -14,6 +14,7 @@ export interface TextFieldWrapperProps {
   onChange?: (value: string, field: string) => void;
   readOnly?: boolean;
   style?: React.CSSProperties;
+  autoFocus?: boolean;
 }
 
 /**
@@ -31,6 +32,7 @@ export interface TextFieldWrapperProps {
  * @param onBlur
  * @param onChange
  * @param readOnly
+ * @param autoFocus
  */
 export const TextFieldWrapper = ({
   field,
@@ -45,6 +47,7 @@ export const TextFieldWrapper = ({
   onBlur,
   onChange,
   readOnly,
+  autoFocus,
 }: TextFieldWrapperProps) => {
   const [v, setValue] = React.useState<string>(value);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,6 +84,7 @@ export const TextFieldWrapper = ({
         value={v}
         label={label}
         type={type}
+        autoFocus={autoFocus}
         onBlur={customOnBlur}
         onChange={handleChange}
         helperText={errorText()}
