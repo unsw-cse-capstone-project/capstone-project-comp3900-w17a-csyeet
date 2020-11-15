@@ -34,7 +34,7 @@ import { DetailStyles } from "./Detail.css";
  * Component used to display a user's details on their profile
  * Also allows users to update specific details like name, phone number
  * and personal address
- * @param store 
+ * @param store
  * @param onUpdateUserDetails
  * @param onChangePasswod
  */
@@ -60,6 +60,10 @@ export const Details: React.FC<{
 
   const onChange = action((value: string, field: string) => {
     (store as any)[field] = value;
+  });
+
+  const onAddressChange = action((value: string, field: string) => {
+    (store as any).tmpAddress[field] = value;
   });
   const [edit, setEdit] = React.useState<boolean>(false);
   const [open, setOpen] = React.useState<boolean>(false);
@@ -128,8 +132,8 @@ export const Details: React.FC<{
                   onChange={onChange}
                 />
               ) : (
-                  <ListItemText primary="Name" secondary={store.name} />
-                )}
+                <ListItemText primary="Name" secondary={store.name} />
+              )}
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -150,11 +154,11 @@ export const Details: React.FC<{
                   onChange={onChange}
                 />
               ) : (
-                  <ListItemText
-                    primary="Phone Number"
-                    secondary={store.phone_number}
-                  />
-                )}
+                <ListItemText
+                  primary="Phone Number"
+                  secondary={store.phone_number}
+                />
+              )}
             </ListItem>
             <Divider light />
             <ListItem style={{ position: "relative" }}>
@@ -170,11 +174,11 @@ export const Details: React.FC<{
                   <Button
                     variant="contained"
                     disabled={
-                      store.street === "" ||
-                      store.suburb === "" ||
-                      store.postcode === "" ||
-                      store.state === "" ||
-                      store.country === ""
+                      store.tmpAddress.street === "" ||
+                      store.tmpAddress.suburb === "" ||
+                      store.tmpAddress.postcode === "" ||
+                      store.tmpAddress.state === "" ||
+                      store.tmpAddress.country === ""
                     }
                     color="primary"
                     onClick={() => {
@@ -203,12 +207,12 @@ export const Details: React.FC<{
               {editAddress ? (
                 <AddressForm
                   addressData={addressData}
-                  onChange={onChange}
+                  onChange={onAddressChange}
                   className={classes.addressFormStyle}
                 />
               ) : (
-                  <ListItemText primary="Address" secondary={address} />
-                )}
+                <ListItemText primary="Address" secondary={address} />
+              )}
             </ListItem>
             <Divider />
 
