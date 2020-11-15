@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Redirect, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { createSearchPage } from "./create";
 import { ErrorBoundaryPage } from "../ui/base/error_boundary/ErrorBoundary";
 
