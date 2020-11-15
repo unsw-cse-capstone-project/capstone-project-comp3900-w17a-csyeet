@@ -93,7 +93,10 @@ export const ListingForm = observer(
         store.address.suburb !== "" &&
         store.address.state !== "" &&
         store.address.country !== "" &&
-        store.listing.type !== ""
+        store.listing.type !== "" &&
+        store.listing.num_bathrooms !== null &&
+        store.listing.num_bedrooms !== null &&
+        store.listing.num_car_spaces !== null
     );
 
     const completedStep1 = computed(
