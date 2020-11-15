@@ -8,6 +8,7 @@ import {
   FormControl,
   FormControlLabel,
   Typography,
+  IconButton,
 } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import { action } from "mobx";
@@ -19,6 +20,7 @@ import { Autocomplete } from "@material-ui/lab";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import DateFnsUtils from "@date-io/date-fns";
+import enAULocale from "date-fns/locale/en-AU";
 import {
   DateRangePicker,
   DateRangeDelimiter,
@@ -28,6 +30,7 @@ import {
 import { toCamelCase, toSentenceCase } from "../../util/helper";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
+import CloseIcon from "@material-ui/icons/Close";
 
 /**
  * Search bar component used on the home page
@@ -198,7 +201,7 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
               isCarPicker={true}
             />
             <div className={classes.dateInput} style={{ flex: 4 }}>
-              <LocalizationProvider dateAdapter={DateFnsUtils}>
+              <LocalizationProvider dateAdapter={DateFnsUtils} locale={enAULocale}>
                 <MinMaxDateRangePicker store={store} />
               </LocalizationProvider>
             </div>
@@ -450,6 +453,8 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
     props.store.filters.end_date || null,
   ]);
 
+  const nullDateRange: DateRange<Date> = [null, null];
+
   const onChange = (newValue: DateRange<Date>) => {
     props.store.filters.start_date = newValue[0] ? newValue[0] : undefined;
     props.store.filters.end_date = newValue[1] ? newValue[1] : undefined;
@@ -468,6 +473,14 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
             fullWidth
             style={{ backgroundColor: "white" }}
             helperText={undefined}
+            InputProps={{
+              endAdornment:
+                <InputAdornment position="end">
+                  <IconButton size="small" onClick={() => setValue(nullDateRange)}>
+                    <CloseIcon />
+                  </IconButton>
+                </InputAdornment>
+            }}
           />
           <DateRangeDelimiter> to </DateRangeDelimiter>
           <TextField
@@ -476,6 +489,14 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
             size="small"
             style={{ backgroundColor: "white" }}
             helperText={undefined}
+            InputProps={{
+              endAdornment:
+                <InputAdornment position="end">
+                  <IconButton size="small" onClick={() => setValue(nullDateRange)}>
+                    <CloseIcon />
+                  </IconButton>
+                </InputAdornment>
+            }}
           />
         </React.Fragment>
       )}
