@@ -8,6 +8,7 @@ import {
 import { TextField, InputAdornment } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
+import enAULocale from "date-fns/locale/en-AU";
 
 /**
  * Component which wraps around Material-ui DateRangePicker
@@ -35,7 +36,7 @@ export const DateRangeWrapper: React.FC<{
   return (
     <div style={style} className={className}>
       <div style={{ marginTop: "10px" }}>
-        <LocalizationProvider dateAdapter={DateFnsUtils}>
+        <LocalizationProvider dateAdapter={DateFnsUtils} locale={enAULocale}>
           <DateRangePicker
             disablePast
             minDate={minDate}
