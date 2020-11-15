@@ -48,6 +48,7 @@ function TabPanel(props: TabPanelProps) {
 
 /**
  * Component that populates the suburb statistics into a tabbed form
+ * @param store
  */
 export const SuburbPanelContent = observer(
   ({ store }: { store: SuburbPanelStore }) => {

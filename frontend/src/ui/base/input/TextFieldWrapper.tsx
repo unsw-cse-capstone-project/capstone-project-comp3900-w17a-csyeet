@@ -15,6 +15,23 @@ export interface TextFieldWrapperProps {
   readOnly?: boolean;
   style?: React.CSSProperties;
 }
+
+/**
+ * Wrapper for material UI textfield component that allows
+ * customised props
+ * @param field
+ * @param label
+ * @param type
+ * @param size
+ * @param adornment
+ * @param value
+ * @param error
+ * @param helperText
+ * @param style
+ * @param onBlur
+ * @param onChange
+ * @param readOnly
+ */
 export const TextFieldWrapper = ({
   field,
   label,

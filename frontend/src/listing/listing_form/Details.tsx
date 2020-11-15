@@ -37,6 +37,11 @@ export const DetailStyles = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Details component for the listing form where users enter information about their listing
+ * @param store
+ * @param edit
+ */
 export const Details: React.FC<{
   store: ListingStore;
   edit: boolean;

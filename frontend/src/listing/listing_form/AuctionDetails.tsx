@@ -47,6 +47,10 @@ interface NumberFormatCustomProps {
   name: string;
 }
 
+/**
+ * Component to display the auction details for a listing
+ * @param store
+ */
 export const AuctionDetails: React.FC<{
   store: ListingStore;
 }> = observer(({ store }) => {
@@ -136,8 +140,8 @@ export const AuctionDetails: React.FC<{
           </Button>
         </>
       ) : (
-        <DateRangeWrapper onDateChange={handleDateChange} />
-      )}
+          <DateRangeWrapper onDateChange={handleDateChange} />
+        )}
       <div className={classes.reserveLabel}>
         <Typography
           variant="subtitle1"

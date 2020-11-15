@@ -6,6 +6,9 @@ export const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
+/**
+ * Populate search store with information about seach queries from URL
+ */
 export const SearchPage = () => {
   const query = useQuery().get("query");
   const type = useQuery().get("type") || undefined;

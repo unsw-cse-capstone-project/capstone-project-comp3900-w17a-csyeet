@@ -1,6 +1,6 @@
 import { action, runInAction } from "mobx";
 import { observable, makeObservable } from "mobx";
-import { ImageListType, ImageType } from "react-images-uploading";
+import { ImageListType } from "react-images-uploading";
 import { AddressDetails } from "../ui/base/address_form/AddressForm";
 import { resizeFile } from "../ui/util/helper";
 

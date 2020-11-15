@@ -11,6 +11,10 @@ import ReactPlaceholder from "react-placeholder/lib/ReactPlaceholder";
 import { useQuery } from "../search/main";
 import MuiAlert from "@material-ui/lab/Alert";
 
+/**
+ * Page where users can view history of all messages made andc communicate
+ * with other buyers and sellers
+ */
 export const MessagesPage = observer(() => {
   const classes = MessagesPageStyles();
   const userStore = useStore();
@@ -93,7 +97,7 @@ export const MessagesPage = observer(() => {
       }
     });
     // eslint-disable-next-line
-  }, [userStore?.user]);
+  }, [userStore ?.user]);
   return (
     <div className={classes.page}>
       <Typography variant="h3" className={classes.title}>
@@ -131,7 +135,7 @@ export const MessagePlaceholder = () => {
         type="rect"
         ready={false}
         className={classes.chatBox}
-        // style={{ maxWidth: 300, height: 100 }}
+      // style={{ maxWidth: 300, height: 100 }}
       >
         {null}
       </ReactPlaceholder>

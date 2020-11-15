@@ -5,6 +5,10 @@ import MuiAlert from "@material-ui/lab/Alert";
 
 /**
  * Star component that handles its own starring and unstarring action
+ * @param id
+ * @param starred
+ * @param onStar
+ * @param onUnstar
  */
 export const Star = ({
   id,
@@ -57,8 +61,8 @@ export const Star = ({
       {isStarred ? (
         <StarRounded fontSize="large" />
       ) : (
-        <StarBorderRounded fontSize="large" />
-      )}
+          <StarBorderRounded fontSize="large" />
+        )}
       <Snackbar
         open={isError}
         autoHideDuration={2000}

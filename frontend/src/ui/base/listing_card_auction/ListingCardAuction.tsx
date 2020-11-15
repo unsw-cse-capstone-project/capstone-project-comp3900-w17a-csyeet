@@ -12,6 +12,13 @@ import { priceFormatter } from "../../util/helper";
 import { formatAddress } from "../../util/helper";
 import { Bid } from "../../util/types/bid";
 
+/**
+ * Listing card result component that also includes bid and auction information
+ * @param listing
+ * @param onStar
+ * @param onUnstar
+ * @param style
+ */
 export const ListingCardAuction = ({
   listing,
   onStar,
@@ -63,7 +70,7 @@ export const ListingCardAuction = ({
 
   // Get user bid
   React.useEffect(() => {
-    const user_id = userStore?.user?.id || 0;
+    const user_id = userStore ?.user ?.id || 0;
     getBidFromAuction(id, user_id).then((r) => {
       setUserBid(r);
     });
@@ -91,7 +98,7 @@ export const ListingCardAuction = ({
           style={{ marginTop: "2px", marginBottom: "2px" }}
         />
         <div className={classes.cardContent}>
-          {userStore?.user && (
+          {userStore ?.user && (
             <div className={classes.starContainer}>
               <Star
                 id={id}

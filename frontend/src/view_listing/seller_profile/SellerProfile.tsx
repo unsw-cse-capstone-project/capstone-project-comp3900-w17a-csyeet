@@ -18,6 +18,10 @@ import { ListingCardSmallLoadingRow } from "../../ui/base/loading_state/ListingC
 /**
  * Seller profile details information about a specific seller including
  * their name, blurb and list of their listings
+ * @param id
+ * @param name
+ * @param children
+ * @param avatar
  */
 export const SellerProfile = ({
   id,
@@ -74,6 +78,17 @@ export const SellerProfile = ({
   );
 };
 
+/**
+ * Modal for seller profile on listing page
+ * Displays all of a user's listings, name, blurb
+ * and avatar
+ * @param listings
+ * @param name
+ * @param blurb
+ * @param open
+ * @param onClose
+ * @param avatar
+ */
 const ProfileDialog = (props: {
   listings: ListingActual[] | undefined;
   name: string;
@@ -107,20 +122,24 @@ const ProfileDialog = (props: {
           {!props.listings ? (
             <ListingCardSmallLoadingRow />
           ) : (
-            <Grid container spacing={3}>
-              {props.listings.map((listing, i) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={i}>
-                  <ListingCardSmall listing={listing} />
-                </Grid>
-              ))}
-            </Grid>
-          )}
+              <Grid container spacing={3}>
+                {props.listings.map((listing, i) => (
+                  <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={i}>
+                    <ListingCardSmall listing={listing} />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
         </div>
       </DialogContent>
     </Dialog>
   );
 };
 
+/**
+ * Fetch user info from backend to display in profile modal
+ * @param user_id 
+ */
 const getInfoFromProfile = async (user_id: number) => {
   try {
     const response = await fetch(`/users/${user_id}/profile`);

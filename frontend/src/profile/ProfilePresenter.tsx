@@ -1,7 +1,6 @@
 import { action, observable, runInAction, makeObservable } from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
 import { getListingFromResult, resizeFile } from "../ui/util/helper";
-import { ImageType } from "react-images-uploading";
 
 export class ProfileStore {
   @observable name: string = "";
@@ -39,6 +38,10 @@ export class ProfileStore {
 }
 
 export class ProfilePresenter {
+  /**
+   * Fetch users profile information from the backend
+   * @param store 
+   */
   @action
   async getProfileInfo(store: ProfileStore) {
     store.loadingState = "loading";
@@ -91,6 +94,10 @@ export class ProfilePresenter {
     }
   }
 
+  /**
+   * Update user info on the backend to reflect changes made by users
+   * @param store 
+   */
   @action
   async updateUserDetails(store: ProfileStore) {
     store.loadingState = "updating";
@@ -124,6 +131,11 @@ export class ProfilePresenter {
     }
   }
 
+  /**
+   * Update user password on the backend
+   * @param store 
+   * @param onPasswordIncorrect 
+   */
   @action
   async updateUserPassword(
     store: ProfileStore,
@@ -149,6 +161,11 @@ export class ProfilePresenter {
     }
   }
 
+  /**
+   * Update blurb on the backend
+   * @param blurb 
+   * @param store 
+   */
   @action
   async updateBlurb(blurb: string, store: ProfileStore) {
     store.loadingState = "updating";
@@ -172,6 +189,12 @@ export class ProfilePresenter {
     }
   }
 
+  /**
+   * Update user's profile avatar on the backend
+   * @param image 
+   * @param img_url 
+   * @param store 
+   */
   @action
   async updateAvatar(image: File, img_url: string, store: ProfileStore) {
     runInAction(() => (store.loadingState = "updating"));

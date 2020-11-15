@@ -29,6 +29,9 @@ import { Carousel } from "../ui/base/carousel/Carousel";
 
 /**
  * Listing Page Content
+ * @param disableActions
+ * @param listing
+ * @param SuburbPanelContent
  */
 export const ListingPage = observer(
   ({
@@ -77,7 +80,7 @@ export const ListingPage = observer(
         />
         {/* first three images */}
         <Paper elevation={0} className={classes.greyBackground}>
-          {userStore?.user && userStore?.user.id !== owner.id && (
+          {userStore ?.user && userStore ?.user.id !== owner.id && (
             <div className={classes.starContainer}>
               <Star id={id} starred={starred} />
             </div>
@@ -141,7 +144,7 @@ export const ListingPage = observer(
               id={id}
               disableAction={disableActions}
               registered_bidder={registered_bidder}
-              isUser={userStore?.user !== undefined}
+              isUser={userStore ?.user !== undefined}
             />
             <Map listing={listing} />
             <SellerProfile
@@ -150,19 +153,19 @@ export const ListingPage = observer(
               email={owner.email}
               avatar={`/users/${owner.id}/avatar`}
             >
-              {userStore?.user?.id !== owner.id &&
-              new Date().getTime() < auction_end.getTime() ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ marginTop: "10px" }}
-                  onClick={() =>
-                    history.push(`/messages?to=${id}`)
-                  }
-                >
-                  Send Message
+              {userStore ?.user ?.id !== owner.id &&
+                new Date().getTime() < auction_end.getTime() ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ marginTop: "10px" }}
+                    onClick={() =>
+                      history.push(`/messages?to=${id}`)
+                    }
+                  >
+                    Send Message
                 </Button>
-              ) : undefined}
+                ) : undefined}
             </SellerProfile>
           </Grid>
         </Grid>

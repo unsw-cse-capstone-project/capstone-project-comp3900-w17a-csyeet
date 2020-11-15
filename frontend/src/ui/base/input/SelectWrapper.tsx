@@ -3,7 +3,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { FormHelperText } from "@material-ui/core";
 
 export interface SelectWrapperProps {
   label: string;
@@ -14,6 +13,18 @@ export interface SelectWrapperProps {
   required?: boolean;
   value?: string;
 }
+
+/**
+ * Wrapper for material ui select 
+ * @param label
+ * @param field
+ * @param data
+ * @param value
+ * @param readOnly
+ * @param onChange
+ * @param required
+ */
+
 export const SelectWrapper = ({
   label,
   field,

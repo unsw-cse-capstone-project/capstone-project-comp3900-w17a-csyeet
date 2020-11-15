@@ -5,6 +5,15 @@ import { AuctionTag } from "../../ui/base/auction_tag/AuctionTag";
 import { dateFormatter } from "../../ui/util/helper";
 import { AuctionActionButton } from "../../ui/base/auction_action_button/AuctionActionButton";
 
+/**
+ * Component which displays information about a listing's auction
+ * @param auction_start
+ * @param auction_end
+ * @param id
+ * @param isUser
+ * @param registered_bidder
+ * @param disabledAction
+ */
 export const AuctionDetails = ({
   auction_start,
   auction_end,
@@ -27,7 +36,7 @@ export const AuctionDetails = ({
         Auction Details
       </Typography>
       <Divider className={classes.divider} />
-      <AuctionTag start={auction_start} end={auction_end} className={classes.auctionTag}/>
+      <AuctionTag start={auction_start} end={auction_end} className={classes.auctionTag} />
       {new Date().getTime() < auction_start.getTime() ? (
         <div>
           <Typography variant="body2">
@@ -41,7 +50,7 @@ export const AuctionDetails = ({
           <Typography variant="body2">
             <b>End Time:</b> {dateFormatter.format(auction_end)}
           </Typography>
-      )}
+        )}
       {!disableAction && (
         <AuctionActionButton
           id={id}

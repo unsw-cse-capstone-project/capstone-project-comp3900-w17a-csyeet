@@ -35,6 +35,13 @@ export const BlurbStyle = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Blurb component which displays the user's blurb on the profile. Allows
+ * users to update and change blurb.
+ * @param blurb
+ * @param onEdit
+ * @param className
+ */
 export const Blurb = ({
   blurb,
   onEdit,
@@ -95,18 +102,18 @@ export const Blurb = ({
           </Fab>
         </div>
       ) : (
-        <div className={classes.blurbView}>
-          <div className={classes.blurbContainer}>
-            <Typography variant="body2">{blurb}</Typography>
-            <IconButton
-              onClick={() => setEdit(true)}
-              className={classes.editIcon}
-            >
-              <EditIcon fontSize={"small"} />
-            </IconButton>
+          <div className={classes.blurbView}>
+            <div className={classes.blurbContainer}>
+              <Typography variant="body2">{blurb}</Typography>
+              <IconButton
+                onClick={() => setEdit(true)}
+                className={classes.editIcon}
+              >
+                <EditIcon fontSize={"small"} />
+              </IconButton>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };

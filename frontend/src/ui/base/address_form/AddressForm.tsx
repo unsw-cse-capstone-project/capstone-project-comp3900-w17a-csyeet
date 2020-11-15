@@ -20,6 +20,16 @@ export type AddressDetails = {
 
 // Countries and states sourced from
 // https://github.com/stefanbinder/countries-states
+
+/**
+ * Address form component 
+ * @param onChange
+ * @param addressData
+ * @param readOnly
+ * @param style
+ * @param className
+ * @param where
+ */
 export const AddressForm = observer(
   ({
     onChange,

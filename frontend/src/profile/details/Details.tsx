@@ -29,6 +29,14 @@ import { ProfileStore } from "../ProfilePresenter";
 import { PasswordResetForm } from "./PasswordResetForm";
 import { TextFieldWrapper } from "../../ui/base/input/TextFieldWrapper";
 
+/**
+ * Component used to display a user's details on their profile
+ * Also allows users to update specific details like name, phone number
+ * and personal address
+ * @param store 
+ * @param onUpdateUserDetails
+ * @param onChangePasswod
+ */
 export const Details: React.FC<{
   store: ProfileStore;
   onUpdateUserDetails: () => void;
@@ -92,16 +100,16 @@ export const Details: React.FC<{
                   </Button>
                 </>
               ) : (
-                <Fab
-                  size={"small"}
-                  color={"primary"}
-                  onClick={() => setEdit(true)}
-                  disabled={editAddress}
-                  style={{ position: "absolute", top: "10px", right: "10px" }}
-                >
-                  <EditIcon style={{ color: "#FFF" }} fontSize="small" />
-                </Fab>
-              )}
+                  <Fab
+                    size={"small"}
+                    color={"primary"}
+                    onClick={() => setEdit(true)}
+                    disabled={editAddress}
+                    style={{ position: "absolute", top: "10px", right: "10px" }}
+                  >
+                    <EditIcon style={{ color: "#FFF" }} fontSize="small" />
+                  </Fab>
+                )}
               <ListItemAvatar>
                 <PersonIcon style={{ color: "#838383" }} />
               </ListItemAvatar>
@@ -114,8 +122,8 @@ export const Details: React.FC<{
                   onChange={onChange}
                 />
               ) : (
-                <ListItemText primary="Name" secondary={store.name} />
-              )}
+                  <ListItemText primary="Name" secondary={store.name} />
+                )}
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -136,11 +144,11 @@ export const Details: React.FC<{
                   onChange={onChange}
                 />
               ) : (
-                <ListItemText
-                  primary="Phone Number"
-                  secondary={store.phone_number}
-                />
-              )}
+                  <ListItemText
+                    primary="Phone Number"
+                    secondary={store.phone_number}
+                  />
+                )}
             </ListItem>
             <Divider light />
             <ListItem style={{ position: "relative" }}>
@@ -178,16 +186,16 @@ export const Details: React.FC<{
                   </Button>
                 </>
               ) : (
-                <Fab
-                  onClick={() => setEditAddress(true)}
-                  disabled={edit}
-                  color={"primary"}
-                  size={"small"}
-                  style={{ position: "absolute", top: "10px", right: "10px" }}
-                >
-                  <EditIcon style={{ color: "#FFF" }} fontSize={"small"} />
-                </Fab>
-              )}
+                  <Fab
+                    onClick={() => setEditAddress(true)}
+                    disabled={edit}
+                    color={"primary"}
+                    size={"small"}
+                    style={{ position: "absolute", top: "10px", right: "10px" }}
+                  >
+                    <EditIcon style={{ color: "#FFF" }} fontSize={"small"} />
+                  </Fab>
+                )}
               <ListItemAvatar>
                 <HomeIcon style={{ color: "#838383" }} />
               </ListItemAvatar>
@@ -198,8 +206,8 @@ export const Details: React.FC<{
                   style={{ marginTop: "40px" }}
                 />
               ) : (
-                <ListItemText primary="Address" secondary={address} />
-              )}
+                  <ListItemText primary="Address" secondary={address} />
+                )}
             </ListItem>
             <Divider />
 

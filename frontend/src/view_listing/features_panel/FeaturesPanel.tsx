@@ -16,6 +16,7 @@ import * as Icon from "@material-ui/icons";
 /**
  * Component to show the list of features included in the house
  * Each features will have a corresponding icon
+ * @param features
  */
 export const FeaturesPanel = ({ features }: { features: string[] }) => {
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
@@ -42,16 +43,16 @@ export const FeaturesPanel = ({ features }: { features: string[] }) => {
       </AccordionSummary>
       <AccordionDetails className={classes.details}>
         <Grid container spacing={3} className={classes.grid}>
-            {features.map((feature, i) => (
-              <Grid item xs={12} sm={6} key={i} className={classes.listItem}>
-                <ListItem>
-                  <ListItemIcon>{getFeatureIcon(feature)}</ListItemIcon>
-                  <Typography variant="body1">
-                    {toSentenceCase(feature)}
-                  </Typography>
-                </ListItem>
-              </Grid>
-            ))}
+          {features.map((feature, i) => (
+            <Grid item xs={12} sm={6} key={i} className={classes.listItem}>
+              <ListItem>
+                <ListItemIcon>{getFeatureIcon(feature)}</ListItemIcon>
+                <Typography variant="body1">
+                  {toSentenceCase(feature)}
+                </Typography>
+              </ListItem>
+            </Grid>
+          ))}
         </Grid>
       </AccordionDetails>
     </Accordion>

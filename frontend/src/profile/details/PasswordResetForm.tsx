@@ -4,6 +4,11 @@ import { Password } from "../../ui/base/input/Password";
 import { ProfileStore } from "../ProfilePresenter";
 import { action } from "mobx";
 
+/**
+ * Form component that handles users updating their account password
+ * @param store
+ * @param onChangePassword
+ */
 export const PasswordResetForm: React.FC<{
   store: ProfileStore;
   onChangePassword: () => void;

@@ -49,6 +49,10 @@ const OwnerStyle = makeStyles((theme: Theme) =>
 /**
  * Header for actions that can be performed by the owner
  * including editing, deleting and viewing messages
+ * @param onDelete
+ * @param id
+ * @param isAuctionClosed
+ * @param hasAuctionStarted
  */
 export const OwnerHeader = ({
   onDelete,

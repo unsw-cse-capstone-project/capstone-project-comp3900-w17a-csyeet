@@ -6,6 +6,10 @@ import { action } from "mobx";
 import { observer } from "mobx-react";
 import { ListingCardSmallLoadingRow } from "../../ui/base/loading_state/ListingCardSmallLoadingRow";
 
+/**
+ * Component used by the profile page to display a user's bids
+ * @param store
+ */
 export const MyBidsPage = observer(({ store }: { store: ProfileStore }) => {
   if (store.loadingState === "loading") {
     return <ListingCardSmallLoadingRow />;
