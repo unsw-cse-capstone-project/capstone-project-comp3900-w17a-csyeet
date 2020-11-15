@@ -55,9 +55,7 @@ export const EditListingPageBase = observer(
     const onSuccess = () => {
       setStatus("success");
       setOpen(true);
-      setTimeout(() => {
-        history.push("/listing/" + store.listing.id?.toString());
-      }, 3000);
+      history.push("/listing/" + store.listing.id?.toString());
     };
 
     const onError = () => {
