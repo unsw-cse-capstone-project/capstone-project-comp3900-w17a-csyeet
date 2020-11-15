@@ -4,6 +4,9 @@ import { Button } from "@material-ui/core";
 
 /**
  * Back Button for pages to return to the previous page
+ * @param onClick
+ * @param text
+ * @param className
  */
 export const BackButton = ({
   onClick,
@@ -15,13 +18,13 @@ export const BackButton = ({
   className?: string;
   style?: React.CSSProperties;
 }) => (
-  <Button
-    className={className}
-    startIcon={<ArrowBackIos />}
-    size="large"
-    onClick={onClick}
-    style={{ width: "fit-content" }}
-  >
-    {text}
-  </Button>
-);
+    <Button
+      className={className}
+      startIcon={<ArrowBackIos />}
+      size="large"
+      onClick={onClick}
+      style={{ width: "fit-content" }}
+    >
+      {text}
+    </Button>
+  );

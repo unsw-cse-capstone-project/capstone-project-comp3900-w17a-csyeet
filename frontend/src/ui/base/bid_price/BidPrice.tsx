@@ -54,7 +54,15 @@ const useStyles = makeStyles((theme: Theme) =>
 
 /**
  * Bid price component that will render with the right color
+ * based on whether the bid meets the reserve price or not
+ * @param bid
+ * @param state
+ * @param info
+ * @param className
+ * @param style
+ * @param textType
  */
+
 export const BidPrice = ({
   bid,
   state,

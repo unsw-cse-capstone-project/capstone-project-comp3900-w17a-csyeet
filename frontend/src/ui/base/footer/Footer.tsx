@@ -45,6 +45,9 @@ export const FooterStyle = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Footer for website
+ */
 export const Footer = () => {
   const classes = FooterStyle();
   return (
