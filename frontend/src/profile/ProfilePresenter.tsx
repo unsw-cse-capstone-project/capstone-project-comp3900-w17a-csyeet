@@ -169,7 +169,6 @@ export class ProfilePresenter {
   @action
   async updateBlurb(store: ProfileStore) {
     store.loadingState = "updating";
-    console.log(store.blurb, store.tmpBlurb);
     try {
       const response = await fetch(`users/profile`, {
         method: "post",
@@ -184,7 +183,6 @@ export class ProfilePresenter {
           store.loadingState = "success";
           store.blurb = store.tmpBlurb;
         });
-      console.log(store.blurb, store.tmpBlurb);
     } catch {
       runInAction(() => (store.loadingState = "error"));
     }
