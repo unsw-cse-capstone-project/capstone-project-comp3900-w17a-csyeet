@@ -26,11 +26,11 @@ export const GoogleLogin = ({
   onClick?: () => void;
 }) => {
   const onSuccess = (res: any) => {
-      onSuccessLogin({
-        email: res.profileObj.email,
-        name: res.profileObj.name,
-        googleId: res.profileObj.googleId,
-      });
+    onSuccessLogin({
+      email: res.profileObj.email,
+      name: res.profileObj.name,
+      googleId: res.profileObj.googleId,
+    });
   };
 
   const onFailure = (res: any) => {

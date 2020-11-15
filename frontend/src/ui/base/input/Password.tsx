@@ -3,6 +3,16 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { TextFieldWrapper } from "./TextFieldWrapper";
 
+/**
+ * Component for password input on forms
+ * @param field
+ * @param label 
+ * @param onChange
+ * @param value
+ * @param error
+ * @param onBlur
+ * @param helperText
+ */
 export const Password = ({
   field,
   label,
@@ -40,8 +50,8 @@ export const Password = ({
           {visible ? (
             <VisibilityIcon style={{ color: "#7b7b7b" }} />
           ) : (
-            <VisibilityOffIcon style={{ color: "#7b7b7b" }} />
-          )}
+              <VisibilityOffIcon style={{ color: "#7b7b7b" }} />
+            )}
         </div>
       }
     />

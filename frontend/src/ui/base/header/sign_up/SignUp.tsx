@@ -39,6 +39,14 @@ type SignUpGoogleProps = {
   closeModal: () => void;
 };
 
+/**
+ * Sign up modal
+ * @param onSubmitNormal
+ * @param onSubmitGoogle
+ * @param store
+ * @param closeModal
+ * @param switchMode
+ */
 export const SignUp = ({
   onSubmitNormal,
   onSubmitGoogle,
@@ -157,6 +165,12 @@ export const SignUp = ({
   );
 };
 
+/**
+ * Handle normal sign up flow
+ * @param onSubmit
+ * @param store
+ * @param closeModal
+ */
 export const SignUpNormal = observer(
   ({ onSubmit, store, closeModal }: SignUpNormalProps) => {
     const [error, setError] = React.useState<string | undefined>(undefined);
@@ -298,6 +312,12 @@ export const SignUpNormal = observer(
   }
 );
 
+/**
+ * Handle sign up using google authentication
+ * @param onSubmit
+ * @param store
+ * @param closeModal
+ */
 export const SignUpGoogle = observer(
   ({ onSubmit, store, closeModal }: SignUpGoogleProps) => {
     const [error, setError] = React.useState<string | undefined>(undefined);

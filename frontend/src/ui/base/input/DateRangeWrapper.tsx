@@ -9,6 +9,13 @@ import { TextField, InputAdornment } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 
+/**
+ * Wrapper for the DateRangePicker material ui component
+ * @param onDateChange
+ * @param DateRange
+ * @param style
+ * @param className
+ */
 export const DateRangeWrapper: React.FC<{
   onDateChange: (value: DateRange<Date>) => void;
   dateRange?: DateRange<Date>;

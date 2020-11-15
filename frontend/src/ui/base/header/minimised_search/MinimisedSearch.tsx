@@ -28,12 +28,15 @@ const MinimisedSearchStyle = makeStyles((theme: Theme) =>
       padding: 0,
       marginRight: theme.spacing(1.5),
     },
-    form : {
+    form: {
       marginRight: theme.spacing(1.5),
     }
   })
 );
 
+/**
+ * Minimised Search component used for the header
+ */
 export const MinimisedSearch = () => {
   const [query, setQuery] = React.useState("");
   const [open, setOpen] = React.useState(false);
@@ -77,12 +80,12 @@ export const MinimisedSearch = () => {
       />
     </form>
   ) : (
-    <IconButton
-      aria-label="Search"
-      onClick={onClick}
-      className={classes.searchButton}
-    >
-      <Search fontSize="inherit" />
-    </IconButton>
-  );
+      <IconButton
+        aria-label="Search"
+        onClick={onClick}
+        className={classes.searchButton}
+      >
+        <Search fontSize="inherit" />
+      </IconButton>
+    );
 };

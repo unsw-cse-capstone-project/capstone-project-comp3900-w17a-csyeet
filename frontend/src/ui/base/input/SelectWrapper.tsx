@@ -40,6 +40,7 @@ export const SelectWrapper = ({
     setSelected(e.target.value as string);
   };
 
+  // eslint-disable-next-line
   const [error, setError] = React.useState<boolean>(false);
   return (
     <div>

@@ -44,6 +44,15 @@ export const ImagesStyles = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Image Uploader component used in add listing form etc.
+ * @param onImageChange
+ * @param value
+ * @param imageHeightt
+ * @param max
+ * @param style
+ * @param className
+ */
 export const ImageUploader: React.FC<{
   onImageChange: (images: ImageListType) => void;
   value?: ImageType;
@@ -87,41 +96,41 @@ export const ImageUploader: React.FC<{
             isDragging,
             dragProps,
           }) => (
-            <div>
-              <div className={classes.previewContainer}>
-                {imageList.map((image, index) => (
-                  <div key={index} className={classes.imgContainer}>
-                    <IconButton
-                      className={classes.imgDelete}
-                      onClick={() => onImageRemove(index)}
-                    >
-                      <HighlightOffIcon style={{ color: "#FFF" }} />
-                    </IconButton>
-                    <img
-                      src={image.data_url}
-                      alt="uploaded-img"
-                      style={{
-                        objectFit: "cover",
-                        height: "300px",
-                        width: "auto",
-                      }}
-                    />
-                  </div>
-                ))}
-                <Button
-                  variant="outlined"
-                  className={classes.dropzone}
-                  style={{ height: imageHeight, width: imageHeight }}
-                  color={isDragging ? "secondary" : "default"}
-                  startIcon={<AddAPhotoOutlinedIcon />}
-                  onClick={onImageUpload}
-                  {...dragProps}
-                >
-                  Upload Images
+              <div>
+                <div className={classes.previewContainer}>
+                  {imageList.map((image, index) => (
+                    <div key={index} className={classes.imgContainer}>
+                      <IconButton
+                        className={classes.imgDelete}
+                        onClick={() => onImageRemove(index)}
+                      >
+                        <HighlightOffIcon style={{ color: "#FFF" }} />
+                      </IconButton>
+                      <img
+                        src={image.data_url}
+                        alt="uploaded-img"
+                        style={{
+                          objectFit: "cover",
+                          height: "300px",
+                          width: "auto",
+                        }}
+                      />
+                    </div>
+                  ))}
+                  <Button
+                    variant="outlined"
+                    className={classes.dropzone}
+                    style={{ height: imageHeight, width: imageHeight }}
+                    color={isDragging ? "secondary" : "default"}
+                    startIcon={<AddAPhotoOutlinedIcon />}
+                    onClick={onImageUpload}
+                    {...dragProps}
+                  >
+                    Upload Images
                 </Button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </ImageUploading>
       </div>
     );

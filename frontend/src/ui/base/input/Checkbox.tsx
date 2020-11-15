@@ -2,6 +2,13 @@ import { FormControlLabel, Checkbox as CheckboxBase } from "@material-ui/core";
 import { action } from "mobx";
 import React from "react";
 
+/**
+ * Wrapper for material ui Checkbox component
+ * @param store
+ * @param name
+ * @param Label
+ * @param style
+ */
 export const Checkbox = ({
   store,
   name,
