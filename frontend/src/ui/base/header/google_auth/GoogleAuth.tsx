@@ -32,14 +32,12 @@ export const GoogleLogin = ({
   label: string;
   onClick?: () => void;
 }) => {
-  const onSuccess = (res: any) => {
-    console.log(res)
+  const onSuccess = (res: any) =>
     onSuccessLogin({
       email: res.profileObj.email,
       name: res.profileObj.name,
       token: res.tokenId,
     });
-  };
 
   const onFailure = (res: any) => {
     onError && onError(res.error);

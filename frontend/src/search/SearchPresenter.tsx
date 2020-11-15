@@ -100,7 +100,7 @@ export class SearchPresenter {
         });
       }
     } catch {
-      console.log("aww error");
+      store.searchState = "error";
     }
   }
 }

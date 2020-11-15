@@ -93,16 +93,12 @@ export const SignUp = ({
     name: string;
     token: string;
   }) => {
-    console.log({ email, name, token });
     runInAction(() => {
       store.email = email;
       store.usernm = name;
       store.token = token;
     });
     setGoogleLogin(true);
-  };
-  const onError = (error: string) => {
-    console.log(error);
   };
 
   if (isGoogleLogin === undefined) {
@@ -112,7 +108,6 @@ export const SignUp = ({
           <Grid item>
             <GoogleLogin
               onSuccessLogin={onSuccess}
-              onError={onError}
               label="Sign Up with Google"
             />
           </Grid>

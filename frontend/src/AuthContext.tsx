@@ -106,7 +106,6 @@ export default class Store {
         body: JSON.stringify({ email, google_id_token: token }),
       });
       const content = await response.json();
-      console.log(content)
       if ("detail" in content) {
         onError(content.detail);
       } else {
@@ -241,13 +240,12 @@ export default class Store {
       await fetch("/logout", {
         method: "post",
       });
-      console.log('logging out')
       runInAction(() => (this.user = undefined));
       window.localStorage.removeItem("name");
       window.localStorage.removeItem("email");
       window.localStorage.removeItem("id");
     } catch {
-      console.log("error T-T");
+      
     }
   }
 

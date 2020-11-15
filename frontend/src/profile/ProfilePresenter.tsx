@@ -184,7 +184,6 @@ export class ProfilePresenter {
   async updateBlurb(store: ProfileStore) {
     store.loadingState = "updating";
     try {
-      console.log(store.blurb);
       const response = await fetch(`users/profile`, {
         method: "post",
         body: JSON.stringify({
