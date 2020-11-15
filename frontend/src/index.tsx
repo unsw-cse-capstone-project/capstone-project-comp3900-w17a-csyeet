@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import ScrollToTop from './ui/base/scroll_to_top/ScrollToTop';
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
@@ -82,6 +83,7 @@ ReactDOM.render(
   <React.StrictMode>
     <div className="page">
       <BrowserRouter>
+      <ScrollToTop>
         <ThemeProvider theme={theme}>
           <AuthProvider>
             <ErrorBoundaryComponent>
@@ -156,6 +158,7 @@ ReactDOM.render(
             </div>
           </AuthProvider>
         </ThemeProvider>
+        </ScrollToTop>
       </BrowserRouter>
     </div>
   </React.StrictMode>,
