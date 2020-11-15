@@ -1,7 +1,13 @@
-import { action, makeObservable, observable, runInAction } from "mobx";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
 import { ListingActual } from "../ui/util/types/listing";
 import { Filters } from "../ui/util/types/filters";
-import { getListingFromResult } from '../ui/util/helper';
+import { getListingFromResult } from "../ui/util/helper";
 
 /**
  * Store for searching
@@ -29,6 +35,22 @@ export class SearchStore {
   @observable
   searchState?: "loading" | "loaded" | "error";
 
+  @computed
+  get shouldShowFilter() {
+    console.log(this.filters)
+    return (
+      !!this.filters.type ||
+      !!this.filters.beds ||
+      !!this.filters.baths ||
+      !!this.filters.cars ||
+      !!this.filters.features ||
+      this.filters.closed_auction === "true" ||
+      !!this.filters.end_date ||
+      !!this.filters.start_date ||
+      !!this.filters.landmarks
+    );
+  }
+
   continuation?: string;
 
   constructor(
@@ -41,7 +63,7 @@ export class SearchStore {
     end?: string,
     features?: string[],
     landmarks?: string[],
-    closed_auction?: string,
+    closed_auction?: string
   ) {
     makeObservable(this);
     this.input = query ? query : "";
@@ -62,26 +84,46 @@ export class SearchStore {
 export class SearchPresenter {
   /**
    * Return a list of search results from backend based on search criteria provided by user
-   * @param store 
+   * @param store
    */
   @action
   async search(store: SearchStore) {
     if (!store.continuation) {
-      runInAction(() => { store.searchState = "loading" });
+      runInAction(() => {
+        store.searchState = "loading";
+      });
     }
-    const { type, beds, baths, cars, start_date, end_date, features, landmarks, closed_auction } = store.filters;
+    const {
+      type,
+      beds,
+      baths,
+      cars,
+      start_date,
+      end_date,
+      features,
+      landmarks,
+      closed_auction,
+    } = store.filters;
     // Parse through filters and format into a query string
     let searchQuery = `?location=${store.input}`;
     searchQuery += type ? `&type=${type}` : "";
     searchQuery += beds ? `&num_bedrooms=${beds}` : "";
     searchQuery += baths ? `&num_bathrooms=${baths}` : "";
     searchQuery += cars ? `&num_car_spaces=${cars}` : "";
-    searchQuery += start_date ? `&auction_start=${start_date.toISOString()}` : "";
+    searchQuery += start_date
+      ? `&auction_start=${start_date.toISOString()}`
+      : "";
     searchQuery += end_date ? `&auction_end=${end_date.toISOString()}` : "";
-    features && features.map(feature => searchQuery += `&features=${feature}`);
-    landmarks && landmarks.map(landmark => searchQuery += `&landmarks=${landmark}`);
-    searchQuery += closed_auction ? `&include_closed_auctions=${closed_auction}` : "";
-    searchQuery += store.continuation ? `&continuation=${store.continuation}` : "";
+    features &&
+      features.map((feature) => (searchQuery += `&features=${feature}`));
+    landmarks &&
+      landmarks.map((landmark) => (searchQuery += `&landmarks=${landmark}`));
+    searchQuery += closed_auction
+      ? `&include_closed_auctions=${closed_auction}`
+      : "";
+    searchQuery += store.continuation
+      ? `&continuation=${store.continuation}`
+      : "";
     searchQuery += "&limit=4";
     try {
       // Change this to add the filters
@@ -92,7 +134,9 @@ export class SearchPresenter {
           store.searchState = "error";
         });
       } else {
-        const results: ListingActual[] = content.results.map((result: any) => getListingFromResult(result));
+        const results: ListingActual[] = content.results.map((result: any) =>
+          getListingFromResult(result)
+        );
         runInAction(() => {
           store.searchResults = [...store.searchResults, ...results];
           store.searchState = "loaded";

@@ -15,7 +15,7 @@ export const createSearchPage = (
   end?: string,
   featureList?: string[],
   landmarkList?: string[],
-  closed_auction?: string,
+  closed_auction?: string
 ) => {
   const store = new SearchStore(
     query,
@@ -31,15 +31,13 @@ export const createSearchPage = (
   );
   const presenter = new SearchPresenter();
 
-  if (query) {
-    presenter.search(store);
-  }
+  presenter.search(store);
 
-  const SearchBarWrapper = observer(() => (
-    <SearchBar store={store} />
+  const SearchBarWrapper = observer(() => <SearchBar store={store} />);
+
+  const SearchResult = observer(() => (
+    <SearchResultsList store={store} presenter={presenter} />
   ));
-
-  const SearchResult = observer(() => <SearchResultsList store={store} presenter={presenter} />);
   // eslint-disable-next-line react/display-name
   return () => (
     <SearchPage SearchResults={SearchResult} SearchBar={SearchBarWrapper} />

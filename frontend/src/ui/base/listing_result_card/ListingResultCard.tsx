@@ -18,7 +18,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { Star } from "../star/Star";
 import { useStore } from "../../../AuthContext";
 import { observer } from "mobx-react";
-import { priceFormatter } from "../../util/helper";
+import { formatAddress, priceFormatter } from "../../util/helper";
 import { AuctionActionButton } from "../auction_action_button/AuctionActionButton";
 
 /**
@@ -85,6 +85,14 @@ export const ListingResultCard = observer(
         </Typography>
       );
     };
+
+    const { streetAddress, remainingAddress } = formatAddress({
+      street,
+      suburb,
+      postcode,
+      state,
+    });
+
     return (
       <Card
         style={props.style}
@@ -116,25 +124,17 @@ export const ListingResultCard = observer(
                 state: { from: location.pathname + location.search },
               })
             }
-            style={{ textDecoration: "none" }}
             className={classes.link}
           >
             <Typography
               variant="h4"
-              style={{ textTransform: "capitalize" }}
+              className={classNames({ [classes.title]: !!userStore?.user })}
               color="textPrimary"
             >
-              {street}
+              {streetAddress}
             </Typography>
-            <Typography
-              variant="h6"
-              style={{ textTransform: "capitalize" }}
-              color="textSecondary"
-            >
-              {suburb}
-              {", "}
-              <span style={{ textTransform: "uppercase" }}>{state}</span>{" "}
-              {postcode}
+            <Typography variant="h6" color="textSecondary">
+              {remainingAddress}
             </Typography>
           </Link>
           <div className={classes.detailBar}>
@@ -145,7 +145,7 @@ export const ListingResultCard = observer(
               <ListingFeatureIcon value={num_car_spaces} Icon={DriveEta} />
               <Typography
                 variant="body1"
-                style={{ textTransform: "capitalize", marginLeft: "12px" }}
+                className={classes.type}
               >
                 {type}
               </Typography>
@@ -154,19 +154,14 @@ export const ListingResultCard = observer(
           <Typography variant="body2" className={classes.description}>
             {description}
           </Typography>
-          <div style={{ marginTop: "15px" }}>
-            <AuctionActionButton
-              id={id}
-              auction_start={auction_start}
-              registered_bidder={registered_bidder}
-              isUser={userStore?.user !== undefined}
-              isOwner={!!userStore?.user && userStore?.user.id === owner.id}
-            />
-            <BidStatus />
-            {registered_bidder && userStore && userStore.user && (
-              <Typography variant="body2">You are registered to bid</Typography>
-            )}
-          </div>
+          <AuctionActionButton
+            id={id}
+            auction_start={auction_start}
+            registered_bidder={registered_bidder}
+            isUser={userStore?.user !== undefined}
+            isOwner={!!userStore?.user && userStore?.user.id === owner.id}
+          />
+          <BidStatus />
         </CardContent>
       </Card>
     );

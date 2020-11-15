@@ -57,7 +57,7 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
     let featuresString = features ? features.join("_") : "";
     let landmarksString = landmarks ? landmarks.join("_") : "";
 
-    let searchQuery = input ? `query=${input}` : "";
+    let searchQuery = !!input ? `query=${input}` : "";
     searchQuery += type ? `&type=${type}` : "";
     searchQuery += beds ? `&beds=${beds}` : "";
     searchQuery += baths ? `&baths=${baths}` : "";
@@ -87,7 +87,6 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
           color="primary"
           variant="contained"
           className={classes.formButton}
-          disabled={store.input === ""}
         >
           Search
         </Button>
@@ -100,7 +99,7 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
 });
 
 /**
- * Wrapper for the search bar 
+ * Wrapper for the search bar
  * @param store
  */
 const SearchInputWrapper = ({ store }: { store: SearchStore }) => {
@@ -131,13 +130,13 @@ const SearchInputWrapper = ({ store }: { store: SearchStore }) => {
 };
 
 /**
- * Search filters 
+ * Search filters
  * @param store
  */
 const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
   const classes = SearchBarStyles();
-
-  const [showing, setShowing] = React.useState(false);
+  console.log(store.shouldShowFilter)
+  const [showing, setShowing] = React.useState(store.shouldShowFilter);
 
   const [bedsFilter, setBedFilter] = React.useState(store.filters.beds);
   const [bathsFilter, setBathsFilter] = React.useState(store.filters.baths);
@@ -162,55 +161,52 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
 
   return (
     <div>
-      <div>
-        <Button
-          className={classes.filterDropdown}
-          onClick={() => {
-            showing ? setShowing(false) : setShowing(true);
-          }}
-        >
-          Advanced Search
-        </Button>
-      </div>
-      <div>
-        <div
-          className={classes.filters}
-          style={{ display: showing ? "flex" : "none" }}
-        >
-          <div className={classes.filterRows}>
-            <TypePicker store={store} />
-            <NumberPicker
-              store={store}
-              value={bedsFilter}
-              onChange={onBedChange}
-              label="Beds"
-              isCarPicker={false}
-            />
-            <NumberPicker
-              store={store}
-              value={bathsFilter}
-              onChange={onBathChange}
-              label="Baths"
-              isCarPicker={false}
-            />
-            <NumberPicker
-              store={store}
-              value={carFilter}
-              onChange={onCarChange}
-              label="Cars"
-              isCarPicker={true}
-            />
-            <div className={classes.dateInput} style={{ flex: 4 }}>
-              <LocalizationProvider dateAdapter={DateFnsUtils} locale={enAULocale}>
-                <MinMaxDateRangePicker store={store} />
-              </LocalizationProvider>
-            </div>
+      <Button
+        className={classes.filterDropdown}
+        onClick={() => (showing ? setShowing(false) : setShowing(true))}
+      >
+        Advanced Search
+      </Button>
+      <div
+        className={classes.filters}
+        style={{ display: showing ? "flex" : "none" }}
+      >
+        <div className={classes.filterRows}>
+          <TypePicker store={store} />
+          <NumberPicker
+            store={store}
+            value={bedsFilter}
+            onChange={onBedChange}
+            label="Beds"
+            isCarPicker={false}
+          />
+          <NumberPicker
+            store={store}
+            value={bathsFilter}
+            onChange={onBathChange}
+            label="Baths"
+            isCarPicker={false}
+          />
+          <NumberPicker
+            store={store}
+            value={carFilter}
+            onChange={onCarChange}
+            label="Cars"
+            isCarPicker={true}
+          />
+          <div className={classes.dateInput} style={{ flex: 4 }}>
+            <LocalizationProvider
+              dateAdapter={DateFnsUtils}
+              locale={enAULocale}
+            >
+              <MinMaxDateRangePicker store={store} />
+            </LocalizationProvider>
           </div>
-          <div className={classes.filterRows}>
-            <FeaturePicker store={store} />
-            <LandmarkPicker store={store} />
-            <ClosedAuctionsPicker store={store} />
-          </div>
+        </div>
+        <div className={classes.filterRows}>
+          <FeaturePicker store={store} />
+          <LandmarkPicker store={store} />
+          <ClosedAuctionsPicker store={store} />
         </div>
       </div>
     </div>
@@ -276,43 +272,54 @@ export function NumberPicker(props: {
 }) {
   const classes = SearchBarStyles();
 
-  return (
-    props.isCarPicker ?
-      (<TextField
-        className={
-          classes.formControl
-        }
-        size="small"
-        variant="outlined"
-        style={{ flex: 1 }
-        }
-        value={props.value}
-        onChange={props.onChange}
-        type="number"
-        InputProps={{
-          inputProps: { min: 0, max: 10 },
-          onKeyDown: (event) => {
-            if (!((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode === 8 || event.keyCode === 9))) event.preventDefault()
-          },
-        }
-        }
-        label={props.label}
-      />) : (<TextField
-        className={classes.formControl}
-        size="small"
-        variant="outlined"
-        style={{ flex: 1 }}
-        value={props.value}
-        onChange={props.onChange}
-        type="number"
-        InputProps={{
-          inputProps: { min: 1, max: 10 },
-          onKeyDown: (event) => {
-            if (!((event.keyCode >= 49 && event.keyCode <= 57) || (event.keyCode === 8 || event.keyCode === 9))) event.preventDefault()
-          },
-        }}
-        label={props.label}
-      />)
+  return props.isCarPicker ? (
+    <TextField
+      className={classes.formControl}
+      size="small"
+      variant="outlined"
+      style={{ flex: 1 }}
+      value={props.value}
+      onChange={props.onChange}
+      type="number"
+      InputProps={{
+        inputProps: { min: 0, max: 10 },
+        onKeyDown: (event) => {
+          if (
+            !(
+              (event.keyCode >= 48 && event.keyCode <= 57) ||
+              event.keyCode === 8 ||
+              event.keyCode === 9
+            )
+          )
+            event.preventDefault();
+        },
+      }}
+      label={props.label}
+    />
+  ) : (
+    <TextField
+      className={classes.formControl}
+      size="small"
+      variant="outlined"
+      style={{ flex: 1 }}
+      value={props.value}
+      onChange={props.onChange}
+      type="number"
+      InputProps={{
+        inputProps: { min: 1, max: 10 },
+        onKeyDown: (event) => {
+          if (
+            !(
+              (event.keyCode >= 49 && event.keyCode <= 57) ||
+              event.keyCode === 8 ||
+              event.keyCode === 9
+            )
+          )
+            event.preventDefault();
+        },
+      }}
+      label={props.label}
+    />
   );
 }
 
@@ -445,7 +452,7 @@ export function LandmarkPicker(props: { store: SearchStore }) {
 
 /**
  * Component to pick auction start and end date for filters
- * @param store 
+ * @param store
  */
 export function MinMaxDateRangePicker(props: { store: SearchStore }) {
   const [value, setValue] = React.useState<DateRange<Date>>([
@@ -474,12 +481,16 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
             style={{ backgroundColor: "white" }}
             helperText={undefined}
             InputProps={{
-              endAdornment:
+              endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton size="small" onClick={() => setValue(nullDateRange)}>
+                  <IconButton
+                    size="small"
+                    onClick={() => setValue(nullDateRange)}
+                  >
                     <CloseIcon />
                   </IconButton>
                 </InputAdornment>
+              ),
             }}
           />
           <DateRangeDelimiter> to </DateRangeDelimiter>
@@ -490,12 +501,16 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
             style={{ backgroundColor: "white" }}
             helperText={undefined}
             InputProps={{
-              endAdornment:
+              endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton size="small" onClick={() => setValue(nullDateRange)}>
+                  <IconButton
+                    size="small"
+                    onClick={() => setValue(nullDateRange)}
+                  >
                     <CloseIcon />
                   </IconButton>
                 </InputAdornment>
+              ),
             }}
           />
         </React.Fragment>
@@ -506,7 +521,7 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
 
 /**
  * Component to include closed auctions for filters
- * @param store 
+ * @param store
  */
 export function ClosedAuctionsPicker(props: { store: SearchStore }) {
   const classes = SearchBarStyles();
@@ -538,7 +553,11 @@ export function ClosedAuctionsPicker(props: { store: SearchStore }) {
             style={{ paddingLeft: "20px" }}
           />
         }
-        label={<Typography variant="body2" color="textSecondary">Include Closed Auctions</Typography>}
+        label={
+          <Typography variant="body2" color="textSecondary">
+            Include Closed Auctions
+          </Typography>
+        }
       />
     </FormControl>
   );

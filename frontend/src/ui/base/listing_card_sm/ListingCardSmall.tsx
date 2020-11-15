@@ -11,6 +11,7 @@ import { ListingCardSmallStyles } from "./ListingCardSmall.css";
 import { useStore } from "../../../AuthContext";
 import { formatAddress } from "../../util/helper";
 import ReactPlaceholder from "react-placeholder/lib";
+import classNames from "classnames";
 
 /**
  * Component to display listings on profile modal
@@ -65,7 +66,7 @@ export const ListingCardSmall = ({
         />
       </div>
       <div className={classes.cardContent}>
-        {userStore ?.user && (
+        {userStore?.user && (
           <div className={classes.starContainer}>
             <Star
               id={id}
@@ -80,7 +81,12 @@ export const ListingCardSmall = ({
           className={classes.link}
           color="textPrimary"
         >
-          <Typography variant="h6">{streetAddress}</Typography>
+          <Typography
+            variant="h6"
+            className={classNames({ [classes.title]: !!userStore?.user })}
+          >
+            {streetAddress}
+          </Typography>
           <Typography variant="body1" color="textSecondary">
             {remainingAddress}
           </Typography>

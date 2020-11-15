@@ -67,6 +67,10 @@ export const ListingResultCardStyles = makeStyles((theme: Theme) =>
       },
       textDecoration: "none",
     },
+    title: {
+      paddingRight: "35px"
+    },
+    type: { textTransform: "capitalize", marginLeft: "12px" },
   })
 );
 

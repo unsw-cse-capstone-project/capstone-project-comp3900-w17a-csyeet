@@ -17,7 +17,9 @@ export const ListingCardSmallStyles = makeStyles((theme: Theme) =>
       objectFit: "contain",
       backgroundColor: "rgba(0,0,0, 0.8)",
     },
-
+    title: {
+      paddingRight: "35px",
+    },
     sliderContainer: {
       [theme.breakpoints.up("xs")]: {
         width: "100%",

@@ -24,16 +24,12 @@ export const SearchPage = () => {
   let landmarkList = landmarks?.split("_");
   let closed_auction = useQuery().get("include_closed_auctions") || undefined;
 
-  if (query === null || query === "") {
-    return <Redirect to="/" />;
-  }
-
   let bedsNum = beds ? parseInt(beds) : undefined;
   let bathsNum = baths ? parseInt(baths) : undefined;
   let carsNum = cars ? parseInt(cars) : undefined;
 
   const Page = createSearchPage(
-    query,
+    query || "",
     type,
     bedsNum,
     bathsNum,
