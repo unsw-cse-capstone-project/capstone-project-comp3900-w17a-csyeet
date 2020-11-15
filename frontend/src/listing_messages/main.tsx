@@ -7,9 +7,10 @@ import { useStore } from "../AuthContext";
 import Talk from "talkjs";
 import MuiAlert from "@material-ui/lab/Alert";
 import { BackButton } from "../ui/base/back_button/BackButton";
+import { ErrorBoundaryPage } from "../ui/base/error_boundary/ErrorBoundary";
 
 /**
- * Page where an owner of a property can view all of the messages from potential 
+ * Page where an owner of a property can view all of the messages from potential
  * buyers relating to a specific property
  */
 export const ListingMessagesPage = () => {
@@ -60,32 +61,34 @@ export const ListingMessagesPage = () => {
       inbox.setFeedFilter({ custom: { listingId: ["==", id] } });
     });
     // eslint-disable-next-line
-  }, [userStore ?.user]);
+  }, [userStore?.user]);
   return (
-    <div className={classes.page}>
-      <div className={classes.buttonContainer}>
-        <BackButton
-          onClick={() => history.push(`/listing/${id}`)}
-          text="Back to Listing"
-        />
-      </div>
-      <Typography variant="h3" className={classes.title}>
-        Your Messages
-      </Typography>
-      {!error && (
-        <div ref={talkJsContainer} className={classes.messageBox}>
-          <MessagePlaceholder />
+    <ErrorBoundaryPage>
+      <div className={classes.page}>
+        <div className={classes.buttonContainer}>
+          <BackButton
+            onClick={() => history.push(`/listing/${id}`)}
+            text="Back to Listing"
+          />
         </div>
-      )}
-      <Snackbar
-        open={error !== undefined}
-        autoHideDuration={2000}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <MuiAlert elevation={6} severity="error">
-          {error}
-        </MuiAlert>
-      </Snackbar>
-    </div>
+        <Typography variant="h3" className={classes.title}>
+          Your Messages
+        </Typography>
+        {!error && (
+          <div ref={talkJsContainer} className={classes.messageBox}>
+            <MessagePlaceholder />
+          </div>
+        )}
+        <Snackbar
+          open={error !== undefined}
+          autoHideDuration={2000}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <MuiAlert elevation={6} severity="error">
+            {error}
+          </MuiAlert>
+        </Snackbar>
+      </div>
+    </ErrorBoundaryPage>
   );
 };

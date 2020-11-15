@@ -7,6 +7,7 @@ import { PreviewListing } from "../PreviewListing";
 import { AddListingStyles } from "./AddListing.css";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import { observer } from "mobx-react";
+import { ErrorBoundaryPage } from "../../ui/base/error_boundary/ErrorBoundary";
 
 function Alert(props: AlertProps) {
   return <MuiAlert variant="filled" {...props} />;
@@ -18,7 +19,11 @@ function Alert(props: AlertProps) {
 export const AddListingPage = () => {
   const presenter = new ListingPresenter();
   const store = new ListingStore();
-  return <AddListingPageBase store={store} presenter={presenter} />;
+  return (
+    <ErrorBoundaryPage>
+      <AddListingPageBase store={store} presenter={presenter} />
+    </ErrorBoundaryPage>
+  );
 };
 
 /**
@@ -82,12 +87,12 @@ export const AddListingPageBase = observer(
                 />
               </>
             ) : (
-                <PreviewListing
-                  store={store}
-                  onBack={() => setIsEditing(true)}
-                  onPublish={onPublish}
-                />
-              )}
+              <PreviewListing
+                store={store}
+                onBack={() => setIsEditing(true)}
+                onPublish={onPublish}
+              />
+            )}
           </div>
         </div>
         {status !== null && (

@@ -241,6 +241,7 @@ export default class Store {
       await fetch("/logout", {
         method: "post",
       });
+      console.log('logging out')
       runInAction(() => (this.user = undefined));
       window.localStorage.removeItem("name");
       window.localStorage.removeItem("email");

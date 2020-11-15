@@ -14,7 +14,8 @@ import ReactPlaceholder from "react-placeholder/lib";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useStore } from "../AuthContext";
 import { BackButton } from "../ui/base/back_button/BackButton";
-import { ErrorPage } from "../error/main";
+import { NotFoundPage } from "../error/main";
+import { ErrorBoundaryPage } from "../ui/base/error_boundary/ErrorBoundary";
 
 /**
  * Bidder registration page component
@@ -25,13 +26,15 @@ export const BidderRegistrationPage = () => {
   const presenter = new BidderRegistrationPresenter();
   presenter.loadInformation(store, parseInt(id));
   return (
-    <BidderRegistrationWrapper
-      store={store}
-      onSubmit={(afterSubmit: () => void) =>
-        presenter.submit(store, afterSubmit)
-      }
-      id={parseInt(id)}
-    />
+    <ErrorBoundaryPage>
+      <BidderRegistrationWrapper
+        store={store}
+        onSubmit={(afterSubmit: () => void) =>
+          presenter.submit(store, afterSubmit)
+        }
+        id={parseInt(id)}
+      />
+    </ErrorBoundaryPage>
   );
 };
 
@@ -83,7 +86,7 @@ export const BidderRegistrationWrapper = observer(
       !userStore ||
       !userStore.user
     ) {
-      return <ErrorPage />;
+      return <NotFoundPage />;
     }
 
     const BidderRego = () => (

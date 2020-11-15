@@ -7,6 +7,7 @@ import { EditListingStyles } from "./EditListing.css";
 import MuiAlert from "@material-ui/lab/Alert";
 import { observer } from "mobx-react";
 import { EditListingForm } from "./EditListingForm";
+import { ErrorBoundaryPage } from '../../ui/base/error_boundary/ErrorBoundary';
 
 export const EditListingPage = () => {
   const presenter = new ListingPresenter();
@@ -23,14 +24,16 @@ export const EditListingPage = () => {
     presenter.updateListing(store, onSuccess, onError);
   };
   return (
-    <EditListingPageBase
-      store={store}
-      onUpdateListing={(
-        store: ListingStore,
-        onSuccess: () => void,
-        onError: () => void
-      ) => updateListing(store, onSuccess, onError)}
-    />
+    <ErrorBoundaryPage>
+      <EditListingPageBase
+        store={store}
+        onUpdateListing={(
+          store: ListingStore,
+          onSuccess: () => void,
+          onError: () => void
+        ) => updateListing(store, onSuccess, onError)}
+      />
+    </ErrorBoundaryPage>
   );
 };
 
@@ -60,7 +63,7 @@ export const EditListingPageBase = observer(
     const onSuccess = () => {
       setStatus("success");
       setOpen(true);
-      history.push("/listing/" + store.listing.id ?.toString());
+      history.push("/listing/" + store.listing.id?.toString());
     };
 
     const onError = () => {
@@ -102,18 +105,17 @@ export const EditListingPageBase = observer(
               />
             </>
           ) : (
-              <PreviewListing
-                store={store}
-                onBack={() => setIsEditing(true)}
-                onPublish={onPublish}
-              />
-            )}
+            <PreviewListing
+              store={store}
+              onBack={() => setIsEditing(true)}
+              onPublish={onPublish}
+            />
+          )}
         </div>
         {status !== null && (
           <Snackbar
             open={openSnack}
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            autoHideDuration={1500}
             onClose={() => {
               setOpen(false);
               setStatus(null);

@@ -10,6 +10,7 @@ import { Typography, Snackbar } from "@material-ui/core";
 import ReactPlaceholder from "react-placeholder/lib/ReactPlaceholder";
 import { useQuery } from "../search/main";
 import MuiAlert from "@material-ui/lab/Alert";
+import { ErrorBoundaryPage } from '../ui/base/error_boundary/ErrorBoundary';
 
 /**
  * Page where users can view history of all messages made andc communicate
@@ -84,20 +85,21 @@ export const MessagesPage = observer(() => {
           const inbox = (window as any).talkSession.createInbox({
             selected: conversation,
           });
-          inbox.mount(talkJsContainer.current);
-          inbox.on("selectConversation", (event: any) => {
-            console.log(event);
-          });
-        } catch {
+          if (!!talkJsContainer.current) {
+            inbox.mount(talkJsContainer.current);
+          }
+        } catch (e) {
           setError("Error occurred when finding the listing");
         }
       } else {
         const inbox = (window as any).talkSession.createInbox();
-        inbox.mount(talkJsContainer.current);
+        if (!!talkJsContainer.current) {
+          inbox.mount(talkJsContainer.current);
+        }
       }
     });
     // eslint-disable-next-line
-  }, [userStore ?.user]);
+  }, [userStore?.user, talkJsContainer, params]);
   return (
     <div className={classes.page}>
       <Typography variant="h3" className={classes.title}>
@@ -121,24 +123,25 @@ export const MessagesPage = observer(() => {
 export const MessagePlaceholder = () => {
   const classes = MessagesPagePlaceholderStyles();
   return (
-    <div className={classes.centerStage}>
-      <ReactPlaceholder
-        showLoadingAnimation={true}
-        type="rect"
-        ready={false}
-        style={{ maxWidth: 300, height: 100 }}
-      >
-        {null}
-      </ReactPlaceholder>
-      <ReactPlaceholder
-        showLoadingAnimation={true}
-        type="rect"
-        ready={false}
-        className={classes.chatBox}
-      // style={{ maxWidth: 300, height: 100 }}
-      >
-        {null}
-      </ReactPlaceholder>
-    </div>
+    <ErrorBoundaryPage>
+      <div className={classes.centerStage}>
+        <ReactPlaceholder
+          showLoadingAnimation={true}
+          type="rect"
+          ready={false}
+          style={{ maxWidth: 300, height: 100 }}
+        >
+          {null}
+        </ReactPlaceholder>
+        <ReactPlaceholder
+          showLoadingAnimation={true}
+          type="rect"
+          ready={false}
+          className={classes.chatBox}
+        >
+          {null}
+        </ReactPlaceholder>
+      </div>
+    </ErrorBoundaryPage>
   );
 };

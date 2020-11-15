@@ -1,5 +1,6 @@
 import * as React from "react";
 import { SearchPageStyles } from "./SearchPage.css";
+import { ErrorBoundaryComponent } from "../ui/base/error_boundary/ErrorBoundary";
 
 /**
  * Page component that allows users to search and see search results
@@ -22,7 +23,9 @@ export const SearchPage = ({
         </div>
       </div>
       <div className={classes.resultContainer}>
-        <SearchResults />
+        <ErrorBoundaryComponent>
+          <SearchResults />
+        </ErrorBoundaryComponent>
       </div>
     </div>
   );

@@ -29,11 +29,12 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import { ErrorPage } from "./error/main";
+import { NotFoundPage } from "./error/main";
 import { Footer } from "./ui/base/footer/Footer";
 import { Authentication } from "./ui/base/header/authentication/Authentication";
 import { SignUp } from "./ui/base/header/sign_up/SignUp";
 import { SignIn } from "./ui/base/header/sign_in/SignIn";
+import { ErrorBoundaryComponent } from "./ui/base/error_boundary/ErrorBoundary";
 
 let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);
@@ -83,7 +84,9 @@ ReactDOM.render(
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <AuthProvider>
-            <Header signUpStore={signUpStore} />
+            <ErrorBoundaryComponent>
+              <Header signUpStore={signUpStore} />
+            </ErrorBoundaryComponent>
             <div className="content" id="content">
               <div className="pageContainer">
                 <Switch>
@@ -146,7 +149,7 @@ ReactDOM.render(
                     )}
                   />
                   <Route exact path="/" component={HomePage} />
-                  <Route component={ErrorPage} />
+                  <Route component={NotFoundPage} />
                 </Switch>
                 <Footer />
               </div>

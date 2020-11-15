@@ -4,12 +4,11 @@ export const AddListingStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
-      height: "1000px",
-      padding: theme.spacing(0, "15%", "200px", "15%"),
+      padding: theme.spacing(0, "15%", 0, "15%"),
       boxSizing: "border-box",
       marginTop: "0px",
       [theme.breakpoints.down("xs")]: {
-        padding: theme.spacing(0, "5%", "200px", "5%"),
+        padding: theme.spacing(0, "5%", 0, "5%"),
       },
     },
     main: {

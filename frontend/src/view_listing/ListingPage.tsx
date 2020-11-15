@@ -26,6 +26,7 @@ import { observer } from "mobx-react";
 import { useHistory } from "react-router-dom";
 import { FeaturesPanel } from "./features_panel/FeaturesPanel";
 import { Carousel } from "../ui/base/carousel/Carousel";
+import { ErrorBoundaryComponent } from "../ui/base/error_boundary/ErrorBoundary";
 
 /**
  * Listing Page Content
@@ -80,7 +81,7 @@ export const ListingPage = observer(
         />
         {/* first three images */}
         <Paper elevation={0} className={classes.greyBackground}>
-          {userStore ?.user && userStore ?.user.id !== owner.id && (
+          {userStore?.user && userStore?.user.id !== owner.id && (
             <div className={classes.starContainer}>
               <Star id={id} starred={starred} />
             </div>
@@ -133,39 +134,52 @@ export const ListingPage = observer(
               {description}
             </Typography>
             {features.length !== 0 && <FeaturesPanel features={features} />}
-            <LandmarksPanel facilities={landmarks} isPreview={disableActions} />
-            <SuburbPanel listing={listing} Content={SuburbPanelContent} />
+            <ErrorBoundaryComponent>
+              <LandmarksPanel
+                facilities={landmarks}
+                isPreview={disableActions}
+              />
+            </ErrorBoundaryComponent>
+            <ErrorBoundaryComponent>
+              <SuburbPanel listing={listing} Content={SuburbPanelContent} />
+            </ErrorBoundaryComponent>
           </Grid>
           {/* right column */}
           <Grid item xs={12} md={4}>
-            <AuctionDetails
-              auction_start={auction_start}
-              auction_end={auction_end}
-              id={id}
-              disableAction={disableActions}
-              registered_bidder={registered_bidder}
-              isUser={userStore?.user !== undefined}
-              isOwner={!!userStore?.user && userStore?.user.id === owner.id}
-            />
-            <Map listing={listing} />
-            <SellerProfile
-              id={owner.id}
-              name={owner.name}
-              email={owner.email}
-              avatar={`/users/${owner.id}/avatar`}
-            >
-              {userStore?.user?.id !== owner.id &&
-              new Date().getTime() < auction_end.getTime() ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ marginTop: "10px" }}
-                  onClick={() => history.push(`/messages?to=${id}`)}
-                >
-                  Send Message
-                </Button>
+            <ErrorBoundaryComponent>
+              <AuctionDetails
+                auction_start={auction_start}
+                auction_end={auction_end}
+                id={id}
+                disableAction={disableActions}
+                registered_bidder={registered_bidder}
+                isUser={userStore?.user !== undefined}
+                isOwner={!!userStore?.user && userStore?.user.id === owner.id}
+              />
+            </ErrorBoundaryComponent>
+            <ErrorBoundaryComponent>
+              <Map listing={listing} />
+            </ErrorBoundaryComponent>
+            <ErrorBoundaryComponent>
+              <SellerProfile
+                id={owner.id}
+                name={owner.name}
+                email={owner.email}
+                avatar={`/users/${owner.id}/avatar`}
+              >
+                {userStore?.user?.id !== owner.id &&
+                new Date().getTime() < auction_end.getTime() ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ marginTop: "10px" }}
+                    onClick={() => history.push(`/messages?to=${id}`)}
+                  >
+                    Send Message
+                  </Button>
                 ) : undefined}
-            </SellerProfile>
+              </SellerProfile>
+            </ErrorBoundaryComponent>
           </Grid>
         </Grid>
       </div>

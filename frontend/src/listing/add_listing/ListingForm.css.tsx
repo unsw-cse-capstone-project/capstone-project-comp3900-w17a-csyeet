@@ -20,7 +20,6 @@ export const ListingFormStyles = makeStyles((theme: Theme) =>
     },
     body: {
       width: "100%",
-      height: "1000px",
       padding: theme.spacing(0, "15%", "200px", "15%"),
       boxSizing: "border-box",
       marginTop: "0px",

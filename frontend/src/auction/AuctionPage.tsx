@@ -6,7 +6,8 @@ import classNames from "classnames";
 import { auctionPageStyle } from "./AuctionPage.css";
 import { dateFormatter } from "../ui/util/helper";
 import { AddressHeading } from "../ui/base/address_heading/AddressHeading";
-import MuiAlert from '@material-ui/lab/Alert';
+import MuiAlert from "@material-ui/lab/Alert";
+import { ErrorBoundaryComponent } from "../ui/base/error_boundary/ErrorBoundary";
 
 export type Address = {
   street: string;
@@ -70,7 +71,9 @@ export const AuctionPage = ({
         <Typography variant="body1" className={classes.auctionText}>
           Auction ends in
         </Typography>
-        <Countdown date={auction_end} />
+        <ErrorBoundaryComponent>
+          <Countdown date={auction_end} />
+        </ErrorBoundaryComponent>
       </div>
     );
   }
@@ -79,9 +82,7 @@ export const AuctionPage = ({
     // eslint-disable-next-line react/display-name
     AuctionTime = () => (
       <div className={classNames(classes.auctionTime, classes.auctionClosed)}>
-        <MuiAlert severity="error">
-          Auction is now closed
-        </MuiAlert>
+        <MuiAlert severity="error">Auction is now closed</MuiAlert>
       </div>
     );
   }
