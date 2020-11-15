@@ -140,6 +140,17 @@ def weight_fields(scaled: np.ndarray) -> np.ndarray:
 
 
 def convert_interactions(interactions: List[Interaction]):
+    # find the most recently queried postcode
+    most_recent_postcode = None
+    for interaction in interactions:
+        if interaction.type == InteractionType.search:
+            searched_location = interaction.search_query['location']
+            if searched_location and searched_location.isdigit():
+                most_recent_postcode = searched_location
+                break
+        else:
+            most_recent_postcode = interaction.listing.postcode
+            break
     # set all the values from the interaction into the frame
     rows = []
     for interaction in interactions:
@@ -155,12 +166,12 @@ def convert_interactions(interactions: List[Interaction]):
                 for listing_type_column in one_hot_encoded_types.columns:
                     column_mapping[listing_type_column] = 0.5
 
-            # assume no preference
-            postcode_value = data_frame['postcode'].median()
+            # because location has such a strong influence, directly using the median skews the results too much.
+            # instead we first try to use the most recent interaction with a postcode, so the results are relevant
+            postcode_value = most_recent_postcode or data_frame['postcode'].median()  # nopep8
             queried_location: str = interaction.search_query["location"]
-            if queried_location:
-                if queried_location.isdigit():
-                    postcode_value = queried_location
+            if queried_location and queried_location.isdigit():
+                postcode_value = queried_location
             column_mapping['postcode'] = postcode_value
 
             requested_features = interaction.search_query['features'] or []
