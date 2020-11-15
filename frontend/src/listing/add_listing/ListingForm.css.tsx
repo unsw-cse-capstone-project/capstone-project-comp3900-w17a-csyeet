@@ -26,6 +26,7 @@ export const ListingFormStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.down("sm")]: {
         padding: theme.spacing(0, 2, "200px", 2),
       },
+      minHeight: "calc(100vh - 700px)",
     },
     backButton: {
       marginRight: theme.spacing(1),
