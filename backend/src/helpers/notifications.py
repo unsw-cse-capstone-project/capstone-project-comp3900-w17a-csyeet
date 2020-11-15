@@ -14,6 +14,7 @@ from ..models import Listing, User
 from .common import session_maker
 from .listing import get_auction_time_remaining
 from .bid import get_highest_bid
+from .recommendations import batch_remove_listings_from_ML_model
 
 email_htmls: Dict[str, str] = {}
 scheduler = AsyncIOScheduler()
@@ -24,6 +25,7 @@ def check_for_notifications():
     with session_maker.context_session() as session:
         session: Session
         listings: List[Listing] = session.query(Listing).all()
+        newly_ended_listings = []
         for listing in listings:
             time_remaining = get_auction_time_remaining(listing)
             ended = time_remaining <= timedelta(milliseconds=0)
@@ -43,6 +45,8 @@ def check_for_notifications():
                     notify_unsuccessful_seller(listing)
                     for bidder in listing.bidders:
                         notify_failed_bidder(bidder.user, listing)
+
+                newly_ended_listings.append(listing)
                 listing.notified_ended = True
                 listing.notified_ending = True
                 listing.notified_started = True
@@ -62,6 +66,7 @@ def check_for_notifications():
                 session.commit()
             except Exception:
                 pass  # listing could have been deleted
+        batch_remove_listings_from_ML_model(newly_ended_listings, session)
 
 
 def send_email(to: EmailStr, subject: str, html_tree: BeautifulSoup):

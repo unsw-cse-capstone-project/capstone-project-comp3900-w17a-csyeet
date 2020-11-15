@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session, Query
 from starlette.responses import StreamingResponse
 from ..schemas import CreateListingRequest, ListingResponse, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse, UploadImagesResponse, UpdateListingRequest
 from ..models import Listing, User, Starred, Bid, Registration, Landmark, Image, Interaction, InteractionType
-from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing, remove_listing_from_ML_model, update_listing_in_ML_model
+from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing, batch_remove_listings_from_ML_model, update_listing_in_ML_model
 
 router = APIRouter()
 
@@ -211,7 +211,7 @@ def upload_images(id: int, files: List[UploadFile] = File(...), signed_in_user: 
               for image in files]
     session.add_all(images)
     session.commit()
-    return { 'ids': [image.id for image in images] }
+    return {'ids': [image.id for image in images]}
 
 
 @router.get('/{listing_id}/images/{image_id}', responses={404: {"description": "Resource not found"}})
@@ -230,7 +230,6 @@ def get_image(listing_id: int, image_id: int, session: Session = Depends(get_ses
     return StreamingResponse(io.BytesIO(image.data), media_type=image.image_type)
 
 
-
 @router.delete('/{listing_id}/images/{image_id}', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def delete_image(listing_id: int, image_id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Delete an image '''
@@ -238,7 +237,7 @@ def delete_image(listing_id: int, image_id: int, signed_in_user: User = Depends(
     if listing is None:
         raise HTTPException(
             status_code=404, detail="Requested listing could not be found")
-    
+
     if signed_in_user.id != listing.owner_id:
         raise HTTPException(
             status_code=403, detail="User cannot delete images for this listing")
@@ -247,10 +246,10 @@ def delete_image(listing_id: int, image_id: int, signed_in_user: User = Depends(
     if image is None:
         raise HTTPException(
             status_code=404, detail="Requested image could not be found")
-    
+
     session.delete(image)
     session.commit()
-    
+
 
 @router.delete('/{id}', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
@@ -266,7 +265,7 @@ def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 
     session.delete(listing)
     session.commit()
-    remove_listing_from_ML_model(listing, session)
+    batch_remove_listings_from_ML_model([listing], session)
 
 
 @router.post('/{id}', response_model=ListingResponse)
@@ -279,16 +278,16 @@ def update(id: int, req: UpdateListingRequest, signed_in_user: User = Depends(ge
 
     if listing.owner_id != signed_in_user.id:
         raise HTTPException(
-            status_code=403, detail="User cannot edit this listing") 
-    
+            status_code=403, detail="User cannot edit this listing")
+
     if listing.auction_start < datetime.now() and any([req.auction_start, req.auction_end, req.reserve_price, req.account_name, req.bsb, req.account_number, req.num_bathrooms, req.num_bedrooms, req.num_car_spaces]):
         raise HTTPException(
             status_code=403, detail="Cannot update auction details or number of bedrooms, bathrooms, or car spaces once auction has started")
-    
+
     update_listing(listing, req)
 
     if any([req.num_bathrooms, req.num_bedrooms, req.num_car_spaces, req.type, req.features]):
         update_listing_in_ML_model(listing, session)
-        
+
     session.commit()
     return map_listing_response(listing, signed_in_user, session)
