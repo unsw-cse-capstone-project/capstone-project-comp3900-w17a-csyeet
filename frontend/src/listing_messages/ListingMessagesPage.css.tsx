@@ -6,7 +6,7 @@ export const ListingMessagesPageStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       paddingBottom: "200px",
-      height: "100vh",
+      minHeight: "calc(100vh - 480px)",
     },
     backButton: {
       width: "fit-content",

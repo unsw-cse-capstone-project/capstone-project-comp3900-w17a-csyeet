@@ -6,8 +6,9 @@ export const MessagesPageStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      height: "100vh",
+      minHeight: "calc(100vh - 480px)",
       paddingBottom: theme.spacing(10),
+      
     },
     messageBox: {
       height: "70%",
