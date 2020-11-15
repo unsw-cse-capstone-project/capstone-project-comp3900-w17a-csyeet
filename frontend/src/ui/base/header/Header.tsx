@@ -91,24 +91,24 @@ export const Header: React.FC<HeaderProps> = observer(({ signUpStore }) => {
           </Button>
         </div>
       ) : (
-        <div className={classes.loggedInHeader}>
-          <Hidden only="xs">{!isSearch && <MinimisedSearch />}</Hidden>
-          {!isAddListing && (
-            <Hidden only="xs">
-              <Button
-                variant={"contained"}
-                color={"secondary"}
-                size="medium"
-                className={classes.addListingButton}
-                onClick={() => history.push("/add")}
-              >
-                Add Listing
+          <div className={classes.loggedInHeader}>
+            <Hidden only="xs">{!isSearch && <MinimisedSearch />}</Hidden>
+            {!isAddListing && (
+              <Hidden only="xs">
+                <Button
+                  variant={"contained"}
+                  color={"secondary"}
+                  size="medium"
+                  className={classes.addListingButton}
+                  onClick={() => history.push("/add")}
+                >
+                  Add Listing
               </Button>
-            </Hidden>
-          )}
-          <UserMenu />
-        </div>
-      )}
+              </Hidden>
+            )}
+            <UserMenu />
+          </div>
+        )}
       <Authentication
         signInMode={signInMode}
         open={openModal}

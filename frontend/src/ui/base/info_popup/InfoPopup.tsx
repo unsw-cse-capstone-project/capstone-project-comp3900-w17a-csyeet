@@ -6,6 +6,15 @@ import { infoStyles } from "./infoPopup.css";
 import classNames from "classnames";
 
 type SizeType = "small" | "default" | "large";
+
+/**
+ * InfoPopup component that displays given data
+ * Used for auction bids and forms 
+ * @param className
+ * @param color
+ * @param data
+ * @param size
+ */
 export const InfoPopup: React.FC<{
   className?: string;
   color?: string;

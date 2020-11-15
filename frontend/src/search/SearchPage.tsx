@@ -1,6 +1,11 @@
 import * as React from "react";
 import { SearchPageStyles } from "./SearchPage.css";
 
+/**
+ * Page component that allows users to search and see search results
+ * @param SearchBar
+ * @param SearchResults
+ */
 export const SearchPage = ({
   SearchBar,
   SearchResults,

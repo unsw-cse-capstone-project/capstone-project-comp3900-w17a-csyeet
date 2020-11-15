@@ -34,6 +34,12 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+/**
+ * Form for a user to register to be a "Registered Auction Bidder"
+ * @param store
+ * @param listingId
+ * @param onSubmit
+ */
 export const BidderRegistration = observer(
   ({
     store,
@@ -78,7 +84,7 @@ export const BidderRegistration = observer(
         case 0:
           return <InitialBidStep store={store} />;
         case 1:
-          return <PaymentStep store={store}/>;
+          return <PaymentStep store={store} />;
         case 2:
           return <ConfirmationStep store={store} />;
         default:

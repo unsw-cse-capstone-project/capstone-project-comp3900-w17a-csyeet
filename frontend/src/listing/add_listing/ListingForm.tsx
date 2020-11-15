@@ -20,9 +20,13 @@ export type AddressDetails = {
   state: string;
   country: string;
 };
+
 /**
- * Add listing form
+ * Form for users to enter thier property details when adding a listing to the site
+ * Form fields include Property Details, Description, Features, Auction Details,
+ * Payment Details and Images
  * @param store
+ * @param edit
  * @param onPreview
  * @param onBack
  */

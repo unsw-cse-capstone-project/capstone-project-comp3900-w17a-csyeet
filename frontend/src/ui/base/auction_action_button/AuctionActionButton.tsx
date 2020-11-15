@@ -5,6 +5,11 @@ import { useHistory } from "react-router-dom";
 /**
  * Component that determines what action can be done
  * given auction_start and registered_bidder
+ * @param id
+ * @param auction_start
+ * @param registered_bidder
+ * @param isUser
+ * @param isOwner
  */
 export const AuctionActionButton = ({
   id,

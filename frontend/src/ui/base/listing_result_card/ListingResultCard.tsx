@@ -21,6 +21,12 @@ import { observer } from "mobx-react";
 import { priceFormatter } from "../../util/helper";
 import { AuctionActionButton } from "../auction_action_button/AuctionActionButton";
 
+/**
+ * Component to display listing results on search
+ * @param listing
+ * @param style
+ * @param className
+ */
 export const ListingResultCard = observer(
   (props: {
     listing: ListingActual;

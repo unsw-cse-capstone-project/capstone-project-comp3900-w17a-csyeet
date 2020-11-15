@@ -8,6 +8,12 @@ type ModalWrapperProps = {
   children: React.ReactNode;
 };
 
+/**
+ * General modal wrapper that provides transition settings
+ * @param open
+ * @param onClose
+ * @param children
+ */
 export const ModalWrapper = ({
   open,
   onClose,

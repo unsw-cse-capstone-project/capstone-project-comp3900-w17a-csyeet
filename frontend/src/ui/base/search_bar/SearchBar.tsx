@@ -29,6 +29,10 @@ import { toCamelCase, toSentenceCase } from "../../util/helper";
 import classNames from "classnames";
 import { useHistory } from "react-router-dom";
 
+/**
+ * Search bar component used on the home page
+ * @param store
+ */
 export const SearchBar = observer(({ store }: { store: SearchStore }) => {
   const classes = SearchBarStyles();
   const history = useHistory();
@@ -92,6 +96,10 @@ export const SearchBar = observer(({ store }: { store: SearchStore }) => {
   );
 });
 
+/**
+ * Wrapper for the search bar 
+ * @param store
+ */
 const SearchInputWrapper = ({ store }: { store: SearchStore }) => {
   const [value, setValue] = React.useState(store.input);
   const classes = SearchBarStyles();
@@ -119,6 +127,10 @@ const SearchInputWrapper = ({ store }: { store: SearchStore }) => {
   );
 };
 
+/**
+ * Search filters 
+ * @param store
+ */
 const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
   const classes = SearchBarStyles();
 
@@ -204,6 +216,11 @@ const SearchFilterWrapper = ({ store }: { store: SearchStore }) => {
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
+/**
+ * Type picker component used to select house type
+ * @param store
+ */
 export function TypePicker(props: { store: SearchStore }) {
   const classes = SearchBarStyles();
 
@@ -240,6 +257,13 @@ export function TypePicker(props: { store: SearchStore }) {
   );
 }
 
+/**
+ * Component to select beds, baths, cards
+ * @param store
+ * @param value
+ * @param onChange
+ * @param label
+ */
 export function NumberPicker(props: {
   store: SearchStore;
   value: any;
@@ -289,6 +313,10 @@ export function NumberPicker(props: {
   );
 }
 
+/**
+ * Component to pick features for filters
+ * @param store
+ */
 export function FeaturePicker(props: { store: SearchStore }) {
   // Options for picker
   const features = [
@@ -354,6 +382,10 @@ export function FeaturePicker(props: { store: SearchStore }) {
   );
 }
 
+/**
+ * Component to pick landmarks for filters
+ * @param store
+ */
 export function LandmarkPicker(props: { store: SearchStore }) {
   // Options for picker
   const landmarks = [
@@ -408,6 +440,10 @@ export function LandmarkPicker(props: { store: SearchStore }) {
   );
 }
 
+/**
+ * Component to pick auction start and end date for filters
+ * @param store 
+ */
 export function MinMaxDateRangePicker(props: { store: SearchStore }) {
   const [value, setValue] = React.useState<DateRange<Date>>([
     props.store.filters.start_date || null,
@@ -447,6 +483,10 @@ export function MinMaxDateRangePicker(props: { store: SearchStore }) {
   );
 }
 
+/**
+ * Component to include closed auctions for filters
+ * @param store 
+ */
 export function ClosedAuctionsPicker(props: { store: SearchStore }) {
   const classes = SearchBarStyles();
 

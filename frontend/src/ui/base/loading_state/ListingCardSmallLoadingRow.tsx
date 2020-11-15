@@ -3,6 +3,10 @@ import { withWidth, Grid } from "@material-ui/core";
 import { ListingCardSmallPlaceholder } from "../listing_card_sm/ListingCardSmall";
 import { getNumCards } from '../../util/helper';
 
+/**
+ * Grid base for listing placeholders
+ * @param width
+ */
 export const ListingCardSmallLoadingRowBase = ({
   width,
 }: {

@@ -6,6 +6,10 @@ import { action } from "mobx";
 import { observer } from "mobx-react";
 import { ListingCardSmallLoadingRow } from "../../ui/base/loading_state/ListingCardSmallLoadingRow";
 
+/**
+ * Page component to display a user's own listings
+ * @param store
+ */
 export const MyListingsPage = observer(({ store }: { store: ProfileStore }) => {
   if (store.loadingState === "loading") {
     return <ListingCardSmallLoadingRow />;

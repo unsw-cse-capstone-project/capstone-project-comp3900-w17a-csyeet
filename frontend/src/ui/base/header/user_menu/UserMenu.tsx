@@ -12,6 +12,11 @@ import { useStore } from "../../../../AuthContext";
 import { AccountCircle, ExitToApp, House, Message } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 
+/**
+ * Component for user menu in the header which contains dropwdown for
+ * messages, profile and log out
+ * @param width
+ */
 export const UserMenu = withWidth()(({ width }: { width: string }) => {
   const userStore = useStore();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

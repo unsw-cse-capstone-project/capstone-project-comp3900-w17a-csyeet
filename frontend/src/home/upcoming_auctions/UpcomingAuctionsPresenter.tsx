@@ -1,6 +1,10 @@
 import { ListingActual } from "../../ui/util/types/listing";
 import { makeObservable, observable, runInAction } from "mobx";
 import { getListingFromResult } from "../../ui/util/helper";
+
+/**
+ * Store for upcoming auctions component
+ */
 export class UpcomingAuctionsStore {
   @observable
   state: "loading" | "loaded" | "error" = "loading";
@@ -34,7 +38,7 @@ export class UpcomingAuctionPresenter {
     try {
       const response = await fetch(
         `/listings/?auction_start=${auctionStart}&limit=${
-          numCardsPerRow * 2
+        numCardsPerRow * 2
         }&is_user_query=false${continuation}`
       );
       const results = await response.json();

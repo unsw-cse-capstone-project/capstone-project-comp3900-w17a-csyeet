@@ -6,7 +6,8 @@ import { useStore } from "../../../AuthContext";
 import { observer } from "mobx-react";
 
 /**
- * Bidder tag with the bidder number
+ * Bidder tag with the bidder number used for auction page
+ * @param bidderNumber
  */
 export const BidderTag = observer(
   ({ bidderNumber }: { bidderNumber: number }) => {

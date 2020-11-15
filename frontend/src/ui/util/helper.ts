@@ -31,6 +31,7 @@ export const priceFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
 
+// Helper function to convert a string to camelcase
 export const toCamelCase = (str: string) => {
   return str
     .replace(/(?:^.|[A-Z]|\b.)/g, function (letter, index) {
@@ -39,10 +40,12 @@ export const toCamelCase = (str: string) => {
     .replace(/\s+/g, "");
 };
 
+// Helper function to convert a string to sentence case
 export const toSentenceCase = (str: string) =>
   str.replace(/([A-Z])/g, " $1")[0].toUpperCase() +
   str.replace(/([A-Z])/g, " $1").slice(1);
 
+// Helper function to Capitalise string
 export const toCapitaliseCase = (str: string) => {
   return str
     .split(" ")
@@ -50,6 +53,10 @@ export const toCapitaliseCase = (str: string) => {
     .join(" ");
 };
 
+/**
+ * Get listing information giving a listing result
+ * @param result 
+ */
 export const getListingFromResult = (result: any) => ({
   type: result.type,
   id: parseInt(result.id),
@@ -73,8 +80,8 @@ export const getListingFromResult = (result: any) => ({
   images:
     result["image_ids"].length !== 0
       ? result["image_ids"].map(
-          (id: any) => `/listings/${result.id}/images/${id}`
-        )
+        (id: any) => `/listings/${result.id}/images/${id}`
+      )
       : createFakeListing().images,
   landmarks: result.landmarks,
   features: result.features,
@@ -84,6 +91,14 @@ export const getListingFromResult = (result: any) => ({
   reserve_met: result.reserve_met,
 });
 
+/**
+ * Helper function to format address given
+ * address information
+ * @param street
+ * @param suburb
+ * @param state
+ * @param postCode
+ */
 export const formatAddress = ({
   street,
   suburb,
@@ -106,6 +121,8 @@ export const formatAddress = ({
   };
 };
 
+// Helper function to return the amount of cards to be displayed
+// per row based on width
 export const getNumCards = (width: string) => {
   switch (width) {
     case "xs":
@@ -123,6 +140,7 @@ export const getNumCards = (width: string) => {
   }
 };
 
+// Email validation for forms
 export const isValidEmail = (email: string) => {
   if (
     !/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
@@ -134,6 +152,7 @@ export const isValidEmail = (email: string) => {
   return true;
 };
 
+// Helper function to resize files on image upload
 export const resizeFile = (file: File) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(

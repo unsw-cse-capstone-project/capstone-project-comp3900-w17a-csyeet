@@ -4,6 +4,13 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { Snackbar } from "@material-ui/core";
 import { ProfileStore } from "../ProfilePresenter";
 
+
+/**
+ * Page component used by the profile page to display a user's details
+ * @param store
+ * @param onUpdateUserDetails
+ * @param onChangePassword
+ */
 export const DetailsPage: React.FC<{
   store: ProfileStore;
   onUpdateUserDetails: () => void;
