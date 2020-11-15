@@ -5,10 +5,10 @@ from typing import List, Tuple
 import googlemaps
 from googlemaps.places import places_nearby
 from geopy.distance import distance
+from ratelimiter import RateLimiter
 from ..models import Listing, Landmark
 from ..schemas import LandmarkType
 from .geolocation import get_listing_coordinates
-from ratelimiter import RateLimiter
 
 # consider: https://pydantic-docs.helpmanual.io/usage/settings/#dotenv-env-support
 gmaps_client = googlemaps.Client(key='AIzaSyDakTtp6izOGX7zI_rWxT3a8E6rCX1gaso')

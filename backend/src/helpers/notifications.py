@@ -1,4 +1,5 @@
 import re
+import logging
 from pathlib import Path
 from datetime import datetime, timedelta
 from enum import Enum
@@ -18,6 +19,7 @@ from .recommendations import batch_remove_listings_from_ML_model
 
 email_htmls: Dict[str, str] = {}
 scheduler = AsyncIOScheduler()
+logging.getLogger('apscheduler').setLevel(logging.ERROR)
 
 
 @scheduler.scheduled_job("interval", seconds=5)
