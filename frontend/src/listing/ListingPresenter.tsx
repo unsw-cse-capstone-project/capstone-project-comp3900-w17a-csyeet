@@ -253,21 +253,21 @@ export class ListingPresenter {
         return;
       }
 
+      const uploadImage = await this.uploadImages(store.listing.id as number, store.imageList);
+
       // Upload new images
-      if (!this.uploadImages(store.listing.id as number, store.imageList)) {
+      if (!uploadImage) {
         this.onUpdateError(onError);
         return;
       }
 
-      // Delete old images
-      for (var i = 0; i < store.imagesToDelete.length; ++i) {
-        if (
-          !this.deleteImages(
-            store.listing.id as number,
-            store.imagesToDelete[i]
-          )
-        )
-          this.onUpdateError(onError);
+      const results = await Promise.all(store.imagesToDelete.map(image => this.deleteImages(
+        store.listing.id as number,
+        image
+      )));
+
+      if (results.find(item => item === false)) {
+        this.onUpdateError(onError);
       }
 
       // Everything has been done
