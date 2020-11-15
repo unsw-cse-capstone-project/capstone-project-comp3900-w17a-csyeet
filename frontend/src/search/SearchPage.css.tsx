@@ -18,7 +18,7 @@ export const SearchPageStyles = makeStyles((theme: Theme) =>
     searchHeader: {
       position: "sticky",
       backgroundColor: "white",
-      padding: "20px",
+      padding: theme.spacing(0.5, 2),
       zIndex: 5,
       top: "0",
       display: "flex",

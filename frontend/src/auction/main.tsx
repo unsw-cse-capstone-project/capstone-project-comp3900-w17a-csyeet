@@ -13,8 +13,9 @@ import { BidsList } from "./bids_list/BidsList";
 import { computed, action } from "mobx";
 import MuiAlert from "@material-ui/lab/Alert";
 import { BackButton } from "../ui/base/back_button/BackButton";
-import { ErrorPage } from "../error/main";
+import { NotFoundPage } from "../error/main";
 import { AuctionPagePlaceholder } from "./AuctionPagePlaceholder";
+import { ErrorBoundaryPage } from "../ui/base/error_boundary/ErrorBoundary";
 
 /**
  * Auction Page where users can view information about an auction like
@@ -26,13 +27,15 @@ export const AuctionPage = () => {
   const presenter = new AuctionPagePresenter();
   presenter.loadInformation(store, parseInt(id));
   return (
-    <AuctionPageWrapper
-      store={store}
-      id={parseInt(id)}
-      onPlaceBid={(bid: number, onSuccess: () => void) =>
-        presenter.placeBid(store, bid, onSuccess)
-      }
-    />
+    <ErrorBoundaryPage>
+      <AuctionPageWrapper
+        store={store}
+        id={parseInt(id)}
+        onPlaceBid={(bid: number, onSuccess: () => void) =>
+          presenter.placeBid(store, bid, onSuccess)
+        }
+      />
+    </ErrorBoundaryPage>
   );
 };
 
@@ -82,7 +85,7 @@ export const AuctionPageWrapper = observer(
     }
 
     if (store.loadingState === "error" || !store.listing) {
-      return <ErrorPage />;
+      return <NotFoundPage />;
     }
     const biddingBoxStore = new BiddingBoxStore();
     const { bids } = store;
@@ -100,8 +103,8 @@ export const AuctionPageWrapper = observer(
           )}
           enableBidding={
             new Date().getTime() >= listing.auction_start.getTime() &&
-              listing.registered_bidder &&
-              userStore ?.user !== undefined
+            listing.registered_bidder &&
+            userStore?.user !== undefined
           }
           isAuctionClosed={
             listing.auction_end.getTime() <= new Date().getTime()
@@ -138,7 +141,7 @@ export const AuctionPageWrapper = observer(
     const BiddersListWrapper = observer(() => (
       <BiddersList
         bidders={Array.from(new Set(bids.map((bid) => bid.bidder_id)))}
-        currentUser={userStore ?.user ?.id}
+        currentUser={userStore?.user?.id}
       />
     ));
 

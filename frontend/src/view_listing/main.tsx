@@ -9,7 +9,11 @@ import { useStore } from "../AuthContext";
 import { OwnerHeader } from "./owner_header/OwnerHeader";
 import { ListingPagePlaceholder } from "./ListingPagePlaceholder";
 import { BackButton } from "../ui/base/back_button/BackButton";
-import { ErrorPage } from "../error/main";
+import { NotFoundPage } from "../error/main";
+import {
+  ErrorBoundaryComponent,
+  ErrorBoundaryPage,
+} from "../ui/base/error_boundary/ErrorBoundary";
 
 export const ViewListingPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,7 +21,11 @@ export const ViewListingPage = () => {
   const presenter = new ListingPagePresenter();
   presenter.loadInformation(store, parseInt(id));
 
-  return <ListingPageWrapper store={store} presenter={presenter} />;
+  return (
+    <ErrorBoundaryPage>
+      <ListingPageWrapper store={store} presenter={presenter} />
+    </ErrorBoundaryPage>
+  );
 };
 
 /**
@@ -66,7 +74,7 @@ export const ListingPageWrapper = observer(
     }
 
     if (store.loadingState === "error" || !store.listing) {
-      return <ErrorPage />;
+      return <NotFoundPage />;
     }
 
     const listing = store.listing;
@@ -86,16 +94,18 @@ export const ListingPageWrapper = observer(
     if (userStore && userStore.user && userStore.user.id === listing.owner.id) {
       // eslint-disable-next-line react/display-name
       Header = () => (
-        <OwnerHeader
-          onDelete={() => presenter.deleteListing(listing.id)}
-          id={listing.id}
-          hasAuctionStarted={
-            new Date().getTime() >= listing.auction_start.getTime()
-          }
-          isAuctionClosed={
-            new Date().getTime() >= listing.auction_end.getTime()
-          }
-        />
+        <ErrorBoundaryComponent>
+          <OwnerHeader
+            onDelete={() => presenter.deleteListing(listing.id)}
+            id={listing.id}
+            hasAuctionStarted={
+              new Date().getTime() >= listing.auction_start.getTime()
+            }
+            isAuctionClosed={
+              new Date().getTime() >= listing.auction_end.getTime()
+            }
+          />
+        </ErrorBoundaryComponent>
       );
     }
     return <Container Content={Content} Header={Header} />;

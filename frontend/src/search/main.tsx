@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Redirect, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { createSearchPage } from "./create";
+import { ErrorBoundaryPage } from "../ui/base/error_boundary/ErrorBoundary";
 
 export const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -19,20 +20,16 @@ export const SearchPage = () => {
   const end = useQuery().get("end") || undefined;
   const features = useQuery().get("features") || undefined;
   const landmarks = useQuery().get("landmarks") || undefined;
-  let featureList = features ?.split("_");
-  let landmarkList = landmarks ?.split("_");
+  let featureList = features?.split("_");
+  let landmarkList = landmarks?.split("_");
   let closed_auction = useQuery().get("include_closed_auctions") || undefined;
-
-  if (query === null || query === "") {
-    return <Redirect to="/" />;
-  }
 
   let bedsNum = beds ? parseInt(beds) : undefined;
   let bathsNum = baths ? parseInt(baths) : undefined;
   let carsNum = cars ? parseInt(cars) : undefined;
 
   const Page = createSearchPage(
-    query,
+    query || "",
     type,
     bedsNum,
     bathsNum,
@@ -41,7 +38,11 @@ export const SearchPage = () => {
     end,
     featureList,
     landmarkList,
-    closed_auction,
+    closed_auction
   );
-  return <Page />;
+  return (
+    <ErrorBoundaryPage>
+      <Page />;
+    </ErrorBoundaryPage>
+  );
 };

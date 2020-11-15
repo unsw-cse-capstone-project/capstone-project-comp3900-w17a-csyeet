@@ -92,8 +92,7 @@ export class BidderRegistrationPresenter {
       const result = await response.json();
       if ("detail" in result) {
         // handle error
-        runInAction(() => (store.loadingState = "error"));
-        console.log("error " + result.detail);
+        runInAction(() => (store.submitState = "error"));
         return;
       } else {
         runInAction(() => {

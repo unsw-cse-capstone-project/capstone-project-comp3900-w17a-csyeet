@@ -10,6 +10,7 @@ import { Blurb } from "./about/Blurb";
 import { ProfileAvatar } from "./about/ProfileAvatar";
 import { ProfileStore, ProfilePresenter } from "./ProfilePresenter";
 import { useStore } from "../AuthContext";
+import { ErrorBoundaryPage, ErrorBoundaryComponent } from '../ui/base/error_boundary/ErrorBoundary';
 
 export const ProfilePage = () => {
   const userStore = useStore();
@@ -20,23 +21,25 @@ export const ProfilePage = () => {
   const presenter = new ProfilePresenter();
   presenter.getProfileInfo(store);
   return (
-    <ProfilePageWrapper
-      store={store}
-      onEditBlurb={() => presenter.updateBlurb(store)}
-      onEditAvatar={(image: File, img_url: string) =>
-        presenter.updateAvatar(image, img_url, store)
-      }
-      onUpdateUserDetails={() => presenter.updateUserDetails(store)}
-      onChangePassword={(onPasswordIncorrect: () => void) =>
-        presenter.updateUserPassword(store, onPasswordIncorrect)
-      }
-    />
+    <ErrorBoundaryPage>
+      <ProfilePageWrapper
+        store={store}
+        onEditBlurb={() => presenter.updateBlurb(store)}
+        onEditAvatar={(image: File, img_url: string) =>
+          presenter.updateAvatar(image, img_url, store)
+        }
+        onUpdateUserDetails={() => presenter.updateUserDetails(store)}
+        onChangePassword={(onPasswordIncorrect: () => void) =>
+          presenter.updateUserPassword(store, onPasswordIncorrect)
+        }
+      />
+    </ErrorBoundaryPage>
   );
 };
 
 /**
- * Component to display a user's profile 
- * @param store 
+ * Component to display a user's profile
+ * @param store
  * @param onEditBlurb
  * @param onEditAvatar
  * @param onUpdateUserDetails
@@ -98,20 +101,28 @@ export const ProfilePageWrapper = observer(
 
           <div className={classes.tabPanel}>
             <div hidden={value !== 0}>
-              <MyBids store={store} />
+              <ErrorBoundaryComponent>
+                <MyBids store={store} />
+              </ErrorBoundaryComponent>
             </div>
             <div hidden={value !== 1}>
-              <MyListings store={store} />
+              <ErrorBoundaryComponent>
+                <MyListings store={store} />
+              </ErrorBoundaryComponent>
             </div>
             <div hidden={value !== 2}>
-              <StarredProperties store={store} />
+              <ErrorBoundaryComponent>
+                <StarredProperties store={store} />
+              </ErrorBoundaryComponent>
             </div>
             <div hidden={value !== 3}>
-              <MyDetails
-                store={store}
-                onUpdateUserDetails={onUpdateUserDetails}
-                onChangePassword={onChangePassword}
-              />
+              <ErrorBoundaryComponent>
+                <MyDetails
+                  store={store}
+                  onUpdateUserDetails={onUpdateUserDetails}
+                  onChangePassword={onChangePassword}
+                />
+              </ErrorBoundaryComponent>
             </div>
           </div>
         </div>

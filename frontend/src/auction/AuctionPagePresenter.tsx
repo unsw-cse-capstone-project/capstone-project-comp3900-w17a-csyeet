@@ -48,7 +48,6 @@ export class AuctionPagePresenter {
         store.loadingState = "loaded";
       });
     } catch (e) {
-      console.log(e);
       runInAction(() => (store.loadingState = "error"));
     }
   }

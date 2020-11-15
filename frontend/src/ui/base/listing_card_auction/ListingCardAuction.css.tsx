@@ -9,6 +9,9 @@ export const ListingCardAuctionStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
     },
+    title: {
+      paddingRight: "35px",
+    },
     cardContent: {
       position: "relative",
       boxSizing: "border-box",

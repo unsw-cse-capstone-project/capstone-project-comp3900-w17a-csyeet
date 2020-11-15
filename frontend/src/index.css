@@ -27,3 +27,7 @@ code {
   display: flex;
   flex-direction: column;
 }
+
+body > iframe {
+  display: none !important;
+}
