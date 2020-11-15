@@ -5,14 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "cwd": "${workspaceFolder}/testData",
-            "program": "${workspaceFolder}/testData/populate_database.js",
-            "skipFiles": ["<node_internals>/**"]
-        },
-        {
             "name": "Python: Uvicorn",
             "type": "python",
             "request": "launch",
@@ -20,6 +12,14 @@
             "cwd": "${workspaceFolder}/backend",
             "args": ["src.main:app", "--reload"],
             "justMyCode": false
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "cwd": "${workspaceFolder}/testData",
+            "program": "${workspaceFolder}/testData/populate_database.js",
+            "skipFiles": ["<node_internals>/**"]
         }
     ]
 }
