@@ -13,6 +13,9 @@ import { getNumCards } from "../../ui/util/helper";
 
 /**
  * List of upcoming auctions with loading states
+ * @param store
+ * @param presenter
+ * @param width
  */
 export const UpcomingAuctionsBase = observer(
   ({

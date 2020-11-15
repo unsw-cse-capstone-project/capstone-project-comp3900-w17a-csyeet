@@ -33,6 +33,13 @@ export const PreviewListingStyle = makeStyles((theme: Theme) =>
   })
 );
 
+/**
+ * Preview Listing component that allows users to see how their listing will be
+ * displayed before publishing and finalising new listing details
+ * @param store
+ * @param onPublish
+ * @param onBack
+ */
 export const PreviewListing = observer(
   ({
     store,

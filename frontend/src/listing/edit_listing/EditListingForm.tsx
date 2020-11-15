@@ -21,7 +21,9 @@ export type AddressDetails = {
 };
 
 /**
- * Edit Form which changes depending on whether the auction has started or not
+ * Form for users to update details about an existing listing under thteir
+ * account. Fields that can be changed are Property Images, Description, Features,
+ * Auction Details and Payment Details
  * @param store
  * @param onPreview
  * @param onBack
