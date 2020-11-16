@@ -12,6 +12,17 @@ import { useQuery } from "../search/main";
 import MuiAlert from "@material-ui/lab/Alert";
 import { ErrorBoundaryPage } from '../ui/base/error_boundary/ErrorBoundary';
 
+export const appId = () => {
+  switch(process.env.REACT_APP_MESSAGE_MODE) {
+    case 'prod':
+      return "t2KS7sjh";
+    case 'demo':
+      return "tJD2Q1mh";
+    default:
+      return "tLGE8KKA";
+  }
+}
+console.log(appId())
 /**
  * Page where users can view history of all messages made andc communicate
  * with other buyers and sellers
@@ -37,7 +48,7 @@ export const MessagesPage = observer(() => {
       });
 
       (window as any).talkSession = new Talk.Session({
-        appId: "tLGE8KKA",
+        appId: appId(),
         me: me,
       });
 
