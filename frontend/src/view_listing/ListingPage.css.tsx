@@ -44,7 +44,7 @@ export const listingPageStyle = makeStyles((theme: Theme) =>
       justifyContent: "flex-end",
       alignItems: "center",
     },
-    
+
     starContainer: {
       position: "absolute",
       top: "40px",

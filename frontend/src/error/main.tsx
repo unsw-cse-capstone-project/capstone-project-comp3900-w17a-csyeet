@@ -14,7 +14,7 @@ export const NotFoundPageStyle = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      height: "70%",
+      minHeight: "calc(100vh - 435px)",
       justifyContent: "center",
     },
   })
