@@ -249,8 +249,8 @@ export class ListingPresenter {
     onSuccess: () => void,
     onError: () => void
   ) {
-    // Update listing information
     try {
+      // Update listing information
       const response = await fetch(
         `/listings/${store.listing.id?.toString()}`,
         {
@@ -283,7 +283,7 @@ export class ListingPresenter {
         return;
       }
 
-      // Upload new photos
+      console.log("HERE??");
       if (store.imageList.length > 0) {
         let form = new FormData();
         const data = await Promise.all(
@@ -299,35 +299,38 @@ export class ListingPresenter {
         data.forEach((image) => {
           form.append("files", new Blob([image.data], { type: image.type }));
         });
-        try {
-          const imageResponse = await fetch(
-            `/listings/${store.listing.id}/images`,
-            {
-              method: "post",
-              body: form,
-            }
-          );
-          if (imageResponse.status !== 200) onError();
-        } catch {
+        const imageResponse = await fetch(
+          `/listings/${store.listing.id}/images`,
+          {
+            method: "post",
+            body: form,
+          }
+        );
+        if (imageResponse.status !== 200) {
           onError();
+          return;
         }
       }
+      // Upload new photos
 
+      console.log(store.imagesToDelete, store.imagesToDelete.length);
       // Delete Images from previous publish
-      if (store.imagesToDelete.length > 0) {
-        try {
-          store.imagesToDelete.map(async (image) => {
-            const image_id = this.getImageId(image);
-            const response = await fetch(
-              `/listings/${store.listing.id}/images/${image_id}`,
-              {
-                method: "delete",
-              }
-            );
-            if (response.status !== 200) onError();
-          });
-        } catch {
+      for (var i = 0; i < store.imagesToDelete.length; ++i) {
+        //  Get the image id from the string (eg listing/images/85 --> finds 85)
+        var url_length = store.imagesToDelete[i].length;
+        var j = url_length;
+        while (store.imagesToDelete[i][j] !== "/") --j;
+        const image_id = store.imagesToDelete[i].slice(j, url_length);
+        console.log(image_id);
+        const imageResponse = await fetch(
+          `/listings/${store.listing.id}/images/${image_id}`,
+          {
+            method: "delete",
+          }
+        );
+        if (imageResponse.status !== 200) {
           onError();
+          return;
         }
       }
 
@@ -335,17 +338,7 @@ export class ListingPresenter {
       onSuccess();
     } catch {
       onError();
+      return;
     }
   }
-
-  /**
-   * Get the image id from the string
-   * URL: /listing/images/45
-   * Returns 45
-   */
-  private getImageId = (url: string) => {
-    var i = url.length;
-    while (url[i] !== "/") --i;
-    return url.slice(i, url.length);
-  };
 }

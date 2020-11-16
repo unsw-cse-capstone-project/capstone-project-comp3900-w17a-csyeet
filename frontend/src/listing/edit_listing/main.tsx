@@ -47,7 +47,9 @@ export const EditListingPageBase = observer(
     const onSuccess = () => {
       setStatus("success");
       setOpen(true);
-      history.push("/listing/" + store.listing.id?.toString());
+      setTimeout(() => {
+        history.push("/listing/" + store.listing.id?.toString());
+      }, 3000);
     };
 
     const onError = () => {
@@ -101,6 +103,7 @@ export const EditListingPageBase = observer(
         {status !== null && (
           <Snackbar
             open={openSnack}
+            autoHideDuration={3000}
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
             onClose={() => {
               setOpen(false);

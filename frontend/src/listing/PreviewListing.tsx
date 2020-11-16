@@ -93,7 +93,7 @@ export const PreviewListing = observer(
       await onPublish();
       setTimeout(() => {
         setSubmitting(false);
-      }, 5000);
+      }, 4000);
     };
 
     const [openConfirmDialog, setDialog] = React.useState<boolean>(false);
