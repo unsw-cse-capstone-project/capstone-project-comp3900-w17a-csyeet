@@ -1,7 +1,7 @@
-import * as React from "react";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
+import * as React from 'react';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import {
   Tab,
   Tabs,
@@ -10,12 +10,12 @@ import {
   TableBody,
   TableCell,
   TableRow,
-} from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Landmark } from "../../ui/util/types/listing";
-import classNames from "classnames";
-import { LandmarksPanelStyles } from "./LandmarksPanel.css";
-import { toCapitaliseCase, toSentenceCase } from '../../ui/util/helper';
+} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Landmark } from '../../ui/util/types/listing';
+import classNames from 'classnames';
+import { LandmarksPanelStyles } from './LandmarksPanel.css';
+import { toSentenceCase } from '../../ui/util/helper';
 
 /**
  * Landmarks fetched from Google Places Api
@@ -30,7 +30,7 @@ export const LandmarksPanel = ({
   facilities: Landmark[];
   isPreview?: boolean;
 }) => {
-  const [expanded, setExpanded] = React.useState<string | false>("panel1");
+  const [expanded, setExpanded] = React.useState<string | false>('panel1');
   const [value, setValue] = React.useState(0);
   const classes = LandmarksPanelStyles();
 
@@ -50,7 +50,12 @@ export const LandmarksPanel = ({
   const Body = ({ type }: { type: string }) => {
     if (facilities.filter((f) => f.type === type).length === 0) {
       return (
-        <Typography variant="body1" color="textSecondary" align="center" style={{paddingTop: "15px"}}>
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          align="center"
+          style={{ paddingTop: '15px' }}
+        >
           No {toSentenceCase(type)}s found
         </Typography>
       );
@@ -66,7 +71,7 @@ export const LandmarksPanel = ({
                   component="th"
                   className={classNames(
                     {
-                      [classes["lastRow"]]:
+                      [classes['lastRow']]:
                         facilities.filter((f) => f.type === type).length ===
                         k + 1,
                     },
@@ -78,7 +83,7 @@ export const LandmarksPanel = ({
                 <TableCell
                   align="right"
                   className={classNames({
-                    [classes["lastRow"]]:
+                    [classes['lastRow']]:
                       facilities.filter((f) => f.type === type).length ===
                       k + 1,
                   })}
@@ -94,8 +99,8 @@ export const LandmarksPanel = ({
   return (
     <Accordion
       square
-      expanded={expanded === "panel1"}
-      onChange={handleChange("panel1")}
+      expanded={expanded === 'panel1'}
+      onChange={handleChange('panel1')}
       elevation={0}
     >
       <AccordionSummary
@@ -119,18 +124,18 @@ export const LandmarksPanel = ({
               scrollButtons="on"
               className={classes.tabs}
             >
-              {["primarySchool", "secondarySchool", "park", "trainStation"].map(
+              {['primarySchool', 'secondarySchool', 'park', 'trainStation'].map(
                 (type, i) => (
                   <Tab
                     key={i}
                     label={type
-                      .replace(/([A-Z]+)/g, " $1")
-                      .replace(/([A-Z][a-z])/g, " $1")}
+                      .replace(/([A-Z]+)/g, ' $1')
+                      .replace(/([A-Z][a-z])/g, ' $1')}
                   />
                 )
               )}
             </Tabs>
-            {["primarySchool", "secondarySchool", "park", "trainStation"].map(
+            {['primarySchool', 'secondarySchool', 'park', 'trainStation'].map(
               (type, i) => (
                 <div hidden={value !== i} key={i}>
                   <Body type={type} />
