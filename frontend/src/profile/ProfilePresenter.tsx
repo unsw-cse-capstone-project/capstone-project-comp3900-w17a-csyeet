@@ -55,6 +55,7 @@ export class ProfilePresenter {
   @action
   async getProfileInfo(store: ProfileStore) {
     store.loadingState = "loading";
+    return;
     try {
       const response = await fetch(`/users/profile`);
       const content = await response.json();

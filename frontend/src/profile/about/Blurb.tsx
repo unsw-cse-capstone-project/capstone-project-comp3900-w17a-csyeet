@@ -1,5 +1,11 @@
 import React from "react";
-import { TextField, Typography, IconButton, Fab } from "@material-ui/core";
+import {
+  TextField,
+  Typography,
+  IconButton,
+  Fab,
+  CircularProgress,
+} from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
@@ -9,39 +15,10 @@ import { ProfileStore } from "../ProfilePresenter";
 import { action } from "mobx";
 import { observer } from "mobx-react";
 
-export const BlurbStyle = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      [theme.breakpoints.up("xs")]: {
-        display: "flex",
-      },
-      display: "flex",
-      flexDirection: "column",
-    },
-
-    blurbView: {
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      verticalAlign: "center",
-    },
-    blurbContainer: {
-      position: "relative",
-    },
-    editIcon: {
-      position: "absolute",
-      right: "-40px",
-      top: "-20px",
-      color: "#a9a9a9",
-    },
-  })
-);
-
 /**
  * Blurb component which displays the user's blurb on the profile. Allows
  * users to update and change blurb.
- * @param blurb
+ * @param store
  * @param onEdit
  * @param className
  */
@@ -61,17 +38,19 @@ export const Blurb = observer(
     const onChange = action((value: string) => {
       (store as any).tmpBlurb = value;
     });
-    console.log(store.blurb, store.tmpBlurb);
+
+    if (store.loadingState === "loading") {
+      return (
+        <div className={classes.loadingView}>
+          <CircularProgress color={"inherit"} size={20} />
+        </div>
+      );
+    }
+
     return (
       <div className={classNames(classes.root, className)}>
         {edit ? (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-            }}
-          >
+          <div className={classes.editView}>
             <TextField
               size="small"
               variant={"outlined"}
@@ -118,4 +97,42 @@ export const Blurb = observer(
       </div>
     );
   }
+);
+
+export const BlurbStyle = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      [theme.breakpoints.up("xs")]: {
+        display: "flex",
+      },
+      display: "flex",
+      flexDirection: "column",
+    },
+    loadingView: {
+      alignItems: "center",
+      marginTop: "10px",
+    },
+
+    blurbView: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      verticalAlign: "center",
+    },
+    editView: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "center",
+    },
+    blurbContainer: {
+      position: "relative",
+    },
+    editIcon: {
+      position: "absolute",
+      right: "-40px",
+      top: "-20px",
+      color: "#a9a9a9",
+    },
+  })
 );
