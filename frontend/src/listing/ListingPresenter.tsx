@@ -114,7 +114,6 @@ export class ListingStore {
   @observable auctionState: string = "pre-auction";
   @observable imageList: ImageListType = [];
   @observable imagesToDelete: string[] = [];
-
   constructor() {
     makeObservable(this);
   }
@@ -238,11 +237,6 @@ export class ListingPresenter {
     }
   }
 
-  private onUpdateError(onError: () => void) {
-    onError();
-    // window.location.reload();
-  }
-
   /**
    * Update backend to reflect changes made to listings made by users
    * @param store
@@ -285,70 +279,57 @@ export class ListingPresenter {
       );
       const result = await response.json();
       if ("detail" in result) {
-        this.onUpdateError(onError);
+        onError();
         return;
       }
 
-      const uploadImage = await this.uploadImages(
-        store.listing.id as number,
-        store.imageList
-      );
-
-      // Upload new images
-      if (!uploadImage) {
-        this.onUpdateError(onError);
-        return;
+      // Upload new photos
+      if (store.imageList.length > 0) {
+        let form = new FormData();
+        const data = await Promise.all(
+          store.imageList.map(async (image) => {
+            const resized = await resizeFile(image.file as File);
+            const buffer = await (resized as Blob).arrayBuffer();
+            return {
+              data: buffer,
+              type: (image.file as any).type,
+            };
+          })
+        );
+        data.forEach((image) => {
+          form.append("files", new Blob([image.data], { type: image.type }));
+        });
+        try {
+          const imageResponse = await fetch(
+            `/listings/${store.listing.id}/images`,
+            {
+              method: "post",
+              body: form,
+            }
+          );
+          if (imageResponse.status !== 200) onError();
+        } catch {
+          onError();
+        }
       }
 
-      const results = await Promise.all(
-        store.imagesToDelete.map((image) =>
-          this.deleteImages(store.listing.id as number, image)
-        )
-      );
+      // Delete Images from previous publish
+      if (store.imagesToDelete.length > 0) {
+        const ImgResults = await Promise.all(
+          store.imagesToDelete.map((image) =>
+            this.deleteImages(store.listing.id as number, image)
+          )
+        );
 
-      if (results.find((item) => item === false)) {
-        this.onUpdateError(onError);
+        if (ImgResults.find((item) => item === false)) {
+          onError();
+        }
       }
 
       // Everything has been done
       onSuccess();
     } catch {
-      this.onUpdateError(onError);
-    }
-  }
-
-  @action
-  async uploadImages(listing_id: number, imageList: ImageListType) {
-    let form = new FormData();
-    const data = await Promise.all(
-      imageList.map(async (image) => {
-        const resized = await resizeFile(image.file as File);
-        const buffer = await (resized as Blob).arrayBuffer();
-        return {
-          data: buffer,
-          type: (image.file as any).type,
-        };
-      })
-    );
-    data.forEach((image) => {
-      form.append(
-        "files",
-        new Blob([image.data], {
-          type: image.type,
-        })
-      );
-    });
-    try {
-      const response = await fetch(`/listings/${listing_id}/images`, {
-        method: "post",
-        body: form,
-      });
-      if (response.status !== 200) {
-        return false;
-      }
-      return true;
-    } catch (e) {
-      return false;
+      onError();
     }
   }
 

@@ -4,7 +4,7 @@ export const EditListingStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
-      height: "1000px",
+      minHeight: "100vh - 100px",
       padding: theme.spacing(0, "15%", "200px", "15%"),
       boxSizing: "border-box",
       marginTop: "0px",

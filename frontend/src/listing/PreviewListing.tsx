@@ -22,9 +22,6 @@ import { BackButton } from "../ui/base/back_button/BackButton";
 
 export const PreviewListingStyle = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      minHeight: "100vh - 800px",
-    },
     header: {
       paddingTop: "30px",
       display: "flex",
@@ -91,13 +88,15 @@ export const PreviewListing = observer(
     const confirmedPublish = async () => {
       setSubmitting(true);
       await onPublish();
-      // setSubmitting(false);
+      setTimeout(() => {
+        setSubmitting(false);
+      }, 2000);
     };
 
     const [openConfirmDialog, setDialog] = React.useState<boolean>(false);
     const classes = PreviewListingStyle();
     return (
-      <div className={classes.root}>
+      <div>
         <div className={classes.header}>
           <BackButton
             className={classes.backToEditingButton}
