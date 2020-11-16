@@ -97,9 +97,10 @@ def train_model(session: Session):
     data_index_by_id = {}  # reset to avoid storing removed listings
     filtered_data = []
     for index, listing in enumerate(db_data):
-        if listing.postcode.isdigit():
-            # listings from a previous session need to be refreshed before serialisation
-            listing_dict = asdict(session.merge(listing))
+        # listings from a previous session need to be refreshed before serialisation
+        session_listing = session.merge(listing)
+        if session_listing.postcode.isdigit():
+            listing_dict = asdict(session_listing)
             data_index_by_id[listing_dict['id']] = index
             filtered_data.append(filter_similarity_fields(listing_dict))
     data_frame = pd.DataFrame.from_dict(filtered_data)
