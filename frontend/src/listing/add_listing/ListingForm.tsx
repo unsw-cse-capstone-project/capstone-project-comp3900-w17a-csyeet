@@ -1,14 +1,21 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { computed } from "mobx";
-import { Button, Stepper, Step, StepButton, Snackbar } from "@material-ui/core";
+import {
+  Button,
+  Stepper,
+  Step,
+  Hidden,
+  StepButton,
+  Snackbar,
+} from "@material-ui/core";
 import { ListingStore } from "../ListingPresenter";
 import { Details } from "../listing_form/Details";
 import { Images } from "../listing_form/Images";
 import { Description } from "../listing_form/Description";
 import { AuctionDetails } from "../listing_form/AuctionDetails";
 import { PaymentDetails } from "../listing_form/Payment";
-import { ListingFormStyles } from "./ListingForm.css";
+import { ListingFormStyles } from "../listing_form/ListingForm.css";
 import Alert from "@material-ui/lab/Alert";
 import { ArrowBackIos } from "@material-ui/icons";
 import { Features } from "../listing_form/Features";
@@ -194,7 +201,7 @@ export const ListingForm = observer(
                     completed={isStepComplete(index)}
                     {...buttonProps}
                   >
-                    {label}
+                    <Hidden only={"xs"}>{label}</Hidden>
                   </StepButton>
                 </Step>
               );

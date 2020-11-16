@@ -3,13 +3,13 @@ import { useParams, useHistory, useLocation } from "react-router-dom";
 import { ListingPageStore, ListingPagePresenter } from "./ListingPagePresenter";
 import { ListingPage as ListingPageBase } from "./ListingPage";
 import { observer } from "mobx-react";
-import { listingPageStyle } from "./ListingPage.css";
 import { createSuburbPanelContent } from "./suburb_panel/create";
 import { useStore } from "../AuthContext";
 import { OwnerHeader } from "./owner_header/OwnerHeader";
 import { ListingPagePlaceholder } from "./ListingPagePlaceholder";
 import { BackButton } from "../ui/base/back_button/BackButton";
 import { NotFoundPage } from "../error/main";
+import { listingPageStyle } from "./ListingPage.css";
 import {
   ErrorBoundaryComponent,
   ErrorBoundaryPage,

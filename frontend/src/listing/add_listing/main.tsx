@@ -4,10 +4,10 @@ import { useHistory } from "react-router-dom";
 import { Snackbar, Typography } from "@material-ui/core";
 import { ListingForm } from "./ListingForm";
 import { PreviewListing } from "../PreviewListing";
-import { AddListingStyles } from "./AddListing.css";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import { observer } from "mobx-react";
 import { ErrorBoundaryPage } from "../../ui/base/error_boundary/ErrorBoundary";
+import { AddListingStyles } from "./AddListing.css";
 
 function Alert(props: AlertProps) {
   return <MuiAlert variant="filled" {...props} />;

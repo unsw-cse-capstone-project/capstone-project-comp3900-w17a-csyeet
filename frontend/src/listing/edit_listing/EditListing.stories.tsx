@@ -62,7 +62,7 @@ export const Overview = () => {
   return (
     <EditListingPageBase
       store={store}
-      onUpdateListing={() => action("OnUpdateListing")}
+      onUpdateListing={() => Promise.resolve()}
     />
   );
 };
