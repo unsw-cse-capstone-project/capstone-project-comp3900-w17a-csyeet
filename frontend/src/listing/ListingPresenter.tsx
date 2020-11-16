@@ -314,14 +314,24 @@ export class ListingPresenter {
       }
 
       // Delete Images from previous publish
+      console.log(store.imagesToDelete.length);
       if (store.imagesToDelete.length > 0) {
-        const ImgResults = await Promise.all(
-          store.imagesToDelete.map((image) =>
-            this.deleteImages(store.listing.id as number, image)
-          )
-        );
-
-        if (ImgResults.find((item) => item === false)) {
+        try {
+          await Promise.all(
+            store.imagesToDelete.map(async (image) => {
+              const image_id = this.getImageId(image);
+              console.log(image_id);
+              const response = await fetch(
+                `/listings/${store.listing.id}/images/${image_id}`,
+                {
+                  method: "delete",
+                }
+              );
+              if (response.status !== 200) onError();
+            })
+          );
+          console.log("Deleted images");
+        } catch {
           onError();
         }
       }
@@ -343,21 +353,4 @@ export class ListingPresenter {
     while (url[i] !== "/") --i;
     return url.slice(i, url.length);
   };
-
-  @action
-  async deleteImages(listing_id: number, image_url: string) {
-    try {
-      const image_id = this.getImageId(image_url);
-      const response = await fetch(
-        `/listings/${listing_id}/images/${image_id}`,
-        {
-          method: "delete",
-        }
-      );
-      if (response.status !== 200) return false;
-      return true;
-    } catch {
-      return false;
-    }
-  }
 }
