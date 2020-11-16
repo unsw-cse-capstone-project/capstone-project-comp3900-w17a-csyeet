@@ -5,8 +5,12 @@ export const ListingMessagesPageStyles = makeStyles((theme: Theme) =>
     page: {
       display: "flex",
       flexDirection: "column",
-      paddingBottom: "200px",
-      minHeight: "calc(100vh - 700px)",
+      height: "calc(100vh - 400px)",
+      minHeight: "900px",
+      [theme.breakpoints.down("sm")]: {
+        minHeight: "800px",
+      },
+      marginBottom: "100px",
     },
     backButton: {
       width: "fit-content",
