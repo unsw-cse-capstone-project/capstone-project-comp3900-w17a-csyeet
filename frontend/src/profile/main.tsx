@@ -1,7 +1,6 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 import { Typography, Tab, Tabs } from "@material-ui/core";
-import { ProfilePageStyles } from "./ProfilePage.css";
 import { MyBidsPage as MyBids } from "./bids/MyBidsPage";
 import { DetailsPage as MyDetails } from "./details/DetailsPage";
 import { MyListingsPage as MyListings } from "./listings/MyListingsPage";
@@ -10,7 +9,11 @@ import { Blurb } from "./about/Blurb";
 import { ProfileAvatar } from "./about/ProfileAvatar";
 import { ProfileStore, ProfilePresenter } from "./ProfilePresenter";
 import { useStore } from "../AuthContext";
-import { ErrorBoundaryPage, ErrorBoundaryComponent } from '../ui/base/error_boundary/ErrorBoundary';
+import {
+  ErrorBoundaryPage,
+  ErrorBoundaryComponent,
+} from "../ui/base/error_boundary/ErrorBoundary";
+import { ProfilePageStyles } from "./ProfilePage.css";
 
 export const ProfilePage = () => {
   const userStore = useStore();

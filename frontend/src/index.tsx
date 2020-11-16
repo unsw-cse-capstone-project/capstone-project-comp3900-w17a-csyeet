@@ -66,13 +66,15 @@ const ProtectedComponent = observer(
         />
       );
       return (
-        <Authentication
-          signInMode={signInMode}
-          open={openModal}
-          onClose={() => setOpenModal(false)}
-          SignIn={SignInWrapper}
-          SignUp={SignUpWrapper}
-        />
+        <div style={{minHeight: "calc(100vh - 435px)"}}>
+          <Authentication
+            signInMode={signInMode}
+            open={openModal}
+            onClose={() => setOpenModal(false)}
+            SignIn={SignInWrapper}
+            SignUp={SignUpWrapper}
+          />
+        </div>
       );
     }
     return <Component />;

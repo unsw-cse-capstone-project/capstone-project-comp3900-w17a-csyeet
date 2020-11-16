@@ -240,7 +240,7 @@ export class ListingPresenter {
 
   private onUpdateError(onError: () => void) {
     onError();
-    window.location.reload();
+    // window.location.reload();
   }
 
   /**

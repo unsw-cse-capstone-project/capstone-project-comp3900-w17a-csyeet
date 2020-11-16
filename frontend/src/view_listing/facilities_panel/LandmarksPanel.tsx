@@ -15,6 +15,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Landmark } from "../../ui/util/types/listing";
 import classNames from "classnames";
 import { LandmarksPanelStyles } from "./LandmarksPanel.css";
+import { toCapitaliseCase, toSentenceCase } from '../../ui/util/helper';
 
 /**
  * Landmarks fetched from Google Places Api
@@ -45,6 +46,51 @@ export const LandmarksPanel = ({
   ) => {
     setExpanded(newExpanded ? panel : false);
   };
+
+  const Body = ({ type }: { type: string }) => {
+    if (facilities.filter((f) => f.type === type).length === 0) {
+      return (
+        <Typography variant="body1" color="textSecondary" align="center" style={{paddingTop: "15px"}}>
+          No {toSentenceCase(type)}s found
+        </Typography>
+      );
+    }
+    return (
+      <Table>
+        <TableBody>
+          {facilities
+            .filter((f) => f.type === type)
+            .map((f, k) => (
+              <TableRow key={k}>
+                <TableCell
+                  component="th"
+                  className={classNames(
+                    {
+                      [classes["lastRow"]]:
+                        facilities.filter((f) => f.type === type).length ===
+                        k + 1,
+                    },
+                    classes.firstCell
+                  )}
+                >
+                  {f.name}
+                </TableCell>
+                <TableCell
+                  align="right"
+                  className={classNames({
+                    [classes["lastRow"]]:
+                      facilities.filter((f) => f.type === type).length ===
+                      k + 1,
+                  })}
+                >
+                  {f.distance}km
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    );
+  };
   return (
     <Accordion
       square
@@ -64,69 +110,35 @@ export const LandmarksPanel = ({
             Nearby landmarks will be generated after the listing is created
           </Typography>
         ) : (
-            <div>
-              <Tabs
-                value={value}
-                indicatorColor="secondary"
-                onChange={handleTabChange}
-                variant="scrollable"
-                scrollButtons="on"
-                className={classes.tabs}
-              >
-                {["primarySchool", "secondarySchool", "park", "trainStation"].map(
-                  (type, i) => (
-                    <Tab
-                      key={i}
-                      label={type
-                        .replace(/([A-Z]+)/g, " $1")
-                        .replace(/([A-Z][a-z])/g, " $1")}
-                    />
-                  )
-                )}
-              </Tabs>
+          <div>
+            <Tabs
+              value={value}
+              indicatorColor="secondary"
+              onChange={handleTabChange}
+              variant="scrollable"
+              scrollButtons="on"
+              className={classes.tabs}
+            >
               {["primarySchool", "secondarySchool", "park", "trainStation"].map(
                 (type, i) => (
-                  <div hidden={value !== i} key={i}>
-                    <Table>
-                      <TableBody>
-                        {facilities
-                          .filter((f) => f.type === type)
-                          .map((f, k) => (
-                            <TableRow key={k}>
-                              <TableCell
-                                component="th"
-                                className={classNames(
-                                  {
-                                    [classes["lastRow"]]:
-                                      facilities.filter((f) => f.type === type)
-                                        .length ===
-                                      k + 1,
-                                  },
-                                  classes.firstCell
-                                )}
-                              >
-                                {f.name}
-                              </TableCell>
-                              <TableCell
-                                align="right"
-                                className={classNames({
-                                  [classes["lastRow"]]:
-                                    facilities.filter((f) => f.type === type)
-                                      .length ===
-                                    k + 1,
-                                })}
-                              >
-                                {f.distance}km
-                            </TableCell>
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </Table>
-                  </div>
+                  <Tab
+                    key={i}
+                    label={type
+                      .replace(/([A-Z]+)/g, " $1")
+                      .replace(/([A-Z][a-z])/g, " $1")}
+                  />
                 )
               )}
-            </div>
-          )}
+            </Tabs>
+            {["primarySchool", "secondarySchool", "park", "trainStation"].map(
+              (type, i) => (
+                <div hidden={value !== i} key={i}>
+                  <Body type={type} />
+                </div>
+              )
+            )}
+          </div>
+        )}
       </AccordionDetails>
     </Accordion>
   );

@@ -14,7 +14,7 @@ code {
 
 .page {
   height: 100vh;
-  overflow: scroll;
+  overflow: hidden;
 }
 .content {
   overflow-x: hidden;
