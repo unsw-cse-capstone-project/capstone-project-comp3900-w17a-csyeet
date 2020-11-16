@@ -116,17 +116,20 @@ export class ProfilePresenter {
   @action
   async updateUserDetails(store: ProfileStore) {
     store.loadingState = "updating";
+    const updateGeneral = store.tmpName === "" ? true : false;
     try {
       const response = await fetch(`users/profile`, {
         method: "post",
         body: JSON.stringify({
-          name: store.tmpName,
-          phone_number: store.tmpPhoneNumber,
-          street: store.tmpAddress.street,
-          suburb: store.tmpAddress.suburb,
-          postcode: store.tmpAddress.postcode,
-          state: store.tmpAddress.state,
-          country: store.tmpAddress.country,
+          name: updateGeneral ? store.tmpName : store.name,
+          phone_number: updateGeneral
+            ? store.tmpPhoneNumber
+            : store.phone_number,
+          street: !updateGeneral ? store.tmpAddress.street : store.street,
+          suburb: !updateGeneral ? store.tmpAddress.suburb : store.suburb,
+          postcode: !updateGeneral ? store.tmpAddress.postcode : store.postcode,
+          state: !updateGeneral ? store.tmpAddress.state : store.state,
+          country: !updateGeneral ? store.tmpAddress.country : store.country,
         }),
       });
       const result = await response.json();

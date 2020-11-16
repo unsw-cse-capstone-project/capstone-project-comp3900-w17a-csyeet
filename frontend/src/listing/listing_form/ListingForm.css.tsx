@@ -20,13 +20,13 @@ export const ListingFormStyles = makeStyles((theme: Theme) =>
     },
     body: {
       width: "100%",
-      height: "1000px",
       padding: theme.spacing(0, "15%", "200px", "15%"),
       boxSizing: "border-box",
       marginTop: "0px",
       [theme.breakpoints.down("sm")]: {
         padding: theme.spacing(0, 2, "200px", 2),
       },
+      minHeight: "calc(100vh - 700px)",
     },
     backButton: {
       marginRight: theme.spacing(1),

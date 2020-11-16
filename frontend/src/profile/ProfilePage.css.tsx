@@ -4,6 +4,8 @@ export const ProfilePageStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       paddingBottom: "200px",
+      minHeight: "calc(100vh - 800px)",
+
     },
     tabPanel: { width: "80%", margin: "auto" },
     userInfo: {
