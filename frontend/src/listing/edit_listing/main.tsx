@@ -69,7 +69,9 @@ export const EditListingPageBase = observer(
           return <MuiAlert severity="info">Updating your listing...</MuiAlert>;
         case "error":
           return (
-            <MuiAlert severity="error">There was an error updating</MuiAlert>
+            <MuiAlert severity="error">
+              There was an error updating. Please try again
+            </MuiAlert>
           );
         default:
           return <></>;

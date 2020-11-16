@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { ListingStore } from "../ListingPresenter";
 import { ImageUploader } from "../../ui/base/input/ImageUploader";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Typography } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { ImageListType } from "react-images-uploading";
 
@@ -53,6 +53,9 @@ export const Images: React.FC<{ store: ListingStore }> = observer(
 
     return (
       <div>
+        <Typography variant="body1" style={{ margin: "20px" }}>
+          Upload your images (max. 6)
+        </Typography>
         <div className={classes.previewContainer}>
           {store.listing.images.map((image, i) => (
             <div key={i} className={classes.imgContainer}>

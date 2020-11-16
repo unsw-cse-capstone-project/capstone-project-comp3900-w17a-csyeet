@@ -9,7 +9,9 @@ export const AddListingStyles = makeStyles((theme: Theme) =>
       marginTop: "0px",
       [theme.breakpoints.down("xs")]: {
         padding: theme.spacing(0, "5%", 0, "5%"),
+        minHeight: "calc(100vh + 1700px)",
       },
+      minHeight: "calc(100vh + 1500px)",
     },
     main: {
       display: "flex",

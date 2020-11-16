@@ -4,13 +4,14 @@ export const EditListingStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
-      height: "1000px",
       padding: theme.spacing(0, "15%", "200px", "15%"),
       boxSizing: "border-box",
       marginTop: "0px",
       [theme.breakpoints.down("xs")]: {
         padding: theme.spacing(0, "5%", "200px", "5%"),
+        minHeight: "calc(100vh + 1700px)",
       },
+      minHeight: "calc(100vh + 1400px)",
     },
     main: {
       display: "flex",

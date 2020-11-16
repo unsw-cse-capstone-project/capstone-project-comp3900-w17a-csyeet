@@ -10,7 +10,7 @@ export const FooterStyle = makeStyles((theme: Theme) =>
     root: {
       width: "100%",
       backgroundColor: "#f3f4f5",
-      padding: theme.spacing(7, "15%", 24, "15%"),
+      padding: theme.spacing(7, "15%", 18, "15%"),
       boxSizing: "border-box",
     },
     grid: {
@@ -41,7 +41,7 @@ export const FooterStyle = makeStyles((theme: Theme) =>
     },
     buttonMargin: {
       marginRight: "10px",
-    }
+    },
   })
 );
 

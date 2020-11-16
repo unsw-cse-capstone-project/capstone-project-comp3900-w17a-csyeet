@@ -91,7 +91,9 @@ export const PreviewListing = observer(
     const confirmedPublish = async () => {
       setSubmitting(true);
       await onPublish();
-      // setSubmitting(false);
+      setTimeout(() => {
+        setSubmitting(false);
+      }, 5000);
     };
 
     const [openConfirmDialog, setDialog] = React.useState<boolean>(false);
@@ -110,7 +112,7 @@ export const PreviewListing = observer(
             color={"primary"}
             onClick={() => setDialog(true)}
           >
-            {isSubmitting ? <CircularProgress size="small" /> : "Publish"}
+            {isSubmitting ? <CircularProgress size={20} /> : "Publish"}
           </Button>
         </div>
         <ListingPage
