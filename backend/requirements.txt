@@ -36,7 +36,7 @@ numpy==1.19.3
 pandas==1.1.4
 passlib==1.7.4
 pipdeptree==1.0.0
-psycopg2==2.8.6
+psycopg2-binary==2.8.6
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycodestyle==2.6.0
