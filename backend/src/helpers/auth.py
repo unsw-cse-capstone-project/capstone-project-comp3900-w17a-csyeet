@@ -14,7 +14,7 @@ from .common import get_session
 
 cookie_name = "session"
 cookie_security = APIKeyCookie(name=cookie_name, auto_error=False)
-secret_key = '825d86db7d67844c086c01ed8001f8df82dc99c16a8cad4e'  # TODO: extract
+secret_key = '825d86db7d67844c086c01ed8001f8df82dc99c16a8cad4e'
 client_id = '558318040284-qq4i7nn9ol3767cgg5neroen7mb65vkb.apps.googleusercontent.com'
 
 
@@ -36,7 +36,6 @@ def get_current_user(token: str = Depends(cookie_security), session: Session = D
     else:
         email = payload["sub"]
         return load_user(email, session)
-
 
 
 def get_signed_in_user(current_user: Optional[User] = Depends(get_current_user)) -> User:
@@ -61,7 +60,7 @@ def validate_google_id_token(token: str):
         verify_oauth2_token(token, requests.Request(), client_id)
     except Exception:
         raise HTTPException(status_code=HTTP_403_FORBIDDEN,
-                        detail="Invalid authentication")
+                            detail="Invalid authentication")
 
 
 def is_google_user(user: User) -> bool:

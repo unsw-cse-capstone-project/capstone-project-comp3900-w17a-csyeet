@@ -2,8 +2,8 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..schemas import CreateRegistrationRequest, RegistrationResponse
-from ..helpers import get_signed_in_user, get_session
-from ..models import Registration, Listing, User, Bid, Interaction, InteractionType
+from ..helpers import get_signed_in_user, get_session, ensure_listing_exists
+from ..models import Registration, User, Bid, Interaction, InteractionType
 
 router = APIRouter()
 
@@ -12,10 +12,7 @@ router = APIRouter()
              responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def register(listing_id: int, req: CreateRegistrationRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Registers a user as a RAB for a listing '''
-    listing = session.query(Listing).get(listing_id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+    ensure_listing_exists(listing_id, session)
     if session.query(Registration).get((listing_id, signed_in_user.id)):
         raise HTTPException(
             status_code=403, detail="User already registered for listing")

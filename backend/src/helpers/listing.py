@@ -2,10 +2,19 @@ import base64
 from datetime import datetime, timedelta
 from dataclasses import asdict
 from typing import List, Optional, Tuple
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from ..schemas import ListingResponse, Feature, field_to_feature_map, UpdateListingRequest
 from ..models import Listing, User, Starred, Registration
 from .bid import get_highest_bid
+
+
+def ensure_listing_exists(listing_id: int, session: Session) -> Listing:
+    listing = session.query(Listing).get(listing_id)
+    if listing is None:
+        raise HTTPException(
+            status_code=404, detail="Requested listing could not be found")
+    return listing
 
 
 def encode_continuation(results: List[Listing], limit: int) -> Optional[str]:
