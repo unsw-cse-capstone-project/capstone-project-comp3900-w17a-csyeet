@@ -11,7 +11,7 @@ export const EditListingStyles = makeStyles((theme: Theme) =>
         padding: theme.spacing(0, "5%", "200px", "5%"),
         minHeight: "calc(100vh + 1700px)",
       },
-      minHeight: "calc(100vh + 1400px)",
+      minHeight: "calc(100vh + 1500px)",
     },
     main: {
       display: "flex",

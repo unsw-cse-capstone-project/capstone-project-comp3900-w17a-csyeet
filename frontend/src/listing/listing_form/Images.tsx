@@ -54,7 +54,7 @@ export const Images: React.FC<{ store: ListingStore }> = observer(
     return (
       <div>
         <Typography variant="body1" style={{ margin: "20px" }}>
-          Upload your images (max. 6)
+          Upload your images (max. 10)
         </Typography>
         <div className={classes.previewContainer}>
           {store.listing.images.map((image, i) => (

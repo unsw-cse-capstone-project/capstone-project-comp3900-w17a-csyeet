@@ -249,8 +249,6 @@ export class ListingPresenter {
     onSuccess: () => void,
     onError: () => void
   ) {
-    onError();
-    return;
     // Update listing information
     try {
       const response = await fetch(
