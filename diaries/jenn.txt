@@ -1,8 +1,0 @@
-* Week 2/3 - Worked on Storyboards w/Teresa 
-* Week 4 - Worked on /Header/SignIn-&-SignOut 
-* Week 5 - Worked on /Header/SignUp
-* Week 6 - Worked on Add Listing Pages & Form vaidation
-* Week 7 - Worked on Profile Dashboard Pages  
-* Week 8 - Worked on Profile Detail Form, Avatar, Edit Blurb
-* Week 9 - Worked on Editing Profile & Revamps on Profile form 
-* Week 10 - Writing Comments/Testing Fixes
