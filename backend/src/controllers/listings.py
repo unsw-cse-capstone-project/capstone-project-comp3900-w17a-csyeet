@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session, Query
 from starlette.responses import StreamingResponse
 from ..schemas import CreateListingRequest, ListingResponse, SearchListingsRequest, SearchListingsResponse, AuctionResponse, BidRequest, PlaceBidResponse, UploadImagesResponse, UpdateListingRequest
 from ..models import Listing, User, Starred, Bid, Registration, Landmark, Image, Interaction, InteractionType
-from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing, batch_remove_listings_from_ML_model, update_listing_in_ML_model, convert_address_to_postcode
+from ..helpers import get_session, get_current_user, get_signed_in_user, find_nearby_landmarks, add_listing_to_ML_model, ensure_listing_exists, get_highest_bid, map_bid_to_response, encode_continuation, decode_continuation, map_listing_response, map_listing_to_response, get_field_for_feature, get_auction_time_remaining, update_listing, batch_remove_listings_from_ML_model, update_listing_in_ML_model, convert_address_to_postcode
 
 router = APIRouter()
 
@@ -16,8 +16,6 @@ router = APIRouter()
 @router.post('/', response_model=ListingResponse)
 def create(req: CreateListingRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Creates a listing owned by the user making the request '''
-    # TODO: Should we prevent creation for some set of values which we deem to be unique? e.g. address?
-    # TODO: maybe extract this helper code
     listing_data = req.dict()
     listing_data.update({get_field_for_feature(feature): True
                          for feature in req.features})
@@ -60,7 +58,6 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
         session.commit()
 
     query: Query = session.query(Listing)
-    # TODO: maybe extract this helper code
     conditions = []
     if req.location:
         # listing has an address component matching the `location` (case-insensitive)
@@ -113,20 +110,14 @@ def search(req: SearchListingsRequest = Depends(), current_user: Optional[User] 
 @router.get('/{id}', response_model=ListingResponse, responses={404: {"description": "Resource not found"}})
 def get(id: int, current_user: Optional[User] = Depends(get_current_user), session: Session = Depends(get_session)):
     ''' Gets a listing by its id '''
-    listing = session.query(Listing).get(id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+    listing = ensure_listing_exists(id, session)
     return map_listing_response(listing, current_user, session)
 
 
 @router.get('/{id}/auction', response_model=AuctionResponse, responses={404: {"description": "Resource not found"}})
 def get_auction_info(id: int, session: Session = Depends(get_session)):
     ''' Gets auction info for a listing '''
-    listing = session.query(Listing).get(id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+    listing = ensure_listing_exists(id, session)
 
     bidders = [bidder.user_id for bidder in listing.bidders]
     bids = [map_bid_to_response(bid, listing)
@@ -137,10 +128,7 @@ def get_auction_info(id: int, session: Session = Depends(get_session)):
 @router.post('/{id}/auction/bid', response_model=PlaceBidResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def place_bid(id: int, req: BidRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Places a bid '''
-    listing = session.query(Listing).get(id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+    listing = ensure_listing_exists(id, session)
 
     registration = session.query(Registration).get((id, signed_in_user.id))
     if registration is None:
@@ -151,7 +139,7 @@ def place_bid(id: int, req: BidRequest, signed_in_user: User = Depends(get_signe
     assert highest_bid is not None  # user is registered so there must be >= 1 bid
     if req.bid <= highest_bid.bid:
         raise HTTPException(
-            status_code=403, detail=f"Bid must be higher than the current highest bid of {highest_bid}")
+            status_code=403, detail=f"Bid must be higher than the current highest bid of {highest_bid.bid}")
 
     bid = Bid(listing_id=id, bidder_id=signed_in_user.id,
               bid=req.bid, placed_at=datetime.now())
@@ -165,10 +153,7 @@ def place_bid(id: int, req: BidRequest, signed_in_user: User = Depends(get_signe
 @router.post('/{id}/star', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def star(id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Star a listing '''
-    listing = session.query(Listing).get(id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+    ensure_listing_exists(id, session)
 
     starred = session.query(Starred).get((id, signed_in_user.id))
     if starred is not None:
@@ -185,10 +170,7 @@ def star(id: int, signed_in_user: User = Depends(get_signed_in_user), session: S
 @router.post('/{id}/unstar', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def unstar(id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Unstar a listing '''
-    listing = session.query(Listing).get(id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+    ensure_listing_exists(id, session)
 
     starred = session.query(Starred).get((id, signed_in_user.id))
     if starred is None:
@@ -209,10 +191,7 @@ def unstar(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 @router.post('/{id}/images', response_model=UploadImagesResponse, responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def upload_images(id: int, files: List[UploadFile] = File(...), signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Upload images '''
-    listing = session.query(Listing).get(id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+    listing = ensure_listing_exists(id, session)
 
     if listing.owner_id != signed_in_user.id:
         raise HTTPException(
@@ -228,10 +207,7 @@ def upload_images(id: int, files: List[UploadFile] = File(...), signed_in_user: 
 @router.get('/{listing_id}/images/{image_id}', responses={404: {"description": "Resource not found"}})
 def get_image(listing_id: int, image_id: int, session: Session = Depends(get_session)):
     ''' Get an image '''
-    listing = session.query(Listing).get(listing_id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+    ensure_listing_exists(listing_id, session)
 
     image = session.query(Image).get(image_id)
     if image is None:
@@ -244,10 +220,7 @@ def get_image(listing_id: int, image_id: int, session: Session = Depends(get_ses
 @router.delete('/{listing_id}/images/{image_id}', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def delete_image(listing_id: int, image_id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Delete an image '''
-    listing = session.query(Listing).get(listing_id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+    listing = ensure_listing_exists(listing_id, session)
 
     if signed_in_user.id != listing.owner_id:
         raise HTTPException(
@@ -265,10 +238,7 @@ def delete_image(listing_id: int, image_id: int, signed_in_user: User = Depends(
 @router.delete('/{id}', responses={404: {"description": "Resource not found"}, 403: {"description": "Operation forbidden"}})
 def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Delete a listing '''
-    listing = session.query(Listing).get(id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+    listing = ensure_listing_exists(id, session)
 
     if listing.owner_id != signed_in_user.id:
         raise HTTPException(
@@ -282,10 +252,7 @@ def delete(id: int, signed_in_user: User = Depends(get_signed_in_user), session:
 @router.post('/{id}', response_model=ListingResponse)
 def update(id: int, req: UpdateListingRequest, signed_in_user: User = Depends(get_signed_in_user), session: Session = Depends(get_session)):
     ''' Updates an existing listing '''
-    listing = session.query(Listing).get(id)
-    if listing is None:
-        raise HTTPException(
-            status_code=404, detail="Requested listing could not be found")
+    listing = ensure_listing_exists(id, session)
 
     if listing.owner_id != signed_in_user.id:
         raise HTTPException(
