@@ -36,6 +36,7 @@ import { Authentication } from "./ui/base/header/authentication/Authentication";
 import { SignUp } from "./ui/base/header/sign_up/SignUp";
 import { SignIn } from "./ui/base/header/sign_in/SignIn";
 import { ErrorBoundaryComponent } from "./ui/base/error_boundary/ErrorBoundary";
+import { allUsers } from './backend/users/users_services';
 
 let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);

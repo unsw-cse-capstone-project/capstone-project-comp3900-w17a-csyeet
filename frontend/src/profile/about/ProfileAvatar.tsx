@@ -77,7 +77,7 @@ export const ProfileAvatar = ({
       ) : (
           <div className={classes.avatarStyle}>
             <Avatar
-              src={`/users/${userStore ?.user.id}/avatar`}
+              src={userStore?.user.avatar}
               style={{ width: "200px", height: "200px" }}
             />
             <Fab

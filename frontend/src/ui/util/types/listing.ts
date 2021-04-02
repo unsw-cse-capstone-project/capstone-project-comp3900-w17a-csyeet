@@ -57,10 +57,38 @@ export type ListingActual = {
   user_bid?: number;
 };
 
+export type PropertyType =
+  | "Apartment"
+  | "Duplex"
+  | "House"
+  | "Studio"
+  | "Townhouse";
+
+export type PropertyFeature =
+  | "ensuite"
+  | "builtInWardrobe"
+  | "bathtub"
+  | "furnished"
+  | "openKitchen"
+  | "separateKitchen"
+  | "islandKitchen"
+  | "gasStove"
+  | "electricStove"
+  | "inductionStove"
+  | "balcony"
+  | "oceanView"
+  | "bbq"
+  | "porch"
+  | "pool"
+  | "gym";
+
+export type Landmarks = "primarySchool" | "secondarySchool" | "park" | "trainStation"
+
 export const PropertyTypes = [
   "Apartment",
   "Duplex",
   "House",
-  "Studio",
   "Townhouse",
+  "Studio",
 ];
+

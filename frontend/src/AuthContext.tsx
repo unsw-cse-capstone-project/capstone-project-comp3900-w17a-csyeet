@@ -1,11 +1,14 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import React from "react";
 import { AddressDetails } from "./ui/base/address_form/AddressForm";
+import { AuthenticationService } from './backend/authentication/authentication_service';
+import { allUsers } from './backend/users/users_services';
 
 export type User = {
   name: string;
   email: string;
   id: number;
+  avatar?: string,
 };
 
 export type SignInArgs = {
@@ -49,6 +52,7 @@ export default class Store {
   @observable user?: User;
   @observable openSignUp: boolean = false;
   @observable openSignIn: boolean = false;
+  authService: AuthenticationService = new AuthenticationService();
 
   /**
    * Sign in user
@@ -60,30 +64,23 @@ export default class Store {
   @action
   async signIn({ email, password, onError, onSuccess }: SignInArgs) {
     try {
-      const response = await fetch("/login", {
-        method: "post",
-        credentials: "include",
-        body: JSON.stringify({ email: email, password: password }),
-      });
-      const content = await response.json();
-      if ("detail" in content) {
-        onError(content.detail);
-      } else {
-        runInAction(
-          () =>
-            (this.user = {
-              name: content.name,
-              id: content.id,
-              email: content.email,
-            })
-        );
-        onSuccess();
-        window.localStorage.setItem("name", content.name);
-        window.localStorage.setItem("email", content.email);
-        window.localStorage.setItem("id", content.id);
-      }
-    } catch {
-      onError("Error occurred please try again");
+      const content = this.authService.login({email, password});
+      runInAction(
+        () =>
+          (this.user = {
+            name: content.name,
+            id: content.id,
+            email: content.email,
+            avatar: content.avatar,
+          })
+      );
+      console.log(this.user);
+      onSuccess();
+      window.localStorage.setItem("name", content.name);
+      window.localStorage.setItem("email", content.email);
+      window.localStorage.setItem("id", content.id.toString());
+    } catch (e) {
+      onError(e.message);
     }
   }
 
@@ -195,25 +192,17 @@ export default class Store {
     onSuccess,
   }: SignUpArgs) {
     try {
-      const response = await fetch("/signup", {
-        method: "post",
-        body: JSON.stringify({
+      const content = this.authService.signUp({
           name: name,
           email: email,
           password: password,
-          phone_number: phone_number,
+          phoneNumber: phone_number,
           street: address.street,
           state: address.state,
           postcode: address.postcode,
           country: address.country,
           suburb: address.suburb,
-        }),
       });
-      const content = await response.json();
-      if ("detail" in content) {
-        onError(content.detail);
-        return;
-      }
       runInAction(
         () =>
           (this.user = {
@@ -224,10 +213,10 @@ export default class Store {
       );
       window.localStorage.setItem("name", content.name);
       window.localStorage.setItem("email", content.email);
-      window.localStorage.setItem("id", content.id);
+      window.localStorage.setItem("id", content.id.toString());
       onSuccess();
-    } catch {
-      onError("Error occurred when signing up");
+    } catch (e) {
+      onError(e.message);
     }
   }
 
@@ -237,9 +226,7 @@ export default class Store {
   @action
   async signOut() {
     try {
-      await fetch("/logout", {
-        method: "post",
-      });
+      this.authService.logout();
       runInAction(() => (this.user = undefined));
       window.localStorage.removeItem("name");
       window.localStorage.removeItem("email");
@@ -264,49 +251,14 @@ const checkSession = async (store: Store) => {
     window.localStorage.getItem("name") &&
     window.localStorage.getItem("email")
   ) {
-    runInAction(() => {
-      store.user = {
-        name: window.localStorage.getItem("name") as string,
-        id: parseInt(window.localStorage.getItem("id") as string),
-        email: window.localStorage.getItem("email") as string,
-      };
-    });
-  }
-  let session = document.cookie
-    .split(" ")
-    .find((cookie) => cookie.startsWith("session="));
-  if (session) {
-    try {
-      const response = await fetch("/users/me", {
-        headers: {
-          Cookie: session.split("=")[1],
-        },
-      });
-      const result = await response.json();
-      const user = {
-        id: result.id,
-        name: result.name,
-        email: result.email,
-      };
-      if (
-        (store.user as any).id !== user.id ||
-        (store.user as any).name !== user.name ||
-        (store.user as any).email !== user.name
-      ) {
-        runInAction(
-          () =>
-            (store.user = {
-              id: result.id,
-              name: result.name,
-              email: result.email,
-            })
-        );
-      }
-    } catch {
-      runInAction(() => (store.user = undefined));
+    const id = parseInt(window.localStorage.getItem("id")as string)
+    const user = store.authService.verifyInformation({email: window.localStorage.getItem("email") as string, id})
+    if (!user) {
+      return;
     }
-  } else {
-    runInAction(() => (store.user = undefined));
+    runInAction(() => {
+      store.user = user;
+    });
   }
 };
 

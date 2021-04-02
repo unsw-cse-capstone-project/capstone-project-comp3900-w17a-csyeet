@@ -31,7 +31,7 @@ export const UserMenu = withWidth()(({ width }: { width: string }) => {
   if (!userStore || !userStore.user) {
     return null;
   }
-
+  console.log(userStore.user.avatar);
   return (
     <div>
       <Button
@@ -41,7 +41,7 @@ export const UserMenu = withWidth()(({ width }: { width: string }) => {
         style={{ borderRadius: "10000px" }}
         startIcon={
           <Avatar
-            src={`/users/${userStore.user.id}/avatar`}
+            src={userStore.user.avatar}
             style={{ width: "30px", height: "30px" }}
           />
         }
